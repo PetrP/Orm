@@ -6,3 +6,4 @@ require_once dirname(__FILE__) . '/Manager.php';
 require_once dirname(__FILE__) . '/Entity.php';
 require_once dirname(__FILE__) . '/Repository.php';
 require_once dirname(__FILE__) . '/Mapper.php';
+require_once dirname(__FILE__) . '/ValidationHelper.php';

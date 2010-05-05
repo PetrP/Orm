@@ -16,39 +16,80 @@ class Factory extends Object
 		
 	}
 	
-	public static function getEntityClass($name)
+	public static function getEntityClass($by)
 	{
-		return self::getName($name);
+		$names = self::getNames($by);
+		return $names['entity'];
 	}
 	
-	public static function getRepositoryClass($name)
+	public static function getRepositoryClass($by)
 	{
-		return self::getName($name). 'Repository';
+		$names = self::getNames($by);
+		return $names['repository'];
 	}
 	
-	public static function getMapperClass($name)
+	public static function getMapperClass($by)
 	{
-		return self::getName($name). 'Mapper';
+		$names = self::getNames($by);
+		return $names['mapper'];
 	}
 	
 	public static function getName($by)
 	{
-		$name = NULL;
-		if ($by instanceof Repository AND strpos(get_class($by), 'Repository') === 0)
+		$names = self::getNames($by);
+		return $names['name'];
+	}
+	
+	private static function getNames($by)
+	{
+		static $cache = array();
+		if (is_string($by))
 		{
-			$name = substr(get_class($by), 0, 0-strlen('Repository'));
+			$c = $by;
 		}
-		else if (is_string($by))
+		else if ($by instanceof Object)
 		{
-			$name = $by;
+			$c = get_class($by);
 		}
-		
-		if (!$name OR !class_exists($name))
+		else throw new InvalidStateException;
+
+		if (!isset($cache[$c]))
 		{
-			throw new InvalidStateException();
+			$name = NULL;
+			if (is_string($by))
+			{
+				$name = $by;
+			}
+			else if ($by instanceof Entity)
+			{
+				$name = get_class($by);
+			}
+			else if ($by instanceof Repository AND strpos(get_class($by), 'Repository') === 0)
+			{
+				$name = substr(get_class($by), 0, 0-strlen('Repository'));
+			}
+
+			
+			if (!$name OR !class_exists($name))
+			{
+				throw new InvalidStateException();
+			}
+			
+			$name{0} = strtolower($name{0});
+
+			if (!isset($cache[$name]))
+			{
+				$cache[$name] = array(
+					'name' => $name,
+					'entity' => ucfirst($name),
+					'repository' => ucfirst($name) . 'Repository',
+					'mapper' => ucfirst($name) . 'Mapper',
+				);
+			}
+			
+			$cache[$c] = & $cache[$name];
 		}
-		
-		return $name;
+		return $cache[$c];
 	}
 	
 }

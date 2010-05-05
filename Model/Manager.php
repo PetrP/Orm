@@ -2,81 +2,94 @@
 
 class Manager extends Object
 {
-	
+	static $cache = array();
 	public static function getEntityParams($name)
 	{
 		$class = Factory::getEntityClass($name);
-
-		$_class = $class;
 		
-		$params = array();
-		
-		while (class_exists($_class) AND $_class !== 'Entity')
+		if (!isset(self::$cache[$class]))
 		{
-			$annotations = AnnotationsParser::getAll(new ClassReflection($_class));
-			$_class = get_parent_class($_class);
+			$_class = $class;
 			
-			if (isset($annotations['property']))
+			$params = array();
+			
+			while (class_exists($_class) AND $_class !== 'Entity')
 			{
-				foreach ($annotations['property'] as $property)
+				$annotations = AnnotationsParser::getAll(new ClassReflection($_class));
+				$_class = get_parent_class($_class);
+				
+				if (isset($annotations['property']))
 				{
-					
-					if (preg_match('#^(-read|-write)?\s?([a-z0-9_]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
+					foreach ($annotations['property'] as $property)
 					{
-						$property = $match[3];
-						$type = $match[2];
-						$mode = $match[1];
+						
+						if (preg_match('#^(-read|-write)?\s?([a-z0-9_\/]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
+						{
+							$property = $match[3];
+							$type = $match[2];
+							$mode = $match[1];
+						}
+						else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\/]+)($|\s)#si', $property, $match))
+						{
+							$property = $match[2];
+							$type = $match[3];
+							$mode = $match[1];
+						}
+						else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)($|\s)#si', $property, $match))
+						{
+							$property = $match[2];
+							$type = 'mixed';
+							$mode = $match[1];
+						}
+						else
+						{
+							continue;
+						}
+						
+						if (!$mode OR $mode === '-read')
+						{
+							$params[$property]['get'] = array('method' => NULL , 'type' => strtolower($type));
+						}
+						if (!$mode OR $mode === '-write')
+						{
+							$params[$property]['set'] = array('method' => NULL , 'type' => strtolower($type));
+						}
+						
 					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_]+)($|\s)#si', $property, $match))
+				}
+				
+				if (isset($annotations['method']))
+				{
+					foreach ($annotations['method'] as $method)
 					{
-						$property = $match[2];
-						$type = $match[3];
-						$mode = $match[1];
+						
 					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)($|\s)#si', $property, $match))
+				}
+			}
+			
+			$methods = array_diff(get_class_methods($class), get_class_methods('Entity'));
+			foreach ($methods as $method)
+			{
+				$m = substr($method, 0, 3);
+				if ($m === 'get' OR $m === 'set')
+				{
+					$var = substr($method, 3);
+					$var{0} = strtolower($var{0});
+					if (isset($params[$var][$m]))
 					{
-						$property = $match[2];
-						$type = 'mixed';
-						$mode = $match[1];
+						$params[$var][$m]['method'] = $method;
 					}
 					else
 					{
-						continue;
+						//$params[$var][$m] = array('method' => $method , 'type' => 'mixed');
 					}
-					
-					if (!$mode OR $mode === '-read')
-					{
-						$params[$property]['get'] = array('method' => NULL , 'type' => strtolower($type));
-					}
-					if (!$mode OR $mode === '-write')
-					{
-						$params[$property]['set'] = array('method' => NULL , 'type' => strtolower($type));
-					}
-					
 				}
 			}
+			
+			self::$cache[$class] = $params;
 		}
 		
-		$methods = array_diff(get_class_methods($class), get_class_methods('Entity'));
-		foreach ($methods as $method)
-		{
-			$m = substr($method, 0, 3);
-			if ($m === 'get' OR $m === 'set')
-			{
-				$var = substr($method, 3);
-				$var{0} = strtolower($var{0});
-				if (isset($params[$var][$m]))
-				{
-					$params[$var][$m]['method'] = $method;
-				}
-				else
-				{
-					$params[$var][$m] = array('method' => $method , 'type' => 'mixed');
-				}
-			}
-		}
-		
-		return $params;
+		return self::$cache[$class];
 	}
 	
 	public static function isParamValid($types, & $value)

@@ -128,4 +128,10 @@ abstract class Entity extends Object implements IEntity
 	}
 	
 	
+	public function compare(Entity $e)
+	{
+		if ($e === $this) return true;
+		return false;
+	}
+	
 }
