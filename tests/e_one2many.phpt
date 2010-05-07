@@ -10,7 +10,7 @@ require dirname(__FILE__) . '/base.php';
  */
 class User extends Entity
 {
-	//private $emails;
+	private $mainEmail;
 	
 	public function __construct()
 	{
@@ -44,18 +44,19 @@ class User extends Entity
 	
 	public function getMainEmail()
 	{
-		$first = NULL;
-		foreach ($this->emails->getIterator() as $e)
+		if ($this->mainEmail instanceof Email) return $this->mainEmail;
+		$main = Factory::getRepository('email')->getByUserAndMain($this, true);
+		if (!$main)
 		{
-			if (!isset($first)) $first = $e;
-			if ($e->getMain()) return $e;
+			$main = Factory::getRepository('email')->findByUser($this)->fetch();
 		}
-		return $first;
+		return $this->mainEmail = $main;
 	}
 	
 	public function setMainEmail($email)
 	{
-		return $this->addEmail($email)->setMain(true);
+		$this->mainEmail = $email->setUser($this)->setMain(true);
+		return $this;
 	}
 	
 }
@@ -134,13 +135,21 @@ class Email extends Entity
 	{
 		return $this->email;
 	}
-	
-	public function compare(Entity $e)
+
+	public function setUser(User $user)
 	{
-		if (parent::compare($e)) return true;
-		if ($this->email === $e->email) return true;
-		return false;
+		$oldUser = $this->getValue('user', false);
+		if ($oldUser AND $oldUser !== $user) $oldUser->emails->remove($this);
+		$user->emails->add($this);
+		return $this->setValue('user', $user);
 	}
+	
+	/*public function setMain($main)
+	{
+		$this->setValue('main', $main)
+		$user = $this->getValue('user', false);
+		if ($user) $user->setMainEmail($this);
+	}*/
 }
 
 $t = new User;

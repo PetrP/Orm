@@ -74,7 +74,7 @@ abstract class Entity extends Object implements IEntity
 		return parent::__call($name, $args);
 	}
 	
-	final protected function getValue($name)
+	final protected function getValue($name, $need = true)
 	{
 		$params = Manager::getEntityParams(get_class($this));
 		
@@ -95,8 +95,15 @@ abstract class Entity extends Object implements IEntity
 		
 		if (!Manager::isParamValid($params[$name]['get']['type'], $value))
 		{
-			$type = $params[$name]['get']['type'];
-			throw new InvalidStateException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
+			if ($need)
+			{
+				$type = $params[$name]['get']['type'];
+				throw new InvalidStateException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
+			}
+			else
+			{
+				return NULL;
+			}
 		}
 		
 		return $value;

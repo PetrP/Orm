@@ -20,4 +20,9 @@ final class SimpleMapper extends Repository
 		return $this->name;
 	}
 	
+	public function findAll()
+	{
+		return $this->connection->dataSourceX('SELECT * FROM %n' . $this->name);
+	}
+	
 }

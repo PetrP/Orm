@@ -2,6 +2,23 @@
 
 class Factory extends Object
 {
+	static $models = array();
+	
+	public function init($models)
+	{
+		foreach ($models as $k => $v)
+		{
+			if (is_int($k))
+			{
+				if (!class_exists($v)) throw new InvalidStateException();
+				self::$models[$v] = array(
+					'entity' => $v,
+					'repository' => class_exists($v . 'Repository'),
+					'mapper' => $v . 'Mapper',
+				);
+			}
+		}
+	}
 	
 	private static $entities = array();
 	private static $repositories = array();
@@ -9,10 +26,15 @@ class Factory extends Object
 	public static function getRepository($name)
 	{
 		$class = self::getRepositoryClass($name);
-		//if (class_exists($class))
-		//{
+		if (class_exists($class))
+		{
 			return new $class;
-		//}
+		}
+		else
+		{
+			$names = self::getNames($name);
+			return new SimpleRepository($names['name']);
+		}
 		
 	}
 	
@@ -72,7 +94,7 @@ class Factory extends Object
 			
 			if (!$name OR !class_exists($name))
 			{
-				throw new InvalidStateException();
+				throw new InvalidStateException($name);
 			}
 			
 			$name{0} = strtolower($name{0});

@@ -20,6 +20,16 @@ abstract class Repository extends Object implements IRepository
 		return new $class;
 	}
 	
+	public function __call($name, $args)
+	{
+		return call_user_func_array(array($this->getMapper(), $name), $args);
+	}
+	
+	public function getRepositoryName()
+	{
+		
+	}
+	
 }
 
 
