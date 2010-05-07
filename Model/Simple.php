@@ -10,19 +10,12 @@ final class SimpleRepository extends Repository
 	}
 }
 
-final class SimpleMapper extends Repository
+class SimpleMapper extends Mapper
 {
-	private $name;
-	
-	
-	public function getMapperName()
-	{
-		return $this->name;
-	}
 	
 	public function findAll()
 	{
-		return $this->connection->dataSourceX('SELECT * FROM %n' . $this->name);
+		return $this->apply($this->connection->dataSourceX('SELECT * FROM %n' , $this->repository->getRepositoryName()));
 	}
 	
 }

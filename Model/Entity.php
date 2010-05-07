@@ -134,11 +134,12 @@ abstract class Entity extends Object implements IEntity
 		return $this;
 	}
 	
-	
-	public function compare(Entity $e)
+	final public static function create($n, array $data)
 	{
-		if ($e === $this) return true;
-		return false;
+		$e = new $n;
+		if (!($e instanceof self)) throw new InvalidStateException();
+		$e->params = $data;
+		return $e;
 	}
 	
 }

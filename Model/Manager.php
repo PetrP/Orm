@@ -3,10 +3,8 @@
 class Manager extends Object
 {
 	static $cache = array();
-	public static function getEntityParams($name)
+	public static function getEntityParams($class)
 	{
-		$class = Factory::getEntityClass($name);
-		
 		if (!isset(self::$cache[$class]))
 		{
 			$_class = $class;

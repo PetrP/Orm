@@ -13,6 +13,13 @@ require_once dirname(__FILE__) . '/run.php';
 require_once LIBS_DIR.'/Nette/loader.php';
 require_once LIBS_DIR.'/xdibi/dibi.php';
 
+if (PHP_SAPI !== 'cli' AND !isset($_GET['command']))
+{
+	Debug::enable(false);
+	Debug::$showBar = true;
+	Debug::$strictMode = true;
+}
+
 dibi::connect(array(
 	'driver' => 'mysql',
 	'host' => 'localhost',
@@ -23,37 +30,8 @@ dibi::connect(array(
 	'profiler' => true,
 ));
 
-if (PHP_SAPI !== 'cli' AND !isset($_GET['command']))
-{
-	Debug::enable(false);
-	Debug::enableProfiler();
-	Debug::$strictMode = true;
-	dibi::getProfiler()->useFirebug = true;
-}
 
+require_once dirname(__FILE__) . '/../../dump.php';
 
-/** Dump */
-function d($var)
-{
-	if (func_num_args() > 1) $var = func_get_args();
-	Debug::dump($var);
-}
-/** Console dump */
-function cd()
-{
-	// TODO nefunguje grrrr
-	foreach (func_get_args() as $var)
-		Debug::consoleDump($var);
-}
-/** Profiler dump */
-function dd($var)
-{
-	if (func_num_args() > 1) $var = func_get_args();
-	d::$d[] = $var;
-	Debug::addColophon(create_function('','return Debug::dump(d::$d['.(count(d::$d)-1).'],true);'));
-}
-/** Storage of profiler dump */
-class d {static $d=array();}
-
-
+require_once dirname(__FILE__) . '/../../DataSourceX/DataSourceX/extension.php';
 require_once dirname(__FILE__) . '/../Model/loader.php';
