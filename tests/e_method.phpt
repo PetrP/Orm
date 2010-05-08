@@ -69,36 +69,42 @@ getDate: object(DateTime53) (3) {
 }
 
 array(4) {
-	"readWrite" => array(2) {
-		"get" => array(2) {
-			"method" => NULL
-			"type" => string(5) "mixed"
+	"readWrite" => array(3) {
+		"types" => array(1) {
+			0 => string(5) "mixed"
 		}
-		"set" => array(2) {
+		"get" => array(1) {
+			"method" => NULL
+		}
+		"set" => array(1) {
 			"method" => string(12) "setReadWrite"
-			"type" => string(5) "mixed"
 		}
 	}
-	"read" => array(1) {
-		"get" => array(2) {
+	"read" => array(2) {
+		"types" => array(1) {
+			0 => string(5) "mixed"
+		}
+		"get" => array(1) {
 			"method" => NULL
-			"type" => string(5) "mixed"
 		}
 	}
-	"write" => array(1) {
-		"set" => array(2) {
+	"write" => array(2) {
+		"types" => array(1) {
+			0 => string(5) "mixed"
+		}
+		"set" => array(1) {
 			"method" => NULL
-			"type" => string(5) "mixed"
 		}
 	}
-	"date" => array(2) {
-		"get" => array(2) {
-			"method" => NULL
-			"type" => string(8) "datetime"
+	"date" => array(3) {
+		"types" => array(1) {
+			0 => string(8) "datetime"
 		}
-		"set" => array(2) {
+		"get" => array(1) {
+			"method" => NULL
+		}
+		"set" => array(1) {
 			"method" => string(7) "setDate"
-			"type" => string(8) "datetime"
 		}
 	}
 }

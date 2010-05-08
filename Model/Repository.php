@@ -27,15 +27,14 @@ abstract class Repository extends Object implements IRepository
 	
 	protected function createMapper()
 	{
-		$class = ucfirst($this->getRepositoryName()) . 'Mapper';
-		return new $class($this);
+		return new SimpleSqlMapper($this);
 	}
 	
-	public function createEntity(array $data)
+	public function createEntity(StdObject $data)
 	{
-		$n = $this->getRepositoryName();
+		$entityName = $this->getRepositoryName();
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
-		return call_user_func(array($n, 'create'), $n, $data->d);
+		return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
 	
 	public function __call($name, $args)
@@ -46,6 +45,11 @@ abstract class Repository extends Object implements IRepository
 	public function getRepositoryName()
 	{
 		return $this->repositoryName;
+	}
+	
+	public function persist(Entity $e)
+	{
+		return $this->getMapper()->persist($e);
 	}
 	
 }

@@ -3,7 +3,7 @@
 class Manager extends Object
 {
 	static $cache = array();
-	public static function getEntityParams($class)
+	public static function getEntityParams($class) // todo castecne presunout do entity, aby se dalo prepsat chovani dinamicky
 	{
 		if (!isset(self::$cache[$class]))
 		{
@@ -44,13 +44,26 @@ class Manager extends Object
 							continue;
 						}
 						
+						$type = explode('|',strtolower($type));
+						if (in_array('mixed', $type))
+						{
+							$type = array();
+						}
+						
+						if (isset($params[$property]['types']) AND $params[$property]['types'] !== $types)
+						{
+							throw new InvalidStateException('Getter and setter types must be same.');	
+						}
+						
+						$params[$property]['types'] = $type;
+						
 						if (!$mode OR $mode === '-read')
 						{
-							$params[$property]['get'] = array('method' => NULL , 'type' => strtolower($type));
+							$params[$property]['get'] = array('method' => NULL);
 						}
 						if (!$mode OR $mode === '-write')
 						{
-							$params[$property]['set'] = array('method' => NULL , 'type' => strtolower($type));
+							$params[$property]['set'] = array('method' => NULL);
 						}
 						
 					}
@@ -77,10 +90,6 @@ class Manager extends Object
 					{
 						$params[$var][$m]['method'] = $method;
 					}
-					else
-					{
-						//$params[$var][$m] = array('method' => $method , 'type' => 'mixed');
-					}
 				}
 			}
 			
@@ -90,14 +99,15 @@ class Manager extends Object
 		return self::$cache[$class];
 	}
 	
-	public static function isParamValid($types, & $value)
+	public static function isParamValid(array $types, & $value)
 	{
 		$_value = $value;
-
-		foreach (array_reverse(explode('|', $types)) as $type)
+		
+		if ($types === array()) return true; // mean mixed
+		
+		foreach ($types as $type)
 		{
-			if ($type === 'mixed') return true;
-			else if ($type === 'void' OR $type === 'null')
+			if ($type === 'void' OR $type === 'null')
 			{
 				if ($value === NULL) return true;
 				continue;
@@ -107,6 +117,7 @@ class Manager extends Object
 				if ($value instanceof $type) return true;
 				continue;
 			}
+			else if ($type === 'mixed') return true;
 			else
 			{
 				if (call_user_func("is_$type", $value)) return true;

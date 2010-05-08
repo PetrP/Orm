@@ -3,11 +3,9 @@
 abstract class Mapper extends Object implements IMapper
 {
 	abstract public function findAll();
-	
-	public function getConnection()
-	{
-		return dibi::getConnection();
-	}
+	abstract protected function findBy(array $where);
+	abstract protected function getBy(array $where);
+	abstract public function persist(Entity $e);
 	
 	protected $repository;
 	
@@ -36,24 +34,14 @@ abstract class Mapper extends Object implements IMapper
 			
 			if ($mode AND $by)
 			{
-				$all = $this->findAll()->getSource();
-				// todo instanceof DibiDataSource
+				$where = array();
 				foreach (array_map('ucfirst',explode('And', $by)) as $n => $key)
 				{
-					if (!isset($args[$n])) throw new InvalidArgumentException("There is no '$key' value;");
-					$all->where('%n = %s', $key, $args[$n]);
+					if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key'.");
+					$where[$key] = $args[$n];
 				}
-				if ($mode === 'get')
-				{
-					return $this->apply($all->setRowClass('a')->fetch());
-				}
-				else
-				{
-					return $this->apply($all);
-				}
-				
+				return $mode === 'get' ? $this->getBy($where) : $this->findBy($where);
 			}
-		
 		
 			throw $e;
 		}
@@ -74,6 +62,7 @@ abstract class Mapper extends Object implements IMapper
 			return new EntityCollection($this->repository, $data->setRowClass('a'));
 		}
 	}
+
 	
 	
 }
