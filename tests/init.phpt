@@ -30,7 +30,7 @@ class Test extends Entity
 }
 
 
-class TestRepository extends Repository
+class TestsRepository extends Repository
 {
 	
 }

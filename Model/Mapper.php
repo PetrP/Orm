@@ -35,7 +35,7 @@ abstract class Mapper extends Object implements IMapper
 			if ($mode AND $by)
 			{
 				$where = array();
-				foreach (array_map('ucfirst',explode('And', $by)) as $n => $key)
+				foreach (array_map('lcfirst',explode('And', $by)) as $n => $key)
 				{
 					if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key'.");
 					$where[$key] = $args[$n];
@@ -44,22 +44,6 @@ abstract class Mapper extends Object implements IMapper
 			}
 		
 			throw $e;
-		}
-	}
-	
-	protected function apply($data)
-	{
-		if ($data instanceof a)
-		{
-			return $this->repository->createEntity($data);
-		}
-		else
-		{
-			if (!($data instanceof DibiResult))
-			{
-				return $data->getResult();
-			}
-			return new EntityCollection($this->repository, $data->setRowClass('a'));
 		}
 	}
 

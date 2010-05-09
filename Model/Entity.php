@@ -341,6 +341,12 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			$value = $this->values[$name][1];
 			$valid = $this->values[$name][0];
 		}
+		else if (// todo is cizi klic)
+		{
+			$value = $this->values[$name . '_id'] // todo conventional
+			// todo load Entity from Repository
+		}
+		
 		
 		if (!$valid)
 		{
@@ -414,21 +420,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 	 */
 	final public static function setPrivateValues(Entity $entity, $values)
 	{
-		$rules = $params = $entity->rules;
-
 		foreach ($values as $name => $value)
 		{
-			if (isset($params[$name]))
-			{
-				$entity->values[$name] = array(0 => false, 1 => $value);
-			}
-			else
-			{
-				throw new InvalidArgumentException($name); // todo ?
-			}
-			
+			$entity->values[$name] = array(0 => false, 1 => $value);
+			// todo nic se nekontroluje
 		}
-		
 	}
 	/**
 	 * @internal

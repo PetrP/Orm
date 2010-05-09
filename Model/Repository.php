@@ -30,11 +30,11 @@ abstract class Repository extends Object implements IRepository
 		return new SimpleSqlMapper($this);
 	}
 	
-	public function createEntity(StdObject $data)
+	public function getEntityName(StdObject $data)
 	{
-		$entityName = $this->getRepositoryName();
+		return rtrim($this->getRepositoryName(), 's');
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
-		return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
+		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
 	
 	public function __call($name, $args)

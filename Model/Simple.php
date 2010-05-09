@@ -23,7 +23,14 @@ class SimpleSqlMapper extends Mapper
 		// todo instanceof DibiDataSource
 		foreach ($where as $key => $value)
 		{
-			$all->where('%n = %s', $key, $value);
+			if ($value instanceof Entity)
+			{
+				$all->where('%n = %s', $key . '_id', $value->id); // todo convencional
+			}
+			else
+			{
+				$all->where('%n = %s', $key, $value);
+			}
 		}
 		return $all;
 	}

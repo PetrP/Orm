@@ -23,6 +23,25 @@ class Model extends Object
 		return self::$repositories[$name];
 	}
 	
+	public function & __get($name)
+	{
+		$r = $this->getRepository($name);
+		return $r;
+	}
+	
+	/**
+	* @return AppModel
+	*/
+	public static function get()
+	{
+		static $model;
+		if (!isset($model))
+		{
+			$model = class_exists('AppModel') ? new AppModel : new self;
+		}
+		return $model;
+	}
+	
 }
 
 class StdObject extends stdClass
@@ -65,7 +84,7 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetch()
 	{
-		return $this->repository->createEntity($this->getResult()->fetch());
+		return $this->createEntityRecursive($this->getResult()->fetch());
 	}
 
 
@@ -87,7 +106,7 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetchAll()
 	{
-		return array_map(array($this->repository, 'createEntity'), $this->getResult()->fetchAll());
+		return $this->createEntityRecursive($this->getResult()->fetchAll());
 	}
 
 
@@ -99,8 +118,7 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetchAssoc($assoc)
 	{
-		throw new NotImplementedException(); // todo
-		return $this->getResult()->fetchAssoc($assoc);
+		return $this->createEntityRecursive($this->getResult()->fetchAssoc($assoc));
 	}
 
 
@@ -113,9 +131,24 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetchPairs($key = NULL, $value = NULL)
 	{
-		return array_map(array($this->repository, 'createEntity'), $this->getResult()->fetchPairs($key, $value));
+		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
 	}
 	
+	
+	private function createEntityRecursive($a)
+	{
+		if ($a instanceof StdObject)
+		{
+			return Entity::create($this->repository->getEntityName($a), (array) $a);
+		}
+		else if (is_array($a))
+		{
+			$a = array_map(array($this, __FUNCTION__), $a);
+		}
+		return $a;
+	}
+	
+		
 }
 
 class EntityIterator extends IteratorIterator
@@ -131,7 +164,7 @@ class EntityIterator extends IteratorIterator
 	public function current()
 	{
 		$row = parent::current();
-		return $this->repository->createEntity($row);
+		return Entity::create($this->repository->getEntityName($row), (array) $row);
 	}
 	
 }
