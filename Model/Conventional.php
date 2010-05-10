@@ -8,6 +8,11 @@ class Conventional extends Object implements IConventional
 		return (array) $data;
 	}
 	
+	public function unformat($data, $entityName)
+	{
+		return (array) $data;
+	}
+	
 	/**
 	 * fk
 	 * @param  string
@@ -82,7 +87,7 @@ class SqlConventional extends Conventional
 			$unfk = array();
 			foreach (Entity::getFK($entityName) as $n => $foo)
 			{
-				$fk[$this->foreignKeyFormat($tmp = $this->unformatKey($n))] = $n . '__fk__id'; // todo constant
+				$fk[$tmp = $this->foreignKeyFormat($this->unformatKey($n))] = $n . '__fk__id'; // todo constant
 				$unfk[$n] = $tmp; // todo constant
 			}
 			self::$cache['fk'][$entityName] = $fk;
