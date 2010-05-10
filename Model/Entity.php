@@ -218,15 +218,18 @@ abstract class EntityArrayObject extends ArrayObject
 }
 
 
-abstract class Entity extends Object implements IEntity, ArrayAccess
+abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAggregate
 {
 	private $values = array();
 	
+	private $valid = array();
+	
 	private $rules;
 	
+
 	public function __construct()
 	{
-		$this->rules = $this->getEntityRules();
+		$this->rules = $this->getEntityRules(get_class($this));
 	}
 	
 	final public function & __get($name)
@@ -336,14 +339,14 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 		
 		$value = NULL;
 		$valid = false;
-		if (isset($this->values[$name]))
+		if (array_key_exists($name, $this->values))
 		{
-			$value = $this->values[$name][1];
-			$valid = $this->values[$name][0];
+			$valid = isset($this->valid[$name]) ? $this->valid[$name] : false;
+			$value = $this->values[$name];
 		}
-		else if (isset($params[$name]['fk']) AND isset($this->values[$name . '_id'])) // todo conventional
+		else if (isset($params[$name]['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
 		{
-			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$name . '_id'][1]); // todo conventional
+			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$fk]);
 		}
 		
 		
@@ -358,7 +361,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 					if ($need) throw $e;
 					return NULL;
 				}
-				$value = isset($this->values[$name]) ? $this->values[$name][1] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
+				$value = isset($this->values[$name]) ? $this->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
 			}
 			else
 			{
@@ -366,12 +369,13 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 				{
 					if ($need)
 					{
-						$type = $params[$name]['types'];
+						$type = implode('|',$params[$name]['types']);
 						throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " have");
 					}
 					return NULL;
 				}
-				$this->values[$name] = array(true, $value);
+				$this->values[$name] = $value;
+				$this->valid[$name] = true;
 			}
 		}
 		
@@ -394,11 +398,12 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 		
 		if (!Manager::isParamValid($params[$name]['types'], $value))
 		{
-			$type = $params[$name]['types'];
+			$type = implode('|',$params[$name]['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
 		
-		$this->values[$name] = array(true, $value);
+		$this->values[$name] = $value;
+		$this->valid[$name] = true;
 		
 		return $this;
 	}
@@ -417,12 +422,20 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 	/**
 	 * @internal
 	 */
-	final public static function setPrivateValues(Entity $entity, $values)
+	final public static function setPrivateValues(Entity $entity, array $values)
 	{
-		foreach ($values as $name => $value)
+		if (!$entity->values)
 		{
-			$entity->values[$name] = array(0 => false, 1 => $value);
-			// todo nic se nekontroluje
+			$entity->values = $values;
+			$entity->valid = array();
+		}
+		else
+		{
+			foreach ($values as $name => $value)
+			{
+				$entity->values[$name] = $value;
+				$entity->valid[$name] = false;
+			}
 		}
 	}
 	/**
@@ -448,11 +461,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			}
 			else if (isset($params[$name]['set']))
 			{
-				$value = isset($entity->values[$name]) ? $entity->values[$name][1] : NULL;
-				if (!isset($entity->values[$name]) OR !$entity->values[$name][0])
+				$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL;
+				if (!isset($entity->valid[$name]) OR !$entity->valid[$name])
 				{
 					$entity->__set($name, $value);
-					$value = isset($entity->values[$name]) ? $entity->values[$name][1] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
+					$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
 				}
 				$values[$name] = $value;
 			}
@@ -460,17 +473,28 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			{
 				throw new MemberAccessException(); // todo ?
 			}
-			if (isset($rule['fk']))
+			/*if (isset($rule['fk']))
 			{
 				$entity = $values[$name];
 				if (!($entity instanceof Entity)) throw new Exception();
 				if (!isset($entity->id)) throw new Exception();
-				$values[$name.'_id'] = $entity->id; // todo conventional
+				$values[$name.'_id'] = $entity->id; // todo contention
 				unset($values[$name]);
-			}
+			}*/
 		}
 		
 		return $values;
+	}
+	
+	final public static function getFk($entityName)
+	{
+		$result = array();
+		foreach (self::getEntityRules($entityName) as $name => $rule)
+		{
+			if (!isset($rule['fk'])) continue;
+			$result[$name] = true;
+		}
+		return $result;
 	}
 
 	public function offsetExists($name)
@@ -513,9 +537,14 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 		return $result;
 	}
 	
-	final private function getEntityRules()
+	public function getIterator()
 	{
-		return Manager::getEntityParams(get_class($this));
+		return new ArrayIterator($this->toArray());
+	}
+	
+	final private static function getEntityRules($entityClass)
+	{
+		return Manager::getEntityParams($entityClass);
 	}
 	
 }

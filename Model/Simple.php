@@ -5,8 +5,19 @@
 */
 class SimpleSqlMapper extends Mapper
 {
+	private $connection;
+	
 	
 	public function getConnection()
+	{
+		if (!($this->connection instanceof DibiConnection))
+		{
+			$this->connection = $this->createConnection();
+		}
+		return $this->connection;
+	}
+	
+	protected function createConnection()
 	{
 		return dibi::getConnection();
 	}
@@ -25,17 +36,11 @@ class SimpleSqlMapper extends Mapper
 	protected function findBy(array $where)
 	{
 		$all = $this->findAll();
+		$where = $this->getConventional()->unformat($where, $this->repository->getEntityName());
 		// todo instanceof DibiDataSource
 		foreach ($where as $key => $value)
 		{
-			if ($value instanceof Entity) // todo, co kdyz NULL, musi se jinak zjistit jeslti is cizi klic
-			{
-				$all->where('%n = %s', $key . '_id', $value->id); // todo convencional
-			}
-			else
-			{
-				$all->where('%n = %s', $key, $value);
-			}
+			$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
 		}
 		return $all;
 	}

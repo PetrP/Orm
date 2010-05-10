@@ -3,7 +3,7 @@
 
 class Conventional extends Object implements IConventional
 {
-	public function format($data)
+	public function format($data, $entityName)
 	{
 		return (array) $data;
 	}
@@ -22,7 +22,7 @@ class Conventional extends Object implements IConventional
 
 class SqlConventional extends Conventional
 {
-	private static $cache = array();
+	private static $cache = array(); // todo je potreba ukladat podle nazvu trydy, jinak se pri pouziti nekolika trid bude kolidovat.
 	
 	/**
 	 * camelCase -> underscore_separated.
@@ -50,16 +50,66 @@ class SqlConventional extends Conventional
 		return $s;
 	}
 	
-	public function format($data)
+	public function format($data, $entityName)
 	{
+		$this->loadFk($entityName);
+		
 		$result = array();
 		foreach ($data as $key => $value)
 		{
-			if (!isset(self::$cache[$key]))
+			if (isset(self::$cache['fk'][$entityName][$key]))
 			{
-				self::$cache[$key] = $this->formatKey($key);
+				$k = self::$cache['fk'][$entityName][$key];
 			}
-			$result[self::$cache[$key]] = $value;
+			else if (isset(self::$cache[$key]))
+			{
+				$k = self::$cache[$key];
+			}
+			else
+			{
+				$k = self::$cache[$key] = $this->unformatKey($key);
+			}
+			$result[$k] = $value;
+		}
+		return $result;
+	}
+	
+	private function loadFk($entityName)
+	{
+		if (!isset(self::$cache['fk'][$entityName]))
+		{
+			$fk = array();
+			$unfk = array();
+			foreach (Entity::getFK($entityName) as $n => $foo)
+			{
+				$fk[$this->foreignKeyFormat($tmp = $this->unformatKey($n))] = $n . '__fk__id'; // todo constant
+				$unfk[$n] = $tmp; // todo constant
+			}
+			self::$cache['fk'][$entityName] = $fk;
+			self::$cache['unfk'][$entityName] = $unfk;
+		}
+	}
+	
+	public function unformat($data, $entityName)
+	{
+		$this->loadFk($entityName);
+		
+		$result = array();
+		foreach ($data as $key => $value)
+		{
+			if (isset(self::$cache['unfk'][$entityName][$key]))
+			{
+				$k = self::$cache['unfk'][$entityName][$key];
+			}
+			else if (isset(self::$cache[$key]))
+			{
+				$k = self::$cache[$key];
+			}
+			else
+			{
+				$k = self::$cache[$key] = $this->unformatKey($key);
+			}
+			$result[$k] = $value;
 		}
 		return $result;
 	}

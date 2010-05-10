@@ -41,9 +41,7 @@ get read: NULL
 
 array(3) {
 	"readWrite" => array(3) {
-		"types" => array(1) {
-			0 => string(5) "mixed"
-		}
+		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
@@ -52,17 +50,13 @@ array(3) {
 		}
 	}
 	"read" => array(2) {
-		"types" => array(1) {
-			0 => string(5) "mixed"
-		}
+		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
 	}
 	"write" => array(2) {
-		"types" => array(1) {
-			0 => string(5) "mixed"
-		}
+		"types" => array(0)
 		"set" => array(1) {
 			"method" => NULL
 		}

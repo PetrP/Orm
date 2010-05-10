@@ -21,13 +21,13 @@ class Manager extends Object
 					foreach ($annotations['property'] as $property)
 					{
 						
-						if (preg_match('#^(-read|-write)?\s?([a-z0-9_\/]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
+						if (preg_match('#^(-read|-write)?\s?([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
 						{
 							$property = $match[3];
 							$type = $match[2];
 							$mode = $match[1];
 						}
-						else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\/]+)($|\s)#si', $property, $match))
+						else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s)#si', $property, $match))
 						{
 							$property = $match[2];
 							$type = $match[3];
@@ -70,6 +70,17 @@ class Manager extends Object
 					}
 				}
 				
+				if (isset($annotations['fk']))
+				{
+					if (isset($annotations['foreignKey']))
+					{
+						$annotations['foreignKey'] = array_merge($annotations['foreignKey'], $annotations['fk']);
+					}
+					else
+					{
+						$annotations['foreignKey'] = $annotations['fk'];
+					}
+				}
 				if (isset($annotations['foreignKey']))
 				{
 					foreach ($annotations['foreignKey'] as $fk)

@@ -1,7 +1,7 @@
 <?php
 
 
-class Model extends Object
+abstract class AbstractModel extends Object
 {
 	private static $repositories = array();
 	
@@ -37,7 +37,11 @@ class Model extends Object
 		static $model;
 		if (!isset($model))
 		{
-			$model = class_exists('AppModel') ? new AppModel : new self;
+			$model = new Model;
+			if (!($model instanceof self))
+			{
+				throw new Error;
+			}
 		}
 		return $model;
 	}
