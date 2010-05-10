@@ -139,7 +139,8 @@ class ModelDataSource extends DibiDataSourceX
 	{
 		if ($a instanceof StdObject)
 		{
-			return Entity::create($this->repository->getEntityName($a), (array) $a);
+			return $this->repository->createEntity($a);
+			//return Entity::create($this->repository->getEntityName($a), $this->repository->getConventional()->format((array) $a));
 		}
 		else if (is_array($a))
 		{
@@ -164,7 +165,8 @@ class EntityIterator extends IteratorIterator
 	public function current()
 	{
 		$row = parent::current();
-		return Entity::create($this->repository->getEntityName($row), (array) $row);
+		return $this->repository->createEntity($row);
+		//return Entity::create($this->repository->getEntityName($row), $this->repository->getConventional()->format((array) $row));
 	}
 	
 }

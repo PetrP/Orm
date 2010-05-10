@@ -246,7 +246,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 		$value = NULL;
 		if ($params[$name]['get']['method'])
 		{
-			$value = callback($this, $params[$name]['get']['method'])->invoke($value);
+			$value = $this->{$params[$name]['get']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -271,7 +271,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 		
 		if ($params[$name]['set']['method'])
 		{
-			callback($this, $params[$name]['set']['method'])->invoke($value);
+			$this->{$params[$name]['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -292,7 +292,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			$params = Manager::getEntityParams(get_class($this));
 			if (isset($params[$var]))
 			{
-				return callback($this, '__' . $m)->invoke($var, $m === 'set' ? $args[0] : NULL);
+				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
 		}
 		
@@ -341,10 +341,9 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			$value = $this->values[$name][1];
 			$valid = $this->values[$name][0];
 		}
-		else if (// todo is cizi klic)
+		else if (isset($params[$name]['fk']) AND isset($this->values[$name . '_id'])) // todo conventional
 		{
-			$value = $this->values[$name . '_id'] // todo conventional
-			// todo load Entity from Repository
+			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$name . '_id'][1]); // todo conventional
 		}
 		
 		
@@ -460,6 +459,14 @@ abstract class Entity extends Object implements IEntity, ArrayAccess
 			else
 			{
 				throw new MemberAccessException(); // todo ?
+			}
+			if (isset($rule['fk']))
+			{
+				$entity = $values[$name];
+				if (!($entity instanceof Entity)) throw new Exception();
+				if (!isset($entity->id)) throw new Exception();
+				$values[$name.'_id'] = $entity->id; // todo conventional
+				unset($values[$name]);
 			}
 		}
 		

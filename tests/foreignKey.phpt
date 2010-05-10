@@ -5,8 +5,9 @@ require dirname(__FILE__) . '/base.php';
 /**
 * @property-read int $id
 * @property string $text
-* @property int $int
+* @property Test $int
 * @property string $char
+* @foreignKey $int Test
 */
 class Test extends Entity
 {
@@ -34,14 +35,14 @@ class TestRepository extends Repository
 
 }
 
-for ($i=0;$i--;)
+for ($i=1;$i--;)
 {
 	$j = rand(0, PHP_INT_MAX);
 	$t = new Test();
 	$m = md5($i.$j);
 	$t->text = $m;
 	$t->char = $m{0};
-	$t->int = $j;
+	$t->int = Model::getRepository('test')->getById(153546);
 	dd(Model::getRepository('test')->persist($t));
 }
 
@@ -56,15 +57,7 @@ Model::init(array(
 for ($i=1000;$i--;)
 	Model::getRepository('test')->getById(153548);
 */
-foreach (Model::getRepository('test')->findAll()->applyLimit(100) as $x)
+foreach (Model::getRepository('test')->findById($t->id) as $x)
 {
-	$x->toArray();
-}
-$x = Model::getRepository('test')->findAll()->applyLimit(100)->fetchAll();
-foreach (Model::getRepository('test')->findByChar('a')->applyLimit(100) as $x)
-{
-	if ($x->char !== 'a')
-	{
-		dump($x->toArray());
-	}
+	dump($x->toArray());
 }

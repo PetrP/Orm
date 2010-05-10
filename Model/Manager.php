@@ -41,7 +41,8 @@ class Manager extends Object
 						}
 						else
 						{
-							continue;
+							throw new InvalidStateException($property);
+							//continue;
 						}
 						
 						$type = explode('|',strtolower($type));
@@ -69,13 +70,35 @@ class Manager extends Object
 					}
 				}
 				
-				if (isset($annotations['method']))
+				if (isset($annotations['foreignKey']))
+				{
+					foreach ($annotations['foreignKey'] as $fk)
+					{
+						if (preg_match('#\s?\$([a-z0-9_]+)\s([a-z0-9_]+)$#si', $fk, $match))
+						{
+							$property = $match[1];
+							$repository = $match[2];
+							if (isset($params[$property]))
+							{
+								if (Model::getRepository($repository) instanceof Repository)
+								{
+									$params[$property]['fk'] = $repository;
+								}
+								else throw new InvalidStateException($repository);
+							}
+							else throw new InvalidStateException($property);
+						}
+						else throw new InvalidStateException();
+					}
+				}
+				
+				/*if (isset($annotations['method']))
 				{
 					foreach ($annotations['method'] as $method)
 					{
 						
 					}
-				}
+				}*/
 			}
 			
 			$methods = array_diff(get_class_methods($class), get_class_methods('Entity'));

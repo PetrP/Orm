@@ -15,12 +15,17 @@ interface IMapper
 	
 }
 
-interface IPersistentMapper extends IMapper
+interface IConventional
 {
 	
 }
 
-interface ITemporaryMapper extends IMapper
+interface IPersistentMapper extends IMapper // todo
+{
+	
+}
+
+interface ITemporaryMapper extends IMapper // todo
 {
 	
 }

@@ -9,9 +9,30 @@ abstract class Mapper extends Object implements IMapper
 	
 	protected $repository;
 	
+	private $conventional;
+	
 	public function __construct(Repository $repository)
 	{
 		$this->repository = $repository;
+	}
+
+	public function getConventional()
+	{
+		if (!isset($this->conventional))
+		{
+			$conventional = $this->createConventional();
+			if (!($conventional instanceof Conventional))
+			{
+				throw new InvalidStateException();
+			}
+			$this->conventional = $conventional;
+		}
+		return $this->conventional;
+	}
+
+	protected function createConventional()
+	{
+		return new Conventional;
 	}
 	
 	public function __call($name, $args)

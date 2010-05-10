@@ -5,13 +5,15 @@ abstract class Repository extends Object implements IRepository
 	private $mapper;
 	
 	private $repositoryName;
+	protected $conventional;
 	
 	public function __construct($repositoryName)
 	{
 		$this->repositoryName = $repositoryName;
+		$this->conventional = $this->getMapper()->getConventional(); // speedup
 	}
 	
-	protected function getMapper()
+	final protected function getMapper()
 	{
 		if (!isset($this->mapper))
 		{
@@ -27,6 +29,11 @@ abstract class Repository extends Object implements IRepository
 	
 	protected function createMapper()
 	{
+		$class = ucfirst($this->getRepositoryName()) . 'Mapper';
+		if (class_exists($class))
+		{
+			return new $class($this);
+		}
 		return new SimpleSqlMapper($this);
 	}
 	
@@ -37,12 +44,17 @@ abstract class Repository extends Object implements IRepository
 		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
 	
+	final public function createEntity(StdObject $data)
+	{
+		return Entity::create($this->getEntityName($data), (array) $this->conventional->format($data));
+	}
+	
 	public function __call($name, $args)
 	{
 		return call_user_func_array(array($this->getMapper(), $name), $args);
 	}
 	
-	public function getRepositoryName()
+	final public function getRepositoryName()
 	{
 		return $this->repositoryName;
 	}

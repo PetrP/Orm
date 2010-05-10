@@ -11,10 +11,15 @@ class SimpleSqlMapper extends Mapper
 		return dibi::getConnection();
 	}
 	
+	protected function createConventional()
+	{
+		return new SqlConventional;
+	}
+	
 	
 	public function findAll()
 	{
-		return $this->dataSource('SELECT * FROM %n' , $this->repository->getRepositoryName());
+		return $this->dataSource($this->repository->getRepositoryName());
 	}
 	
 	protected function findBy(array $where)
@@ -23,7 +28,7 @@ class SimpleSqlMapper extends Mapper
 		// todo instanceof DibiDataSource
 		foreach ($where as $key => $value)
 		{
-			if ($value instanceof Entity)
+			if ($value instanceof Entity) // todo, co kdyz NULL, musi se jinak zjistit jeslti is cizi klic
 			{
 				$all->where('%n = %s', $key . '_id', $value->id); // todo convencional
 			}
