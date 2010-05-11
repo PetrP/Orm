@@ -46,8 +46,13 @@ abstract class Repository extends Object implements IRepository
 	
 	final public function createEntity(StdObject $data)
 	{
-		$entityName = $this->getEntityName($data);
-		return Entity::create($entityName, (array) $this->conventional->format($data, $entityName));
+		static $e = array();
+		if (!isset($e[$data->id]))
+		{
+			$entityName = $this->getEntityName($data);
+			$e[$data->id] = Entity::create($entityName, (array) $this->conventional->format($data, $entityName));
+		}
+		return $e[$data->id];
 	}
 	
 	public function __call($name, $args)
