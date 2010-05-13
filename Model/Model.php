@@ -48,11 +48,33 @@ abstract class AbstractModel extends Object
 	
 }
 
-class StdObject extends stdClass
+class StdObject extends stdClass implements ArrayAccess
 {
 	public function __construct(array $arr)
 	{
 		foreach ($arr as $k => $v) $this->$k = $v;
+	}
+	
+	public function toArray()
+	{
+		return (array) $this;
+	}
+	
+	public function offsetExists($key)
+	{
+		return isset($this->{$key});
+	}
+	public function offsetGet($key)
+	{
+		return $this->{$key};
+	}
+	public function offsetSet($key, $value)
+	{
+		$this->{$key} = $value;
+	}
+	public function offsetUnset($key)
+	{
+		unset($this->{$key});
 	}
 }
 
@@ -88,7 +110,8 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetch()
 	{
-		return $this->createEntityRecursive($this->getResult()->fetch());
+		$row = $this->getResult()->fetch();
+		return $this->createEntityRecursive($row === false ? NULL : $row);
 	}
 
 
@@ -169,7 +192,7 @@ class EntityIterator extends IteratorIterator
 	public function current()
 	{
 		$row = parent::current();
-		return $this->repository->createEntity($row);
+		return $this->repository->createEntity($row === false ? NULL : $row);
 		//return Entity::create($this->repository->getEntityName($row), $this->repository->getConventional()->format((array) $row));
 	}
 	

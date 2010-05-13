@@ -304,13 +304,13 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	
 	final public function __isset($name)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 		
-		if (!isset($params[$name]))
+		if (!isset($rules[$name]))
 		{
 			return parent::__isset($name);
 		}
-		else if (isset($params[$name]['get']))
+		else if (isset($rules[$name]['get']))
 		{
 			try {
 				return $this->__get($name) !== NULL;
@@ -320,8 +320,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 		
 		return false;
-		
-
+	}
+	
+	final public function hasParam($name)
+	{
+		return isset($this->rules[$name]);
 	}
 	
 	final protected function getValue($name, $need = true)
