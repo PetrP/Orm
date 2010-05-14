@@ -36,7 +36,7 @@ class SimpleSqlMapper extends Mapper
 	protected function findBy(array $where)
 	{
 		$all = $this->findAll();
-		$where = $this->getConventional()->unformat($where, $this->repository->getEntityName());
+		$where = $this->getConventional()->format($where, $this->repository->getEntityName());
 		// todo instanceof DibiDataSource
 		foreach ($where as $key => $value)
 		{
@@ -50,22 +50,44 @@ class SimpleSqlMapper extends Mapper
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
 	
-	public function persist(Entity $e)
+	public function persist(Entity $e, $useTransaction = true)
 	{
 		$values = Entity::getPrivateValues($e);
+		$fk = Entity::getFk(get_class($e));
+		if ($useTransaction)
+		{
+			$this->connection->begin();
+		}
+		foreach ($values as $key => $value)
+		{
+			if (isset($fk[$key]) AND $value instanceof Entity)
+			{
+				Model::getRepository($fk[$key])->persist($value, false);
+				$values[$key] = $value->id;
+			}
+			else if ($value !== NULL AND !is_scalar($value))
+			{
+				throw new InvalidStateException("Neumim ulozit `".get_class($e)."::$$key` " . gettype($value));
+			}
+		}
+		
+		$values = $this->getConventional()->format($values, get_class($e));
 		$table = $this->repository->getRepositoryName();
 		if (isset($e->id))
 		{
 			$id = $e->id;
 			$this->connection->update($table, $values)->where('[id] = %i', $id)->execute();
-			return $id;
 		}
 		else
 		{
 			$id = $this->connection->insert($table, $values)->execute(dibi::IDENTIFIER);
 			Entity::setPrivateValues($e, array('id' => $id));
-			return $id;
 		}
+		if ($useTransaction)
+		{
+			$this->connection->commit();
+		}
+		return $id;
 	}
 	
 	protected function dataSource()

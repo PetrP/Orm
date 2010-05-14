@@ -5,6 +5,9 @@ class Manager extends Object
 	static $cache = array();
 	public static function getEntityParams($class) // todo castecne presunout do entity, aby se dalo prepsat chovani dinamicky
 	{
+		if (!class_exists($class)) throw new InvalidStateException();
+		else if (!is_subclass_of($class, 'Entity')) throw new InvalidStateException();
+		
 		if (!isset(self::$cache[$class]))
 		{
 			$_class = $class;

@@ -80,7 +80,29 @@ class StdObject extends stdClass implements ArrayAccess
 
 class ModelDataSource extends DibiDataSourceX
 {
+	/** @var Repository */
 	private $repository;
+	
+	/**
+	 * Selects columns to order by.
+	 * @param  string|array  column name or array of column names
+	 * @param  string  		 sorting direction
+	 * @return DibiDataSource  provides a fluent interface
+	 */
+	public function orderBy($row, $sorting = 'ASC')
+	{
+		$conventional = $this->repository->getMapper()->getConventional();
+		$entity = $this->repository->getEntityName();
+		if (is_array($row))
+		{
+			return parent::orderBy($conventional->format($row, $entity), $sorting);
+		}
+		else
+		{
+			$row = $conventional->format(array($row => $sorting), $entity);
+			return parent::orderBy(key($row), $sorting);
+		}
+	}
 	
 	public function __construct($sql, DibiConnection $connection, Repository $repository)
 	{
@@ -158,6 +180,7 @@ class ModelDataSource extends DibiDataSourceX
 	 */
 	public function fetchPairs($key = NULL, $value = NULL)
 	{
+		// todo conventional $key a value;
 		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
 	}
 	
@@ -167,7 +190,7 @@ class ModelDataSource extends DibiDataSourceX
 		if ($a instanceof StdObject)
 		{
 			return $this->repository->createEntity($a);
-			//return Entity::create($this->repository->getEntityName($a), $this->repository->getConventional()->format((array) $a));
+			//return Entity::create($this->repository->getEntityName($a), $this->repository->getConventional()->unformat((array) $a));
 		}
 		else if (is_array($a))
 		{
@@ -179,7 +202,7 @@ class ModelDataSource extends DibiDataSourceX
 		
 }
 
-class EntityIterator extends IteratorIterator
+class EntityIterator extends IteratorIterator implements Countable
 {
 	private $repository;
 	
@@ -193,7 +216,12 @@ class EntityIterator extends IteratorIterator
 	{
 		$row = parent::current();
 		return $this->repository->createEntity($row === false ? NULL : $row);
-		//return Entity::create($this->repository->getEntityName($row), $this->repository->getConventional()->format((array) $row));
+		//return Entity::create($this->repository->getEntityName($row), $this->repository->getConventional()->unformat((array) $row));
+	}
+	
+	public function count()
+	{
+		return $this->getInnerIterator()->count();
 	}
 	
 }

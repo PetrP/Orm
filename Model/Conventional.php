@@ -72,7 +72,7 @@ class SqlConventional extends Conventional
 			}
 			else
 			{
-				$k = self::$cache[$key] = $this->unformatKey($key);
+				$k = self::$cache[$key] = $this->formatKey($key);
 			}
 			$result[$k] = $value;
 		}
@@ -87,8 +87,8 @@ class SqlConventional extends Conventional
 			$unfk = array();
 			foreach (Entity::getFK($entityName) as $n => $foo)
 			{
-				$fk[$tmp = $this->foreignKeyFormat($this->unformatKey($n))] = $n . '__fk__id'; // todo constant
-				$unfk[$n] = $tmp; // todo constant
+				$unfk[$tmp = $this->foreignKeyFormat($this->formatKey($n))] = $n . '__fk__id'; // todo constant
+				$fk[$n] = $tmp; // todo constant
 			}
 			self::$cache['fk'][$entityName] = $fk;
 			self::$cache['unfk'][$entityName] = $unfk;

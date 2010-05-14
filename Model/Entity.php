@@ -321,10 +321,26 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		
 		return false;
 	}
-	
-	final public function hasParam($name)
+	const EXISTS = NULL;
+	const READ = 'r';
+	const WRITE = 'w';
+	const READWRITE = 'rw';
+	final public function hasParam($name, $mode = self::EXISTS)
 	{
-		return isset($this->rules[$name]);
+		if ($mode === self::EXISTS)
+		{
+			return isset($this->rules[$name]);
+		}
+		else if ($mode === self::READWRITE)
+		{
+			return isset($this->rules[$name]['get']) AND isset($this->rules[$name]['set']);
+		}
+		else if ($mode === self::READ OR $mode === self::WRITE)
+		{
+			return $mode === self::READ ? isset($this->rules[$name]['get']) : isset($this->rules[$name]['set']);
+		}
+		
+		return false;
 	}
 	
 	final protected function getValue($name, $need = true)
@@ -347,6 +363,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$valid = isset($this->valid[$name]) ? $this->valid[$name] : false;
 			$value = $this->values[$name];
 		}
+		// todo povolit mit ho i jako id rovnou v $name a to __fk__id zrusit
 		else if (isset($params[$name]['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
 		{
 			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$fk]);
@@ -397,6 +414,15 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		else if (!isset($params[$name]['set']))
 		{
 			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
+		}
+		
+		if (isset($params[$name]['fk']) AND !($value instanceof Entity))
+		{
+			$id = (string) $value;
+			if ($id)
+			{
+				$value = Model::getRepository($params[$name]['fk'])->getById($id);
+			}
 		}
 		
 		if (!Manager::isParamValid($params[$name]['types'], $value))
@@ -495,29 +521,29 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		foreach (self::getEntityRules($entityName) as $name => $rule)
 		{
 			if (!isset($rule['fk'])) continue;
-			$result[$name] = true;
+			$result[$name] = $rule['fk'];
 		}
 		return $result;
 	}
 
-	public function offsetExists($name)
+	final public function offsetExists($name)
 	{
 		return $this->__isset($name);
 	}
-	public function offsetGet($name)
+	final public function offsetGet($name)
 	{
 		return $this->__get($name);
 	}
-	public function offsetSet($name, $value)
+	final public function offsetSet($name, $value)
 	{
 		return $this->__set($name, $value);
 	}
-	public function offsetUnset($name)
+	final public function offsetUnset($name)
 	{
 		throw new NotSupportedException();
 	}
 	
-	public function toArray()
+	final public function toArray()
 	{
 		$rules = $params = $this->rules;
 		$result = array();
@@ -540,7 +566,32 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		return $result;
 	}
 	
-	public function getIterator()
+	final public function toPlainArray()
+	{
+		$result = $this->toArray();
+		foreach ($result as $name => $value)
+		{
+			if ($value instanceof Entity)
+			{
+				$result[$name] = $value->id;
+			}
+		}
+		return $result;
+	}
+	
+	final public function setValues($values)
+	{
+		foreach ($values as $name => $value)
+		{
+			// todo nepokusit se zapsat i nezname?
+			if ($this->hasParam($name, self::WRITE))
+			{
+				$this->__set($name, $value);
+			}
+		}
+	}
+	
+	final public function getIterator()
 	{
 		return new ArrayIterator($this->toArray());
 	}
@@ -548,6 +599,16 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	final private static function getEntityRules($entityClass)
 	{
 		return Manager::getEntityParams($entityClass);
+	}
+	
+	public function __toString()
+	{
+		try {
+			// mozna zrusit
+			return isset($this->id) ? (string) $this->id : NULL;
+		} catch (Exception $e) {
+			Debug::toStringException($e);
+		}
 	}
 	
 }

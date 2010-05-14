@@ -13,7 +13,7 @@ abstract class Repository extends Object implements IRepository
 		$this->conventional = $this->getMapper()->getConventional(); // speedup
 	}
 	
-	final protected function getMapper()
+	final public function getMapper()
 	{
 		if (!isset($this->mapper))
 		{
@@ -50,7 +50,7 @@ abstract class Repository extends Object implements IRepository
 		if (!isset($e[$data->id]))
 		{
 			$entityName = $this->getEntityName($data);
-			$e[$data->id] = Entity::create($entityName, (array) $this->conventional->format($data, $entityName));
+			$e[$data->id] = Entity::create($entityName, (array) $this->conventional->unformat($data, $entityName));
 		}
 		return $e[$data->id];
 	}
@@ -67,6 +67,10 @@ abstract class Repository extends Object implements IRepository
 	
 	public function persist(Entity $e)
 	{
+		if (!@is_a($e, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
+		{
+			throw new UnexpectedValueException();
+		}
 		return $this->getMapper()->persist($e);
 	}
 	
