@@ -217,7 +217,9 @@ abstract class EntityArrayObject extends ArrayObject
 	}
 }
 
-
+/**
+ * @property-read int $id
+ */
 abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAggregate
 {
 	private $values = array();
@@ -230,6 +232,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	public function __construct()
 	{
 		$this->rules = $this->getEntityRules(get_class($this));
+	}
+	
+	protected function check()
+	{
+		
 	}
 	
 	final public function & __get($name)
@@ -472,6 +479,8 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	 */
 	final public static function getPrivateValues(Entity $entity)
 	{
+		$entity->check();
+		
 		$rules = $params = $entity->rules;
 		$values = array();
 		

@@ -7,6 +7,17 @@ abstract class Repository extends Object implements IRepository
 	private $repositoryName;
 	protected $conventional;
 	
+	private $entities = array();
+	
+	public function getById($id)
+	{
+		if (isset($this->entities[$id]))
+		{
+			return $this->entities[$id];
+		}
+		return $this->getMapper()->getById($id);
+	}
+	
 	public function __construct($repositoryName)
 	{
 		$this->repositoryName = $repositoryName;
@@ -37,7 +48,7 @@ abstract class Repository extends Object implements IRepository
 		return new SimpleSqlMapper($this);
 	}
 	
-	public function getEntityName(StdObject $data = NULL)
+	public function getEntityName(array $data = NULL)
 	{
 		return rtrim($this->getRepositoryName(), 's');
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
@@ -46,13 +57,19 @@ abstract class Repository extends Object implements IRepository
 	
 	final public function createEntity(StdObject $data)
 	{
-		static $e = array();
-		if (!isset($e[$data->id]))
+		if (!isset($this->entities[$data['id']]))
 		{
+			$originData = $data;
+			$defaultEntity = $this->getEntityName();
+			$data = (array) $this->conventional->unformat($data, $defaultEntity);
 			$entityName = $this->getEntityName($data);
-			$e[$data->id] = Entity::create($entityName, (array) $this->conventional->unformat($data, $entityName));
+			if ($defaultEntity !== $entityName)
+			{
+				$data = (array) $this->conventional->unformat($originData, $entityName);
+			}
+			$this->entities[$data['id']] = Entity::create($entityName, $data);
 		}
-		return $e[$data->id];
+		return $this->entities[$data['id']];
 	}
 	
 	public function __call($name, $args)
@@ -65,13 +82,13 @@ abstract class Repository extends Object implements IRepository
 		return $this->repositoryName;
 	}
 	
-	public function persist(Entity $e)
+	public function persist(Entity $entity)
 	{
-		if (!@is_a($e, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
+		if (!@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
 		{
 			throw new UnexpectedValueException();
 		}
-		return $this->getMapper()->persist($e);
+		return $this->getMapper()->persist($entity);
 	}
 	
 }

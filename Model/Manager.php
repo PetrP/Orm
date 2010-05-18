@@ -1,6 +1,6 @@
 <?php
 
-class Manager extends Object
+class EntityManager extends Object
 {
 	static $cache = array();
 	public static function getEntityParams($class) // todo castecne presunout do entity, aby se dalo prepsat chovani dinamicky
@@ -10,14 +10,19 @@ class Manager extends Object
 		
 		if (!isset(self::$cache[$class]))
 		{
-			$_class = $class;
-			
 			$params = array();
+			$classes = array();
+			$_class = $class;
+			while (class_exists($_class))
+			{
+				$classes[] = $_class;
+				if ($_class === 'Entity') break;
+				$_class = get_parent_class($_class);
+			}
 			
-			while (class_exists($_class) AND $_class !== 'Entity')
+			foreach ($classes as $_class)
 			{
 				$annotations = AnnotationsParser::getAll(new ClassReflection($_class));
-				$_class = get_parent_class($_class);
 				
 				if (isset($annotations['property']))
 				{
@@ -54,7 +59,7 @@ class Manager extends Object
 							$type = array();
 						}
 						
-						if (isset($params[$property]['types']) AND $params[$property]['types'] !== $types)
+						if (isset($params[$property]['types']) AND $params[$property]['types'] !== $type)
 						{
 							throw new InvalidStateException('Getter and setter types must be same.');	
 						}
@@ -160,7 +165,7 @@ class Manager extends Object
 				if (call_user_func("is_$type", $value)) return true;
 				else
 				{
-					if (in_array($type, array('float', 'int')) AND is_numeric($value))
+					if (in_array($type, array('float', 'int')) AND is_numeric($value) OR empty($value))
 					{
 						$_value = $value;
 						settype($_value, $type);
@@ -197,3 +202,4 @@ class Manager extends Object
 	}
 	
 }
+class Manager extends EntityManager {}

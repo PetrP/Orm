@@ -5,7 +5,7 @@ abstract class Mapper extends Object implements IMapper
 	abstract public function findAll();
 	abstract protected function findBy(array $where);
 	abstract protected function getBy(array $where);
-	abstract public function persist(Entity $e);
+	abstract public function persist(Entity $entity);
 	
 	protected $repository;
 	
