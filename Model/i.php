@@ -29,3 +29,8 @@ interface ITemporaryMapper extends IMapper // todo
 {
 	
 }
+
+interface IModelDataSource extends IDataSource // todo
+{
+	
+}

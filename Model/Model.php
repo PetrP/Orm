@@ -78,7 +78,7 @@ class StdObject extends stdClass implements ArrayAccess
 	}
 }
 
-class ModelDataSource extends DibiDataSourceX
+class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 {
 	/** @var Repository */
 	private $repository;

@@ -37,7 +37,7 @@ class SimpleSqlMapper extends Mapper
 	{
 		$all = $this->findAll();
 		$where = $this->getConventional()->format($where, $this->repository->getEntityName());
-		// todo instanceof DibiDataSource
+		// todo instanceof IModelDataSource
 		foreach ($where as $key => $value)
 		{
 			$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
