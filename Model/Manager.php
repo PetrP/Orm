@@ -179,6 +179,10 @@ class EntityManager extends Object
 					{
 						$_value = (string) $value;
 					}
+					else if ($type === 'array' AND is_string($value) AND substr($value, 0, 2) === 'a:' AND is_array($tmp = @unserialize($value))) // intentionally @
+					{
+						$_value = $tmp;
+					}
 					else if ($type === 'bool')
 					{
 						$_value = (bool) $value;

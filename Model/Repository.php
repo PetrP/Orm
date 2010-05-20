@@ -11,6 +11,10 @@ abstract class Repository extends Object implements IRepository
 	
 	public function getById($id)
 	{
+		if ($id instanceof Entity)
+		{
+			$id = $id->id;
+		}
 		if (isset($this->entities[$id]))
 		{
 			return $this->entities[$id];
@@ -90,7 +94,16 @@ abstract class Repository extends Object implements IRepository
 		}
 		return $this->getMapper()->persist($entity);
 	}
-	
+
+	public function delete($entity)
+	{
+		if ($entity instanceof Entity AND !@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
+		{
+			throw new UnexpectedValueException();
+		}
+		return $this->getMapper()->delete($entity);
+	}
+
 }
 
 

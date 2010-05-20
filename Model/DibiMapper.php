@@ -64,6 +64,26 @@ class SimpleSqlMapper extends Mapper
 		return $this->getPersistenceHelper()->persist($entity, $useTransaction);
 	}
 	
+	
+	public function delete($entity)
+	{
+		$entityId = $entity instanceof Entity ? $entity->id : $entity;
+		
+		$result = false;
+		
+		if ($entityId)
+		{
+			$result = (bool) $this->connection->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
+		}
+		if ($entity instanceof Entity)
+		{
+			Entity::setPrivateValues($entity, array('id' => NULL));
+		}
+		// todo clean Repository::$entities[$entityId]
+		
+		return $result;
+	}
+	
 	protected function dataSource()
 	{
 		$connection = $this->getConnection();
@@ -117,9 +137,13 @@ class DibiPersistenceHelper extends Object
 				Model::getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;
 			}
-			else if ($value !== NULL AND !is_scalar($value))
+			else if (is_array($value))
 			{
-				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
+				$values[$key] = serialize($value); // todo zkontrolovat jestli je jednodimenzni a neobrahuje zadne nesmysly
+			}
+			else if ($value !== NULL AND !($value instanceof DateTime) AND !is_scalar($value))
+			{
+				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
 			}
 		}
 		

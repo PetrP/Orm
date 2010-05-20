@@ -16,7 +16,10 @@ abstract class ArrayMapper extends Mapper
 			$repository = $this->repository;
 			foreach ($this->loadData() as $id => $row)
 			{
-				$this->data[$id] = $repository->createEntity($row);
+				if ($row !== NULL)
+				{
+					$this->data[$id] = $repository->createEntity($row);
+				}
 			}
 		}
 		return $this->data;
@@ -75,7 +78,7 @@ abstract class ArrayMapper extends Mapper
 				Model::getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;
 			}
-			else if ($value !== NULL AND !is_scalar($value))
+			else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
 			{
 				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
 			}
@@ -100,6 +103,41 @@ abstract class ArrayMapper extends Mapper
 		Environment::leaveCriticalSection(get_class($this));
 
 		return $id;
+	}
+	
+	public function delete($entity)
+	{
+		$entityId = $entity instanceof Entity ? $entity->id : $entity;
+		
+		$result = false;
+		
+		if ($entityId)
+		{
+			Environment::enterCriticalSection(get_class($this));
+
+			$originData = $this->loadData();
+			if (isset($originData[$entityId]))
+			{
+				$originData[$entityId] = NULL;
+			}
+
+			if (isset($this->data[$entityId]))
+			{
+				unset($this->data[$entityId]);
+			}
+
+			$this->saveData($originData);
+
+			Environment::leaveCriticalSection(get_class($this));
+
+		}
+		if ($entity instanceof Entity)
+		{
+			Entity::setPrivateValues($entity, array('id' => NULL));
+		}
+		// todo clean Repository::$entities[$entityId]
+
+		return $result;
 	}
 }
 

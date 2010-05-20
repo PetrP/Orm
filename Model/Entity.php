@@ -620,4 +620,10 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 	}
 	
+	public function __clone()
+	{
+		$this->valid['id'] = false;
+		$this->values['id'] = NULL;
+	}
+	
 }
