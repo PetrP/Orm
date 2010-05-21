@@ -57,7 +57,8 @@ abstract class Mapper extends Object implements IMapper
 			if ($mode AND $by)
 			{
 				$where = array();
-				foreach (array_map('lcfirst',explode('And', $by)) as $n => $key)
+				// todo prvni na male pismeno udelat rychleji
+				foreach (array_map(create_function('$v', '$v[0] = strtolower($v[0]); return $v;'),explode('And', $by)) as $n => $key)
 				{
 					if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key'.");
 					$where[$key] = $args[$n];
