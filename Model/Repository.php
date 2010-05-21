@@ -3,12 +3,12 @@
 abstract class Repository extends Object implements IRepository
 {
 	private $mapper;
-	
+
 	private $repositoryName;
 	protected $conventional;
-	
+
 	private $entities = array();
-	
+
 	public function getById($id)
 	{
 		if ($id instanceof Entity)
@@ -21,13 +21,13 @@ abstract class Repository extends Object implements IRepository
 		}
 		return $this->getMapper()->getById($id);
 	}
-	
+
 	public function __construct($repositoryName)
 	{
 		$this->repositoryName = $repositoryName;
 		$this->conventional = $this->getMapper()->getConventional(); // speedup
 	}
-	
+
 	final public function getMapper()
 	{
 		if (!isset($this->mapper))
@@ -41,7 +41,7 @@ abstract class Repository extends Object implements IRepository
 		}
 		return $this->mapper;
 	}
-	
+
 	protected function createMapper()
 	{
 		$class = ucfirst($this->getRepositoryName()) . 'Mapper';
@@ -51,14 +51,14 @@ abstract class Repository extends Object implements IRepository
 		}
 		return new SimpleSqlMapper($this);
 	}
-	
+
 	public function getEntityName(array $data = NULL)
 	{
 		return rtrim($this->getRepositoryName(), 's');
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
 		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
-	
+
 	final public function createEntity($data)
 	{
 		if (!isset($this->entities[$data['id']]))
@@ -75,17 +75,17 @@ abstract class Repository extends Object implements IRepository
 		}
 		return $this->entities[$data['id']];
 	}
-	
+
 	public function __call($name, $args)
 	{
 		return call_user_func_array(array($this->getMapper(), $name), $args);
 	}
-	
+
 	final public function getRepositoryName()
 	{
 		return $this->repositoryName;
 	}
-	
+
 	public function persist(Entity $entity, $beAtomic = true)
 	{
 		if (!@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated

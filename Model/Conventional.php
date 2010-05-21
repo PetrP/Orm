@@ -7,12 +7,12 @@ class Conventional extends Object implements IConventional
 	{
 		return (array) $data;
 	}
-	
+
 	public function unformat($data, $entityName)
 	{
 		return (array) $data;
 	}
-	
+
 	/**
 	 * fk
 	 * @param  string
@@ -22,13 +22,13 @@ class Conventional extends Object implements IConventional
 	{
 		return $s;
 	}
-	
+
 }
 
 class SqlConventional extends Conventional
 {
 	private static $cache = array(); // todo je potreba ukladat podle nazvu trydy, jinak se pri pouziti nekolika trid bude kolidovat.
-	
+
 	/**
 	 * camelCase -> underscore_separated.
 	 * @param  string
@@ -40,7 +40,7 @@ class SqlConventional extends Conventional
 		$s = strtolower($s);
 		return $s;
 	}
-	
+
 	/**
 	 * underscore_separated -> camelCase.
 	 * @param  string
@@ -54,11 +54,11 @@ class SqlConventional extends Conventional
 		$s = str_replace(' ', '', $s);
 		return $s;
 	}
-	
+
 	public function format($data, $entityName)
 	{
 		$this->loadFk($entityName);
-		
+
 		$result = array();
 		foreach ($data as $key => $value)
 		{
@@ -78,7 +78,7 @@ class SqlConventional extends Conventional
 		}
 		return $result;
 	}
-	
+
 	private function loadFk($entityName)
 	{
 		if (!isset(self::$cache['fk'][$entityName]))
@@ -94,11 +94,11 @@ class SqlConventional extends Conventional
 			self::$cache['unfk'][$entityName] = $unfk;
 		}
 	}
-	
+
 	public function unformat($data, $entityName)
 	{
 		$this->loadFk($entityName);
-		
+
 		$result = array();
 		foreach ($data as $key => $value)
 		{
@@ -118,7 +118,7 @@ class SqlConventional extends Conventional
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * fk
 	 * @param  string
@@ -128,5 +128,5 @@ class SqlConventional extends Conventional
 	{
 		return $s . '_id';
 	}
-	
+
 }

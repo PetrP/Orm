@@ -7,11 +7,11 @@ abstract class Mapper extends Object implements IMapper
 	abstract protected function getBy(array $where);
 	abstract public function persist(Entity $entity, $beAtomic = true);
 	abstract public function delete($entity, $beAtomic = true);
-	
+
 	protected $repository;
-	
+
 	private $conventional;
-	
+
 	public function __construct(Repository $repository)
 	{
 		$this->repository = $repository;
@@ -35,13 +35,13 @@ abstract class Mapper extends Object implements IMapper
 	{
 		return new Conventional;
 	}
-	
+
 	public function __call($name, $args)
 	{
 		try {
 			return parent::__call($name, $args);
 		} catch (MemberAccessException $e) {
-		
+
 			$mode = $by = NULL;
 			if (substr($name, 0, 6) === 'findBy')
 			{
@@ -53,7 +53,7 @@ abstract class Mapper extends Object implements IMapper
 				$mode = 'get';
 				$by = substr($name, 5);
 			}
-			
+
 			if ($mode AND $by)
 			{
 				$where = array();
@@ -64,11 +64,11 @@ abstract class Mapper extends Object implements IMapper
 				}
 				return $mode === 'get' ? $this->getBy($where) : $this->findBy($where);
 			}
-		
+
 			throw $e;
 		}
 	}
 
-	
-	
+
+
 }

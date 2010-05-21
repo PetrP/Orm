@@ -3,7 +3,7 @@
 abstract class ArrayMapper extends Mapper
 {
 	private $data;
-	
+
 	public function findAll()
 	{
 		return new ArrayDataSource(array_values($this->getData()));
@@ -32,7 +32,7 @@ abstract class ArrayMapper extends Mapper
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	protected function findBy(array $where)
 	{
 		$all = $this->getData();
@@ -56,14 +56,14 @@ abstract class ArrayMapper extends Mapper
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
-	
+
 	public function getById($id)
 	{
 		if (!$id) return NULL;
 		$data = $this->getData();
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}
-	
+
 	public function persist(Entity $entity, $beAtomic = true)
 	{
 
@@ -104,13 +104,13 @@ abstract class ArrayMapper extends Mapper
 
 		return $id;
 	}
-	
+
 	public function delete($entity, $beAtomic = true)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
-		
+
 		$result = false;
-		
+
 		if ($entityId)
 		{
 			Environment::enterCriticalSection(get_class($this));
@@ -144,7 +144,7 @@ abstract class ArrayMapper extends Mapper
 class ArrayDataSource extends Object implements IModelDataSource
 {
 	protected $source;
-	
+
 	/** @var array */
 	protected $result;
 
@@ -285,12 +285,12 @@ class ArrayDataSource extends Object implements IModelDataSource
 				uasort($source, array($this,'_sort'));
 			}
 			$this->_sort = NULL;
-			
+
 			if ($this->offset !== NULL OR $this->limit !== NULL)
 			{
 				$source = array_slice($source, (int) $this->offset, $this->limit, true);
 			}
-			
+
 			$this->result = $source;
 		}
 		return $this->result;
@@ -412,7 +412,7 @@ class ArrayDataSource extends Object implements IModelDataSource
 
 		return $data;
 	}
-	
+
 	/**
 	 * Returns the number of rows in a given data source.
 	 * @return int
@@ -435,7 +435,7 @@ class ArrayDataSource extends Object implements IModelDataSource
 abstract class FileMapper extends ArrayMapper
 {
 	private static $isStreamRegistered = false;
-	
+
 	public function __construct(Repository $repository)
 	{
 		parent::__construct($repository);
@@ -445,10 +445,10 @@ abstract class FileMapper extends ArrayMapper
 			self::$isStreamRegistered = true;
 		}
 	}
-	
-	
+
+
 	abstract protected function getFilePath();
-	
+
 	protected function loadData()
 	{
 		$path = $this->getFilePath();

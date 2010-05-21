@@ -7,7 +7,7 @@ class EntityManager extends Object
 	{
 		if (!class_exists($class)) throw new InvalidStateException();
 		else if (!is_subclass_of($class, 'Entity')) throw new InvalidStateException();
-		
+
 		if (!isset(self::$cache[$class]))
 		{
 			$params = array();
@@ -23,7 +23,7 @@ class EntityManager extends Object
 			foreach (array_reverse($classes) as $_class)
 			{
 				$annotations = AnnotationsParser::getAll(new ClassReflection($_class));
-				
+
 				if (isset($annotations['property']))
 				{
 					foreach ($annotations['property'] as $property)
@@ -51,25 +51,25 @@ class EntityManager extends Object
 							throw new InvalidStateException($property);
 							//continue;
 						}
-						
+
 						if (isset($params[$property]['since']) AND $params[$property]['since'] !== $_class)
 						{
 							unset($params[$property]);
 						}
-						
+
 						$type = explode('|',strtolower($type));
 						if (in_array('mixed', $type))
 						{
 							$type = array();
 						}
-						
+
 						if (isset($params[$property]['types']) AND isset($params[$property]['types']) AND $params[$property]['types'] !== $type)
 						{
-							throw new InvalidStateException('Getter and setter types must be same.');	
+							throw new InvalidStateException('Getter and setter types must be same.');
 						}
-						
+
 						$params[$property]['types'] = $type;
-						
+
 						if (!$mode OR $mode === '-read')
 						{
 							$params[$property]['get'] = array('method' => NULL);
@@ -80,10 +80,10 @@ class EntityManager extends Object
 							$params[$property]['set'] = array('method' => NULL);
 							$params[$property]['since'] = $_class;
 						}
-						
+
 					}
 				}
-				
+
 				if (isset($annotations['fk']))
 				{
 					if (isset($annotations['foreignKey']))
@@ -116,16 +116,16 @@ class EntityManager extends Object
 						else throw new InvalidStateException();
 					}
 				}
-				
+
 				/*if (isset($annotations['method']))
 				{
 					foreach ($annotations['method'] as $method)
 					{
-						
+
 					}
 				}*/
 			}
-			
+
 			$methods = array_diff(get_class_methods($class), get_class_methods('Entity'));
 			foreach ($methods as $method)
 			{
@@ -140,19 +140,19 @@ class EntityManager extends Object
 					}
 				}
 			}
-			
+
 			self::$cache[$class] = $params;
 		}
-		
+
 		return self::$cache[$class];
 	}
-	
+
 	public static function isParamValid(array $types, & $value)
 	{
 		$_value = $value;
-		
+
 		if ($types === array()) return true; // mean mixed
-		
+
 		foreach ($types as $type)
 		{
 			if ($type === 'void' OR $type === 'null')
@@ -196,9 +196,9 @@ class EntityManager extends Object
 					continue;
 				}
 			}
-		
+
 		}
-		
+
 		if ($_value === $value)
 		{
 			return false;
@@ -208,8 +208,8 @@ class EntityManager extends Object
 			$value = $_value;
 			return true;
 		}
-		
+
 	}
-	
+
 }
 class Manager extends EntityManager {}

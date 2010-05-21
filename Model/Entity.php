@@ -122,12 +122,12 @@ abstract class EntityArrayObject extends ArrayObject
 	{
 		throw new MemberAccessException("Cannot unset the property {$this->reflection->name}::\$$name.");
 	}
-	
-	
-	
+
+
+
 	public function __construct()
 	{
-		
+
 	}
 	public function offsetExists($name)
 	{
@@ -141,8 +141,8 @@ abstract class EntityArrayObject extends ArrayObject
 	{
 		return $this->__set($name, $value);
 	}
-	
-	
+
+
 	public function offsetUnset($name)
 	{
 		throw new NotSupportedException();
@@ -223,26 +223,26 @@ abstract class EntityArrayObject extends ArrayObject
 abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAggregate
 {
 	private $values = array();
-	
+
 	private $valid = array();
-	
+
 	private $rules;
-	
+
 
 	public function __construct()
 	{
 		$this->rules = $this->getEntityRules(get_class($this));
 	}
-	
+
 	protected function check()
 	{
-		
+
 	}
-	
+
 	final public function & __get($name)
 	{
 		$rules = $params = $this->rules;
-		
+
 		if (!isset($params[$name]))
 		{
 			$tmp = parent::__get($name);
@@ -252,7 +252,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
 		}
-		
+
 		$value = NULL;
 		if ($params[$name]['get']['method'])
 		{
@@ -262,14 +262,14 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			$value = $this->getValue($name);
 		}
-		
+
 		return $value;
 	}
-	
+
 	final public function __set($name, $value)
 	{
 		$rules = $params = $this->rules;
-		
+
 		if (!isset($params[$name]))
 		{
 			return parent::__set($name, $value);
@@ -278,7 +278,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
 		}
-		
+
 		if ($params[$name]['set']['method'])
 		{
 			$this->{$params[$name]['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
@@ -287,10 +287,10 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			$this->setValue($name, $value);
 		}
-		
+
 		return $this;
 	}
-	
+
 	final public function __call($name, $args)
 	{
 		$m = substr($name, 0, 3);
@@ -298,21 +298,21 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			$var = substr($name, 3);
 			$var{0} = strtolower($var{0});
-			
+
 			$params = Manager::getEntityParams(get_class($this));
 			if (isset($params[$var]))
 			{
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
 		}
-		
+
 		return parent::__call($name, $args);
 	}
-	
+
 	final public function __isset($name)
 	{
 		$rules = $this->rules;
-		
+
 		if (!isset($rules[$name]))
 		{
 			return parent::__isset($name);
@@ -325,7 +325,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 				return false;
 			}
 		}
-		
+
 		return false;
 	}
 	const EXISTS = NULL;
@@ -346,14 +346,14 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			return $mode === self::READ ? isset($this->rules[$name]['get']) : isset($this->rules[$name]['set']);
 		}
-		
+
 		return false;
 	}
-	
+
 	final protected function getValue($name, $need = true)
 	{
 		$rules = $params = $this->rules;
-		
+
 		if (!isset($params[$name]))
 		{
 			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
@@ -362,7 +362,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
 		}
-		
+
 		$value = NULL;
 		$valid = false;
 		if (array_key_exists($name, $this->values))
@@ -375,15 +375,15 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$fk]);
 		}
-		
-		
+
+
 		if (!$valid)
 		{
 			if (isset($params[$name]['set']))
 			{
 				try {
 					$this->__set($name, $value);
-					
+
 				} catch (UnexpectedValueException $e) {
 					if ($need) throw $e;
 					return NULL;
@@ -405,15 +405,15 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 				$this->valid[$name] = true;
 			}
 		}
-		
+
 		return $value;
 	}
-	
-	
+
+
 	final protected function setValue($name, $value)
 	{
 		$rules = $params = $this->rules;
-		
+
 		if (!isset($params[$name]))
 		{
 			throw new MemberAccessException("Cannot assign to an undeclared property ".get_class($this)."::\$$name.");
@@ -422,7 +422,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
 		}
-		
+
 		if (isset($params[$name]['fk']) AND !($value instanceof Entity))
 		{
 			$id = (string) $value;
@@ -431,19 +431,19 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 				$value = Model::getRepository($params[$name]['fk'])->getById($id);
 			}
 		}
-		
+
 		if (!Manager::isParamValid($params[$name]['types'], $value))
 		{
 			$type = implode('|',$params[$name]['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
-		
+
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * @internal
 	 */
@@ -454,7 +454,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		self::setPrivateValues($entity, $data);
 		return $entity;
 	}
-	
+
 	/**
 	 * @internal
 	 */
@@ -480,19 +480,19 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	final public static function getPrivateValues(Entity $entity)
 	{
 		$entity->check();
-		
+
 		$rules = $params = $entity->rules;
 		$values = array();
-		
+
 		if ($entity->__isset('id'))
 		{
 			$values['id'] = $entity->__get('id');
 		}
-		
+
 		foreach ($params as $name => $rule)
 		{
 			if ($name === 'id') continue;
-			
+
 			if (isset($params[$name]['get']))
 			{
 				$values[$name] = $entity->__get($name);
@@ -520,10 +520,10 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 				unset($values[$name]);
 			}*/
 		}
-		
+
 		return $values;
 	}
-	
+
 	final public static function getFk($entityName)
 	{
 		$result = array();
@@ -551,30 +551,30 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	{
 		throw new NotSupportedException();
 	}
-	
+
 	final public function toArray()
 	{
 		$rules = $params = $this->rules;
 		$result = array();
-		
+
 		if ($this->__isset('id'))
 		{
 			$result['id'] = $this->__get('id');
 		}
-		
+
 		foreach ($params as $name => $rule)
 		{
 			if ($name === 'id') continue;
-			
+
 			if (isset($params[$name]['get']))
 			{
 				$result[$name] = $this->__get($name);
 			}
 		}
-		
+
 		return $result;
 	}
-	
+
 	final public function toPlainArray()
 	{
 		$result = $this->toArray();
@@ -587,7 +587,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 		return $result;
 	}
-	
+
 	final public function setValues($values)
 	{
 		foreach ($values as $name => $value)
@@ -599,17 +599,17 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			}
 		}
 	}
-	
+
 	final public function getIterator()
 	{
 		return new ArrayIterator($this->toArray());
 	}
-	
+
 	final private static function getEntityRules($entityClass)
 	{
 		return Manager::getEntityParams($entityClass);
 	}
-	
+
 	public function __toString()
 	{
 		try {
@@ -619,11 +619,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			Debug::toStringException($e);
 		}
 	}
-	
+
 	public function __clone()
 	{
 		$this->valid['id'] = false;
 		$this->values['id'] = NULL;
 	}
-	
+
 }

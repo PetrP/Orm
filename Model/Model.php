@@ -4,7 +4,7 @@
 abstract class AbstractModel extends Object
 {
 	private static $repositories = array();
-	
+
 	public static function getRepository($name)
 	{
 		$name = strtolower($name);
@@ -12,7 +12,7 @@ abstract class AbstractModel extends Object
 		{
 			$class = $name . 'Repository';
 			$class[0] = strtoupper($class[0]);
-			
+
 			$r = new $class($name);
 			if (!($r instanceof Repository))
 			{
@@ -22,16 +22,16 @@ abstract class AbstractModel extends Object
 		}
 		return self::$repositories[$name];
 	}
-	
+
 	public function & __get($name)
 	{
 		$r = $this->getRepository($name);
 		return $r;
 	}
-	
+
 	/**
-	* @return AppModel
-	*/
+	 * @return AppModel
+	 */
 	public static function get()
 	{
 		static $model;
@@ -45,7 +45,7 @@ abstract class AbstractModel extends Object
 		}
 		return $model;
 	}
-	
+
 }
 
 class StdObject extends stdClass implements ArrayAccess
@@ -54,12 +54,12 @@ class StdObject extends stdClass implements ArrayAccess
 	{
 		foreach ($arr as $k => $v) $this->$k = $v;
 	}
-	
+
 	public function toArray()
 	{
 		return (array) $this;
 	}
-	
+
 	public function offsetExists($key)
 	{
 		return isset($this->{$key});
@@ -82,7 +82,7 @@ class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 {
 	/** @var Repository */
 	private $repository;
-	
+
 	/**
 	 * Selects columns to order by.
 	 * @param  string|array  column name or array of column names
@@ -103,19 +103,19 @@ class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 			return parent::orderBy(key($row), $sorting);
 		}
 	}
-	
+
 	public function __construct($sql, DibiConnection $connection, Repository $repository)
 	{
 		$this->repository = $repository;
 		parent::__construct($sql, $connection);
 	}
-	
+
 	public function getResult()
 	{
 		$result = parent::getResult();
 		return $result->setRowClass('StdObject');
 	}
-	
+
 	/**
 	 * @return DibiResultIterator
 	 */
@@ -183,8 +183,8 @@ class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 		// todo conventional $key a value;
 		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
 	}
-	
-	
+
+
 	private function createEntityRecursive($a)
 	{
 		if ($a instanceof StdObject)
@@ -198,31 +198,31 @@ class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 		}
 		return $a;
 	}
-	
-		
+
+
 }
 
 class EntityIterator extends IteratorIterator implements Countable
 {
 	private $repository;
-	
+
 	public function __construct(Repository $repository, DibiResultIterator $iterator)
 	{
 		$this->repository = $repository;
 		parent::__construct($iterator);
 	}
-	
+
 	public function current()
 	{
 		$row = parent::current();
 		return $this->repository->createEntity($row === false ? NULL : $row);
 		//return Entity::create($this->repository->getEntityName($row), $this->repository->getConventional()->unformat((array) $row));
 	}
-	
+
 	public function count()
 	{
 		return $this->getInnerIterator()->count();
 	}
-	
+
 }
 

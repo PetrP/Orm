@@ -1,13 +1,13 @@
 <?php
 
 /**
-* @property-read DibiConnection $connection
-*/
+ * @property-read DibiConnection $connection
+ */
 class DibiMapper extends Mapper
 {
 	private $connection;
-	
-	
+
+
 	public function getConnection()
 	{
 		if (!($this->connection instanceof DibiConnection))
@@ -16,23 +16,23 @@ class DibiMapper extends Mapper
 		}
 		return $this->connection;
 	}
-	
+
 	protected function createConnection()
 	{
 		return dibi::getConnection();
 	}
-	
+
 	protected function createConventional()
 	{
 		return new SqlConventional;
 	}
-	
-	
+
+
 	public function findAll()
 	{
 		return $this->dataSource($this->getTableName());
 	}
-	
+
 	protected function findBy(array $where)
 	{
 		$all = $this->findAll();
@@ -44,12 +44,12 @@ class DibiMapper extends Mapper
 		}
 		return $all;
 	}
-	
+
 	protected function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
-	
+
 	protected function getPersistenceHelper()
 	{
 		$h = new DibiPersistenceHelper;
@@ -58,19 +58,19 @@ class DibiMapper extends Mapper
 		$h->table = $this->getTableName();
 		return $h;
 	}
-	
+
 	public function persist(Entity $entity, $beAtomic = true)
 	{
 		return $this->getPersistenceHelper()->persist($entity, $beAtomic);
 	}
-	
-	
+
+
 	public function delete($entity, $beAtomic = true)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
-		
+
 		$result = false;
-		
+
 		if ($entityId)
 		{
 			$result = (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
@@ -80,10 +80,10 @@ class DibiMapper extends Mapper
 			Entity::setPrivateValues($entity, array('id' => NULL));
 		}
 		// todo clean Repository::$entities[$entityId]
-		
+
 		return $result;
 	}
-	
+
 	protected function dataSource()
 	{
 		$connection = $this->getConnection();
@@ -93,18 +93,18 @@ class DibiMapper extends Mapper
 		$translator = new DibiTranslator($connection->driver);
 		return new ModelDataSource($translator->translate($args), $connection, $this->repository);
 	}
-	
+
 	public function getById($id)
 	{
 		if (!$id) return NULL;
 		return $this->findAll()->where('[id] = %i', $id)->applyLimit(1)->fetch();
 	}
-	
+
 	protected function getTableName()
 	{
 		return $this->repository->getRepositoryName();
 	}
-	
+
 }
 // todo refactor
 class DibiPersistenceHelper extends Object
@@ -112,16 +112,16 @@ class DibiPersistenceHelper extends Object
 	public $table;
 	public $connection;
 	public $conventional;
-	
+
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
-	
+
 	public function persist(Entity $entity, $beAtomic = true)
 	{
 		$values = Entity::getPrivateValues($entity);
 		$fk = Entity::getFk(get_class($entity));
 		if ($beAtomic) $this->connection->begin();
-		
+
 		foreach ($values as $key => $value)
 		{
 			if (($this->witchParams !== NULL AND !in_array($key, $this->witchParams)) OR ($this->witchParamsNot !== NULL AND in_array($key, $this->witchParamsNot)))
@@ -129,7 +129,7 @@ class DibiPersistenceHelper extends Object
 				unset($values[$key]);
 				continue;
 			}
-			
+
 			if (isset($fk[$key]) AND $value instanceof Entity)
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
@@ -144,7 +144,7 @@ class DibiPersistenceHelper extends Object
 				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
 			}
 		}
-		
+
 		$values = $this->conventional->format($values, get_class($entity));
 		$table = $this->table;
 		if (isset($entity->id) AND $this->connection->fetch('SELECT [id] FROM %n WHERE [id] = %i', $table, $entity->id))
@@ -163,12 +163,12 @@ class DibiPersistenceHelper extends Object
 			}
 			Entity::setPrivateValues($entity, array('id' => $id));
 		}
-		
+
 		if ($beAtomic) $this->connection->commit();
 
 		return $id;
 	}
-	
+
 }
 class SimpleSqlMapper extends DibiMapper {} // todo
 
