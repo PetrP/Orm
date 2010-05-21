@@ -86,22 +86,22 @@ abstract class Repository extends Object implements IRepository
 		return $this->repositoryName;
 	}
 	
-	public function persist(Entity $entity)
+	public function persist(Entity $entity, $beAtomic = true)
 	{
 		if (!@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
 		{
 			throw new UnexpectedValueException();
 		}
-		return $this->getMapper()->persist($entity);
+		return $this->getMapper()->persist($entity, $beAtomic);
 	}
 
-	public function delete($entity)
+	public function delete($entity, $beAtomic = true)
 	{
 		if ($entity instanceof Entity AND !@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
 		{
 			throw new UnexpectedValueException();
 		}
-		return $this->getMapper()->delete($entity);
+		return $this->getMapper()->delete($entity, $beAtomic);
 	}
 
 }

@@ -3,7 +3,7 @@
 /**
 * @property-read DibiConnection $connection
 */
-class SimpleSqlMapper extends Mapper
+class DibiMapper extends Mapper
 {
 	private $connection;
 	
@@ -53,19 +53,19 @@ class SimpleSqlMapper extends Mapper
 	protected function getPersistenceHelper()
 	{
 		$h = new DibiPersistenceHelper;
-		$h->connection = $this->connection;
+		$h->connection = $this->getConnection();
 		$h->conventional = $this->getConventional();
 		$h->table = $this->getTableName();
 		return $h;
 	}
 	
-	public function persist(Entity $entity, $useTransaction = true)
+	public function persist(Entity $entity, $beAtomic = true)
 	{
-		return $this->getPersistenceHelper()->persist($entity, $useTransaction);
+		return $this->getPersistenceHelper()->persist($entity, $beAtomic);
 	}
 	
 	
-	public function delete($entity)
+	public function delete($entity, $beAtomic = true)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
 		
@@ -73,7 +73,7 @@ class SimpleSqlMapper extends Mapper
 		
 		if ($entityId)
 		{
-			$result = (bool) $this->connection->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
+			$result = (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
 		}
 		if ($entity instanceof Entity)
 		{
@@ -116,14 +116,12 @@ class DibiPersistenceHelper extends Object
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
 	
-	public function persist(Entity $entity, $useTransaction = true)
+	public function persist(Entity $entity, $beAtomic = true)
 	{
 		$values = Entity::getPrivateValues($entity);
 		$fk = Entity::getFk(get_class($entity));
-		if ($useTransaction)
-		{
-			$this->connection->begin();
-		}
+		if ($beAtomic) $this->connection->begin();
+		
 		foreach ($values as $key => $value)
 		{
 			if (($this->witchParams !== NULL AND !in_array($key, $this->witchParams)) OR ($this->witchParamsNot !== NULL AND in_array($key, $this->witchParamsNot)))
@@ -165,11 +163,12 @@ class DibiPersistenceHelper extends Object
 			}
 			Entity::setPrivateValues($entity, array('id' => $id));
 		}
-		if ($useTransaction)
-		{
-			$this->connection->commit();
-		}
+		
+		if ($beAtomic) $this->connection->commit();
+
 		return $id;
 	}
 	
 }
+class SimpleSqlMapper extends DibiMapper {} // todo
+

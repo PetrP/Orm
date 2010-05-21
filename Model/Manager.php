@@ -19,8 +19,8 @@ class EntityManager extends Object
 				if ($_class === 'Entity') break;
 				$_class = get_parent_class($_class);
 			}
-			
-			foreach ($classes as $_class)
+
+			foreach (array_reverse($classes) as $_class)
 			{
 				$annotations = AnnotationsParser::getAll(new ClassReflection($_class));
 				
@@ -28,7 +28,6 @@ class EntityManager extends Object
 				{
 					foreach ($annotations['property'] as $property)
 					{
-						
 						if (preg_match('#^(-read|-write)?\s?([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
 						{
 							$property = $match[3];
@@ -53,13 +52,18 @@ class EntityManager extends Object
 							//continue;
 						}
 						
+						if (isset($params[$property]['since']) AND $params[$property]['since'] !== $_class)
+						{
+							unset($params[$property]);
+						}
+						
 						$type = explode('|',strtolower($type));
 						if (in_array('mixed', $type))
 						{
 							$type = array();
 						}
 						
-						if (isset($params[$property]['types']) AND $params[$property]['types'] !== $type)
+						if (isset($params[$property]['types']) AND isset($params[$property]['types']) AND $params[$property]['types'] !== $type)
 						{
 							throw new InvalidStateException('Getter and setter types must be same.');	
 						}
@@ -69,10 +73,12 @@ class EntityManager extends Object
 						if (!$mode OR $mode === '-read')
 						{
 							$params[$property]['get'] = array('method' => NULL);
+							$params[$property]['since'] = $_class;
 						}
 						if (!$mode OR $mode === '-write')
 						{
 							$params[$property]['set'] = array('method' => NULL);
+							$params[$property]['since'] = $_class;
 						}
 						
 					}

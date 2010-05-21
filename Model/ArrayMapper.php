@@ -64,7 +64,7 @@ abstract class ArrayMapper extends Mapper
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}
 	
-	public function persist(Entity $entity)
+	public function persist(Entity $entity, $beAtomic = true)
 	{
 
 		Environment::enterCriticalSection(get_class($this));
@@ -105,7 +105,7 @@ abstract class ArrayMapper extends Mapper
 		return $id;
 	}
 	
-	public function delete($entity)
+	public function delete($entity, $beAtomic = true)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
 		
