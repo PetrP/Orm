@@ -1,5 +1,9 @@
 <?php
 
+require_once dirname(__FILE__) . '/Mapper.php';
+
+require_once dirname(__FILE__) . '/DataSource/ArrayDataSource.php';
+
 abstract class ArrayMapper extends Mapper
 {
 	private $data;

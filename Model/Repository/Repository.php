@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/IRepository.php';
+
 abstract class Repository extends Object implements IRepository
 {
 	private $mapper;
@@ -49,7 +51,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			return new $class($this);
 		}
-		return new SimpleSqlMapper($this);
+		return new DibiMapper($this);
 	}
 
 	public function getEntityName(array $data = NULL)

@@ -1,7 +1,8 @@
 <?php
 
+require_once dirname(__FILE__) . '/IConventional.php';
 
-class Conventional extends Object implements IConventional
+class NoConventional extends Object implements IConventional
 {
 	public function format($data, $entityName)
 	{

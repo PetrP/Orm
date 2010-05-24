@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/ArrayMapper.php';
+
 abstract class FileMapper extends ArrayMapper
 {
 	private static $isStreamRegistered = false;

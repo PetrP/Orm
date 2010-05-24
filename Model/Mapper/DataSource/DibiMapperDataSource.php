@@ -1,5 +1,12 @@
 <?php
 
+require_once dirname(__FILE__) . '/IModelDataSource.php';
+
+require_once dirname(__FILE__) . '/EntityIterator.php';
+
+require_once dirname(__FILE__) . '/StdObject.php';
+
+
 class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 {
 	/** @var Repository */

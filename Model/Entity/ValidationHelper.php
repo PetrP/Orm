@@ -2,7 +2,7 @@
 
 class ValidationHelper
 {
-	
+
 	public static function isValid(array $types, & $value)
 	{
 		$_value = $value;

@@ -1,6 +1,8 @@
 <?php
 
-class SqlConventional extends Conventional
+require_once dirname(__FILE__) . '/IConventional.php';
+
+class SqlConventional extends Object implements IConventional
 {
 	private static $cache = array(); // todo je potreba ukladat podle nazvu trydy, jinak se pri pouziti nekolika trid bude kolidovat.
 

@@ -1,5 +1,11 @@
 <?php
 
+require_once dirname(__FILE__) . '/Repository/Entity.php';
+
+require_once dirname(__FILE__) . '/Repository/Repository.php';
+
+require_once dirname(__FILE__) . '/Repository/Mapper.php';
+
 
 abstract class AbstractModel extends Object
 {
@@ -30,7 +36,7 @@ abstract class AbstractModel extends Object
 	}
 
 	/**
-	 * @return AppModel
+	 * @return Model
 	 */
 	public static function get()
 	{
@@ -40,7 +46,7 @@ abstract class AbstractModel extends Object
 			$model = new Model;
 			if (!($model instanceof self))
 			{
-				throw new Error;
+				throw new Exception;
 			}
 		}
 		return $model;

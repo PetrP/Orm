@@ -1,5 +1,12 @@
 <?php
 
+require_once dirname(__FILE__) . '/Mapper.php';
+
+require_once dirname(__FILE__) . '/Conventional/SqlConventional.php';
+
+require_once dirname(__FILE__) . '/DataSource/DibiMapperDataSource.php';
+
+
 /**
  * @property-read DibiConnection $connection
  */
@@ -170,5 +177,5 @@ class DibiPersistenceHelper extends Object
 	}
 
 }
-class SimpleSqlMapper extends DibiMapper {} // todo
+
 

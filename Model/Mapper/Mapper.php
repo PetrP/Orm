@@ -1,5 +1,10 @@
 <?php
 
+require_once dirname(__FILE__) . '/IMapper.php';
+
+require_once dirname(__FILE__) . '/Conventional/NoConventional.php';
+
+
 abstract class Mapper extends Object implements IMapper
 {
 	abstract public function findAll();
@@ -33,7 +38,7 @@ abstract class Mapper extends Object implements IMapper
 
 	protected function createConventional()
 	{
-		return new Conventional;
+		return new NoConventional;
 	}
 
 	public function __call($name, $args)
