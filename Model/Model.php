@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/Entity/Entity.php';
 
 require_once dirname(__FILE__) . '/Repository/Repository.php';
 
-require_once dirname(__FILE__) . '/Mapper/Mapper.php';
+require_once dirname(__FILE__) . '/Mappers/Mapper.php';
 
 
 abstract class AbstractModel extends Object
