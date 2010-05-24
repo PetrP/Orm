@@ -46,7 +46,7 @@ dump($t->readWrite, 'readWrite');
 dump($t->setDate(time())->getDate(), 'getDate');
 
 
-dump(Manager::getEntityParams('Test'));
+dump(EntityManager::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------

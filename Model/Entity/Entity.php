@@ -299,7 +299,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$var = substr($name, 3);
 			$var{0} = strtolower($var{0});
 
-			$params = Manager::getEntityParams(get_class($this));
+			$params = EntityManager::getEntityParams(get_class($this));
 			if (isset($params[$var]))
 			{
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
@@ -392,7 +392,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			}
 			else
 			{
-				if (!Manager::isParamValid($params[$name]['types'], $value))
+				if (!ValidationHelper::isValid($params[$name]['types'], $value))
 				{
 					if ($need)
 					{
@@ -432,7 +432,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			}
 		}
 
-		if (!Manager::isParamValid($params[$name]['types'], $value))
+		if (!ValidationHelper::isValid($params[$name]['types'], $value))
 		{
 			$type = implode('|',$params[$name]['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
@@ -607,7 +607,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	final private static function getEntityRules($entityClass)
 	{
-		return Manager::getEntityParams($entityClass);
+		return EntityManager::getEntityParams($entityClass);
 	}
 
 	public function __toString()

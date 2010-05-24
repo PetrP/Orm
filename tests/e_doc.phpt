@@ -27,7 +27,7 @@ try {
 dump($t->read, 'get read');
 
 
-dump(Manager::getEntityParams('Test'));
+dump(EntityManager::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------
