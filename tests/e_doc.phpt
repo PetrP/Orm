@@ -39,27 +39,38 @@ get write: Exception MemberAccessException: Cannot assign to a write-only proper
 
 get read: NULL
 
-array(3) {
-	"readWrite" => array(3) {
+array(4) {
+	"id" => array(3) {
+		"types" => array(1) {
+			0 => string(3) "int"
+		}
+		"get" => array(1) {
+			"method" => NULL
+		}
+		"since" => string(6) "Entity"
+	}
+	"readWrite" => array(4) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 		"set" => array(1) {
 			"method" => NULL
 		}
 	}
-	"read" => array(2) {
+	"read" => array(3) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 	}
-	"write" => array(2) {
+	"write" => array(3) {
 		"types" => array(0)
 		"set" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 	}
 }
-

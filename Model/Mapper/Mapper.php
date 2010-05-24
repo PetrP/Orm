@@ -27,7 +27,7 @@ abstract class Mapper extends Object implements IMapper
 		if (!isset($this->conventional))
 		{
 			$conventional = $this->createConventional();
-			if (!($conventional instanceof Conventional))
+			if (!($conventional instanceof IConventional))
 			{
 				throw new InvalidStateException();
 			}

@@ -2,6 +2,8 @@
 
 require dirname(__FILE__) . '/base.php';
 
+NetteTestHelpers::skip();
+
 /**
  * @property-read int $id
  * @property string $name

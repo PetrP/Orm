@@ -68,35 +68,48 @@ getDate: object(DateTime53) (3) {
 	"timezone" => string(13) "Europe/Prague"
 }
 
-array(4) {
-	"readWrite" => array(3) {
-		"types" => array(0)
+array(5) {
+	"id" => array(3) {
+		"types" => array(1) {
+			0 => string(3) "int"
+		}
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(6) "Entity"
+	}
+	"readWrite" => array(4) {
+		"types" => array(0) 
+		"get" => array(1) {
+			"method" => NULL
+		}
+		"since" => string(4) "Test"
 		"set" => array(1) {
 			"method" => string(12) "setReadWrite"
 		}
 	}
-	"read" => array(2) {
-		"types" => array(0)
+	"read" => array(3) {
+		"types" => array(0) 
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 	}
-	"write" => array(2) {
-		"types" => array(0)
+	"write" => array(3) {
+		"types" => array(0) 
 		"set" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 	}
-	"date" => array(3) {
+	"date" => array(4) {
 		"types" => array(1) {
 			0 => string(8) "datetime"
 		}
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"since" => string(4) "Test"
 		"set" => array(1) {
 			"method" => string(7) "setDate"
 		}

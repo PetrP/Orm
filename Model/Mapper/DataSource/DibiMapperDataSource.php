@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/EntityIterator.php';
 require_once dirname(__FILE__) . '/StdObject.php';
 
 
-class ModelDataSource extends DibiDataSourceX implements IModelDataSource
+class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource
 {
 	/** @var Repository */
 	private $repository;
@@ -130,3 +130,4 @@ class ModelDataSource extends DibiDataSourceX implements IModelDataSource
 
 
 }
+class ModelDataSource extends DibiModelDataSource {}

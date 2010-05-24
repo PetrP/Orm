@@ -98,7 +98,7 @@ class DibiMapper extends Mapper
 		if (!$connection->isConnected())
 			$connection->sql(''); // protoze nema public metodu DibiConnection::connect()
 		$translator = new DibiTranslator($connection->driver);
-		return new ModelDataSource($translator->translate($args), $connection, $this->repository);
+		return new DibiModelDataSource($translator->translate($args), $connection, $this->repository);
 	}
 
 	public function getById($id)

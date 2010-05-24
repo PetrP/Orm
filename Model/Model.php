@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__) . '/Repository/Entity.php';
+require_once dirname(__FILE__) . '/Entity/Entity.php';
 
 require_once dirname(__FILE__) . '/Repository/Repository.php';
 
-require_once dirname(__FILE__) . '/Repository/Mapper.php';
+require_once dirname(__FILE__) . '/Mapper/Mapper.php';
 
 
 abstract class AbstractModel extends Object
