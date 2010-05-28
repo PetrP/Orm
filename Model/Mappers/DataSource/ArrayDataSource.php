@@ -120,7 +120,8 @@ class ArrayDataSource extends Object implements IModelDataSource
 	private $_sort;
 	private function _sort($v1, $v2)
 	{
-		list($k, $s) = $this->_sort;
+		$k = key($this->_sort);
+		$s = current($this->_sort);
 		dd($k, $s);
 		if ($s == 'ASC')
 		{
