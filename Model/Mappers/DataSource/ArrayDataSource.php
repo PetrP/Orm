@@ -67,7 +67,6 @@ class ArrayDataSource extends Object implements IModelDataSource
 	 */
 	public function where($cond)
 	{
-		throw new NotImplementedException();
 		if (is_array($cond)) {
 			// TODO: not consistent with select and orderBy
 			$this->conds[] = $cond;
@@ -122,14 +121,14 @@ class ArrayDataSource extends Object implements IModelDataSource
 	{
 		$k = key($this->_sort);
 		$s = current($this->_sort);
-		dd($k, $s);
+
 		if ($s == 'ASC')
 		{
-			return strcasecmp($v1[$k], $v2[$k]);
+			return strnatcasecmp($v1[$k], $v2[$k]);
 		}
 		else
 		{
-			return strcasecmp($v2[$k], $v1[$k]);
+			return strnatcasecmp($v2[$k], $v1[$k]);
 		}
 	}
 	/**
@@ -142,6 +141,26 @@ class ArrayDataSource extends Object implements IModelDataSource
 		{
 			$source = $this->source;
 
+			if ($this->conds)
+			{
+				if (count($this->conds) === 1 AND count($this->conds[0]) === 2 AND preg_match('#^\s*\[id\]\s*\=\s*\%i\s*$#',$this->conds[0][0]) AND is_numeric($this->conds[0][1]))
+				{
+					$copySource = $source;
+					$source = array();
+					foreach ($copySource as $row)
+					{
+						if ($row['id'] == $this->conds[0][1])
+						{
+							$source[] = $row;
+						}
+					}
+				}
+				else
+				{
+					throw new NotImplementedException();
+				}
+			}
+
 			foreach (array_reverse($this->sorting) as $row => $sorting)
 			{
 				$this->_sort = array($row => $sorting);
@@ -151,7 +170,7 @@ class ArrayDataSource extends Object implements IModelDataSource
 
 			if ($this->offset !== NULL OR $this->limit !== NULL)
 			{
-				$source = array_slice($source, (int) $this->offset, $this->limit, true);
+				$source = array_slice($source, (int) $this->offset, $this->limit);
 			}
 
 			$this->result = $source;

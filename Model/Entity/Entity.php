@@ -18,6 +18,8 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	private $rules;
 
+	private $repositoryName;
+
 
 	public function __construct()
 	{
@@ -46,7 +48,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		$value = NULL;
 		if ($params[$name]['get']['method'])
 		{
-			$value = $this->{$params[$name]['get']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			$value = $this->{$params[$name]['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -237,10 +239,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	/**
 	 * @internal
 	 */
-	final public static function create($entityName, array $data)
+	final public static function create($entityName, array $data, Repository $repository)
 	{
 		$entity = new $entityName;
 		if (!($entity instanceof self)) throw new InvalidStateException();
+		$entity->repositoryName = $repository->getRepositoryName();
 		self::setPrivateValues($entity, $data);
 		return $entity;
 	}
@@ -250,6 +253,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	 */
 	final public static function setPrivateValues(Entity $entity, array $values)
 	{
+
 		if (!$entity->values)
 		{
 			$entity->values = $values;
@@ -416,4 +420,19 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		$this->values['id'] = NULL;
 	}
 
+	final public function getGeneratingRepository($need = true)
+	{
+		if (!$this->repositoryName)
+		{
+			if ($need)
+			{
+				throw new InvalidStateException();
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+		return Model::getRepository($this->repositoryName);
+	}
 }
