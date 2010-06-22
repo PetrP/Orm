@@ -20,6 +20,12 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	private $repositoryName;
 
+	private $changed = true;
+
+	final public function isChanged()
+	{
+		return isset($this->id) ? $this->changed : true;
+	}
 
 	public function __construct()
 	{
@@ -167,19 +173,33 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		{
 			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$fk]);
 		}
+		else if ($this->getGeneratingRepository(false)) // lazy load
+		{
+			if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
+			{
+				$this->setPrivateValues($this, $lazyLoadParams);
+				if (array_key_exists($name, $this->values))
+				{
+					$value = $this->values[$name];
+				}
+			}
+		}
 
 
 		if (!$valid)
 		{
 			if (isset($params[$name]['set']))
 			{
+				$tmpChanged = $this->changed;
 				try {
 					$this->__set($name, $value);
 
 				} catch (UnexpectedValueException $e) {
+					$this->changed = $tmpChanged;
 					if ($need) throw $e;
 					return NULL;
 				}
+				$this->changed = $tmpChanged;
 				$value = isset($this->values[$name]) ? $this->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
 			}
 			else
@@ -229,6 +249,8 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$type = implode('|',$params[$name]['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
+
+		$this->changed = true;
 
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
@@ -296,7 +318,9 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 				$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL;
 				if (!isset($entity->valid[$name]) OR !$entity->valid[$name])
 				{
+					$tmpChanged = $entity->changed;
 					$entity->__set($name, $value);
+					$entity->changed = $tmpChanged;
 					$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
 				}
 				$values[$name] = $value;

@@ -24,6 +24,11 @@ abstract class Repository extends Object implements IRepository
 		return $this->getMapper()->getById($id);
 	}
 
+	public function lazyLoad(Entity $entity, $param)
+	{
+		return array();
+	}
+
 	public function __construct($repositoryName)
 	{
 		$this->repositoryName = $repositoryName;
@@ -93,6 +98,10 @@ abstract class Repository extends Object implements IRepository
 		if (!@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
 		{
 			throw new UnexpectedValueException();
+		}
+		else if (isset($entity->id) AND !$entity->isChanged())
+		{
+			return $entity->id;
 		}
 		return $this->getMapper()->persist($entity, $beAtomic);
 	}
