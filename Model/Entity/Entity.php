@@ -39,22 +39,22 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	final public function & __get($name)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 
-		if (!isset($params[$name]))
+		if (!isset($rules[$name]))
 		{
 			$tmp = parent::__get($name);
 			return $tmp;
 		}
-		else if (!isset($params[$name]['get']))
+		else if (!isset($rules[$name]['get']))
 		{
 			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = NULL;
-		if ($params[$name]['get']['method'])
+		if ($rules[$name]['get']['method'])
 		{
-			$value = $this->{$params[$name]['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			$value = $this->{$rules[$name]['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -66,20 +66,20 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	final public function __set($name, $value)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 
-		if (!isset($params[$name]))
+		if (!isset($rules[$name]))
 		{
 			return parent::__set($name, $value);
 		}
-		else if (!isset($params[$name]['set']))
+		else if (!isset($rules[$name]['set']))
 		{
 			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
 		}
 
-		if ($params[$name]['set']['method'])
+		if ($rules[$name]['set']['method'])
 		{
-			$this->{$params[$name]['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			$this->{$rules[$name]['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -97,8 +97,8 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$var = substr($name, 3);
 			$var{0} = strtolower($var{0});
 
-			$params = EntityManager::getEntityParams(get_class($this));
-			if (isset($params[$var]))
+			$rules = EntityManager::getEntityParams(get_class($this));
+			if (isset($rules[$var]))
 			{
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
@@ -150,13 +150,13 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	final protected function getValue($name, $need = true)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 
-		if (!isset($params[$name]))
+		if (!isset($rules[$name]))
 		{
 			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($params[$name]['get']))
+		else if (!isset($rules[$name]['get']))
 		{
 			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
 		}
@@ -169,9 +169,9 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$value = $this->values[$name];
 		}
 		// todo povolit mit ho i jako id rovnou v $name a to __fk__id zrusit
-		else if (isset($params[$name]['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
+		else if (isset($rules[$name]['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
 		{
-			$value = Model::getRepository($params[$name]['fk'])->getById($this->values[$fk]);
+			$value = Model::getRepository($rules[$name]['fk'])->getById($this->values[$fk]);
 		}
 		else if ($this->getGeneratingRepository(false)) // lazy load
 		{
@@ -188,7 +188,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 		if (!$valid)
 		{
-			if (isset($params[$name]['set']))
+			if (isset($rules[$name]['set']))
 			{
 				$tmpChanged = $this->changed;
 				try {
@@ -204,11 +204,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			}
 			else
 			{
-				if (!ValidationHelper::isValid($params[$name]['types'], $value))
+				if (!ValidationHelper::isValid($rules[$name]['types'], $value))
 				{
 					if ($need)
 					{
-						$type = implode('|',$params[$name]['types']);
+						$type = implode('|',$rules[$name]['types']);
 						throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " have");
 					}
 					return NULL;
@@ -224,29 +224,29 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	final protected function setValue($name, $value)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 
-		if (!isset($params[$name]))
+		if (!isset($rules[$name]))
 		{
 			throw new MemberAccessException("Cannot assign to an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($params[$name]['set']))
+		else if (!isset($rules[$name]['set']))
 		{
 			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
 		}
 
-		if (isset($params[$name]['fk']) AND !($value instanceof Entity))
+		if (isset($rules[$name]['fk']) AND !($value instanceof Entity))
 		{
 			$id = (string) $value;
 			if ($id)
 			{
-				$value = Model::getRepository($params[$name]['fk'])->getById($id);
+				$value = Model::getRepository($rules[$name]['fk'])->getById($id);
 			}
 		}
 
-		if (!ValidationHelper::isValid($params[$name]['types'], $value))
+		if (!ValidationHelper::isValid($rules[$name]['types'], $value))
 		{
-			$type = implode('|',$params[$name]['types']);
+			$type = implode('|',$rules[$name]['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
 
@@ -297,7 +297,6 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	{
 		$entity->check();
 
-		$rules = $params = $entity->rules;
 		$values = array();
 
 		if ($entity->__isset('id'))
@@ -305,15 +304,15 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$values['id'] = $entity->__get('id');
 		}
 
-		foreach ($params as $name => $rule)
+		foreach ($entity->rules as $name => $rule)
 		{
 			if ($name === 'id') continue;
 
-			if (isset($params[$name]['get']))
+			if (isset($rule['get']))
 			{
 				$values[$name] = $entity->__get($name);
 			}
-			else if (isset($params[$name]['set']))
+			else if (isset($rule['set']))
 			{
 				$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL;
 				if (!isset($entity->valid[$name]) OR !$entity->valid[$name])
@@ -329,14 +328,6 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			{
 				throw new MemberAccessException(); // todo ?
 			}
-			/*if (isset($rule['fk']))
-			{
-				$entity = $values[$name];
-				if (!($entity instanceof Entity)) throw new Exception();
-				if (!isset($entity->id)) throw new Exception();
-				$values[$name.'_id'] = $entity->id; // todo contention
-				unset($values[$name]);
-			}*/
 		}
 
 		return $values;
@@ -370,9 +361,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		throw new NotSupportedException();
 	}
 
-	final public function toArray()
+	const ENTITY_TO_ID = 'entidyToId';
+	
+	final public function toArray($mode)
 	{
-		$rules = $params = $this->rules;
+		$rules = $this->rules;
 		$result = array();
 
 		if ($this->__isset('id'))
@@ -380,30 +373,26 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			$result['id'] = $this->__get('id');
 		}
 
-		foreach ($params as $name => $rule)
+		foreach ($rules as $name => $rule)
 		{
 			if ($name === 'id') continue;
 
-			if (isset($params[$name]['get']))
+			if (isset($rule['get']))
 			{
 				$result[$name] = $this->__get($name);
+				if ($mode === self::ENTITY_TO_ID AND isset($rule['fk']) AND $result[$name] instanceof Entity)
+				{
+					$result[$name] = $result[$name]->id;
+				}
 			}
 		}
 
 		return $result;
 	}
-
+	/** @deprecated */
 	final public function toPlainArray()
 	{
-		$result = $this->toArray();
-		foreach ($result as $name => $value)
-		{
-			if ($value instanceof Entity)
-			{
-				$result[$name] = $value->id;
-			}
-		}
-		return $result;
+		return $this->toArray(self::ENTITY_TO_ID);
 	}
 
 	final public function setValues($values)
