@@ -12,6 +12,8 @@ require_once dirname(__FILE__) . '/ValidationHelper.php';
  */
 abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAggregate
 {
+	const DEFAULT_VALUE = "\0";
+
 	private $values = array();
 
 	private $valid = array();
@@ -161,7 +163,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
 		}
 
-		$value = NULL;
+		$value = self::DEFAULT_VALUE;
 		$valid = false;
 		if (array_key_exists($name, $this->values))
 		{
@@ -185,54 +187,43 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			}
 		}
 
-
 		if (!$valid)
 		{
-			if (isset($rules[$name]['set']))
-			{
-				$tmpChanged = $this->changed;
-				try {
-					$this->__set($name, $value);
-
-				} catch (UnexpectedValueException $e) {
-					$this->changed = $tmpChanged;
-					if ($need) throw $e;
-					return NULL;
-				}
+			$tmpChanged = $this->changed;
+			try {
+				$this->{isset($rules[$name]['set']) ? '__set' : 'setValueHelper'}($name, $value);
+			} catch (UnexpectedValueException $e) {
 				$this->changed = $tmpChanged;
-				$value = isset($this->values[$name]) ? $this->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
+				if ($need) throw $e;
+				return NULL;
 			}
-			else
-			{
-				if (!ValidationHelper::isValid($rules[$name]['types'], $value))
-				{
-					if ($need)
-					{
-						$type = implode('|',$rules[$name]['types']);
-						throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " have");
-					}
-					return NULL;
-				}
-				$this->values[$name] = $value;
-				$this->valid[$name] = true;
-			}
+			$this->changed = $tmpChanged;
+			$value = isset($this->values[$name]) ? $this->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
 		}
 
 		return $value;
 	}
 
-
-	final protected function setValue($name, $value)
+	final private function setValueHelper($name, $value)
 	{
 		$rules = $this->rules;
 
-		if (!isset($rules[$name]))
+		if ($value === self::DEFAULT_VALUE)
 		{
-			throw new MemberAccessException("Cannot assign to an undeclared property ".get_class($this)."::\$$name.");
-		}
-		else if (!isset($rules[$name]['set']))
-		{
-			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
+			$default = NULL;
+			if (array_key_exists('default', $rules[$name]))
+			{
+				$default = $rules[$name]['default'];
+			}
+			else
+			{
+				$defaultMethod = 'getDefault' . ucfirst($name);
+				if (method_exists($this, $defaultMethod))
+				{
+					$default = $this->{$defaultMethod}();
+				}
+			}
+			$value = $default;
 		}
 
 		if (isset($rules[$name]['fk']) AND !($value instanceof Entity))
@@ -250,10 +241,26 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
 
-		$this->changed = true;
-
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
+		$this->changed = true;
+	}
+
+
+	final protected function setValue($name, $value)
+	{
+		$rules = $this->rules;
+
+		if (!isset($rules[$name]))
+		{
+			throw new MemberAccessException("Cannot assign to an undeclared property ".get_class($this)."::\$$name.");
+		}
+		else if (!isset($rules[$name]['set']))
+		{
+			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
+		}
+
+		$this->setValueHelper($name, $value);
 
 		return $this;
 	}
@@ -362,7 +369,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 	}
 
 	const ENTITY_TO_ID = 'entidyToId';
-	
+
 	final public function toArray($mode)
 	{
 		$rules = $this->rules;

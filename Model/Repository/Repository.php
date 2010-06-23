@@ -59,7 +59,7 @@ abstract class Repository extends Object implements IRepository
 		return new DibiMapper($this);
 	}
 
-	public function getEntityName(array $data = NULL)
+	public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
 	{
 		return rtrim($this->getRepositoryName(), 's');
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
