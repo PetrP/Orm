@@ -28,7 +28,7 @@ abstract class Entity extends Object implements IEntity
 
 	public function __construct()
 	{
-		$this->rules = $this->getEntityRules(get_class($this));
+		$this->startup();
 	}
 
 	protected function check()
@@ -39,8 +39,8 @@ abstract class Entity extends Object implements IEntity
 	public function __toString()
 	{
 		try {
-			// mozna zrusit
-			return isset($this->id) ? (string) $this->id : NULL;
+			// todo mozna zrusit
+			return isset($this->id) ? (string) $this->id : '';
 		} catch (Exception $e) {
 			Debug::toStringException($e);
 		}
@@ -51,12 +51,22 @@ abstract class Entity extends Object implements IEntity
 		$this->valid['id'] = false;
 		$this->values['id'] = NULL;
 	}
-	
-	protected static function getEntityRules($entityClass)
+
+	protected static function createEntityRules($entityClass) // todo refactoring
 	{
 		return EntityManager::getEntityParams($entityClass);
 	}
-	
+
+	protected static function getEntityRules($entityClass) // todo refactoring
+	{
+		static $cache = array();
+		if (!isset($cache[$entityClass]))
+		{
+			$cache[$entityClass] = self::createEntityRules($entityClass);
+		}
+		return $cache[$entityClass];
+	}
+
 	final public function setValues($values)
 	{
 		foreach ($values as $name => $value)
@@ -150,7 +160,7 @@ abstract class Entity extends Object implements IEntity
 		{
 			if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
 			{
-				$this->setPrivateValues($this, $lazyLoadParams);
+				$this->internalValues($this, $lazyLoadParams);
 				if (array_key_exists($name, $this->values))
 				{
 					$value = $this->values[$name];
@@ -162,7 +172,14 @@ abstract class Entity extends Object implements IEntity
 		{
 			$tmpChanged = $this->changed;
 			try {
-				$this->{isset($rule['set']) ? '__set' : 'setValueHelper'}($name, $value);
+				if (isset($rule['set']))
+				{
+					$this->__set($name, $value);
+				}
+				else
+				{
+					$this->setValueHelper($name, $value);
+				}
 			} catch (UnexpectedValueException $e) {
 				$this->changed = $tmpChanged;
 				if ($need) throw $e;
@@ -372,45 +389,54 @@ abstract class Entity extends Object implements IEntity
 		$this->changed = true;
 	}
 	
-	
-	
+	final private function startup() // todo rename?
+	{
+		$this->rules = $this->getEntityRules(get_class($this));
+	}
+
+
+
+
+
+
 	
 	/**
 	 * @internal
 	 */
 	final public static function create($entityName, array $data, Repository $repository)
 	{
-		$entity = new $entityName;
-		if (!($entity instanceof self)) throw new InvalidStateException();
+		$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
+		if (!($entity instanceof Entity)) throw new InvalidStateException();
 		$entity->repositoryName = $repository->getRepositoryName();
-		self::setPrivateValues($entity, $data);
+		$entity->startup();
+		self::internalValues($entity, $data);
 		return $entity;
 	}
 
 	/**
+	 * set or get
 	 * @internal
 	 */
-	final public static function setPrivateValues(Entity $entity, array $values)
+	final public static function internalValues(Entity $entity, array $values = NULL)
 	{
-		if (!$entity->values)
+		if ($values !== NULL)
 		{
-			$entity->values = $values;
-			$entity->valid = array();
-		}
-		else
-		{
-			foreach ($values as $name => $value)
+			if (!$entity->values)
 			{
-				$entity->values[$name] = $value;
-				$entity->valid[$name] = false;
+				$entity->values = $values;
+				$entity->valid = array();
 			}
+			else
+			{
+				foreach ($values as $name => $value)
+				{
+					$entity->values[$name] = $value;
+					$entity->valid[$name] = false;
+				}
+			}
+			return NULL;
 		}
-	}
-	/**
-	 * @internal
-	 */
-	final public static function getPrivateValues(Entity $entity)
-	{
+		
 		$entity->check();
 
 		$values = array();

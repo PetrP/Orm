@@ -73,7 +73,7 @@ abstract class ArrayMapper extends Mapper
 
 		Environment::enterCriticalSection(get_class($this));
 
-		$values = Entity::getPrivateValues($entity);
+		$values = Entity::internalValues($entity);
 		$fk = Entity::getFk(get_class($entity));
 		foreach ($values as $key => $value)
 		{
@@ -96,7 +96,7 @@ abstract class ArrayMapper extends Mapper
 		else
 		{
 			$id = $originData ? max(array_keys($originData)) + 1 : 1;
-			Entity::setPrivateValues($entity, array('id' => $id));
+			Entity::internalValues($entity, array('id' => $id));
 			$values['id'] = $id;
 			$originData[$id] = $values;
 		}
@@ -137,7 +137,7 @@ abstract class ArrayMapper extends Mapper
 		}
 		if ($entity instanceof Entity)
 		{
-			Entity::setPrivateValues($entity, array('id' => NULL));
+			Entity::internalValues($entity, array('id' => NULL));
 		}
 		// todo clean Repository::$entities[$entityId]
 

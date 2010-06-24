@@ -84,7 +84,7 @@ class DibiMapper extends Mapper
 		}
 		if ($entity instanceof Entity)
 		{
-			Entity::setPrivateValues($entity, array('id' => NULL));
+			Entity::internalValues($entity, array('id' => NULL));
 		}
 		// todo clean Repository::$entities[$entityId]
 
@@ -125,7 +125,7 @@ class DibiPersistenceHelper extends Object
 
 	public function persist(Entity $entity, $beAtomic = true)
 	{
-		$values = Entity::getPrivateValues($entity);
+		$values = Entity::internalValues($entity);
 		$fk = Entity::getFk(get_class($entity));
 		if ($beAtomic) $this->connection->begin();
 
@@ -168,7 +168,7 @@ class DibiPersistenceHelper extends Object
 				if (!isset($entity->id)) throw $e;
 				$id = $entity->id;
 			}
-			Entity::setPrivateValues($entity, array('id' => $id));
+			Entity::internalValues($entity, array('id' => $id));
 		}
 
 		if ($beAtomic) $this->connection->commit();
