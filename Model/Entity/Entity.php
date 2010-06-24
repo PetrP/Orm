@@ -41,4 +41,6 @@ abstract class Entity extends Entity2 implements IEntity
 	{
 		return EntityManager::getEntityParams($entityClass);
 	}
+	
+	
 }

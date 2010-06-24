@@ -19,18 +19,16 @@ abstract class Entity3 extends Object
 	{
 		$this->rules = $this->getEntityRules(get_class($this));
 	}
+
 	const ENTITY_TO_ID = 'entidyToId';
+
 	final public function toArray($mode = NULL)
 	{
-		$rules = $this->rules;
-		$result = array();
+		$result = array(
+			'id' => $this->__isset('id') ? $this->__get('id') : NULL,
+		);
 
-		if ($this->__isset('id'))
-		{
-			$result['id'] = $this->__get('id');
-		}
-
-		foreach ($rules as $name => $rule)
+		foreach ($this->rules as $name => $rule)
 		{
 			if ($name === 'id') continue;
 
@@ -54,28 +52,28 @@ abstract class Entity3 extends Object
 	
 	final public function isChanged()
 	{
-		return isset($this->id) ? $this->changed : true;
+		return $this->__isset('id') ? $this->changed : true;
 	}
 	
 
 	final public function & __get($name)
 	{
-		$rules = $this->rules;
-
-		if (!isset($rules[$name]))
+		$rule = & $this->rules[$name];
+		
+		if (!isset($rule))
 		{
 			$tmp = parent::__get($name);
 			return $tmp;
 		}
-		else if (!isset($rules[$name]['get']))
+		else if (!isset($rule['get']))
 		{
 			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = NULL;
-		if ($rules[$name]['get']['method'])
+		if ($rule['get']['method'])
 		{
-			$value = $this->{$rules[$name]['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			$value = $this->{$rule['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -87,20 +85,20 @@ abstract class Entity3 extends Object
 
 	final public function __set($name, $value)
 	{
-		$rules = $this->rules;
+		$rule = & $this->rules[$name];
 
-		if (!isset($rules[$name]))
+		if (!isset($rule))
 		{
 			return parent::__set($name, $value);
 		}
-		else if (!isset($rules[$name]['set']))
+		else if (!isset($rule['set']))
 		{
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
-		if ($rules[$name]['set']['method'])
+		if ($rule['set']['method'])
 		{
-			$this->{$rules[$name]['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			$this->{$rule['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
 		{
@@ -118,8 +116,7 @@ abstract class Entity3 extends Object
 			$var = substr($name, 3);
 			$var{0} = strtolower($var{0});
 
-			$rules = $this->rules;
-			if (isset($rules[$var]))
+			if (isset($this->rules[$var]))
 			{
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
@@ -130,13 +127,13 @@ abstract class Entity3 extends Object
 	
 	final public function __isset($name)
 	{
-		$rules = $this->rules;
+		$rule = & $this->rules[$name];
 
-		if (!isset($rules[$name]))
+		if (!isset($rule))
 		{
 			return parent::__isset($name);
 		}
-		else if (isset($rules[$name]['get']))
+		else if (isset($rule['get']))
 		{
 			try {
 				return $this->__get($name) !== NULL;
@@ -155,17 +152,19 @@ abstract class Entity3 extends Object
 	const READWRITE = 'rw';
 	final public function hasParam($name, $mode = self::EXISTS)
 	{
+		$rule = & $this->rules[$name];
+		
 		if ($mode === self::EXISTS)
 		{
-			return isset($this->rules[$name]);
+			return isset($rule);
 		}
 		else if ($mode === self::READWRITE)
 		{
-			return isset($this->rules[$name]['get']) AND isset($this->rules[$name]['set']);
+			return isset($rule['get']) AND isset($rule['set']);
 		}
 		else if ($mode === self::READ OR $mode === self::WRITE)
 		{
-			return $mode === self::READ ? isset($this->rules[$name]['get']) : isset($this->rules[$name]['set']);
+			return $mode === self::READ ? isset($rule['get']) : isset($rule['set']);
 		}
 
 		return false;
@@ -173,13 +172,13 @@ abstract class Entity3 extends Object
 	
 	final protected function getValue($name, $need = true)
 	{
-		$rules = $this->rules;
+		$rule = & $this->rules[$name];
 
-		if (!isset($rules[$name]))
+		if (!isset($rule))
 		{
 			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($rules[$name]['get']))
+		else if (!isset($rule['get']))
 		{
 			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
@@ -192,9 +191,9 @@ abstract class Entity3 extends Object
 			$value = $this->values[$name];
 		}
 		// todo povolit mit ho i jako id rovnou v $name a to __fk__id zrusit
-		else if (isset($rules[$name]['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
+		else if (isset($rule['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
 		{
-			$value = Model::getRepository($rules[$name]['fk'])->getById($this->values[$fk]);
+			$value = Model::getRepository($rule['fk'])->getById($this->values[$fk]);
 		}
 		else if ($this->getGeneratingRepository(false)) // lazy load
 		{
@@ -212,7 +211,7 @@ abstract class Entity3 extends Object
 		{
 			$tmpChanged = $this->changed;
 			try {
-				$this->{isset($rules[$name]['set']) ? '__set' : 'setValueHelper'}($name, $value);
+				$this->{isset($rule['set']) ? '__set' : 'setValueHelper'}($name, $value);
 			} catch (UnexpectedValueException $e) {
 				$this->changed = $tmpChanged;
 				if ($need) throw $e;
@@ -227,14 +226,14 @@ abstract class Entity3 extends Object
 
 	final private function setValueHelper($name, $value)
 	{
-		$rules = $this->rules;
-
+		$rule = $this->rules[$name];
+		
 		if ($value === self::DEFAULT_VALUE)
 		{
 			$default = NULL;
-			if (array_key_exists('default', $rules[$name]))
+			if (array_key_exists('default', $rule))
 			{
-				$default = $rules[$name]['default'];
+				$default = $rule['default'];
 			}
 			else
 			{
@@ -247,21 +246,21 @@ abstract class Entity3 extends Object
 			$value = $default;
 		}
 
-		if (isset($rules[$name]['fk']) AND !($value instanceof Entity))
+		if (isset($rule['fk']) AND !($value instanceof Entity))
 		{
 			$id = (string) $value;
 			if ($id)
 			{
-				$value = Model::getRepository($rules[$name]['fk'])->getById($id);
+				$value = Model::getRepository($rule['fk'])->getById($id);
 			}
 		}
 
-		if (!ValidationHelper::isValid($rules[$name]['types'], $value))
+		if (!ValidationHelper::isValid($rule['types'], $value))
 		{
-			$type = implode('|',$rules[$name]['types']);
+			$type = implode('|',$rule['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
-
+		
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
 		$this->changed = true;
@@ -270,13 +269,13 @@ abstract class Entity3 extends Object
 
 	final protected function setValue($name, $value)
 	{
-		$rules = $this->rules;
+		$rule = & $this->rules[$name];
 
-		if (!isset($rules[$name]))
+		if (!isset($rule))
 		{
 			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($rules[$name]['set']))
+		else if (!isset($rule['set']))
 		{
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
@@ -294,18 +293,9 @@ abstract class Entity3 extends Object
 
 	final public function getGeneratingRepository($need = true)
 	{
-		if (!$this->repositoryName)
-		{
-			if ($need)
-			{
-				throw new InvalidStateException();
-			}
-			else
-			{
-				return NULL;
-			}
-		}
-		return Model::getRepository($this->repositoryName);
+		if ($this->repositoryName) return Model::getRepository($this->repositoryName);
+		else if (!$need) return NULL;
+		else throw new InvalidStateException();
 	}
 
 
@@ -326,7 +316,6 @@ abstract class Entity3 extends Object
 	 */
 	final public static function setPrivateValues(Entity $entity, array $values)
 	{
-
 		if (!$entity->values)
 		{
 			$entity->values = $values;
@@ -388,7 +377,7 @@ abstract class Entity3 extends Object
 	final public static function getFk($entityName)
 	{
 		$result = array();
-		foreach (Entity::getEntityRules($entityName) as $name => $rule)
+		foreach (Entity::getEntityRules($entityName) as $name => $rule) // todo neumoznuje prepsat getEntityRules
 		{
 			if (!isset($rule['fk'])) continue;
 			$result[$name] = $rule['fk'];
