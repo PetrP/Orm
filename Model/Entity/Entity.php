@@ -340,6 +340,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		return $values;
 	}
 
+	// todo asi depraceted
 	final public static function getFk($entityName)
 	{
 		$result = array();
