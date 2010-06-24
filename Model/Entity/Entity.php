@@ -113,33 +113,26 @@ abstract class Entity extends Object implements IEntity
 	const READWRITE = 'rw';
 	final public function hasParam($name, $mode = self::EXISTS)
 	{
-		$rule = & $this->rules[$name];
+		if ($mode === self::EXISTS) return isset($this->rules[$name]);
+		if (!isset($this->rules[$name])) return false;
 
-		if ($mode === self::EXISTS)
-		{
-			return isset($rule);
-		}
-		else if ($mode === self::READWRITE)
-		{
-			return isset($rule['get']) AND isset($rule['set']);
-		}
-		else if ($mode === self::READ OR $mode === self::WRITE)
-		{
-			return $mode === self::READ ? isset($rule['get']) : isset($rule['set']);
-		}
-
+		$rule = $this->rules[$name];
+		if ($mode === self::READWRITE) return isset($rule['get']) AND isset($rule['set']);
+		else if ($mode === self::READ) return isset($rule['get']);
+		else if ($mode === self::WRITE) return isset($rule['set']);
 		return false;
 	}
 
 	final protected function getValue($name, $need = true)
 	{
-		$rule = & $this->rules[$name];
-
-		if (!isset($rule))
+		if (!isset($this->rules[$name]))
 		{
 			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($rule['get']))
+
+		$rule = $this->rules[$name];
+
+		if (!isset($rule['get']))
 		{
 			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
@@ -194,13 +187,14 @@ abstract class Entity extends Object implements IEntity
 
 	final protected function setValue($name, $value)
 	{
-		$rule = & $this->rules[$name];
-
-		if (!isset($rule))
+		if (!isset($this->rules[$name]))
 		{
 			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
-		else if (!isset($rule['set']))
+
+		$rule = $this->rules[$name];
+
+		if (!isset($rule['set']))
 		{
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
@@ -251,14 +245,15 @@ abstract class Entity extends Object implements IEntity
 
 	final public function & __get($name)
 	{
-		$rule = & $this->rules[$name];
-
-		if (!isset($rule))
+		if (!isset($this->rules[$name]))
 		{
 			$tmp = parent::__get($name);
 			return $tmp;
 		}
-		else if (!isset($rule['get']))
+
+		$rule = $this->rules[$name];
+
+		if (!isset($rule['get']))
 		{
 			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
@@ -278,13 +273,14 @@ abstract class Entity extends Object implements IEntity
 
 	final public function __set($name, $value)
 	{
-		$rule = & $this->rules[$name];
-
-		if (!isset($rule))
+		if (!isset($this->rules[$name]))
 		{
 			return parent::__set($name, $value);
 		}
-		else if (!isset($rule['set']))
+
+		$rule = $this->rules[$name];
+
+		if (!isset($rule['set']))
 		{
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
@@ -320,13 +316,11 @@ abstract class Entity extends Object implements IEntity
 
 	final public function __isset($name)
 	{
-		$rule = & $this->rules[$name];
-
-		if (!isset($rule))
+		if (!isset($this->rules[$name]))
 		{
 			return parent::__isset($name);
 		}
-		else if (isset($rule['get']))
+		else if (isset($this->rules[$name]['get']))
 		{
 			try {
 				return $this->__get($name) !== NULL;
