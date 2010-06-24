@@ -50,7 +50,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 		else if (!isset($rules[$name]['get']))
 		{
-			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
+			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = NULL;
@@ -76,7 +76,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 		else if (!isset($rules[$name]['set']))
 		{
-			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
+			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
 		if ($rules[$name]['set']['method'])
@@ -160,7 +160,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 		}
 		else if (!isset($rules[$name]['get']))
 		{
-			throw new MemberAccessException("Cannot assign to a write-only property ".get_class($this)."::\$$name.");
+			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = self::DEFAULT_VALUE;
@@ -253,11 +253,11 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 		if (!isset($rules[$name]))
 		{
-			throw new MemberAccessException("Cannot assign to an undeclared property ".get_class($this)."::\$$name.");
+			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
 		else if (!isset($rules[$name]['set']))
 		{
-			throw new MemberAccessException("Cannot assign to a read-only property ".get_class($this)."::\$$name.");
+			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
 		$this->setValueHelper($name, $value);

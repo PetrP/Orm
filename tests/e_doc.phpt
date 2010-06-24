@@ -31,11 +31,11 @@ dump(EntityManager::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------
-set read: Exception MemberAccessException: Cannot assign to a read-only property Test::$read.
+set read: Exception MemberAccessException: Cannot write to a read-only property Test::$read.
 
 get readWrite: string(11) "Lorem ipsum"
 
-get write: Exception MemberAccessException: Cannot assign to a write-only property Test::$write.
+get write: Exception MemberAccessException: Cannot read to a write-only property Test::$write.
 
 get read: NULL
 

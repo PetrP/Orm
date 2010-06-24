@@ -41,10 +41,10 @@ try {
 
 __halt_compiler();
 ------EXPECT------
-Exception MemberAccessException: Cannot assign to an undeclared property Test::$neexistuje.
+Exception MemberAccessException: Cannot write to an undeclared property Test::$neexistuje.
 
-Exception MemberAccessException: Cannot assign to an undeclared property Test::$xxx.
+Exception MemberAccessException: Cannot write to an undeclared property Test::$xxx.
 
-Exception MemberAccessException: Cannot assign to an undeclared property Test::$aaa.
+Exception MemberAccessException: Cannot write to an undeclared property Test::$aaa.
 
-Exception MemberAccessException: Cannot assign to an undeclared property Test::$ccc.
+Exception MemberAccessException: Cannot write to an undeclared property Test::$ccc.

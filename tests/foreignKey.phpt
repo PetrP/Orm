@@ -80,7 +80,7 @@ __halt_compiler();
 array(4) {
 	"id" => int(%i%)
 	"text" => string(5) "%a%"
-	"int" => object(Test) (3) {
+	"int" => object(Test) (5) {
 		"values" private => array(4) {
 			"id" => int(153546)
 			"text" => string(5) "d3eb9"
@@ -142,6 +142,8 @@ array(4) {
 				}
 			}
 		}
+		"repositoryName" private => string(4) "test"
+		"changed" private => bool(TRUE)
 	}
 	"char" => string(1) "%a%"
 }
