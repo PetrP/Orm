@@ -35,7 +35,7 @@ abstract class Entity extends Object implements IEntity
 	{
 
 	}
-	
+
 	public function __toString()
 	{
 		try {
@@ -45,7 +45,7 @@ abstract class Entity extends Object implements IEntity
 			Debug::toStringException($e);
 		}
 	}
-	
+
 	public function __clone()
 	{
 		$this->valid['id'] = false;
@@ -78,7 +78,7 @@ abstract class Entity extends Object implements IEntity
 			}
 		}
 	}
-	
+
 	final public function toArray($mode = NULL)
 	{
 		$result = array(
@@ -106,7 +106,7 @@ abstract class Entity extends Object implements IEntity
 	{
 		return $this->toArray(self::ENTITY_TO_ID);
 	}
-	
+
 	const EXISTS = NULL;
 	const READ = 'r';
 	const WRITE = 'w';
@@ -114,7 +114,7 @@ abstract class Entity extends Object implements IEntity
 	final public function hasParam($name, $mode = self::EXISTS)
 	{
 		$rule = & $this->rules[$name];
-		
+
 		if ($mode === self::EXISTS)
 		{
 			return isset($rule);
@@ -130,7 +130,7 @@ abstract class Entity extends Object implements IEntity
 
 		return false;
 	}
-	
+
 	final protected function getValue($name, $need = true)
 	{
 		$rule = & $this->rules[$name];
@@ -191,7 +191,7 @@ abstract class Entity extends Object implements IEntity
 
 		return $value;
 	}
-	
+
 	final protected function setValue($name, $value)
 	{
 		$rule = & $this->rules[$name];
@@ -209,7 +209,7 @@ abstract class Entity extends Object implements IEntity
 
 		return $this;
 	}
-	
+
 	// todo zvazit
 	final public function getGeneratingRepository($need = true)
 	{
@@ -217,7 +217,7 @@ abstract class Entity extends Object implements IEntity
 		else if (!$need) return NULL;
 		else throw new InvalidStateException();
 	}
-	
+
 	final public function isChanged()
 	{
 		return $this->__isset('id') ? $this->changed : true;
@@ -245,14 +245,14 @@ abstract class Entity extends Object implements IEntity
 	{
 		throw new NotSupportedException();
 	}
-	
-	
-	
+
+
+
 
 	final public function & __get($name)
 	{
 		$rule = & $this->rules[$name];
-		
+
 		if (!isset($rule))
 		{
 			$tmp = parent::__get($name);
@@ -317,7 +317,7 @@ abstract class Entity extends Object implements IEntity
 
 		return parent::__call($name, $args);
 	}
-	
+
 	final public function __isset($name)
 	{
 		$rule = & $this->rules[$name];
@@ -337,20 +337,20 @@ abstract class Entity extends Object implements IEntity
 
 		return false;
 	}
-	
-	
-	
-	
-	
 
 
-	
+
+
+
+
+
+
 
 
 	final private function setValueHelper($name, $value)
 	{
 		$rule = $this->rules[$name];
-		
+
 		if ($value === self::DEFAULT_VALUE)
 		{
 			$default = NULL;
@@ -383,12 +383,12 @@ abstract class Entity extends Object implements IEntity
 			$type = implode('|',$rule['types']);
 			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
-		
+
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
 		$this->changed = true;
 	}
-	
+
 	final private function startup() // todo rename?
 	{
 		$this->rules = $this->getEntityRules(get_class($this));
@@ -399,7 +399,7 @@ abstract class Entity extends Object implements IEntity
 
 
 
-	
+
 	/**
 	 * @internal
 	 */
@@ -436,7 +436,7 @@ abstract class Entity extends Object implements IEntity
 			}
 			return NULL;
 		}
-		
+
 		$entity->check();
 
 		$values = array();
@@ -486,8 +486,8 @@ abstract class Entity extends Object implements IEntity
 		}
 		return $result;
 	}
-	
-	
-	
-	
+
+
+
+
 }
