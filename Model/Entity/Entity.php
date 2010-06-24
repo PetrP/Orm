@@ -371,7 +371,7 @@ abstract class Entity extends Object implements IEntity, ArrayAccess, IteratorAg
 
 	const ENTITY_TO_ID = 'entidyToId';
 
-	final public function toArray($mode)
+	final public function toArray($mode = NULL)
 	{
 		$rules = $this->rules;
 		$result = array();
