@@ -1,6 +1,6 @@
 <?php
 
-interface IEntity
+interface IEntity extends ArrayAccess, IteratorAggregate
 {
 
 }
