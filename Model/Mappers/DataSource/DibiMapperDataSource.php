@@ -23,11 +23,11 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource
 		$conventional = $this->repository->getMapper()->getConventional();
 		if (is_array($row))
 		{
-			return parent::orderBy($conventional->format($row), $sorting);
+			return parent::orderBy($conventional->formatEntityToStorage($row), $sorting);
 		}
 		else
 		{
-			$row = $conventional->format(array($row => $sorting));
+			$row = $conventional->formatEntityToStorage(array($row => $sorting));
 			return parent::orderBy(key($row), $sorting);
 		}
 	}

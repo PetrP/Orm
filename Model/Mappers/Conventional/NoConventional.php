@@ -9,15 +9,28 @@ class NoConventional extends Object implements IConventional
 
 	}
 
+	public function formatEntityToStorage($data)
+	{
+		return (array) $data;
+	}
+
+	public function formatStorageToEntity($data)
+	{
+		return (array) $data;
+	}
+
+
+
+	// todo deprecated
 	public function format($data)
 	{
-		return (array) $data;
+		throw new DeprecatedException();
+		return $this->formatEntityToStorage($data);
 	}
-
 	public function unformat($data)
 	{
-		return (array) $data;
+		throw new DeprecatedException();
+		return $this->formatStorageToEntity($data);
 	}
-
 }
 

@@ -43,7 +43,7 @@ class DibiMapper extends Mapper
 	protected function findBy(array $where)
 	{
 		$all = $this->findAll();
-		$where = $this->getConventional()->format($where);
+		$where = $this->getConventional()->formatEntityToStorage($where);
 		// todo instanceof IModelDataSource
 		foreach ($where as $key => $value)
 		{
@@ -152,7 +152,7 @@ class DibiPersistenceHelper extends Object
 			}
 		}
 
-		$values = $this->conventional->format($values);
+		$values = $this->conventional->formatEntityToStorage($values);
 		$table = $this->table;
 		if (isset($entity->id) AND $this->connection->fetch('SELECT [id] FROM %n WHERE [id] = %i', $table, $entity->id))
 		{

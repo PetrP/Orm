@@ -19,7 +19,7 @@ class SqlConventional extends Object implements IConventional
 	 * @param  string
 	 * @return string
 	 */
-	protected function formatKey($key) // todo rename
+	protected function storageFormat($key)
 	{
 		$s = preg_replace('#(.)(?=[A-Z])#', '$1_', $key);
 		$s = strtolower($s);
@@ -31,7 +31,7 @@ class SqlConventional extends Object implements IConventional
 	 * @param  string
 	 * @return string
 	 */
-	protected function unformatKey($key) // todo rename
+	protected function entityFormat($key) // todo rename
 	{
 		$s = strtolower($key);
 		$s = preg_replace('#_(?=[a-z])#', ' ', $s);
@@ -50,7 +50,7 @@ class SqlConventional extends Object implements IConventional
 		return $s . '_id';
 	}
 
-	final public function format($data)
+	final public function formatEntityToStorage($data)
 	{
 		$result = array();
 		foreach ($data as $key => $value)
@@ -65,7 +65,29 @@ class SqlConventional extends Object implements IConventional
 			}
 			else
 			{
-				$k = $this->cache[$key] = $this->formatKey($key);
+				$k = $this->cache[$key] = $this->storageFormat($key);
+			}
+			$result[$k] = $value;
+		}
+		return $result;
+	}
+
+	final public function formatStorageToEntity($data)
+	{
+		$result = array();
+		foreach ($data as $key => $value)
+		{
+			if (isset($this->cache['fk'][$key]))
+			{
+				$k = $this->cache['fk'][$key];
+			}
+			else if (isset($this->cache[$key]))
+			{
+				$k = $this->cache[$key];
+			}
+			else
+			{
+				$k = $this->cache[$key] = $this->entityFormat($key);
 			}
 			$result[$k] = $value;
 		}
@@ -83,7 +105,7 @@ class SqlConventional extends Object implements IConventional
 				{
 					foreach (Entity::getFK($entityName) as $name => $foo)
 					{
-						$fk = $this->foreignKeyFormat($this->formatKey($name));
+						$fk = $this->foreignKeyFormat($this->storageFormat($name));
 						$result[$fk] = $name;
 						$result[$name] = $fk;
 					}
@@ -93,26 +115,30 @@ class SqlConventional extends Object implements IConventional
 		}
 	}
 
-	final public function unformat($data)
+
+
+
+
+	// todo deprecated
+	public function format($data)
 	{
-		$result = array();
-		foreach ($data as $key => $value)
-		{
-			if (isset($this->cache['fk'][$key]))
-			{
-				$k = $this->cache['fk'][$key];
-			}
-			else if (isset($this->cache[$key]))
-			{
-				$k = $this->cache[$key];
-			}
-			else
-			{
-				$k = $this->cache[$key] = $this->unformatKey($key);
-			}
-			$result[$k] = $value;
-		}
-		return $result;
+		throw new DeprecatedException();
+		return $this->formatEntityToStorage($data);
+	}
+	public function unformat($data)
+	{
+		throw new DeprecatedException();
+		return $this->formatStorageToEntity($data);
+	}
+	protected function formatKey($key)
+	{
+		throw new DeprecatedException();
+		return $this->storageFormat($key);
+	}
+	protected function unformatKey($key)
+	{
+		throw new DeprecatedException();
+		return $this->entityFormat($key);
 	}
 
 }
