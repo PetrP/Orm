@@ -52,17 +52,17 @@ abstract class Entity extends Object implements IEntity
 		$this->values['id'] = NULL;
 	}
 
-	protected static function createEntityRules($entityClass) // todo refactoring
+	protected static function createEntityRules($entityClass) // todo refactoring asi na nonstatic
 	{
 		return EntityManager::getEntityParams($entityClass);
 	}
 
-	protected static function getEntityRules($entityClass) // todo refactoring
+	protected static function getEntityRules($entityClass) // todo refactoring final a nonstatic
 	{
 		static $cache = array();
 		if (!isset($cache[$entityClass]))
 		{
-			$cache[$entityClass] = self::createEntityRules($entityClass);
+			$cache[$entityClass] = call_user_func(array($entityClass, 'createEntityRules'), $entityClass);
 		}
 		return $cache[$entityClass];
 	}
@@ -464,11 +464,13 @@ abstract class Entity extends Object implements IEntity
 		return $values;
 	}
 
-	// todo asi depraceted
+	/**
+	 * @internal
+	 */
 	final public static function getFk($entityName)
 	{
 		$result = array();
-		foreach (Entity::getEntityRules($entityName) as $name => $rule) // todo neumoznuje prepsat getEntityRules
+		foreach (Entity::getEntityRules($entityName) as $name => $rule)
 		{
 			if (!isset($rule['fk'])) continue;
 			$result[$name] = $rule['fk'];

@@ -3,12 +3,12 @@
 require dirname(__FILE__) . '/base.php';
 
 /**
-* @property-read int $id
-* @property string $text
-* @property Test|NULL $int
-* @property string $char
-* @foreignKey $int Test
-*/
+ * @property-read int $id
+ * @property string $text
+ * @property Test|NULL $int
+ * @property string $char
+ * @foreignKey $int Test
+ */
 class Test extends Entity
 {
 	public function setChar($char)
@@ -19,7 +19,7 @@ class Test extends Entity
 		}
 		return $this->setValue('char', $char);
 	}
-	
+
 	public function setText($text)
 	{
 		if (strlen($text) > 5)
@@ -28,7 +28,7 @@ class Test extends Entity
 		}
 		$this->setValue('text', $text);
 	}
-	
+
 	public function setInt($i)
 	{
 		return $this->setValue('int', empty($i) ? NULL : $i);
@@ -44,7 +44,7 @@ class TestMapper extends DibiMapper
 {
 	public function createConventional()
 	{
-		return new NoConventional;
+		return new NoConventional($this);
 	}
 }
 
@@ -69,7 +69,7 @@ Model::init(array(
 /*
 for ($i=1000;$i--;)
 	Model::getRepository('test')->getById(153548);
-*/
+ */
 foreach (Model::getRepository('test')->findById($t->id) as $x)
 {
 	dump($x->toArray());

@@ -61,9 +61,29 @@ abstract class Repository extends Object implements IRepository
 
 	public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
 	{
-		return rtrim($this->getRepositoryName(), 's');
+		throw new DeprecatedException();
+		
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
 		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
+	}
+
+	public function getEntityClassName(array $data = NULL)
+	{
+		return rtrim($this->getRepositoryName(), 's');
+	}
+
+	private $allowedEntities;
+	final private function checkEntityName($entityName)
+	{
+		if (!isset($this->allowedEntities))
+		{
+			$this->allowedEntities = array_fill_keys(array_map('strtolower',(array) $this->getEntityClassName()), true);
+		}
+		// todo strtolower mozna bude moc pomale
+		if (!isset($this->allowedEntities[strtolower($entityName)]))
+		{
+			throw new UnexpectedValueException();
+		}
 	}
 
 	final public function createEntity($data)
@@ -71,7 +91,8 @@ abstract class Repository extends Object implements IRepository
 		if (!isset($this->entities[$data['id']]))
 		{
 			$data = (array) $this->conventional->unformat($data);
-			$entityName = $this->getEntityName($data);
+			$entityName = $this->getEntityClassName($data);
+			$this->checkEntityName($entityName);
 			$this->entities[$data['id']] = Entity::create($entityName, $data, $this);
 		}
 		return $this->entities[$data['id']];
@@ -89,11 +110,8 @@ abstract class Repository extends Object implements IRepository
 
 	public function persist(Entity $entity, $beAtomic = true)
 	{
-		if (!@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
-		{
-			throw new UnexpectedValueException();
-		}
-		else if (isset($entity->id) AND !$entity->isChanged())
+		$this->checkEntityName(get_class($entity));
+		if (isset($entity->id) AND !$entity->isChanged())
 		{
 			return $entity->id;
 		}
@@ -102,10 +120,7 @@ abstract class Repository extends Object implements IRepository
 
 	public function delete($entity, $beAtomic = true)
 	{
-		if ($entity instanceof Entity AND !@is_a($entity, $this->getEntityName())) // php 5.0 - 5.2 throw deprecated
-		{
-			throw new UnexpectedValueException();
-		}
+		if ($entity instanceof Entity) $this->checkEntityName(get_class($entity));
 		return $this->getMapper()->delete($entity, $beAtomic);
 	}
 

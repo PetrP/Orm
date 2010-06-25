@@ -19,15 +19,5 @@ class NoConventional extends Object implements IConventional
 		return (array) $data;
 	}
 
-	/**
-	 * fk
-	 * @param  string
-	 * @return string
-	 */
-	public function foreignKeyFormat($s)
-	{
-		return $s;
-	}
-
 }
 

@@ -118,7 +118,6 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource
 		if ($a instanceof StdObject)
 		{
 			return $this->repository->createEntity($a);
-			//return Entity::create($this->repository->getEntityName($a), $this->repository->getConventional()->unformat((array) $a));
 		}
 		else if (is_array($a))
 		{

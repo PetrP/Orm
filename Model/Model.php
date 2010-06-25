@@ -11,6 +11,9 @@ abstract class AbstractModel extends Object
 {
 	private static $repositories = array();
 
+	/**
+	 * @return Repository
+	 */
 	public static function getRepository($name)
 	{
 		$name = strtolower($name);

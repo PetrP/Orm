@@ -11,7 +11,7 @@ class SqlConventional extends Object implements IConventional
 	public function __construct(Mapper $mapper)
 	{
 		$this->cache = & self::$staticCache[$mapper->getRepository()->getRepositoryName()];
-		$this->loadFk($mapper->getRepository()->getEntityName());
+		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
 	}
 	
 	/**
@@ -40,7 +40,17 @@ class SqlConventional extends Object implements IConventional
 		return $s;
 	}
 
-	public function format($data)
+	/**
+	 * fk
+	 * @param  string
+	 * @return string
+	 */
+	protected function foreignKeyFormat($s)
+	{
+		return $s . '_id';
+	}
+
+	final public function format($data)
 	{
 		$result = array();
 		foreach ($data as $key => $value)
@@ -62,25 +72,28 @@ class SqlConventional extends Object implements IConventional
 		return $result;
 	}
 
-	private function loadFk($entityName)
+	final private function loadFk(array $entityNames)
 	{
 		if (!isset($this->cache['fk']))
 		{
 			$result = array();
 			if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi
 			{
-				foreach (Entity::getFK($entityName) as $name => $foo)
+				foreach ($entityNames as $entityName)
 				{
-					$fk = $this->foreignKeyFormat($this->formatKey($name));
-					$result[$fk] = $name;
-					$result[$name] = $fk;
+					foreach (Entity::getFK($entityName) as $name => $foo)
+					{
+						$fk = $this->foreignKeyFormat($this->formatKey($name));
+						$result[$fk] = $name;
+						$result[$name] = $fk;
+					}
 				}
 			}
 			$this->cache['fk'] = $result;
 		}
 	}
 
-	public function unformat($data)
+	final public function unformat($data)
 	{
 		$result = array();
 		foreach ($data as $key => $value)
@@ -100,16 +113,6 @@ class SqlConventional extends Object implements IConventional
 			$result[$k] = $value;
 		}
 		return $result;
-	}
-
-	/**
-	 * fk
-	 * @param  string
-	 * @return string
-	 */
-	public function foreignKeyFormat($s)
-	{
-		return $s . '_id';
 	}
 
 }
