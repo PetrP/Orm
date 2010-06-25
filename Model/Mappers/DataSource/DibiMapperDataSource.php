@@ -21,14 +21,13 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource
 	public function orderBy($row, $sorting = 'ASC')
 	{
 		$conventional = $this->repository->getMapper()->getConventional();
-		$entity = $this->repository->getEntityName();
 		if (is_array($row))
 		{
-			return parent::orderBy($conventional->format($row, $entity), $sorting);
+			return parent::orderBy($conventional->format($row), $sorting);
 		}
 		else
 		{
-			$row = $conventional->format(array($row => $sorting), $entity);
+			$row = $conventional->format(array($row => $sorting));
 			return parent::orderBy(key($row), $sorting);
 		}
 	}

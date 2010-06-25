@@ -75,6 +75,28 @@ foreach (Model::getRepository('test')->findById($t->id) as $x)
 	dump($x->toArray());
 }
 
+
+/**
+ * @property Test $parent
+ * @fk $parent Test
+ */
+class Test3 extends Entity
+{
+
+}
+class Test3Repository extends Repository
+{
+
+}
+
+
+$t3 = new Test3;
+$t3->parent = $t;
+Model::getRepository('test3')->persist($t3);
+
+$t3 = Model::getRepository('test3')->findAll()->fetch();
+dump($t3->toArray(Entity::ENTITY_TO_ID));
+
 __halt_compiler();
 ------EXPECT------
 array(4) {
@@ -148,4 +170,7 @@ array(4) {
 	"char" => string(1) "%a%"
 }
 
-
+array(2) {
+	"id" => int(%i%)
+	"parent" => int(%i%)
+}

@@ -144,11 +144,6 @@ abstract class Entity extends Object implements IEntity
 			$valid = isset($this->valid[$name]) ? $this->valid[$name] : false;
 			$value = $this->values[$name];
 		}
-		// todo povolit mit ho i jako id rovnou v $name a to __fk__id zrusit
-		else if (isset($rule['fk']) AND array_key_exists($fk = $name . '__fk__id', $this->values))
-		{
-			$value = Model::getRepository($rule['fk'])->getById($this->values[$fk]);
-		}
 		else if ($this->getGeneratingRepository(false)) // lazy load
 		{
 			if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))

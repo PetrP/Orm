@@ -4,12 +4,17 @@ require_once dirname(__FILE__) . '/IConventional.php';
 
 class NoConventional extends Object implements IConventional
 {
-	public function format($data, $entityName)
+	public function __construct(Mapper $repository)
+	{
+
+	}
+
+	public function format($data)
 	{
 		return (array) $data;
 	}
 
-	public function unformat($data, $entityName)
+	public function unformat($data)
 	{
 		return (array) $data;
 	}

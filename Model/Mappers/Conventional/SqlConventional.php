@@ -4,8 +4,16 @@ require_once dirname(__FILE__) . '/IConventional.php';
 
 class SqlConventional extends Object implements IConventional
 {
-	private static $cache = array(); // todo je potreba ukladat podle nazvu trydy, jinak se pri pouziti nekolika trid bude kolidovat.
+	private static $staticCache = array();
 
+	private $cache = array();
+	
+	public function __construct(Mapper $mapper)
+	{
+		$this->cache = & self::$staticCache[$mapper->getRepository()->getRepositoryName()];
+		$this->loadFk($mapper->getRepository()->getEntityName());
+	}
+	
 	/**
 	 * camelCase -> underscore_separated.
 	 * @param  string
@@ -32,24 +40,22 @@ class SqlConventional extends Object implements IConventional
 		return $s;
 	}
 
-	public function format($data, $entityName)
+	public function format($data)
 	{
-		$this->loadFk($entityName);
-
 		$result = array();
 		foreach ($data as $key => $value)
 		{
-			if (isset(self::$cache['fk'][$entityName][$key]))
+			if (isset($this->cache['fk'][$key]))
 			{
-				$k = self::$cache['fk'][$entityName][$key];
+				$k = $this->cache['fk'][$key];
 			}
-			else if (isset(self::$cache[$key]))
+			else if (isset($this->cache[$key]))
 			{
-				$k = self::$cache[$key];
+				$k = $this->cache[$key];
 			}
 			else
 			{
-				$k = self::$cache[$key] = $this->formatKey($key);
+				$k = $this->cache[$key] = $this->formatKey($key);
 			}
 			$result[$k] = $value;
 		}
@@ -58,38 +64,38 @@ class SqlConventional extends Object implements IConventional
 
 	private function loadFk($entityName)
 	{
-		if (!isset(self::$cache['fk'][$entityName]))
+		if (!isset($this->cache['fk']))
 		{
-			$fk = array();
-			$unfk = array();
-			foreach (Entity::getFK($entityName) as $n => $foo)
+			$result = array();
+			if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi
 			{
-				$unfk[$tmp = $this->foreignKeyFormat($this->formatKey($n))] = $n . '__fk__id'; // todo constant
-				$fk[$n] = $tmp; // todo constant
+				foreach (Entity::getFK($entityName) as $name => $foo)
+				{
+					$fk = $this->foreignKeyFormat($this->formatKey($name));
+					$result[$fk] = $name;
+					$result[$name] = $fk;
+				}
 			}
-			self::$cache['fk'][$entityName] = $fk;
-			self::$cache['unfk'][$entityName] = $unfk;
+			$this->cache['fk'] = $result;
 		}
 	}
 
-	public function unformat($data, $entityName)
+	public function unformat($data)
 	{
-		$this->loadFk($entityName);
-
 		$result = array();
 		foreach ($data as $key => $value)
 		{
-			if (isset(self::$cache['unfk'][$entityName][$key]))
+			if (isset($this->cache['fk'][$key]))
 			{
-				$k = self::$cache['unfk'][$entityName][$key];
+				$k = $this->cache['fk'][$key];
 			}
-			else if (isset(self::$cache[$key]))
+			else if (isset($this->cache[$key]))
 			{
-				$k = self::$cache[$key];
+				$k = $this->cache[$key];
 			}
 			else
 			{
-				$k = self::$cache[$key] = $this->unformatKey($key);
+				$k = $this->cache[$key] = $this->unformatKey($key);
 			}
 			$result[$k] = $value;
 		}

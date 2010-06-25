@@ -70,14 +70,8 @@ abstract class Repository extends Object implements IRepository
 	{
 		if (!isset($this->entities[$data['id']]))
 		{
-			$originData = $data;
-			$defaultEntity = $this->getEntityName();
-			$data = (array) $this->conventional->unformat($data, $defaultEntity);
+			$data = (array) $this->conventional->unformat($data);
 			$entityName = $this->getEntityName($data);
-			if ($defaultEntity !== $entityName)
-			{
-				$data = (array) $this->conventional->unformat($originData, $entityName);
-			}
 			$this->entities[$data['id']] = Entity::create($entityName, $data, $this);
 		}
 		return $this->entities[$data['id']];
