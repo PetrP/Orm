@@ -349,7 +349,8 @@ abstract class Entity extends Object implements IEntity
 			}
 			else
 			{
-				$defaultMethod = 'getDefault' . ucfirst($name);
+				$defaultMethod = "getDefault$name";
+				$defaultMethod{10} = $defaultMethod{10} & "\xDF";
 				if (method_exists($this, $defaultMethod))
 				{
 					$default = $this->{$defaultMethod}();

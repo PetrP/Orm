@@ -51,7 +51,8 @@ abstract class Repository extends Object implements IRepository
 
 	protected function createMapper()
 	{
-		$class = ucfirst($this->getRepositoryName()) . 'Mapper';
+		$class = $this->getRepositoryName() . 'Mapper';
+		$class{0} = $class{0} & "\xDF";
 		if (class_exists($class))
 		{
 			return new $class($this);
