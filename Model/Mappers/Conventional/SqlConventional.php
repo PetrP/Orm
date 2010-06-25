@@ -31,7 +31,7 @@ class SqlConventional extends Object implements IConventional
 	 * @param  string
 	 * @return string
 	 */
-	protected function entityFormat($key) // todo rename
+	protected function entityFormat($key)
 	{
 		$s = strtolower($key);
 		$s = preg_replace('#_(?=[a-z])#', ' ', $s);

@@ -10,6 +10,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
 abstract class AbstractModel extends Object
 {
 	private static $repositories = array();
+	private static $model;
 
 	/**
 	 * @return Repository
@@ -43,16 +44,16 @@ abstract class AbstractModel extends Object
 	 */
 	public static function get()
 	{
-		static $model;
-		if (!isset($model))
+		if (!isset(self::$model))
 		{
 			$model = new Model;
 			if (!($model instanceof self))
 			{
 				throw new Exception;
 			}
+			self::$model = $model;
 		}
-		return $model;
+		return self::$model;
 	}
 
 }

@@ -52,12 +52,12 @@ abstract class Entity extends Object implements IEntity
 		$this->values['id'] = NULL;
 	}
 
-	protected static function createEntityRules($entityClass) // todo refactoring asi na nonstatic
+	protected static function createEntityRules($entityClass)
 	{
 		return EntityManager::getEntityParams($entityClass);
 	}
 
-	protected static function getEntityRules($entityClass) // todo refactoring final a nonstatic
+	final protected static function getEntityRules($entityClass) // todo private?
 	{
 		static $cache = array();
 		if (!isset($cache[$entityClass]))
@@ -380,7 +380,7 @@ abstract class Entity extends Object implements IEntity
 
 	final private function startup() // todo rename?
 	{
-		$this->rules = $this->getEntityRules(get_class($this));
+		$this->rules = self::getEntityRules(get_class($this));
 	}
 
 
