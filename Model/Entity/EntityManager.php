@@ -130,7 +130,8 @@ class EntityManager extends Object
 			if ($m === 'get' OR $m === 'set')
 			{
 				$var = substr($method, 3);
-				$var{0} = strtolower($var{0});
+				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+
 				if (isset($params[$var][$m]))
 				{
 					$params[$var][$m]['method'] = $method;

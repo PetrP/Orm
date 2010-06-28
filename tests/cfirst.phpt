@@ -2,6 +2,8 @@
 
 require dirname(__FILE__) . '/base.php';
 
+NetteTestHelpers::skip();
+
 $strings = array();
 $chars = str_split('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789_');
 for ($i = 10000 ;$i--;)
@@ -90,7 +92,15 @@ foreach ($strings as $string)
 	if ($string{0} != '_') $string{0} = $string{0} | "\x20";
 	
 }
-dump(Debug::timer(), '_\x20');
+dump(Debug::timer(), '==_\x20');
+if (lcfirst(end($strings)) !== $string) dump($string, end($strings));
+Debug::timer();
+foreach ($strings as $string)
+{
+	if ($string{0} !== '_') $string{0} = $string{0} | "\x20";
+	
+}
+dump(Debug::timer(), '===_\x20');
 if (lcfirst(end($strings)) !== $string) dump($string, end($strings));
 /*
 

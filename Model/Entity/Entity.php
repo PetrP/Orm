@@ -298,7 +298,7 @@ abstract class Entity extends Object implements IEntity
 		if ($m === 'get' OR ($m === 'set' AND array_key_exists(0, $args)))
 		{
 			$var = substr($name, 3);
-			$var{0} = strtolower($var{0});
+			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 
 			if (isset($this->rules[$var]))
 			{
@@ -350,7 +350,7 @@ abstract class Entity extends Object implements IEntity
 			else
 			{
 				$defaultMethod = "getDefault$name";
-				$defaultMethod{10} = $defaultMethod{10} & "\xDF";
+				$defaultMethod{10} = $defaultMethod{10} & "\xDF"; // ucfirst
 				if (method_exists($this, $defaultMethod))
 				{
 					$default = $this->{$defaultMethod}();
