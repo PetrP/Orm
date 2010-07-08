@@ -313,5 +313,3 @@ class ArrayDataSource extends Object implements IModelDataSource
 		return count($this->data);
 	}
 }
-
-

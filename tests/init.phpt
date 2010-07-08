@@ -3,11 +3,11 @@
 require dirname(__FILE__) . '/base.php';
 
 /**
-* @property-read int $id
-* @property string $text
-* @property int $int
-* @property string $char
-*/
+ * @property-read int $id
+ * @property string $text
+ * @property int $int
+ * @property string $char
+ */
 class Test extends Entity
 {
 	public function setChar($char)
@@ -18,7 +18,7 @@ class Test extends Entity
 		}
 		return $this->setValue('char', $char);
 	}
-	
+
 	public function setText($text)
 	{
 		if (strlen($text) > 5)
@@ -55,7 +55,7 @@ Model::init(array(
 /*
 for ($i=1000;$i--;)
 	Model::getRepository('test')->getById(153548);
-*/
+ */
 foreach (Model::getRepository('test')->findAll()->applyLimit(100) as $x)
 {
 	$x->toArray();

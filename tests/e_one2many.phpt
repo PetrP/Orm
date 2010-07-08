@@ -7,18 +7,18 @@ NetteTestHelpers::skip();
 /**
  * @property-read int $id
  * @property string $name
- * @property OneToMany $emails 
+ * @property OneToMany $emails
  * @OneToMany Email
  */
 class User extends Entity
 {
 	private $mainEmail;
-	
+
 	public function __construct()
 	{
 		$this->emails = new OneToMany($this);
 	}
-	
+
 	public function addEmail($email)
 	{
 		if (!($email instanceof Email))
@@ -27,7 +27,7 @@ class User extends Entity
 		}
 		return $this->emails->add($email);
 	}
-	
+
 	public function removeEmail($email)
 	{
 		if (!($email instanceof Email))
@@ -36,14 +36,14 @@ class User extends Entity
 		}
 		return $this->emails->remove($email);
 	}
-	
+
 	public function getEmails()
 	{
 		$emails = $this->getValue('emails');
 		return $emails;
 	}
-	
-	
+
+
 	public function getMainEmail()
 	{
 		if ($this->mainEmail instanceof Email) return $this->mainEmail;
@@ -54,13 +54,13 @@ class User extends Entity
 		}
 		return $this->mainEmail = $main;
 	}
-	
+
 	public function setMainEmail($email)
 	{
 		$this->mainEmail = $email->setUser($this)->setMain(true);
 		return $this;
 	}
-	
+
 }
 
 class OneToMany extends Object
@@ -69,25 +69,25 @@ class OneToMany extends Object
 	private $one;
 	private $many = array();
 	private $deleted = array();
-	
+
 	public function __construct(Entity $one)
 	{
 		$this->one = $one;
 	}
-	
+
 	public function add($e)
 	{
 		$e->{Factory::getName($this->one)} = $this->one;
 		$this->many[] = $e;
 		return $e;
 	}
-	
+
 	public function remove($e)
 	{
 		$this->deleted[] = $e;
 		return $e;
 	}
-	
+
 	public function getIterator()
 	{
 		if ($this->deleted)
@@ -108,22 +108,22 @@ class OneToMany extends Object
 		}
 		return new ArrayIterator($this->many);
 	}
-	
+
 }
 
 
 /**
-* @property string $email
-* @property User $user
-* @property bool $main
-*/
+ * @property string $email
+ * @property User $user
+ * @property bool $main
+ */
 class Email extends Entity
 {
 	public function __construct($email)
 	{
 		$this->email = $email;
 	}
-	
+
 	public function setEmail($email)
 	{
 		if (!ValidationHelper::isEmail($email))
@@ -132,7 +132,7 @@ class Email extends Entity
 		}
 		return $this->setValue('email', $email);
 	}
-	
+
 	public function __toString()
 	{
 		return $this->email;
@@ -145,7 +145,7 @@ class Email extends Entity
 		$user->emails->add($this);
 		return $this->setValue('user', $user);
 	}
-	
+
 	/*public function setMain($main)
 	{
 		$this->setValue('main', $main)

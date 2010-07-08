@@ -14,7 +14,7 @@ class Test extends Entity
 	{
 		$this->setValue('readWrite', md5($value));
 	}
-	
+
 	public function setDate($date)
 	{
 		if (!($date instanceof DateTime))
@@ -79,7 +79,7 @@ array(5) {
 		"since" => string(6) "Entity"
 	}
 	"readWrite" => array(4) {
-		"types" => array(0) 
+		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
@@ -89,14 +89,14 @@ array(5) {
 		}
 	}
 	"read" => array(3) {
-		"types" => array(0) 
+		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
 		"since" => string(4) "Test"
 	}
 	"write" => array(3) {
-		"types" => array(0) 
+		"types" => array(0)
 		"set" => array(1) {
 			"method" => NULL
 		}

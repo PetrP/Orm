@@ -7,13 +7,13 @@ class SqlConventional extends Object implements IConventional
 	private static $staticCache = array();
 
 	private $cache = array();
-	
+
 	public function __construct(Mapper $mapper)
 	{
 		$this->cache = & self::$staticCache[$mapper->getRepository()->getRepositoryName()];
 		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
 	}
-	
+
 	/**
 	 * camelCase -> underscore_separated.
 	 * @param  string

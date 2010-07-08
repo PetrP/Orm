@@ -90,7 +90,7 @@ Debug::timer();
 foreach ($strings as $string)
 {
 	if ($string{0} != '_') $string{0} = $string{0} | "\x20";
-	
+
 }
 dump(Debug::timer(), '==_\x20');
 if (lcfirst(end($strings)) !== $string) dump($string, end($strings));
@@ -98,7 +98,7 @@ Debug::timer();
 foreach ($strings as $string)
 {
 	if ($string{0} !== '_') $string{0} = $string{0} | "\x20";
-	
+
 }
 dump(Debug::timer(), '===_\x20');
 if (lcfirst(end($strings)) !== $string) dump($string, end($strings));
@@ -111,7 +111,7 @@ dump("1" | "\x20");
 dump("z" | "\x20");
 dump("Z" | "\x20");
 
-*//*
+ *//*
 for ($i=10000;$i--;)
 {
 	if (("B" | chr($i)) === 'b')
@@ -119,7 +119,7 @@ for ($i=10000;$i--;)
 		//	if (("_" | chr($i)) === '_')
 	dump($i);
 }
-*/
+ */
 
 
 

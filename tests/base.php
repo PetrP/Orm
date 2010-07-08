@@ -38,5 +38,5 @@ require_once dirname(__FILE__) . '/../Model/loader.php';
 
 class Model extends AbstractModel
 {
-	
+
 }

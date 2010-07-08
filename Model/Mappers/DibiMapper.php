@@ -195,5 +195,3 @@ class DibiPersistenceHelper extends Object
 	}
 
 }
-
-

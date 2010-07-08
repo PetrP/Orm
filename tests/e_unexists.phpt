@@ -7,12 +7,12 @@ require dirname(__FILE__) . '/base.php';
  */
 class Test extends Entity
 {
-	
+
 	public function setXxx($v)
 	{
 		return $this->setValue('xxx', $v);
 	}
-	
+
 	public function setBbb($v)
 	{
 		return $this->setValue('ccc', $v);

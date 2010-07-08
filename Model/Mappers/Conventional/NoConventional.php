@@ -36,4 +36,3 @@ class NoConventional extends Object implements IConventional
 		return $this->formatStorageToEntity($data);
 	}
 }
-

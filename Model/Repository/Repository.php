@@ -63,7 +63,7 @@ abstract class Repository extends Object implements IRepository
 	public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
 	{
 		throw new DeprecatedException();
-		
+
 		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
 		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
@@ -136,5 +136,3 @@ abstract class Repository extends Object implements IRepository
 	}
 
 }
-
-

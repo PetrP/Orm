@@ -57,9 +57,3 @@ abstract class AbstractModel extends Object
 	}
 
 }
-
-
-
-
-
-

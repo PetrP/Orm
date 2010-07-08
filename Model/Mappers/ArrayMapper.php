@@ -155,4 +155,3 @@ abstract class ArrayMapper extends Mapper
 		return $result;
 	}
 }
-

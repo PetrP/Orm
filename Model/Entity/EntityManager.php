@@ -138,7 +138,7 @@ class EntityManager extends Object
 				}
 			}
 		}
-		
+
 		return $params;
 	}
 
