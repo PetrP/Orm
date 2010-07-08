@@ -96,6 +96,15 @@ abstract class Entity extends Object implements IEntity
 				{
 					$result[$name] = $result[$name]->id;
 				}
+				else if ($mode === self::ENTITY_TO_ID AND $result[$name] instanceof ManyToMany)
+				{
+					$arr = array();
+					foreach ($result[$name] as $entity)
+					{
+						$arr[] = $entity->id;
+					}
+					$result[$name] = $arr;
+				}
 			}
 		}
 

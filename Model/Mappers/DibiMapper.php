@@ -133,6 +133,7 @@ class DibiPersistenceHelper extends Object
 	public function persist(Entity $entity, $beAtomic = true)
 	{
 		$values = Entity::internalValues($entity);
+		$manyToManyValues = array();
 		$fk = Entity::getFk(get_class($entity));
 		if ($beAtomic) $this->connection->begin();
 
@@ -152,6 +153,11 @@ class DibiPersistenceHelper extends Object
 			else if (is_array($value))
 			{
 				$values[$key] = serialize($value); // todo zkontrolovat jestli je jednodimenzni a neobrahuje zadne nesmysly
+			}
+			else if ($value instanceof ManyToMany)
+			{
+				$manyToManyValues[] = $value;;
+				unset($values[$key]);
 			}
 			else if ($value !== NULL AND !($value instanceof DateTime) AND !is_scalar($value))
 			{
@@ -176,6 +182,11 @@ class DibiPersistenceHelper extends Object
 				$id = $entity->id;
 			}
 			Entity::internalValues($entity, array('id' => $id));
+		}
+
+		foreach ($manyToManyValues as $manyToMany)
+		{
+			$manyToMany->persist(false);
 		}
 
 		if ($beAtomic) $this->connection->commit();

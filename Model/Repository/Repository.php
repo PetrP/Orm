@@ -87,6 +87,16 @@ abstract class Repository extends Object implements IRepository
 		}
 	}
 
+	final public function isEntity(Entity $entity) // todo rename
+	{
+		try {
+			$this->checkEntityName(get_class($entity));
+		} catch (Exception $e) {
+			return false;
+		}
+		return true;
+	}
+
 	final public function createEntity($data)
 	{
 		if (!isset($this->entities[$data['id']]))

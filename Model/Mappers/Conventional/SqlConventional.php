@@ -45,7 +45,7 @@ class SqlConventional extends Object implements IConventional
 	 * @param  string
 	 * @return string
 	 */
-	protected function foreignKeyFormat($s)
+	public function foreignKeyFormat($s)
 	{
 		return $s . '_id';
 	}
@@ -113,6 +113,11 @@ class SqlConventional extends Object implements IConventional
 			}
 			$this->cache['fk'] = $result;
 		}
+	}
+
+	public function getManyToManyTableName(Repository $first, Repository $second)
+	{
+		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}
 
 

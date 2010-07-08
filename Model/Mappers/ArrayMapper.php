@@ -74,6 +74,7 @@ abstract class ArrayMapper extends Mapper
 		Environment::enterCriticalSection(get_class($this));
 
 		$values = Entity::internalValues($entity);
+		$manyToManyValues = array();
 		$fk = Entity::getFk(get_class($entity));
 		foreach ($values as $key => $value)
 		{
@@ -81,6 +82,11 @@ abstract class ArrayMapper extends Mapper
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;
+			}
+			else if ($value instanceof ManyToMany)
+			{
+				$manyToManyValues[] = $value;;
+				unset($values[$key]);
 			}
 			else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
 			{
@@ -103,6 +109,11 @@ abstract class ArrayMapper extends Mapper
 		$this->data[$id] = $entity;
 
 		$this->saveData($originData);
+
+		foreach ($manyToManyValues as $manyToMany)
+		{
+			$manyToMany->persist(false);
+		}
 
 		Environment::leaveCriticalSection(get_class($this));
 

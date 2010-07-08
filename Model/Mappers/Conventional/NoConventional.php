@@ -19,7 +19,10 @@ class NoConventional extends Object implements IConventional
 		return (array) $data;
 	}
 
-
+	public function getManyToManyTableName(Repository $first, Repository $second)
+	{
+		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
+	}
 
 	// todo deprecated
 	public function format($data)
