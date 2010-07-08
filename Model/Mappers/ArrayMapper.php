@@ -43,12 +43,12 @@ abstract class ArrayMapper extends Mapper
 		$result = array();
 		foreach ($where as $key => $value)
 		{
+			$value = $value instanceof Entity ? $value->id : $value;
 			foreach ($all as $entity)
 			{
-				$value = $value instanceof Entity ? $value->id : $value;
 				$eValue = $entity[$key];
 				$eValue = $eValue instanceof Entity ? $eValue->id : $eValue;
-				if ($eValue == $value)
+				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
 				{
 					$result[] = $entity;
 				}

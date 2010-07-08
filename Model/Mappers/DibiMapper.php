@@ -47,7 +47,14 @@ class DibiMapper extends Mapper
 		// todo instanceof IModelDataSource
 		foreach ($where as $key => $value)
 		{
-			$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
+			if (is_array($value))
+			{
+				$all->where('%n IN %in', $key, $value);
+			}
+			else
+			{
+				$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
+			}
 		}
 		return $all;
 	}
