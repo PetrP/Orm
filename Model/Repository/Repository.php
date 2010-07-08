@@ -60,7 +60,7 @@ abstract class Repository extends Object implements IRepository
 		return new DibiMapper($this);
 	}
 
-	public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
+	final public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
 	{
 		throw new DeprecatedException();
 
