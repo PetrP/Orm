@@ -148,7 +148,7 @@ abstract class Entity extends Object implements IEntity
 
 		$value = self::DEFAULT_VALUE;
 		$valid = false;
-		if (array_key_exists($name, $this->values))
+		if (isset($this->values[$name]) OR array_key_exists($name, $this->values))
 		{
 			$valid = isset($this->valid[$name]) ? $this->valid[$name] : false;
 			$value = $this->values[$name];
