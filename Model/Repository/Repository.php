@@ -129,7 +129,7 @@ abstract class Repository extends Object implements IRepository
 		return $this->getMapper()->persist($entity, $beAtomic);
 	}
 
-	public function delete($entity, $beAtomic = true)
+	public function delete($entity, $beAtomic = true) // todo prejmenovat na remove?
 	{
 		if ($entity instanceof Entity) $this->checkEntityName(get_class($entity));
 		return $this->getMapper()->delete($entity, $beAtomic);
