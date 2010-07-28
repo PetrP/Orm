@@ -51,6 +51,10 @@ class DibiMapper extends Mapper
 			{
 				$all->where('%n IN %in', $key, $value);
 			}
+			else if ($value === NULL)
+			{
+				$all->where('%n IS NULL', $key);
+			}
 			else
 			{
 				$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
