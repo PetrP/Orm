@@ -24,10 +24,11 @@ abstract class Entity extends Object implements IEntity
 
 	private $repositoryName;
 
-	private $changed = true;
+	private $changed = false;
 
 	public function __construct()
 	{
+		$this->changed = true;
 		$this->startup();
 	}
 
