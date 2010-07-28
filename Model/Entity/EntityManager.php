@@ -102,7 +102,7 @@ class EntityManager extends Object
 						$repository = $match[2];
 						if (isset($params[$property]))
 						{
-							if (Model::getRepository($repository) instanceof Repository)
+							if (Model::isRepository($repository))
 							{
 								$params[$property]['fk'] = $repository;
 							}
