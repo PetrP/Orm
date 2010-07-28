@@ -7,6 +7,8 @@ abstract class Repository extends Object implements IRepository
 	private $mapper;
 
 	private $repositoryName;
+	
+	/** @var SqlConventional */
 	protected $conventional;
 
 	private $entities = array();
