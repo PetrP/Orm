@@ -381,7 +381,7 @@ abstract class Entity extends Object implements IEntity
 		if (!ValidationHelper::isValid($rule['types'], $value))
 		{
 			$type = implode('|',$rule['types']);
-			throw new UnexpectedValueException("Param $name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
+			throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
 		}
 
 		$this->values[$name] = $value;
