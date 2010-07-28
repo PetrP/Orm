@@ -20,9 +20,7 @@ abstract class AbstractModel extends Object
 		$name = strtolower($name);
 		if (!isset(self::$repositories[$name]))
 		{
-			$class = $name . 'Repository';
-			$class[0] = strtoupper($class[0]);
-
+			$class = self::getRepositoryClass($name);
 			$r = new $class($name);
 			if (!($r instanceof Repository))
 			{
@@ -31,6 +29,34 @@ abstract class AbstractModel extends Object
 			self::$repositories[$name] = $r;
 		}
 		return self::$repositories[$name];
+	}
+
+	public static function isRepository($name)
+	{
+		$name = strtolower($name);
+		if (isset(self::$repositories[$name])) return true;
+		try {
+			return is_subclass_of(self::getRepositoryClass($name), 'Repository');
+		} catch (InvalidStateException $e) {
+			return false;
+		}
+	}
+
+	/**
+	 * @throws InvalidStateException
+	 * @param string
+	 * @return string
+	 */
+	private static function getRepositoryClass($name)
+	{
+		$class = $name . 'Repository';
+		$class[0] = strtoupper($class[0]);
+
+		if (!class_exists($class))
+		{
+			throw new InvalidStateException();
+		}
+		return $class;
 	}
 
 	public function & __get($name)
