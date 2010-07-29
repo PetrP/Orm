@@ -13,8 +13,11 @@ abstract class Repository extends Object implements IRepository
 
 	private $entities = array();
 
+	private $performanceHelper;
+
 	public function getById($id)
 	{
+		$this->performanceHelper->access($id);
 		if ($id instanceof Entity)
 		{
 			$id = $id->id;
@@ -23,6 +26,13 @@ abstract class Repository extends Object implements IRepository
 		{
 			return $this->entities[$id];
 		}
+		$ids = $this->performanceHelper->get();
+		if ($ids) $this->mapper->findById($ids)->fetchAll();
+		if (isset($this->entities[$id]))
+		{
+			return $this->entities[$id];
+		}
+
 		return $this->getMapper()->getById($id);
 	}
 
@@ -35,6 +45,7 @@ abstract class Repository extends Object implements IRepository
 	{
 		$this->repositoryName = $repositoryName;
 		$this->conventional = $this->getMapper()->getConventional(); // speedup
+		$this->performanceHelper = new PerformanceHelper($this);
 	}
 
 	final public function getMapper()
