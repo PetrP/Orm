@@ -7,6 +7,7 @@ class EntityManager extends Object
 		if (!class_exists($class)) throw new InvalidStateException();
 		else if (!is_subclass_of($class, 'Entity')) throw new InvalidStateException();
 
+		$metaData = new MetaData($class);
 		$params = array();
 		$classes = array();
 		$_class = $class;
@@ -69,12 +70,12 @@ class EntityManager extends Object
 
 					if (!$mode OR $mode === '-read')
 					{
-						$params[$property]['get'] = array('method' => NULL);
+						$params[$property]['get'] = true;
 						$params[$property]['since'] = $_class;
 					}
 					if (!$mode OR $mode === '-write')
 					{
-						$params[$property]['set'] = array('method' => NULL);
+						$params[$property]['set'] = true;
 						$params[$property]['since'] = $_class;
 					}
 
@@ -123,7 +124,77 @@ class EntityManager extends Object
 			}*/
 		}
 
-		$methods = array_diff(get_class_methods($class), get_class_methods('Entity'));
+		foreach ($params as $property => $param)
+		{
+			$metaData->add(
+				$property,
+				$param['types'],
+				isset($param['get'], $param['set']) ? MetaData::READWRITE :
+					(isset($param['get']) ? MetaData::READ : MetaData::WRITE)
+				,
+				isset($param['fk']) ? $param['fk'] : NULL,
+				$param['since']
+			);
+		}
+
+		return $metaData->toArray();
+	}
+
+}
+
+
+class MetaData extends Object
+{
+	const READ = 1;
+	const WRITE = 2;
+	const READWRITE = 3;
+
+	private $entityClass;
+	private $data = array();
+
+	public function __construct($entityClass)
+	{
+		if ($entityClass instanceof Entity)
+		{
+			$entityClass = get_class($entityClass);
+		}
+		else
+		{
+			if (!class_exists($entityClass)) throw new InvalidStateException();
+			else if (!is_subclass_of($entityClass, 'Entity')) throw new InvalidStateException();
+		}
+		$this->entityClass = $entityClass;
+	}
+
+	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL)
+	{
+		if (isset($this->data[$name])) throw new Exception($name);
+
+		if (!is_array($types))
+		{
+			$types = explode('|',strtolower($types));
+			if (in_array('mixed', $types))
+			{
+				$types = array();
+			}
+		}
+		if ($access === NULL) $access = self::READWRITE;
+
+
+		$this->data[$name] = array(
+			'types' => $types,
+			'get' => ($access === self::READ OR $access === self::READWRITE) ? array('method' => NULL) : NULL,
+			'set' => ($access === self::WRITE OR $access === self::READWRITE) ? array('method' => NULL) : NULL,
+			'fk' => $fk,
+			'since' => $since,
+		);
+	}
+
+	public function toArray()
+	{
+		$params = $this->data;
+
+		$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Entity'));
 		foreach ($methods as $method)
 		{
 			$m = substr($method, 0, 3);
