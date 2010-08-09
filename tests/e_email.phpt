@@ -22,11 +22,11 @@ $t = new Test;
 
 try {
 	$t->setEmail('asdasdasd');
-} catch (Exception $e) { dump($e); }
+} catch (Exception $e) { dt($e); }
 
 $t->setEmail('asdasdasd@asdasd.cz');
 
-dump($t->email);
+dt($t->email);
 
 __halt_compiler();
 ------EXPECT------

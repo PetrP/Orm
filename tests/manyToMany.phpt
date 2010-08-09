@@ -39,7 +39,7 @@ abstract class BaseMapper extends ArrayMapper
 	}
 	protected function saveData(array $data)
 	{
-		dump($data);
+		dt($data);
 	}
 }
 
@@ -50,11 +50,11 @@ class ArticlesToTags extends ManyToMany
 {
 	public function persist($beAtomic = true)
 	{
-		dump('persist');
+		dt('persist');
 	}
 	protected function load()
 	{
-		dump('load');
+		dt('load');
 		return array();
 	}
 }

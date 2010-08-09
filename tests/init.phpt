@@ -65,6 +65,6 @@ foreach (Model::getRepository('test')->findByChar('a')->applyLimit(100) as $x)
 {
 	if ($x->char !== 'a')
 	{
-		dump($x->toArray());
+		dt($x->toArray());
 	}
 }

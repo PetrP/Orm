@@ -24,20 +24,20 @@ $t = new Test;
 
 try {
 	$t->neexistuje = 'aaaaa';
-} catch (Exception $e) { dump($e); }
+} catch (Exception $e) { dt($e); }
 
 try {
 	$t->setXxx('aaaaa');
-	dump('todo povolit nebo nepovolit? muze byt wtf');
-} catch (Exception $e) { dump($e); }
+	dt('todo povolit nebo nepovolit? muze byt wtf');
+} catch (Exception $e) { dt($e); }
 
 try {
 	$t->aaa = 'aaaaa';
-} catch (Exception $e) { dump($e); }
+} catch (Exception $e) { dt($e); }
 
 try {
 	$t->setBbb('aaaaa');
-} catch (Exception $e) { dump($e); }
+} catch (Exception $e) { dt($e); }
 
 __halt_compiler();
 ------EXPECT------

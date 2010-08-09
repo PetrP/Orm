@@ -18,8 +18,8 @@ class Def extends Entity
 
 $d = new Def;
 
-dump($d->position);
-dump($d->date);
+dt($d->position);
+dt($d->date);
 
 
 __halt_compiler();

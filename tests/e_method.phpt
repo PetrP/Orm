@@ -31,22 +31,22 @@ $t->readWrite = 'Lorem ipsum';
 $t->write = 'Ipsum lorem';
 try {
 	$t->read = 'Xxxxx';
-} catch (Exception $e) { dump($e, 'set read'); }
+} catch (Exception $e) { dt($e, 'set read'); }
 
-dump($t->readWrite, 'get readWrite');
+dt($t->readWrite, 'get readWrite');
 try {
-	dump($t->write, 'get write');
-} catch (Exception $e) { dump($e, 'get write'); }
-dump($t->read, 'get read');
+	dt($t->write, 'get write');
+} catch (Exception $e) { dt($e, 'get write'); }
+dt($t->read, 'get read');
 
 
 $t->setReadWrite('asdasd');
-dump($t->getReadWrite(), 'getReadWrite');
-dump($t->readWrite, 'readWrite');
-dump($t->setDate(time())->getDate(), 'getDate');
+dt($t->getReadWrite(), 'getReadWrite');
+dt($t->readWrite, 'readWrite');
+dt($t->setDate(time())->getDate(), 'getDate');
 
 
-dump(EntityManager::getEntityParams('Test'));
+dt(EntityManager::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------

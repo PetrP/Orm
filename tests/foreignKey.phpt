@@ -72,7 +72,7 @@ for ($i=1000;$i--;)
  */
 foreach (Model::getRepository('test')->findById($t->id) as $x)
 {
-	dump($x->toArray());
+	dt($x->toArray());
 }
 
 
@@ -95,7 +95,7 @@ $t3->parent = $t;
 Model::getRepository('test3')->persist($t3);
 
 $t3 = Model::getRepository('test3')->findAll()->fetch();
-dump($t3->toArray(Entity::ENTITY_TO_ID));
+dt($t3->toArray(Entity::ENTITY_TO_ID));
 
 __halt_compiler();
 ------EXPECT------

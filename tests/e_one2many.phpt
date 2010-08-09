@@ -156,7 +156,7 @@ class Email extends Entity
 
 $t = new User;
 
-dump($t->getEmails() instanceof OneToMany, 'OneToMany');
+dt($t->getEmails() instanceof OneToMany, 'OneToMany');
 
 $t->addEmail(new Email('a@a.cz'));
 for ($i=500;$i--;)
@@ -166,20 +166,20 @@ for ($i=500;$i--;)
 
 $t->addEmail('b@b.cz');
 
-dump($t->getMainEmail().'');
+dt($t->getMainEmail().'');
 
 $t->removeEmail('a@a.cz');
 
-dump($t->getMainEmail().'');
+dt($t->getMainEmail().'');
 
 $t->setMainEmail('c@c.cz');
 
-dump($t->getMainEmail().'');
+dt($t->getMainEmail().'');
 
 $email = new Email('d@d.cz');
 $t->addEmail($email->setMain(true));
 
-dump($t->getMainEmail().'');
+dt($t->getMainEmail().'');
 
 $t->setName('s');
 
