@@ -132,20 +132,32 @@ abstract class Repository extends Object implements IRepository
 		return $this->repositoryName;
 	}
 
-	public function persist(Entity $entity, $beAtomic = true)
+	public function persist(Entity $entity)
 	{
 		$this->checkEntityName(get_class($entity));
 		if (isset($entity->id) AND !$entity->isChanged())
 		{
 			return $entity->id;
 		}
-		return $this->getMapper()->persist($entity, $beAtomic);
+		return $this->getMapper()->persist($entity);
 	}
 
-	public function delete($entity, $beAtomic = true) // todo prejmenovat na remove?
+	public function delete($entity) // todo prejmenovat na remove?
 	{
 		if ($entity instanceof Entity) $this->checkEntityName(get_class($entity));
-		return $this->getMapper()->delete($entity, $beAtomic);
+		return $this->getMapper()->delete($entity);
+	}
+
+	public function flush($onlyThis = false)
+	{
+		if ($onlyThis) return $this->getMapper()->flush();
+		return Model::flush();
+	}
+
+	public function clean($onlyThis = false)
+	{
+		if ($onlyThis) return $this->getMapper()->rollback();
+		return Model::clean();
 	}
 
 }

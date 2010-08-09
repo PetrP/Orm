@@ -58,6 +58,7 @@ for ($i=1;$i--;)
 	$t->int = Model::getRepository('test')->getById(153546);
 	dd(Model::getRepository('test')->persist($t));
 }
+Model::getRepository('test')->flush();
 
 
 /*
@@ -93,6 +94,7 @@ class Test3Repository extends Repository
 $t3 = new Test3;
 $t3->parent = $t;
 Model::getRepository('test3')->persist($t3);
+Model::getRepository('test3')->flush();
 
 $t3 = Model::getRepository('test3')->findAll()->fetch();
 dt($t3->toArray(Entity::ENTITY_TO_ID));

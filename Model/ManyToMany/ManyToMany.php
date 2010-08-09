@@ -88,7 +88,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate
 		return new ArrayIterator($this->get());
 	}
 
-	abstract public function persist($beAtomic = true);
+	abstract public function persist();
 	abstract protected function load();
 
 	protected function getTableName()
@@ -119,14 +119,16 @@ abstract class ManyToMany extends Object implements IteratorAggregate
 
 abstract class DibiManyToMany extends ManyToMany
 {
-	public function persist($beAtomic = true)
+	public function persist()
 	{
 		$connection = $this->getFirstRepository()->getMapper()->getConnection();
+
+		$this->getFirstRepository()->getMapper()->begin();
 
 		$childsId = array();
 		foreach ($this->get() as $entity)
 		{
-			$this->childRepository->persist($entity, $beAtomic);
+			$this->childRepository->persist($entity);
 			$childsId[] = $entity->id;
 		}
 

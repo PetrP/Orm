@@ -82,4 +82,20 @@ abstract class AbstractModel extends Object
 		return self::$model;
 	}
 
+	final public static function flush()
+	{
+		foreach (self::$repositories as $repo)
+		{
+			$repo->flush(true);
+		}
+	}
+
+	final public static function clean()
+	{
+		foreach (self::$repositories as $repo)
+		{
+			$repo->clean(true);
+		}
+	}
+
 }

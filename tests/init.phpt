@@ -44,6 +44,7 @@ for ($i=0;$i--;)
 	$t->int = $j;
 	dd(Model::getRepository('test')->persist($t));
 }
+Model::getRepository('test')->flush();
 
 
 /*

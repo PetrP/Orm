@@ -20,13 +20,10 @@ abstract class ArrayMapper extends Mapper
 			$repository = $this->repository;
 			foreach ($this->loadData() as $id => $row)
 			{
-				if ($row !== NULL)
-				{
-					$this->data[$id] = $repository->createEntity($row);
-				}
+				$this->data[$id] = $row ? $repository->createEntity($row) : NULL;
 			}
 		}
-		return $this->data;
+		return array_filter($this->data);
 	}
 	protected function loadData()
 	{
@@ -68,83 +65,59 @@ abstract class ArrayMapper extends Mapper
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}
 
-	public function persist(Entity $entity, $beAtomic = true)
+	public function persist(Entity $entity)
 	{
+		$this->begin();
 
-		Environment::enterCriticalSection(get_class($this));
-
-		$values = Entity::internalValues($entity);
 		$manyToManyValues = array();
 		$fk = Entity::getFk(get_class($entity));
-		foreach ($values as $key => $value)
+		foreach (Entity::internalValues($entity) as $key => $value)
 		{
 			if (isset($fk[$key]) AND $value instanceof Entity)
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
-				$values[$key] = $value->id;
 			}
 			else if ($value instanceof ManyToMany)
 			{
 				$manyToManyValues[] = $value;;
-				unset($values[$key]);
-			}
-			else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
-			{
-				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
 			}
 		}
-		$originData = $this->loadData();
-		if (isset($entity->id) AND isset($originData[$entity->id]))
+
+		if (isset($entity->id) AND isset($this->data[$entity->id]))
 		{
 			$id = $entity->id;
-			$originData[$entity->id] = $values;
 		}
 		else
 		{
-			$id = $originData ? max(array_keys($originData)) + 1 : 1;
+			Environment::enterCriticalSection(get_class($this));
+			$originData = $this->loadData();
+			$id = $this->data ? max(array_keys($originData)) + 1 : 1;
+			$originData[$id] = NULL;
+			$this->saveData($originData);
+			Environment::leaveCriticalSection(get_class($this));
 			Entity::internalValues($entity, array('id' => $id));
-			$values['id'] = $id;
-			$originData[$id] = $values;
 		}
 		$this->data[$id] = $entity;
-
-		$this->saveData($originData);
 
 		foreach ($manyToManyValues as $manyToMany)
 		{
 			$manyToMany->persist(false);
 		}
 
-		Environment::leaveCriticalSection(get_class($this));
-
 		return $id;
 	}
 
-	public function delete($entity, $beAtomic = true)
+	public function delete($entity)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
 
 		$result = false;
 
-		if ($entityId)
+		$this->begin();
+
+		if ($entityId AND isset($this->data[$entityId]))
 		{
-			Environment::enterCriticalSection(get_class($this));
-
-			$originData = $this->loadData();
-			if (isset($originData[$entityId]))
-			{
-				$originData[$entityId] = NULL;
-			}
-
-			if (isset($this->data[$entityId]))
-			{
-				unset($this->data[$entityId]);
-			}
-
-			$this->saveData($originData);
-
-			Environment::leaveCriticalSection(get_class($this));
-
+			$this->data[$entityId] = NULL;
 		}
 		if ($entity instanceof Entity)
 		{
@@ -153,5 +126,57 @@ abstract class ArrayMapper extends Mapper
 		// todo clean Repository::$entities[$entityId]
 
 		return $result;
+	}
+
+	public function begin()
+	{
+		$this->getData();
+	}
+
+	final public function rollback()
+	{
+		$this->data = NULL;
+		// todo zmeny zustanou v Repository::$entities
+	}
+
+	public function flush()
+	{
+		if (!$this->data) return;
+
+		Environment::enterCriticalSection(get_class($this));
+		$originData = $this->loadData();
+
+		foreach ($this->data as $id => $entity)
+		{
+			if ($entity)
+			{
+				$values = Entity::internalValues($entity);
+				$fk = Entity::getFk(get_class($entity));
+				foreach ($values as $key => $value)
+				{
+					if (isset($fk[$key]) AND $value instanceof Entity)
+					{
+						$values[$key] = $value->id;
+					}
+					else if ($value instanceof ManyToMany)
+					{
+						unset($values[$key]);
+					}
+					else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
+					{
+						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
+					}
+				}
+
+				$originData[$id] = $values;
+			}
+			else
+			{
+				$originData[$id] = NULL;
+			}
+		}
+
+		$this->saveData($originData);
+		Environment::leaveCriticalSection(get_class($this));
 	}
 }

@@ -77,13 +77,39 @@ class DibiMapper extends Mapper
 		return $h;
 	}
 
-	public function persist(Entity $entity, $beAtomic = true)
+	private static $transactions = array();
+
+	final public function begin()
 	{
-		return $this->getPersistenceHelper()->persist($entity, $beAtomic);
+		$connection = $this->getConnection();
+		$hash = spl_object_hash($connection);
+		if (!isset(self::$transactions[$hash]))
+		{
+			$connection->begin();
+			self::$transactions[$hash] = true;
+		}
+	}
+
+	final public function rollback()
+	{
+		$connection = $this->getConnection();
+		$hash = spl_object_hash($connection);
+		if (isset(self::$transactions[$hash]))
+		{
+			$connection->rollback();
+			// todo zmeny zustanou v Repository::$entities
+			unset(self::$transactions[$hash]);
+		}
+	}
+
+	public function persist(Entity $entity)
+	{
+		$this->begin();
+		return $this->getPersistenceHelper()->persist($entity);
 	}
 
 
-	public function delete($entity, $beAtomic = true)
+	public function delete($entity)
 	{
 		$entityId = $entity instanceof Entity ? $entity->id : $entity;
 
@@ -91,6 +117,7 @@ class DibiMapper extends Mapper
 
 		if ($entityId)
 		{
+			$this->begin();
 			$result = (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
 		}
 		if ($entity instanceof Entity)
@@ -100,6 +127,11 @@ class DibiMapper extends Mapper
 		// todo clean Repository::$entities[$entityId]
 
 		return $result;
+	}
+
+	public function flush()
+	{
+		$this->getConnection()->commit();
 	}
 
 	protected function dataSource()
@@ -134,12 +166,11 @@ class DibiPersistenceHelper extends Object
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
 
-	public function persist(Entity $entity, $beAtomic = true)
+	public function persist(Entity $entity)
 	{
 		$values = Entity::internalValues($entity);
 		$manyToManyValues = array();
 		$fk = Entity::getFk(get_class($entity));
-		if ($beAtomic) $this->connection->begin();
 
 		foreach ($values as $key => $value)
 		{
@@ -192,8 +223,6 @@ class DibiPersistenceHelper extends Object
 		{
 			$manyToMany->persist(false);
 		}
-
-		if ($beAtomic) $this->connection->commit();
 
 		return $id;
 	}

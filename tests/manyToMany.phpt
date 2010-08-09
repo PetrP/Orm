@@ -48,7 +48,7 @@ class TagsMapper extends BaseMapper {}
 
 class ArticlesToTags extends ManyToMany
 {
-	public function persist($beAtomic = true)
+	public function persist()
 	{
 		dt('persist');
 	}
@@ -67,10 +67,18 @@ $a->tags->add(new Tag('kategorie'));
 
 
 Model::get()->articles->persist($a);
+Model::get()->articles->flush();
+
 
 __halt_compiler();
 ------EXPECT------
 string(4) "load"
+
+array(1) {
+	1 => NULL
+}
+
+string(7) "persist"
 
 array(1) {
 	1 => array(2) {
@@ -79,4 +87,4 @@ array(1) {
 	}
 }
 
-string(7) "persist"
+
