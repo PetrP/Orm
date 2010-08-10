@@ -65,53 +65,61 @@ readWrite: string(32) "a8f5f167f44f4964e6c998dee827110c"
 getDate: object(DateTime53) (3) {
 	"date" => string(19) "%i%-%i%-%i% %i%:%i%:%i%"
 	"timezone_type" => int(3)
-	"timezone" => string(13) "Europe/Prague"
+	"timezone" => string(%i%) "%a%"
 }
 
 array(5) {
-	"id" => array(3) {
+	"id" => array(%i%) {
 		"types" => array(1) {
 			0 => string(3) "int"
 		}
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"set" => NULL
+		"fk" => NULL
 		"since" => string(6) "Entity"
 	}
-	"readWrite" => array(4) {
+	"readWrite" => array(%i%) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
-		"since" => string(4) "Test"
 		"set" => array(1) {
 			"method" => string(12) "setReadWrite"
 		}
+		"fk" => NULL
+		"since" => string(4) "Test"
 	}
-	"read" => array(3) {
+	"read" => array(%i%) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
 		}
+		"set" => NULL
+		"fk" => NULL
 		"since" => string(4) "Test"
 	}
-	"write" => array(3) {
+	"write" => array(%i%) {
 		"types" => array(0)
+		"get" => NULL
 		"set" => array(1) {
 			"method" => NULL
 		}
+		"fk" => NULL
 		"since" => string(4) "Test"
 	}
-	"date" => array(4) {
+	"date" => array(%i%) {
 		"types" => array(1) {
 			0 => string(8) "datetime"
 		}
 		"get" => array(1) {
 			"method" => NULL
 		}
-		"since" => string(4) "Test"
 		"set" => array(1) {
 			"method" => string(7) "setDate"
 		}
+		"fk" => NULL
+		"since" => string(4) "Test"
 	}
 }

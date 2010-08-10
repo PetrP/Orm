@@ -86,5 +86,3 @@ array(1) {
 		"name" => string(7) "Clanek1"
 	}
 }
-
-

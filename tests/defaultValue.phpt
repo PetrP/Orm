@@ -4,7 +4,7 @@ require dirname(__FILE__) . '/base.php';
 
 
 /**
- * @property int $position {@default 1}
+ * @property int $position {default 1}
  * @property DateTime $date
  */
 class Def extends Entity
@@ -29,5 +29,5 @@ int(1)
 object(DateTime53) (3) {
 	"date" => string(19) "2010-06-23 20:01:01"
 	"timezone_type" => int(3)
-	"timezone" => string(13) "Europe/Prague"
+	"timezone" => string(%i%) "%a%"
 }

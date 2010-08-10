@@ -73,7 +73,7 @@ for ($i=1000;$i--;)
  */
 foreach (Model::getRepository('test')->findById($t->id) as $x)
 {
-	dt($x->toArray());
+	dt($x->toArray(Entity::ENTITY_TO_ARRAY));
 }
 
 
@@ -103,73 +103,14 @@ __halt_compiler();
 ------EXPECT------
 array(4) {
 	"id" => int(%i%)
-	"text" => string(5) "%a%"
-	"int" => object(Test) (5) {
-		"values" private => array(4) {
-			"id" => int(153546)
-			"text" => string(5) "d3eb9"
-			"int" => NULL
-			"char" => string(1) "a"
-		}
-		"valid" private => array(4) {
-			"id" => bool(TRUE)
-			"text" => bool(TRUE)
-			"int" => bool(TRUE)
-			"char" => bool(TRUE)
-		}
-		"rules" private => array(4) {
-			"id" => array(3) {
-				"types" => array(1) {
-					0 => string(3) "int"
-				}
-				"get" => array(1) {
-					"method" => NULL
-				}
-				"since" => string(4) "Test"
-			}
-			"text" => array(4) {
-				"types" => array(1) {
-					0 => string(6) "string"
-				}
-				"get" => array(1) {
-					"method" => NULL
-				}
-				"since" => string(4) "Test"
-				"set" => array(1) {
-					"method" => string(7) "setText"
-				}
-			}
-			"int" => array(5) {
-				"types" => array(2) {
-					0 => string(4) "test"
-					1 => string(4) "null"
-				}
-				"get" => array(1) {
-					"method" => NULL
-				}
-				"since" => string(4) "Test"
-				"set" => array(1) {
-					"method" => string(6) "setInt"
-				}
-				"fk" => string(4) "Test"
-			}
-			"char" => array(4) {
-				"types" => array(1) {
-					0 => string(6) "string"
-				}
-				"get" => array(1) {
-					"method" => NULL
-				}
-				"since" => string(4) "Test"
-				"set" => array(1) {
-					"method" => string(7) "setChar"
-				}
-			}
-		}
-		"repositoryName" private => string(4) "test"
-		"changed" private => bool(TRUE)
+	"text" => string(%i%) "%a%"
+	"int" => array(%i%) {
+		"id" => int(153546)
+		"text" => string(5) "d3eb9"
+		"int" => NULL
+		"char" => string(1) "a"
 	}
-	"char" => string(1) "%a%"
+	"char" => string(%i%) "%a%"
 }
 
 array(2) {
