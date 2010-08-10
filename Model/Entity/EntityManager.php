@@ -106,15 +106,19 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						$repository = $match[2];
 						if (isset($params[$property]))
 						{
-							if (Model::isRepository($repository))
+							if (!isset($params[$property]['fk']))
 							{
-								$params[$property]['fk'] = $repository;
+								if (Model::isRepository($repository))
+								{
+									$params[$property]['fk'] = $repository;
+								}
+								else throw new InvalidStateException("$repository isn't repository in $property");
 							}
-							else throw new InvalidStateException($repository);
+							else throw new InvalidStateException("Already has fk in $property");
 						}
-						else throw new InvalidStateException($property);
+						else throw new InvalidStateException("$property not exists");
 					}
-					else throw new InvalidStateException();
+					else throw new InvalidStateException("Bad fk format in $property.");
 				}
 			}
 
