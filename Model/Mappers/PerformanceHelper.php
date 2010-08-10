@@ -2,6 +2,8 @@
 
 class PerformanceHelper extends Object
 {
+	public static $keyCallback = array(__CLASS__, 'getDefaultKey');
+
 	private $repositoryName;
 
 	private $access = array();
@@ -17,14 +19,19 @@ class PerformanceHelper extends Object
 		if (!isset(self::$toLoad))
 		{
 			$cache = Environment::getCache(__CLASS__);
-			$key = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '*';
+			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
+			$key = $key ? $key : '*';
 			self::$toLoad = $cache[$key];
+			if ($key === '*')
+			{
+				self::$toSave = self::$toLoad;
+			}
 			register_shutdown_function(create_function('$cache, $key', '
 				$cache[$key] = PerformanceHelper::$toSave;
 			'), $cache, $key);
 		}
 
-		self::$toSave[$this->repositoryName] = array();
+		if (!isset(self::$toSave[$this->repositoryName])) self::$toSave[$this->repositoryName] = array();
 		$this->access = & self::$toSave[$this->repositoryName];
 	}
 
@@ -45,4 +52,8 @@ class PerformanceHelper extends Object
 		return Environment::getCache(__CLASS__);
 	}
 
+	public static function getDefaultKey()
+	{
+		return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : NULL;
+	}
 }
