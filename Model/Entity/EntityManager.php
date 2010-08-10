@@ -69,6 +69,11 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						throw new InvalidStateException('Getter and setter types must be same.');
 					}
 
+					if (preg_match('#\{\s*(ManyToOne|OneToOne|m\:1|1\:1)\s+([^\s]*)\s*\}#si', $string, $match))
+					{
+						$annotations['foreignKey'][] = "$$property " . $match[2];
+					}
+
 					$params[$property]['types'] = $type;
 
 					if (!$mode OR $mode === '-read')
