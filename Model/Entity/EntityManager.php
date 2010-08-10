@@ -1,6 +1,6 @@
 <?php
 
-class EntityManager extends Object
+class EntityManager extends Object // rename AnotationMetaDataZiskavac
 {
 	public static function getEntityParams($class)
 	{
@@ -24,29 +24,32 @@ class EntityManager extends Object
 
 			if (isset($annotations['property']))
 			{
-				foreach ($annotations['property'] as $property)
+				foreach ($annotations['property'] as $string)
 				{
-					if (preg_match('#^(-read|-write)?\s?([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s)#si', $property, $match))
+					if (preg_match('#^(-read|-write)?\s?([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
 					{
 						$property = $match[3];
 						$type = $match[2];
 						$mode = $match[1];
+						$string = $match[4];
 					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s)#si', $property, $match))
+					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s(.*)$)#si', $string, $match))
 					{
 						$property = $match[2];
 						$type = $match[3];
 						$mode = $match[1];
+						$string = $match[4];
 					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)($|\s)#si', $property, $match))
+					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
 					{
 						$property = $match[2];
 						$type = 'mixed';
 						$mode = $match[1];
+						$string = $match[3];
 					}
 					else
 					{
-						throw new InvalidStateException($property);
+						throw new InvalidStateException($string);
 						//continue;
 					}
 
