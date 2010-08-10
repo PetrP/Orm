@@ -13,6 +13,7 @@ require_once dirname(__FILE__) . '/ValidationHelper.php';
 abstract class Entity extends Object implements IEntity
 {
 	const ENTITY_TO_ID = 'entidyToId';
+	const ENTITY_TO_ARRAY = 'entidyToArray';
 
 	const DEFAULT_VALUE = "\0";
 
@@ -93,9 +94,17 @@ abstract class Entity extends Object implements IEntity
 			if (isset($rule['get']))
 			{
 				$result[$name] = $this->__get($name);
-				if ($mode === self::ENTITY_TO_ID AND isset($rule['fk']) AND $result[$name] instanceof Entity)
+				if (isset($rule['fk']) AND in_array($mode, array(self::ENTITY_TO_ID, self::ENTITY_TO_ARRAY)) AND $result[$name] instanceof Entity)
 				{
-					$result[$name] = $result[$name]->id;
+					if ($mode === self::ENTITY_TO_ID)
+					{
+						$result[$name] = $result[$name]->id;
+					}
+					else if ($mode === self::ENTITY_TO_ARRAY)
+					{
+						$result[$name] = $result[$name]->toArray($mode); // todo co rekurze?
+					}
+					else throw new InvalidStateException();
 				}
 				else if ($mode === self::ENTITY_TO_ID AND $result[$name] instanceof ManyToMany)
 				{
