@@ -19,6 +19,10 @@ class ValidationHelper
 			else if (!in_array($type, array('string', 'float', 'int', 'bool', 'array', 'object')))
 			{
 				if ($value instanceof $type) return true;
+				else if ($type === 'datetime')
+				{
+					$_value = Tools::createDateTime($value);
+				}
 				continue;
 			}
 			else if ($type === 'mixed') return true;
