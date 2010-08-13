@@ -180,7 +180,7 @@ abstract class ArrayMapper extends Mapper
 					}
 					else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
 					{
-						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
+						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
 					}
 				}
 
