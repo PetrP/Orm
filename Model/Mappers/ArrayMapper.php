@@ -38,19 +38,31 @@ abstract class ArrayMapper extends Mapper
 	{
 		$all = $this->getData();
 		$result = array();
-		foreach ($where as $key => $value)
+		foreach ($all as $entity)
 		{
-			$value = $value instanceof Entity ? $value->id : $value;
-			foreach ($all as $entity)
+			$equal = false;
+			foreach ($where as $key => $value)
 			{
 				$eValue = $entity[$key];
 				$eValue = $eValue instanceof Entity ? $eValue->id : $eValue;
+				$value = $value instanceof Entity ? $value->id : $value;
+
 				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
 				{
-					$result[] = $entity;
+					$equal = true;
+				}
+				else
+				{
+					$equal = false;
+					break;
 				}
 			}
+			if ($equal)
+			{
+				$result[] = $entity;
+			}
 		}
+
 		return new ArrayDataSource($result);
 	}
 	protected function getBy(array $where)
