@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/IModelDataSource.php';
 
+require_once dirname(__FILE__) . '/FetchAssoc.php';
 
 class ArrayDataSource extends Object implements IModelDataSource
 {
@@ -232,8 +233,7 @@ class ArrayDataSource extends Object implements IModelDataSource
 	 */
 	public function fetchAssoc($assoc)
 	{
-		throw new NotImplementedException();
-		return $this->getResult()->fetchAssoc($assoc);
+		return FetchAssoc::apply($this->fetchAll(), $assoc);
 	}
 
 
