@@ -174,6 +174,10 @@ abstract class ArrayMapper extends Mapper
 					{
 						unset($values[$key]);
 					}
+					else if ($value instanceof DateTime)
+					{
+						$values[$key] = $value->format('c');
+					}
 					else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
 					{
 						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . gettype($value));
