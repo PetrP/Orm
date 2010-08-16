@@ -24,7 +24,7 @@ abstract class AbstractModel extends Object
 			$r = new $class($name);
 			if (!($r instanceof IRepository))
 			{
-				throw new InvalidStateException();
+				throw new InvalidStateException("Repository '{$r}' must implement IRepository");
 			}
 			self::$repositories[$name] = $r;
 		}
@@ -38,13 +38,13 @@ abstract class AbstractModel extends Object
 		try {
 			$implements = class_implements(self::getRepositoryClass($name));
 			return isset($implements['IRepository']);
-		} catch (InvalidStateException $e) {
+		} catch (UnexpectedValueException $e) {
 			return false;
 		}
 	}
 
 	/**
-	 * @throws InvalidStateException
+	 * @throws UnexpectedValueException
 	 * @param string
 	 * @return string
 	 */
@@ -55,7 +55,7 @@ abstract class AbstractModel extends Object
 
 		if (!class_exists($class))
 		{
-			throw new InvalidStateException();
+			throw new UnexpectedValueException("Repository '{$name}' doesn't exists");
 		}
 		return $class;
 	}
@@ -76,7 +76,7 @@ abstract class AbstractModel extends Object
 			$model = new Model;
 			if (!($model instanceof self))
 			{
-				throw new Exception;
+				throw new InvalidStateException;
 			}
 			self::$model = $model;
 		}
