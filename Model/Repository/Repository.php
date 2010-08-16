@@ -18,7 +18,7 @@ abstract class Repository extends Object implements IRepository
 	public function getById($id)
 	{
 		$this->performanceHelper->access($id);
-		if ($id instanceof Entity)
+		if ($id instanceof IEntity)
 		{
 			$id = $id->id;
 		}
@@ -36,7 +36,7 @@ abstract class Repository extends Object implements IRepository
 		return $this->getMapper()->getById($id);
 	}
 
-	public function lazyLoad(Entity $entity, $param)
+	public function lazyLoad(IEntity $entity, $param)
 	{
 		return array();
 	}
@@ -53,7 +53,7 @@ abstract class Repository extends Object implements IRepository
 		if (!isset($this->mapper))
 		{
 			$mapper = $this->createMapper();
-			if (!($mapper instanceof Mapper))
+			if (!($mapper instanceof IMapper))
 			{
 				throw new InvalidStateException();
 			}
@@ -100,7 +100,7 @@ abstract class Repository extends Object implements IRepository
 		}
 	}
 
-	final public function isEntity(Entity $entity) // todo rename
+	final public function isEntity(IEntity $entity) // todo rename
 	{
 		try {
 			$this->checkEntityName(get_class($entity));
@@ -132,7 +132,7 @@ abstract class Repository extends Object implements IRepository
 		return $this->repositoryName;
 	}
 
-	public function persist(Entity $entity)
+	public function persist(IEntity $entity)
 	{
 		$this->checkEntityName(get_class($entity));
 		if (isset($entity->id) AND !$entity->isChanged())
@@ -144,7 +144,7 @@ abstract class Repository extends Object implements IRepository
 
 	public function delete($entity) // todo prejmenovat na remove?
 	{
-		if ($entity instanceof Entity) $this->checkEntityName(get_class($entity));
+		if ($entity instanceof IEntity) $this->checkEntityName(get_class($entity));
 		return $this->getMapper()->delete($entity);
 	}
 

@@ -32,7 +32,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource
 		}
 	}
 
-	public function __construct($sql, DibiConnection $connection, Repository $repository)
+	public function __construct($sql, DibiConnection $connection, IRepository $repository)
 	{
 		$this->repository = $repository;
 		parent::__construct($sql, $connection);

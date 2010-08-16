@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/IConventional.php';
 
 class NoConventional extends Object implements IConventional
 {
-	public function __construct(Mapper $repository)
+	public function __construct(IMapper $repository)
 	{
 
 	}
@@ -19,7 +19,7 @@ class NoConventional extends Object implements IConventional
 		return (array) $data;
 	}
 
-	public function getManyToManyTableName(Repository $first, Repository $second)
+	public function getManyToManyTableName(IRepository $first, IRepository $second)
 	{
 		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}

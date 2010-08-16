@@ -22,7 +22,7 @@ abstract class AbstractModel extends Object
 		{
 			$class = self::getRepositoryClass($name);
 			$r = new $class($name);
-			if (!($r instanceof Repository))
+			if (!($r instanceof IRepository))
 			{
 				throw new InvalidStateException();
 			}
@@ -36,7 +36,8 @@ abstract class AbstractModel extends Object
 		$name = strtolower($name);
 		if (isset(self::$repositories[$name])) return true;
 		try {
-			return is_subclass_of(self::getRepositoryClass($name), 'Repository');
+			$implements = class_implements(self::getRepositoryClass($name));
+			return isset($implements['IRepository']);
 		} catch (InvalidStateException $e) {
 			return false;
 		}

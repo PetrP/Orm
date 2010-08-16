@@ -13,7 +13,7 @@ class PerformanceHelper extends Object
 
 	private $key;
 
-	public function __construct(Repository $repository)
+	public function __construct(IRepository $repository)
 	{
 		$this->repositoryName = $repository->getRepositoryName();
 		if (!isset(self::$toLoad))

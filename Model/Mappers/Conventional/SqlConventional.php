@@ -8,7 +8,7 @@ class SqlConventional extends Object implements IConventional
 
 	private $cache = array();
 
-	public function __construct(Mapper $mapper)
+	public function __construct(IMapper $mapper)
 	{
 		$this->cache = & self::$staticCache[$mapper->getRepository()->getRepositoryName()];
 		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
@@ -115,7 +115,7 @@ class SqlConventional extends Object implements IConventional
 		}
 	}
 
-	public function getManyToManyTableName(Repository $first, Repository $second)
+	public function getManyToManyTableName(IRepository $first, IRepository $second)
 	{
 		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}

@@ -6,7 +6,7 @@ abstract class FileMapper extends ArrayMapper
 {
 	private static $isStreamRegistered = false;
 
-	public function __construct(Repository $repository)
+	public function __construct(IRepository $repository)
 	{
 		parent::__construct($repository);
 		if (!self::$isStreamRegistered)

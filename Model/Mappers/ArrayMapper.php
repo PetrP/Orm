@@ -44,8 +44,8 @@ abstract class ArrayMapper extends Mapper
 			foreach ($where as $key => $value)
 			{
 				$eValue = $entity[$key];
-				$eValue = $eValue instanceof Entity ? $eValue->id : $eValue;
-				$value = $value instanceof Entity ? $value->id : $value;
+				$eValue = $eValue instanceof IEntity ? $eValue->id : $eValue;
+				$value = $value instanceof IEntity ? $value->id : $value;
 
 				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
 				{
@@ -77,7 +77,7 @@ abstract class ArrayMapper extends Mapper
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}
 
-	public function persist(Entity $entity)
+	public function persist(IEntity $entity)
 	{
 		$this->begin();
 
@@ -85,7 +85,7 @@ abstract class ArrayMapper extends Mapper
 		$fk = Entity::getFk(get_class($entity));
 		foreach (Entity::internalValues($entity) as $key => $value)
 		{
-			if (isset($fk[$key]) AND $value instanceof Entity)
+			if (isset($fk[$key]) AND $value instanceof IEntity)
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
 			}
@@ -121,7 +121,7 @@ abstract class ArrayMapper extends Mapper
 
 	public function delete($entity)
 	{
-		$entityId = $entity instanceof Entity ? $entity->id : $entity;
+		$entityId = $entity instanceof IEntity ? $entity->id : $entity;
 
 		$result = false;
 
@@ -131,7 +131,7 @@ abstract class ArrayMapper extends Mapper
 		{
 			$this->data[$entityId] = NULL;
 		}
-		if ($entity instanceof Entity)
+		if ($entity instanceof IEntity)
 		{
 			Entity::internalValues($entity, array('id' => NULL));
 		}
@@ -166,7 +166,7 @@ abstract class ArrayMapper extends Mapper
 				$fk = Entity::getFk(get_class($entity));
 				foreach ($values as $key => $value)
 				{
-					if (isset($fk[$key]) AND $value instanceof Entity)
+					if (isset($fk[$key]) AND $value instanceof IEntity)
 					{
 						$values[$key] = $value->id;
 					}

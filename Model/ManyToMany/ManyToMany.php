@@ -12,7 +12,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate
 
 	protected $parentIsFirst;
 
-	public function __construct(Entity $entity)
+	public function __construct(IEntity $entity)
 	{
 		$firstRepository = $this->getFirstRepository();
 		$secondRepository = $this->getSecondRepository();
@@ -50,7 +50,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate
 
 	final public function add($entity)
 	{
-		if (!($entity instanceof Entity))
+		if (!($entity instanceof IEntity))
 		{
 			$entity = $this->childRepository->getById($entity);
 		}

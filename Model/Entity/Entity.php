@@ -94,7 +94,7 @@ abstract class Entity extends Object implements IEntity
 			if (isset($rule['get']))
 			{
 				$result[$name] = $this->__get($name);
-				if (isset($rule['fk']) AND in_array($mode, array(self::ENTITY_TO_ID, self::ENTITY_TO_ARRAY)) AND $result[$name] instanceof Entity)
+				if (isset($rule['fk']) AND in_array($mode, array(self::ENTITY_TO_ID, self::ENTITY_TO_ARRAY)) AND $result[$name] instanceof IEntity)
 				{
 					if ($mode === self::ENTITY_TO_ID)
 					{
@@ -378,7 +378,7 @@ abstract class Entity extends Object implements IEntity
 			$value = $default;
 		}
 
-		if (isset($rule['fk']) AND !($value instanceof Entity))
+		if (isset($rule['fk']) AND !($value instanceof IEntity))
 		{
 			$id = (string) $value;
 			if ($id)
@@ -412,10 +412,11 @@ abstract class Entity extends Object implements IEntity
 	/**
 	 * @internal
 	 */
-	final public static function create($entityName, array $data, Repository $repository)
+	final public static function create($entityName, array $data, IRepository $repository)
 	{
 		$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
-		if (!($entity instanceof Entity)) throw new InvalidStateException();
+		if (!($entity instanceof IEntity)) throw new InvalidStateException();
+		// TODO kdyz je instanceof self tak pouzivat private pristup, jinak vymyslet neco jineho
 		$entity->repositoryName = $repository->getRepositoryName();
 		$entity->startup();
 		self::internalValues($entity, $data);
@@ -426,7 +427,7 @@ abstract class Entity extends Object implements IEntity
 	 * set or get
 	 * @internal
 	 */
-	final public static function internalValues(Entity $entity, array $values = NULL)
+	final public static function internalValues(IEntity $entity, array $values = NULL)
 	{
 		if ($values !== NULL)
 		{

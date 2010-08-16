@@ -10,7 +10,7 @@ abstract class Mapper extends Object implements IMapper
 	abstract public function findAll();
 	abstract protected function findBy(array $where);
 	abstract protected function getBy(array $where);
-	abstract public function persist(Entity $entity);
+	abstract public function persist(IEntity $entity);
 	abstract public function delete($entity);
 	abstract public function begin(); // todo rename?
 	abstract public function flush();
@@ -19,7 +19,7 @@ abstract class Mapper extends Object implements IMapper
 
 	private $conventional;
 
-	public function __construct(Repository $repository)
+	public function __construct(IRepository $repository)
 	{
 		$this->repository = $repository;
 	}

@@ -57,7 +57,7 @@ class DibiMapper extends Mapper
 			}
 			else
 			{
-				$all->where('%n = %s', $key, $value instanceof Entity ? $value->id : $value);
+				$all->where('%n = %s', $key, $value instanceof IEntity ? $value->id : $value);
 			}
 		}
 		return $all;
@@ -102,7 +102,7 @@ class DibiMapper extends Mapper
 		}
 	}
 
-	public function persist(Entity $entity)
+	public function persist(IEntity $entity)
 	{
 		$this->begin();
 		return $this->getPersistenceHelper()->persist($entity);
@@ -111,7 +111,7 @@ class DibiMapper extends Mapper
 
 	public function delete($entity)
 	{
-		$entityId = $entity instanceof Entity ? $entity->id : $entity;
+		$entityId = $entity instanceof IEntity ? $entity->id : $entity;
 
 		$result = false;
 
@@ -120,7 +120,7 @@ class DibiMapper extends Mapper
 			$this->begin();
 			$result = (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
 		}
-		if ($entity instanceof Entity)
+		if ($entity instanceof IEntity)
 		{
 			Entity::internalValues($entity, array('id' => NULL));
 		}
@@ -167,7 +167,7 @@ class DibiPersistenceHelper extends Object
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
 
-	public function persist(Entity $entity)
+	public function persist(IEntity $entity)
 	{
 		$values = Entity::internalValues($entity);
 		$manyToManyValues = array();
@@ -181,7 +181,7 @@ class DibiPersistenceHelper extends Object
 				continue;
 			}
 
-			if (isset($fk[$key]) AND $value instanceof Entity)
+			if (isset($fk[$key]) AND $value instanceof IEntity)
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;

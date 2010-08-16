@@ -5,7 +5,8 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 	public static function getEntityParams($class)
 	{
 		if (!class_exists($class)) throw new InvalidStateException();
-		else if (!is_subclass_of($class, 'Entity')) throw new InvalidStateException();
+		$implements = class_implements($class);
+		if (!isset($implements['IEntity'])) throw new InvalidStateException();
 
 		$metaData = new MetaData($class);
 		$params = array();
@@ -13,8 +14,9 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 		$_class = $class;
 		while (class_exists($_class))
 		{
+			if ($_class === 'Object') break;
 			$classes[] = $_class;
-			if ($_class === 'Entity') break;
+			if ($_class === 'Entity') break; // todo
 			$_class = get_parent_class($_class);
 		}
 
@@ -166,14 +168,15 @@ class MetaData extends Object
 
 	public function __construct($entityClass)
 	{
-		if ($entityClass instanceof Entity)
+		if ($entityClass instanceof IEntity)
 		{
 			$entityClass = get_class($entityClass);
 		}
 		else
 		{
 			if (!class_exists($entityClass)) throw new InvalidStateException();
-			else if (!is_subclass_of($entityClass, 'Entity')) throw new InvalidStateException();
+			$implements = class_implements($entityClass);
+			if (!isset($implements['IEntity'])) throw new InvalidStateException();
 		}
 		$this->entityClass = $entityClass;
 	}
@@ -207,6 +210,7 @@ class MetaData extends Object
 		$params = $this->data;
 
 		$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Entity'));
+		// TODO neumoznuje pouzit vlastni IEntity
 		foreach ($methods as $method)
 		{
 			$m = substr($method, 0, 3);

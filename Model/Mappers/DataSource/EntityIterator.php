@@ -4,7 +4,7 @@ class EntityIterator extends IteratorIterator implements Countable
 {
 	private $repository;
 
-	public function __construct(Repository $repository, DibiResultIterator $iterator)
+	public function __construct(IRepository $repository, DibiResultIterator $iterator)
 	{
 		$this->repository = $repository;
 		parent::__construct($iterator);
