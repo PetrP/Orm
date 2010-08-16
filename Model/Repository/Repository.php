@@ -73,12 +73,9 @@ abstract class Repository extends Object implements IRepository
 		return new DibiMapper($this);
 	}
 
-	final public function getEntityName(array $data = NULL) // todo rename? getEntityClassName?
+	final public function getEntityName(array $data = NULL)
 	{
 		throw new DeprecatedException();
-
-		//return unserialize("O:".strlen($n).":\"$n\":1:{s:14:\"\0Entity\0params\";".serialize($data->d)."}");
-		//return call_user_func(array($entityName, 'create'), $entityName, (array) $data);
 	}
 
 	public function getEntityClassName(array $data = NULL)
