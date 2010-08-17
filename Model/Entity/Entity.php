@@ -299,7 +299,7 @@ abstract class Entity extends Object implements IEntity
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
-		if ($rule['set']['method'])
+		if ($rule['set']['method'] AND $value !== self::DEFAULT_VALUE)
 		{
 			$this->{$rule['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
