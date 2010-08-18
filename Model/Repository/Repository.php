@@ -141,8 +141,19 @@ abstract class Repository extends Object implements IRepository
 
 	public function delete($entity) // todo prejmenovat na remove?
 	{
-		if ($entity instanceof IEntity) $this->checkEntityName(get_class($entity));
-		return $this->getMapper()->delete($entity);
+		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
+		$this->checkEntityName(get_class($entity));
+		if (isset($entity->id))
+		{
+			if ($this->getMapper()->delete($entity))
+			{
+				unset($this->entities[$entity->id]);
+				Entity::internalValues($entity, array('id' => NULL));
+				return true;
+			}
+			return false;
+		}
+		return true;
 	}
 
 	public function flush($onlyThis = false)

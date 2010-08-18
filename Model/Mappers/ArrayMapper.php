@@ -119,25 +119,11 @@ abstract class ArrayMapper extends Mapper
 		return $id;
 	}
 
-	public function delete($entity)
+	public function delete(IEntity $entity)
 	{
-		$entityId = $entity instanceof IEntity ? $entity->id : $entity;
-
-		$result = false;
-
 		$this->begin();
-
-		if ($entityId AND isset($this->data[$entityId]))
-		{
-			$this->data[$entityId] = NULL;
-		}
-		if ($entity instanceof IEntity)
-		{
-			Entity::internalValues($entity, array('id' => NULL));
-		}
-		// todo clean Repository::$entities[$entityId]
-
-		return $result;
+		$this->data[$entity->id] = NULL;
+		return true;
 	}
 
 	public function begin()

@@ -109,24 +109,10 @@ class DibiMapper extends Mapper
 	}
 
 
-	public function delete($entity)
+	public function delete(IEntity $entity)
 	{
-		$entityId = $entity instanceof IEntity ? $entity->id : $entity;
-
-		$result = false;
-
-		if ($entityId)
-		{
-			$this->begin();
-			$result = (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entityId)->execute();
-		}
-		if ($entity instanceof IEntity)
-		{
-			Entity::internalValues($entity, array('id' => NULL));
-		}
-		// todo clean Repository::$entities[$entityId]
-
-		return $result;
+		$this->begin();
+		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entity->id)->execute();
 	}
 
 	public function flush()
