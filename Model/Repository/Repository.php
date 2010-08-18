@@ -78,6 +78,10 @@ abstract class Repository extends Object implements IRepository
 		throw new DeprecatedException();
 	}
 
+	/**
+	 * @param array|NULL
+	 * @return string|array
+	 */
 	public function getEntityClassName(array $data = NULL)
 	{
 		return rtrim($this->getRepositoryName(), 's');
