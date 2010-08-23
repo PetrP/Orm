@@ -47,6 +47,10 @@ class DibiMapper extends Mapper
 		// todo instanceof IModelDataSource
 		foreach ($where as $key => $value)
 		{
+			if ($value instanceof IEntityCollection)
+			{
+				$value = $value->fetchPairs(NULL, 'id');
+			}
 			if (is_array($value))
 			{
 				$value = array_unique(

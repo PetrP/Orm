@@ -48,6 +48,10 @@ abstract class ArrayMapper extends Mapper
 				);
 				$where[$key] = $value;
 			}
+			else if ($value instanceof IEntityCollection)
+			{
+				$where[$key] = $value->fetchPairs(NULL, 'id');
+			}
 			else if ($value instanceof IEntity)
 			{
 				$value = $value->id;
