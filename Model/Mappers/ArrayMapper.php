@@ -36,6 +36,25 @@ abstract class ArrayMapper extends Mapper
 
 	protected function findBy(array $where)
 	{
+		foreach ($where as $key => $value)
+		{
+			if (is_array($value))
+			{
+				$value = array_unique(
+					array_map(
+						create_function('$v', 'return $v instanceof IEntity ? $v->id : $v;'),
+						$value
+					)
+				);
+				$where[$key] = $value;
+			}
+			else if ($value instanceof IEntity)
+			{
+				$value = $value->id;
+				$where[$key] = $value;
+			}
+		}
+
 		$all = $this->getData();
 		$result = array();
 		foreach ($all as $entity)
@@ -45,7 +64,6 @@ abstract class ArrayMapper extends Mapper
 			{
 				$eValue = $entity[$key];
 				$eValue = $eValue instanceof IEntity ? $eValue->id : $eValue;
-				$value = $value instanceof IEntity ? $value->id : $value;
 
 				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
 				{

@@ -49,6 +49,12 @@ class DibiMapper extends Mapper
 		{
 			if (is_array($value))
 			{
+				$value = array_unique(
+					array_map(
+						create_function('$v', 'return $v instanceof IEntity ? $v->id : $v;'),
+						$value
+					)
+				);
 				$all->where('%n IN %in', $key, $value);
 			}
 			else if ($value === NULL)
