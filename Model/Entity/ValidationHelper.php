@@ -86,4 +86,15 @@ class ValidationHelper
 		return (bool) preg_match("(^$localPart@(?:$domain?\\.)+[-$chars]{2,19}\\z)i", $value);
 	}
 
+	/**
+	 * URL validator: is value valid URL?
+	 * @param  string
+	 * @return bool
+	 * @author David Grudl
+	 */
+	public static function isUrl($value)
+	{
+		return (bool) String::match($value, '/^.+\.[a-z]{2,6}(?:\\/.*)?$/i');
+	}
+
 }
