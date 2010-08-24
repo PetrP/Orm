@@ -21,11 +21,17 @@ class PerformanceHelper extends Object
 			$cache = Environment::getCache(__CLASS__);
 			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
-			self::$toLoad = $cache[$key];
+			self::$toLoad = isset($cache[$key]) ? $cache[$key] : NULL;
+			if (!self::$toLoad) self::$toLoad = array();
 			if ($key === '*')
 			{
 				self::$toSave = self::$toLoad;
 			}
+			else if (strlen($key) > 50)
+			{
+				$key = substr($key, 0, 20) . md5($key);
+			}
+
 			register_shutdown_function(create_function('$cache, $key', '
 				$cache[$key] = PerformanceHelper::$toSave;
 			'), $cache, $key);
