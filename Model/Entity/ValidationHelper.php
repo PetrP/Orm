@@ -94,7 +94,7 @@ class ValidationHelper
 	 */
 	public static function isUrl($value)
 	{
-		return (bool) String::match($value, '/^.+\.[a-z]{2,6}(?:\\/.*)?$/i');
+		return (bool) preg_match('/^.+\.[a-z]{2,6}(?:\\/.*)?$/i', $value);
 	}
 
 }
