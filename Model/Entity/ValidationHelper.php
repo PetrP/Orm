@@ -5,6 +5,7 @@ class ValidationHelper
 
 	public static function isValid(array $types, & $value)
 	{
+		$intValue = is_string($value) ? str_replace(array(',', ' '), array('.', ''), $value) : NULL;
 		$_value = $value;
 
 		if ($types === array()) return true; // mean mixed
@@ -34,6 +35,11 @@ class ValidationHelper
 					if (in_array($type, array('float', 'int')) AND is_numeric($value) OR empty($value))
 					{
 						$_value = $value;
+						settype($_value, $type);
+					}
+					else if ($intValue !== NULL AND in_array($type, array('float', 'int')) AND is_numeric($intValue))
+					{
+						$_value = $intValue;
 						settype($_value, $type);
 					}
 					else if (in_array($type, array('array', 'object')) AND (is_array($value) OR is_object($value)))
