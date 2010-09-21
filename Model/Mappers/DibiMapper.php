@@ -191,6 +191,10 @@ class DibiPersistenceHelper extends Object
 				$manyToManyValues[] = $value;;
 				unset($values[$key]);
 			}
+			else if (is_object($value) AND method_exists($value, '__toString'))
+			{
+				$values[$key] = $value->__toString();
+			}
 			else if ($value !== NULL AND !($value instanceof DateTime) AND !is_scalar($value))
 			{
 				throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));

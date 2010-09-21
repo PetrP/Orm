@@ -186,6 +186,10 @@ abstract class ArrayMapper extends Mapper
 					{
 						$values[$key] = $value->format('c');
 					}
+					else if (is_object($value) AND method_exists($value, '__toString'))
+					{
+						$values[$key] = $value->__toString();
+					}
 					else if ($value !== NULL AND !is_scalar($value) AND !is_array($value))
 					{
 						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
