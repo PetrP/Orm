@@ -17,11 +17,19 @@ abstract class Repository extends Object implements IRepository
 
 	public function getById($id)
 	{
-		$this->performanceHelper->access($id);
 		if ($id instanceof IEntity)
 		{
 			$id = $id->id;
 		}
+		else if ($id === NULL)
+		{
+			return NULL;
+		}
+		else if (!is_scalar($id))
+		{
+			throw new UnexpectedValueException();
+		}
+		$this->performanceHelper->access($id);
 		if (isset($this->entities[$id]))
 		{
 			return $this->entities[$id];
