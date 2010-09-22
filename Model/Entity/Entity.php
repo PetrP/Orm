@@ -298,9 +298,12 @@ abstract class Entity extends Object implements IEntity
 		{
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
-
-		if ($rule['set']['method'] AND $value !== self::DEFAULT_VALUE)
+		if ($rule['set']['method'])
 		{
+			if ($value === self::DEFAULT_VALUE)
+			{
+				$value = $this->getDefaultValueHelper($name, $rule);
+			}
 			$this->{$rule['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
 		}
 		else
@@ -350,9 +353,24 @@ abstract class Entity extends Object implements IEntity
 
 
 
-
-
-
+	final private function getDefaultValueHelper($name, $rule)
+	{
+		$default = NULL;
+		if (array_key_exists('default', $rule))
+		{
+			$default = $rule['default'];
+		}
+		else
+		{
+			$defaultMethod = "getDefault$name";
+			$defaultMethod{10} = $defaultMethod{10} & "\xDF"; // ucfirst
+			if (method_exists($this, $defaultMethod))
+			{
+				$default = $this->{$defaultMethod}();
+			}
+		}
+		return $default;
+	}
 
 
 	final private function setValueHelper($name, $value)
@@ -361,21 +379,7 @@ abstract class Entity extends Object implements IEntity
 
 		if ($value === self::DEFAULT_VALUE)
 		{
-			$default = NULL;
-			if (array_key_exists('default', $rule))
-			{
-				$default = $rule['default'];
-			}
-			else
-			{
-				$defaultMethod = "getDefault$name";
-				$defaultMethod{10} = $defaultMethod{10} & "\xDF"; // ucfirst
-				if (method_exists($this, $defaultMethod))
-				{
-					$default = $this->{$defaultMethod}();
-				}
-			}
-			$value = $default;
+			$value = $this->getDefaultValueHelper($name, $rule);
 		}
 
 		if (isset($rule['fk']) AND !($value instanceof IEntity))
