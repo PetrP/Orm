@@ -2,7 +2,7 @@
 // todo moznost mit parametry/ data
 // ->add($entity, array('time' => time()))
 // todo rict entity ze se zmenila
-abstract class ManyToMany extends Object implements IteratorAggregate
+abstract class ManyToMany extends Object implements IteratorAggregate, Countable, IRelationship
 {
 	protected $parentRepository;
 	protected $childRepository;
@@ -76,8 +76,9 @@ abstract class ManyToMany extends Object implements IteratorAggregate
 		return $this->childs;
 	}
 
-	final public function set(array $array)
+	final public function set(array $array = NULL)
 	{
+		if ($data === NULL) return $this;
 		$this->childs = array();
 		array_map(array($this, 'add'), $array);
 		return $this;

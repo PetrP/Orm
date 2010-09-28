@@ -166,7 +166,7 @@ class DibiPersistenceHelper extends Object
 	public function persist(IEntity $entity)
 	{
 		$values = Entity::internalValues($entity);
-		$manyToManyValues = array();
+		$relationshipValues = array();
 		$fk = Entity::getFk(get_class($entity));
 
 		foreach ($values as $key => $value)
@@ -186,9 +186,9 @@ class DibiPersistenceHelper extends Object
 			{
 				$values[$key] = serialize($value); // todo zkontrolovat jestli je jednodimenzni a neobrahuje zadne nesmysly
 			}
-			else if ($value instanceof ManyToMany)
+			else if ($value instanceof IRelationship)
 			{
-				$manyToManyValues[] = $value;;
+				$relationshipValues[] = $value;;
 				unset($values[$key]);
 			}
 			else if (is_object($value) AND method_exists($value, '__toString'))
@@ -220,9 +220,9 @@ class DibiPersistenceHelper extends Object
 			Entity::internalValues($entity, array('id' => $id));
 		}
 
-		foreach ($manyToManyValues as $manyToMany)
+		foreach ($relationshipValues as $relationship)
 		{
-			$manyToMany->persist(false);
+			$relationship->persist();
 		}
 
 		return $id;

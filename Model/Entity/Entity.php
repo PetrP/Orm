@@ -106,7 +106,7 @@ abstract class Entity extends Object implements IEntity
 					}
 					else throw new InvalidStateException();
 				}
-				else if ($mode === self::ENTITY_TO_ID AND $result[$name] instanceof ManyToMany)
+				else if ($mode === self::ENTITY_TO_ID AND $result[$name] instanceof IRelationship)
 				{
 					$arr = array();
 					foreach ($result[$name] as $entity)
@@ -389,6 +389,19 @@ abstract class Entity extends Object implements IEntity
 			{
 				$value = Model::getRepository($rule['fk'])->getById($id);
 			}
+		}
+		else if ($rule['relationship'] === MetaData::OneToMany OR $rule['relationship'] === MetaData::ManyToMany)
+		{
+			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IRelationship))
+			{
+				$tmp = new $rule['relationshipParam']($this);
+			}
+			else
+			{
+				$tmp = $this->values[$name];
+			}
+			$tmp->set($value);
+			$value = $tmp;
 		}
 
 		if (!ValidationHelper::isValid($rule['types'], $value))

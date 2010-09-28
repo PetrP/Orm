@@ -103,7 +103,7 @@ abstract class ArrayMapper extends Mapper
 	{
 		$this->begin();
 
-		$manyToManyValues = array();
+		$relationshipValues = array();
 		$fk = Entity::getFk(get_class($entity));
 		foreach (Entity::internalValues($entity) as $key => $value)
 		{
@@ -111,9 +111,9 @@ abstract class ArrayMapper extends Mapper
 			{
 				Model::getRepository($fk[$key])->persist($value, false);
 			}
-			else if ($value instanceof ManyToMany)
+			else if ($value instanceof IRelationship)
 			{
-				$manyToManyValues[] = $value;;
+				$relationshipValues[] = $value;;
 			}
 		}
 
@@ -133,9 +133,9 @@ abstract class ArrayMapper extends Mapper
 		}
 		$this->data[$id] = $entity;
 
-		foreach ($manyToManyValues as $manyToMany)
+		foreach ($relationshipValues as $relationship)
 		{
-			$manyToMany->persist(false);
+			$relationship->persist();
 		}
 
 		return $id;
@@ -143,6 +143,7 @@ abstract class ArrayMapper extends Mapper
 
 	public function delete(IEntity $entity)
 	{
+		// todo pri vymazavani odstanit i vazby v IRelationship
 		$this->begin();
 		$this->data[$entity->id] = NULL;
 		return true;
@@ -178,7 +179,7 @@ abstract class ArrayMapper extends Mapper
 					{
 						$values[$key] = $value->id;
 					}
-					else if ($value instanceof ManyToMany)
+					else if ($value instanceof IRelationship)
 					{
 						unset($values[$key]);
 					}

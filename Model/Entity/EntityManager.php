@@ -71,12 +71,28 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						throw new InvalidStateException('Getter and setter types must be same.');
 					}
 
-					if (preg_match('#\{\s*(ManyToOne|OneToOne|m\:1|1\:1)\s+([^\s]*)\s*\}#si', $string, $match))
-					{
-						$annotations['foreignKey'][] = "$$property " . $match[2];
-					}
-
 					$params[$property]['types'] = $type;
+					$params[$property]['relationship'] = NULL;
+					$params[$property]['relationshipParam'] = NULL;
+
+					if (preg_match('#\{\s*(OneToOne|1\:1)\s+([^\s]*)\s*\}#si', $string, $match))
+					{
+						$params[$property]['relationship'] = MetaData::OneToOne;
+						$params[$property]['relationshipParam'] = $match[2];
+					}
+					else if (preg_match('#\{\s*(ManyToOne|(?:m|n)\:1)\s+([^\s]*)\s*\}#si', $string, $match))
+					{
+						$params[$property]['relationship'] = MetaData::ManyToOne;
+						$params[$property]['relationshipParam'] = $match[2];
+					}
+					else if (preg_match('#\{\s*(ManyToMany|(?:m|n)\:(?:m|n))\s*}#si', $string, $match))
+					{
+						$params[$property]['relationship'] = MetaData::ManyToMany;
+					}
+					else if (preg_match('#\{\s*(OneToMany|1\:(?:m|n))\s*}#si', $string, $match))
+					{
+						$params[$property]['relationship'] = MetaData::OneToMany;
+					}
 
 					if (!$mode OR $mode === '-read')
 					{
@@ -113,15 +129,16 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						$repository = $match[2];
 						if (isset($params[$property]))
 						{
-							if (!isset($params[$property]['fk']))
+							if (!isset($params[$property]['relationship']))
 							{
 								if (Model::isRepository($repository))
 								{
-									$params[$property]['fk'] = $repository;
+									$params[$property]['relationship'] = MetaData::OneToOne;
+									$params[$property]['relationshipParam'] = $repository;
 								}
 								else throw new InvalidStateException("$repository isn't repository in $property");
 							}
-							else throw new InvalidStateException("Already has fk in $property");
+							else throw new InvalidStateException("Already has relationship in $property");
 						}
 						else throw new InvalidStateException("$property not exists");
 					}
@@ -147,7 +164,9 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 					(isset($param['get']) ? MetaData::READ : MetaData::WRITE)
 				,
 				isset($param['fk']) ? $param['fk'] : NULL,
-				$param['since']
+				$param['since'],
+				$param['relationship'],
+				$param['relationshipParam']
 			);
 		}
 
@@ -162,6 +181,12 @@ class MetaData extends Object
 	const READ = 1;
 	const WRITE = 2;
 	const READWRITE = 3;
+
+	const ManyToMany ='m:m';
+	const OneToMany ='1:m';
+
+	const ManyToOne ='m:1';
+	const OneToOne ='1:1';
 
 	private $entityClass;
 	private $data = array();
@@ -181,7 +206,7 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 	}
 
-	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL)
+	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL, $relationship = NULL, $relationshipParam = NULL)
 	{
 		if (isset($this->data[$name])) throw new Exception($name);
 
@@ -194,6 +219,31 @@ class MetaData extends Object
 			}
 		}
 		if ($access === NULL) $access = self::READWRITE;
+		
+		if ($fk)
+		{
+			trigger_error(E_USER_DEPRECATED);
+			$relationship = self::OneToMany;
+			$relationshipParam = $fk;
+		}
+
+		if ($relationship === self::ManyToMany OR $relationship === self::OneToMany)
+		{
+			if (count($types) != 1) throw new InvalidStateException();
+			$relationshipParam = current($types);
+			if (!class_exists($relationshipParam)) throw new InvalidStateException();
+			$parents = class_parents($relationshipParam);
+			if (!isset($parents[$relationship === self::ManyToMany ? 'ManyToMany' : 'OneToMany'])) throw new InvalidStateException();
+		}
+
+		if ($relationship === self::ManyToOne OR $relationship === self::OneToOne)
+		{
+			if (!Model::isRepository($relationshipParam))
+			{
+				throw new InvalidStateException("$relationshipParam isn't repository in $name");
+			}
+			$fk = $relationshipParam;
+		}
 
 
 		$this->data[$name] = array(
@@ -202,6 +252,8 @@ class MetaData extends Object
 			'set' => ($access === self::WRITE OR $access === self::READWRITE) ? array('method' => NULL) : NULL,
 			'fk' => $fk,
 			'since' => $since,
+			'relationship' => $relationship,
+			'relationshipParam' => $relationshipParam,
 		);
 	}
 
