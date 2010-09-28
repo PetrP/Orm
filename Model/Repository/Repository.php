@@ -142,11 +142,6 @@ abstract class Repository extends Object implements IRepository
 		return $this->entities[$data['id']];
 	}
 
-	public function __call($name, $args)
-	{
-		return call_user_func_array(array($this->getMapper(), $name), $args);
-	}
-
 	final public function getRepositoryName()
 	{
 		return $this->repositoryName;
