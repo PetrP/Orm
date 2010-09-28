@@ -219,6 +219,7 @@ class DibiPersistenceHelper extends Object
 			}
 			Entity::internalValues($entity, array('id' => $id));
 		}
+		Entity::internalValues($entity, NULL, false);
 
 		foreach ($relationshipValues as $relationship)
 		{

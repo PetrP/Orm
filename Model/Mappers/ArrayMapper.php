@@ -131,6 +131,7 @@ abstract class ArrayMapper extends Mapper
 			Environment::leaveCriticalSection(get_class($this));
 			Entity::internalValues($entity, array('id' => $id));
 		}
+		Entity::internalValues($entity, NULL, false);
 		$this->data[$id] = $entity;
 
 		foreach ($relationshipValues as $relationship)

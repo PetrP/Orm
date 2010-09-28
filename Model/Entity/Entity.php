@@ -444,8 +444,13 @@ abstract class Entity extends Object implements IEntity
 	 * set or get
 	 * @internal
 	 */
-	final public static function internalValues(IEntity $entity, array $values = NULL)
+	final public static function internalValues(IEntity $entity, array $values = NULL, $changed = NULL)
 	{
+		if ($changed !== NULL)
+		{
+			$entity->changed = (bool) $changed;
+			return NULL;
+		}
 		if ($values !== NULL)
 		{
 			if (!$entity->values)
