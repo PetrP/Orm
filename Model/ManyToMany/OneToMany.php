@@ -28,7 +28,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	/** @return Repository */
 	protected function getSecondRepository()
 	{
-		return Model::getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
+		return Model::get()->getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
 	}
 
 	/** @param IEntity $parent */

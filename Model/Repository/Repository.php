@@ -4,6 +4,10 @@ require_once dirname(__FILE__) . '/IRepository.php';
 
 abstract class Repository extends Object implements IRepository
 {
+	/** @var Model */
+	private $model;
+
+	/** @var DibiMapper */
 	private $mapper;
 
 	private $repositoryName;
@@ -13,6 +17,7 @@ abstract class Repository extends Object implements IRepository
 
 	private $entities = array();
 
+	/** @var PerformanceHelper */
 	private $performanceHelper;
 
 	public function getById($id)
@@ -49,8 +54,9 @@ abstract class Repository extends Object implements IRepository
 		return array();
 	}
 
-	public function __construct($repositoryName)
+	public function __construct($repositoryName, Model $model)
 	{
+		$this->model = $model;
 		$this->repositoryName = $repositoryName;
 		$this->conventional = $this->getMapper()->getConventional(); // speedup
 		$this->performanceHelper = new PerformanceHelper($this);
@@ -79,6 +85,11 @@ abstract class Repository extends Object implements IRepository
 			return new $class($this);
 		}
 		return new DibiMapper($this);
+	}
+
+	final public function getModel()
+	{
+		return $this->model;
 	}
 
 	final public function getEntityName(array $data = NULL)
@@ -171,13 +182,13 @@ abstract class Repository extends Object implements IRepository
 	public function flush($onlyThis = false)
 	{
 		if ($onlyThis) return $this->getMapper()->flush();
-		return Model::flush();
+		return $this->getModel()->flush();
 	}
 
 	public function clean($onlyThis = false)
 	{
 		if ($onlyThis) return $this->getMapper()->rollback();
-		return Model::clean();
+		return $this->getModel()->clean();
 	}
 
 }

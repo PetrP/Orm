@@ -84,6 +84,7 @@ class DibiMapper extends Mapper
 		$h->connection = $this->getConnection();
 		$h->conventional = $this->getConventional();
 		$h->table = $this->getTableName();
+		$h->mapper = $this;
 		return $h;
 	}
 
@@ -159,6 +160,7 @@ class DibiPersistenceHelper extends Object
 	public $table;
 	public $connection;
 	public $conventional;
+	public $mapper;
 
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
@@ -179,7 +181,7 @@ class DibiPersistenceHelper extends Object
 
 			if (isset($fk[$key]) AND $value instanceof IEntity)
 			{
-				Model::getRepository($fk[$key])->persist($value, false);
+				$this->mapper->getModel()->getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;
 			}
 			else if (is_array($value))

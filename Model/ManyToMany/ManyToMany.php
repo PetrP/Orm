@@ -39,13 +39,13 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 	/** @return Repository */
 	protected function getFirstRepository()
 	{
-		return Model::getRepository(substr(get_class($this), 0, strpos(get_class($this), 'To')));
+		return Model::get()->getRepository(substr(get_class($this), 0, strpos(get_class($this), 'To')));
 	}
 
 	/** @return Repository */
 	protected function getSecondRepository()
 	{
-		return Model::getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
+		return Model::get()->getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
 	}
 
 	final public function add($entity)

@@ -109,7 +109,7 @@ abstract class ArrayMapper extends Mapper
 		{
 			if (isset($fk[$key]) AND $value instanceof IEntity)
 			{
-				Model::getRepository($fk[$key])->persist($value, false);
+				$this->getModel()->getRepository($fk[$key])->persist($value, false);
 			}
 			else if ($value instanceof IRelationship)
 			{

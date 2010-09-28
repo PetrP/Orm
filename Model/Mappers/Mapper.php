@@ -29,6 +29,11 @@ abstract class Mapper extends Object implements IMapper
 		return $this->repository;
 	}
 
+	final public function getModel()
+	{
+		return $this->repository->getModel();
+	}
+
 	public function getConventional()
 	{
 		if (!isset($this->conventional))

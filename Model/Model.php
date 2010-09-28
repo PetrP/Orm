@@ -6,37 +6,58 @@ require_once dirname(__FILE__) . '/Repository/Repository.php';
 
 require_once dirname(__FILE__) . '/Mappers/Mapper.php';
 
-
 abstract class AbstractModel extends Object
 {
-	private static $repositories = array();
-	private static $model;
+	static private $instance; // todo di
+
+	private $repositories = array();
+
+	public function __construct()
+	{
+		if (!($this instanceof Model))
+		{
+			throw new InvalidStateException();
+		}
+		if (!isset(self::$instance))
+		{
+			self::$instance = $this;
+		}
+	}
+
+	public static function get() // todo di
+	{
+		if (!isset(self::$instance))
+		{
+			throw new InvalidStateException();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * @return Repository
 	 */
-	public static function getRepository($name)
+	public function getRepository($name)
 	{
 		$name = strtolower($name);
-		if (!isset(self::$repositories[$name]))
+		if (!isset($this->repositories[$name]))
 		{
-			$class = self::getRepositoryClass($name);
-			$r = new $class($name);
+			$class = $this->getRepositoryClass($name);
+			$r = new $class($name, $this);
 			if (!($r instanceof IRepository))
 			{
 				throw new InvalidStateException("Repository '{$r}' must implement IRepository");
 			}
-			self::$repositories[$name] = $r;
+			$this->repositories[$name] = $r;
 		}
-		return self::$repositories[$name];
+		return $this->repositories[$name];
 	}
 
-	public static function isRepository($name)
+	final public function isRepository($name)
 	{
 		$name = strtolower($name);
-		if (isset(self::$repositories[$name])) return true;
+		if (isset($this->repositories[$name])) return true;
 		try {
-			$implements = class_implements(self::getRepositoryClass($name));
+			$implements = class_implements($this->getRepositoryClass($name));
 			return isset($implements['IRepository']);
 		} catch (UnexpectedValueException $e) {
 			return false;
@@ -48,7 +69,7 @@ abstract class AbstractModel extends Object
 	 * @param string
 	 * @return string
 	 */
-	private static function getRepositoryClass($name)
+	final private function getRepositoryClass($name)
 	{
 		$class = $name . 'Repository';
 		$class[0] = strtoupper($class[0]);
@@ -66,34 +87,17 @@ abstract class AbstractModel extends Object
 		return $r;
 	}
 
-	/**
-	 * @return Model
-	 */
-	public static function get()
+	final public function flush()
 	{
-		if (!isset(self::$model))
-		{
-			$model = new Model;
-			if (!($model instanceof self))
-			{
-				throw new InvalidStateException;
-			}
-			self::$model = $model;
-		}
-		return self::$model;
-	}
-
-	final public static function flush()
-	{
-		foreach (self::$repositories as $repo)
+		foreach ($this->repositories as $repo)
 		{
 			$repo->flush(true);
 		}
 	}
 
-	final public static function clean()
+	final public function clean()
 	{
-		foreach (self::$repositories as $repo)
+		foreach ($this->repositories as $repo)
 		{
 			$repo->clean(true);
 		}

@@ -23,7 +23,7 @@ abstract class Entity extends Object implements IEntity
 
 	private $rules;
 
-	private $repositoryName;
+	private $repository;
 
 	private $changed = false;
 
@@ -221,9 +221,20 @@ abstract class Entity extends Object implements IEntity
 	// todo zvazit
 	final public function getGeneratingRepository($need = true)
 	{
-		if ($this->repositoryName) return Model::getRepository($this->repositoryName);
+		if ($this->repository) return $this->repository;
 		else if (!$need) return NULL;
 		else throw new InvalidStateException();
+	}
+	
+	final public function getModel($need = true)
+	{
+		$need = false; // todo
+		if ($this->getGeneratingRepository($need))
+		{
+			return $this->getGeneratingRepository()->getModel();
+		}
+		return Model::get(); // todo di
+		return NULL;
 	}
 
 	final public function isChanged()
@@ -387,7 +398,7 @@ abstract class Entity extends Object implements IEntity
 			$id = (string) $value;
 			if ($id)
 			{
-				$value = Model::getRepository($rule['fk'])->getById($id);
+				$value = Model::get()->getRepository($rule['fk'])->getById($id);
 			}
 		}
 		else if ($rule['relationship'] === MetaData::OneToMany OR $rule['relationship'] === MetaData::ManyToMany)
@@ -434,7 +445,9 @@ abstract class Entity extends Object implements IEntity
 		$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 		if (!($entity instanceof IEntity)) throw new InvalidStateException();
 		// TODO kdyz je instanceof self tak pouzivat private pristup, jinak vymyslet neco jineho
-		$entity->repositoryName = $repository->getRepositoryName();
+
+		//$entity->repositoryName = $repository->getRepositoryName(); // proc jsem neudrzoval rovnou referenci?
+		$entity->repository = $repository;
 		$entity->startup();
 		self::internalValues($entity, $data);
 		return $entity;

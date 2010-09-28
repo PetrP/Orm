@@ -131,7 +131,7 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						{
 							if (!isset($params[$property]['relationship']))
 							{
-								if (Model::isRepository($repository))
+								if (Model::get()->isRepository($repository))
 								{
 									$params[$property]['relationship'] = MetaData::OneToOne;
 									$params[$property]['relationshipParam'] = $repository;
@@ -238,7 +238,7 @@ class MetaData extends Object
 
 		if ($relationship === self::ManyToOne OR $relationship === self::OneToOne)
 		{
-			if (!Model::isRepository($relationshipParam))
+			if (!Model::get()->isRepository($relationshipParam))
 			{
 				throw new InvalidStateException("$relationshipParam isn't repository in $name");
 			}
