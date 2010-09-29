@@ -30,12 +30,7 @@ abstract class Entity extends Object implements IEntity
 	public function __construct()
 	{
 		$this->changed = true;
-		$this->startup();
-	}
-
-	protected function check()
-	{
-
+		$this->___event($this, 'create');
 	}
 
 	public function __toString()
@@ -426,9 +421,68 @@ abstract class Entity extends Object implements IEntity
 		$this->changed = true;
 	}
 
-	final private function startup() // todo rename?
+
+	/** Vytvorena nova entita */
+	protected function onCreate()
 	{
 		$this->rules = self::getEntityRules(get_class($this));
+		$this->checkEvent = true;
+	}
+
+	/** Vytazena z mapperu */
+	protected function onLoad(IRepository $repository)
+	{
+		$this->rules = self::getEntityRules(get_class($this));
+		$this->checkEvent = true;
+	}
+
+	/** Pred persistovanim (insert nebo update) */
+	protected function onBeforePersist(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+	/** Po persistovani (insert nebo update) */
+	protected function onAfterPersist(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+	/** Behem persistovani, vsechny subentity nemusi byt jeste persistovany */
+	final protected function onPersist(IRepository $repository, $id)
+	{
+		$this->checkEvent = true;
+	}
+
+	/** Pred vymazanim */
+	protected function onBeforeDelete(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+	/** Po vymazani */
+	protected function onAfterDelete(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+
+	/** Persistovane zmeny (update) */
+	protected function onBeforeUpdate(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+	/** Persistovane zmeny (update) */
+	protected function onAfterUpdate(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+
+	/** Persistovane zmeny (insert) */
+	protected function onBeforeInsert(IRepository $repository)
+	{
+		$this->checkEvent = true;
+	}
+	/** Persistovane zmeny (insert) */
+	protected function onAfterInsert(IRepository $repository)
+	{
+		$this->checkEvent = true;
 	}
 
 
@@ -448,7 +502,6 @@ abstract class Entity extends Object implements IEntity
 
 		//$entity->repositoryName = $repository->getRepositoryName(); // proc jsem neudrzoval rovnou referenci?
 		$entity->repository = $repository;
-		$entity->startup();
 		self::internalValues($entity, $data);
 		return $entity;
 	}
@@ -520,6 +573,31 @@ abstract class Entity extends Object implements IEntity
 		return $values;
 	}
 
+
+	private $checkEvent;
+	/**
+	 * @internal
+	 */
+	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $id = NULL)
+	{
+		$method = 'on' . ucfirst($event);
+		$entity->checkEvent = NULL;
+		if ($id === NULL)
+		{
+			$entity->{$method}($repository);
+		}
+		else
+		{
+			$entity->{$method}($repository, $id);
+		}
+
+		if ($entity->checkEvent !== true)
+		{
+			$class = get_class($entity);
+			throw new InvalidStateException("Method $class::$method() or its descendant doesn't call parent::$method().");
+		}
+	}
+
 	/**
 	 * @internal
 	 */
@@ -536,5 +614,6 @@ abstract class Entity extends Object implements IEntity
 
 
 
-
+	/** @deprecated */
+	final protected function check(){}
 }

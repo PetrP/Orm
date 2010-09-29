@@ -137,7 +137,8 @@ abstract class Repository extends Object implements IRepository
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
 			$this->checkEntityName($entityName);
-			$this->entities[$data['id']] = Entity::create($entityName, $data, $this);
+			$this->entities[$data['id']] = $entity = Entity::create($entityName, $data, $this);
+			Entity::___event($entity, 'load', $this);
 		}
 		return $this->entities[$data['id']];
 	}
@@ -150,10 +151,13 @@ abstract class Repository extends Object implements IRepository
 	public function persist(IEntity $entity)
 	{
 		$this->checkEntityName(get_class($entity));
-		if (isset($entity->id) AND !$entity->isChanged())
+		$hasId = isset($entity->id);
+		if ($hasId AND !$entity->isChanged())
 		{
 			return $entity->id;
 		}
+		Entity::___event($entity, 'beforePersist', $this);
+		Entity::___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
 
 		$relationshipValues = array();
 		$fk = Entity::getFk(get_class($entity));
@@ -171,6 +175,7 @@ abstract class Repository extends Object implements IRepository
 
 		if ($id = $this->getMapper()->persist($entity))
 		{
+			Entity::___event($entity, 'persist', $this, $id);
 			Entity::internalValues($entity, array('id' => $id));
 			Entity::internalValues($entity, NULL, false);
 			$this->entities[$entity->id] = $entity;
@@ -179,15 +184,19 @@ abstract class Repository extends Object implements IRepository
 				$relationship->persist();
 			}
 
+			Entity::___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
+			Entity::___event($entity, 'afterPersist', $this);
 			return $id;
 		}
-		return NULL;
+		throw new Exception(); // todo
 	}
 
 	public function delete($entity) // todo prejmenovat na remove?
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkEntityName(get_class($entity));
+
+		Entity::___event($entity, 'beforeDelete', $this);
 		if (isset($entity->id))
 		{
 			if ($this->getMapper()->delete($entity))
@@ -195,10 +204,13 @@ abstract class Repository extends Object implements IRepository
 				unset($this->entities[$entity->id]);
 				Entity::internalValues($entity, array('id' => NULL));
 				Entity::internalValues($entity, NULL, false);
-				return true;
 			}
-			return false;
+			else
+			{
+				throw new Exception(); // todo
+			}
 		}
+		Entity::___event($entity, 'afterDelete', $this);
 		return true;
 	}
 
