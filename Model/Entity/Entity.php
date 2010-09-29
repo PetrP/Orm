@@ -12,8 +12,8 @@ require_once dirname(__FILE__) . '/ValidationHelper.php';
  */
 abstract class Entity extends Object implements IEntity
 {
-	const ENTITY_TO_ID = 'entidyToId';
-	const ENTITY_TO_ARRAY = 'entidyToArray';
+	const ENTITY_TO_ID = 'entityToId';
+	const ENTITY_TO_ARRAY = 'entityToArray';
 
 	const DEFAULT_VALUE = "\0";
 
