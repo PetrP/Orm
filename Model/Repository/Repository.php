@@ -177,6 +177,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			Entity::___event($entity, 'persist', $this, $id);
 			$this->entities[$entity->id] = $entity;
+
 			foreach ($relationshipValues as $relationship)
 			{
 				$relationship->persist();

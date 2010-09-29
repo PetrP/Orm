@@ -115,11 +115,6 @@ abstract class Entity extends Object implements IEntity
 
 		return $result;
 	}
-	/** @deprecated */
-	final public function toPlainArray()
-	{
-		return $this->toArray(self::ENTITY_TO_ID);
-	}
 
 	const EXISTS = NULL;
 	const READ = 'r';
@@ -224,7 +219,7 @@ abstract class Entity extends Object implements IEntity
 		else if (!$need) return NULL;
 		else throw new InvalidStateException();
 	}
-	
+
 	final public function getModel($need = true)
 	{
 		$need = false; // todo
@@ -504,6 +499,7 @@ abstract class Entity extends Object implements IEntity
 
 
 
+
 	/**
 	 * @internal
 	 */
@@ -568,4 +564,9 @@ abstract class Entity extends Object implements IEntity
 
 	/** @deprecated */
 	final protected function check(){}
+	/** @deprecated */
+	final public function toPlainArray()
+	{
+		return $this->toArray(self::ENTITY_TO_ID);
+	}
 }
