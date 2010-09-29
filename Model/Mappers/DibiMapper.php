@@ -167,9 +167,7 @@ class DibiPersistenceHelper extends Object
 
 	public function persist(IEntity $entity)
 	{
-		$values = Entity::internalValues($entity);
-		$relationshipValues = array();
-		$fk = Entity::getFk(get_class($entity));
+		$values = $entity->toArray();
 
 		foreach ($values as $key => $value)
 		{
@@ -178,10 +176,8 @@ class DibiPersistenceHelper extends Object
 				unset($values[$key]);
 				continue;
 			}
-
-			if (isset($fk[$key]) AND $value instanceof IEntity)
+			if ($value instanceof IEntity)
 			{
-				$this->mapper->getModel()->getRepository($fk[$key])->persist($value, false);
 				$values[$key] = $value->id;
 			}
 			else if (is_array($value))
@@ -190,7 +186,6 @@ class DibiPersistenceHelper extends Object
 			}
 			else if ($value instanceof IRelationship)
 			{
-				$relationshipValues[] = $value;;
 				unset($values[$key]);
 			}
 			else if (is_object($value) AND method_exists($value, '__toString'))
@@ -219,13 +214,6 @@ class DibiPersistenceHelper extends Object
 				if (!isset($entity->id)) throw $e;
 				$id = $entity->id;
 			}
-			Entity::internalValues($entity, array('id' => $id));
-		}
-		Entity::internalValues($entity, NULL, false);
-
-		foreach ($relationshipValues as $relationship)
-		{
-			$relationship->persist();
 		}
 
 		return $id;

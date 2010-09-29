@@ -103,20 +103,6 @@ abstract class ArrayMapper extends Mapper
 	{
 		$this->begin();
 
-		$relationshipValues = array();
-		$fk = Entity::getFk(get_class($entity));
-		foreach (Entity::internalValues($entity) as $key => $value)
-		{
-			if (isset($fk[$key]) AND $value instanceof IEntity)
-			{
-				$this->getModel()->getRepository($fk[$key])->persist($value, false);
-			}
-			else if ($value instanceof IRelationship)
-			{
-				$relationshipValues[] = $value;;
-			}
-		}
-
 		if (isset($entity->id) AND isset($this->data[$entity->id]))
 		{
 			$id = $entity->id;
@@ -129,15 +115,8 @@ abstract class ArrayMapper extends Mapper
 			$originData[$id] = NULL;
 			$this->saveData($originData);
 			Environment::leaveCriticalSection(get_class($this));
-			Entity::internalValues($entity, array('id' => $id));
 		}
-		Entity::internalValues($entity, NULL, false);
 		$this->data[$id] = $entity;
-
-		foreach ($relationshipValues as $relationship)
-		{
-			$relationship->persist();
-		}
 
 		return $id;
 	}
@@ -172,11 +151,10 @@ abstract class ArrayMapper extends Mapper
 		{
 			if ($entity)
 			{
-				$values = Entity::internalValues($entity);
-				$fk = Entity::getFk(get_class($entity));
+				$values = $entity->toArray();
 				foreach ($values as $key => $value)
 				{
-					if (isset($fk[$key]) AND $value instanceof IEntity)
+					if ($value instanceof IEntity)
 					{
 						$values[$key] = $value->id;
 					}
