@@ -137,7 +137,7 @@ abstract class Repository extends Object implements IRepository
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
 			$this->checkEntityName($entityName);
-			$this->entities[$data['id']] = $entity = Entity::create($entityName, $data, $this);
+			$this->entities[$data['id']] = $entity = Entity::___create($entityName, $data, $this);
 			Entity::___event($entity, 'load', $this);
 		}
 		return $this->entities[$data['id']];
@@ -160,7 +160,7 @@ abstract class Repository extends Object implements IRepository
 		Entity::___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
 
 		$relationshipValues = array();
-		$fk = Entity::getFk(get_class($entity));
+		$fk = Entity::___getFk(get_class($entity));
 		foreach ($entity->toArray() as $key => $value)
 		{
 			if (isset($fk[$key]) AND $value instanceof IEntity)

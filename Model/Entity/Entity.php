@@ -494,7 +494,7 @@ abstract class Entity extends Object implements IEntity
 	/**
 	 * @internal
 	 */
-	final public static function create($entityName, array $data, IRepository $repository)
+	final public static function ___create($entityName, array $data, IRepository $repository)
 	{
 		$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 		if (!($entity instanceof IEntity)) throw new InvalidStateException();
@@ -601,7 +601,7 @@ abstract class Entity extends Object implements IEntity
 	/**
 	 * @internal
 	 */
-	final public static function getFk($entityName)
+	final public static function ___getFk($entityName)
 	{
 		$result = array();
 		foreach (Entity::getEntityRules($entityName) as $name => $rule)
