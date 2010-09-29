@@ -51,11 +51,15 @@ class DibiMapper extends Mapper
 			{
 				$value = $value->fetchPairs(NULL, 'id');
 			}
+			if ($value instanceof IEntity)
+			{
+				$value = isset($value->id) ? $value->id : NULL;
+			}
 			if (is_array($value))
 			{
 				$value = array_unique(
 					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? $v->id : $v;'),
+						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
 						$value
 					)
 				);
@@ -67,7 +71,7 @@ class DibiMapper extends Mapper
 			}
 			else
 			{
-				$all->where('%n = %s', $key, $value instanceof IEntity ? $value->id : $value);
+				$all->where('%n = %s', $key, $value);
 			}
 		}
 		return $all;

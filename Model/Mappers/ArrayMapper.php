@@ -54,7 +54,7 @@ abstract class ArrayMapper extends Mapper
 			}
 			else if ($value instanceof IEntity)
 			{
-				$value = $value->id;
+				$value = isset($value->id) ? $value->id : NULL;
 				$where[$key] = $value;
 			}
 		}
@@ -67,7 +67,7 @@ abstract class ArrayMapper extends Mapper
 			foreach ($where as $key => $value)
 			{
 				$eValue = $entity[$key];
-				$eValue = $eValue instanceof IEntity ? $eValue->id : $eValue;
+				$eValue = $eValue instanceof IEntity ? (isset($eValue->id) ? $eValue->id : NULL) : $eValue;
 
 				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
 				{
