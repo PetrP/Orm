@@ -264,6 +264,7 @@ class MetaData extends Object
 		$params = $this->data;
 
 		$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Entity'));
+		$methods[] = 'getId';
 		// TODO neumoznuje pouzit vlastni IEntity
 		foreach ($methods as $method)
 		{

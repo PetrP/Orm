@@ -43,6 +43,14 @@ abstract class Entity extends Object implements IEntity
 		}
 	}
 
+	/** @var int */
+	final public function getId()
+	{
+		$id = $this->getValue('id');
+		if (!$id) throw new InvalidStateException('You must persist entity first');
+		return $id;
+	}
+
 	public function __clone()
 	{
 		$this->valid['id'] = false;
