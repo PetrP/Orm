@@ -457,6 +457,7 @@ abstract class Entity extends Object implements IEntity
 		$this->values['id'] = $id;
 		$this->valid['id'] = false;
 		$this->changed = false;
+		$this->repository = $repository;
 		$this->checkEvent = true;
 	}
 
@@ -471,6 +472,7 @@ abstract class Entity extends Object implements IEntity
 		$this->values['id'] = NULL;
 		$this->valid['id'] = false;
 		$this->changed = true;
+		$this->repository = NULL;
 		$this->checkEvent = true;
 	}
 
