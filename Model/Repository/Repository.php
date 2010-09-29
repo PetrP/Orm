@@ -154,7 +154,12 @@ abstract class Repository extends Object implements IRepository
 		{
 			return $entity->id;
 		}
-		return $this->getMapper()->persist($entity);
+		if ($id = $this->getMapper()->persist($entity))
+		{
+			$this->entities[$entity->id] = $entity;
+			return $id;
+		}
+		return NULL;
 	}
 
 	public function delete($entity) // todo prejmenovat na remove?
