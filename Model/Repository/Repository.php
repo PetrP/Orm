@@ -176,8 +176,6 @@ abstract class Repository extends Object implements IRepository
 		if ($id = $this->getMapper()->persist($entity))
 		{
 			Entity::___event($entity, 'persist', $this, $id);
-			Entity::internalValues($entity, array('id' => $id));
-			Entity::internalValues($entity, NULL, false);
 			$this->entities[$entity->id] = $entity;
 			foreach ($relationshipValues as $relationship)
 			{
@@ -202,8 +200,6 @@ abstract class Repository extends Object implements IRepository
 			if ($this->getMapper()->delete($entity))
 			{
 				unset($this->entities[$entity->id]);
-				Entity::internalValues($entity, array('id' => NULL));
-				Entity::internalValues($entity, NULL, false);
 			}
 			else
 			{

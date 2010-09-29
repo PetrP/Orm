@@ -162,7 +162,11 @@ abstract class Entity extends Object implements IEntity
 		{
 			if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
 			{
-				$this->internalValues($this, $lazyLoadParams);
+				foreach ($lazyLoadParams as $n => $v)
+				{
+					$this->values[$n] = $v;
+					$this->valid[$n] = false;
+				}
 				if (array_key_exists($name, $this->values))
 				{
 					$value = $this->values[$name];
@@ -449,6 +453,10 @@ abstract class Entity extends Object implements IEntity
 	/** Behem persistovani, vsechny subentity nemusi byt jeste persistovany */
 	final protected function onPersist(IRepository $repository, $id)
 	{
+		if (!$id) throw new UnexpectedValueException();
+		$this->values['id'] = $id;
+		$this->valid['id'] = false;
+		$this->changed = false;
 		$this->checkEvent = true;
 	}
 
@@ -460,6 +468,9 @@ abstract class Entity extends Object implements IEntity
 	/** Po vymazani */
 	protected function onAfterDelete(IRepository $repository)
 	{
+		$this->values['id'] = NULL;
+		$this->valid['id'] = false;
+		$this->changed = true;
 		$this->checkEvent = true;
 	}
 
@@ -502,76 +513,15 @@ abstract class Entity extends Object implements IEntity
 
 		//$entity->repositoryName = $repository->getRepositoryName(); // proc jsem neudrzoval rovnou referenci?
 		$entity->repository = $repository;
-		self::internalValues($entity, $data);
+		$entity->values = $data;
+		$entity->valid = array();
 		return $entity;
 	}
 
-	/**
-	 * set or get
-	 * @internal
-	 */
-	final public static function internalValues(IEntity $entity, array $values = NULL, $changed = NULL)
-	{
-		if ($changed !== NULL)
-		{
-			$entity->changed = (bool) $changed;
-			return NULL;
-		}
-		if ($values !== NULL)
-		{
-			if (!$entity->values)
-			{
-				$entity->values = $values;
-				$entity->valid = array();
-			}
-			else
-			{
-				foreach ($values as $name => $value)
-				{
-					$entity->values[$name] = $value;
-					$entity->valid[$name] = false;
-				}
-			}
-			return NULL;
-		}
 
-		$entity->check();
 
-		$values = array();
 
-		if ($entity->__isset('id'))
-		{
-			$values['id'] = $entity->__get('id');
-		}
 
-		foreach ($entity->rules as $name => $rule)
-		{
-			if ($name === 'id') continue;
-
-			if (isset($rule['get']))
-			{
-				$values[$name] = $entity->__get($name);
-			}
-			else if (isset($rule['set']))
-			{
-				$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL;
-				if (!isset($entity->valid[$name]) OR !$entity->valid[$name])
-				{
-					$tmpChanged = $entity->changed;
-					$entity->__set($name, $value);
-					$entity->changed = $tmpChanged;
-					$value = isset($entity->values[$name]) ? $entity->values[$name] : NULL; // todo kdyz neni nastaveno muze to znamenat neco spatne, vyhodit chybu?
-				}
-				$values[$name] = $value;
-			}
-			else
-			{
-				throw new MemberAccessException(); // todo ?
-			}
-		}
-
-		return $values;
-	}
 
 
 	private $checkEvent;
