@@ -219,7 +219,9 @@ class MetaData extends Object
 			}
 		}
 		if ($access === NULL) $access = self::READWRITE;
-		
+
+		if ($access === self::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: $name");
+
 		if ($fk)
 		{
 			trigger_error(E_USER_DEPRECATED);
