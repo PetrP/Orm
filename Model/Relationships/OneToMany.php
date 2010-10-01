@@ -1,10 +1,6 @@
 <?php
 
-interface IRelationship
-{
-	// todo asi get a set
-	//persist
-}
+require_once dirname(__FILE__) . '/IRelationship.php';
 
 class OneToMany extends Object implements IteratorAggregate, Countable, IRelationship
 {

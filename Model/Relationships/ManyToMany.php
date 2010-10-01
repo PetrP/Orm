@@ -1,4 +1,7 @@
 <?php
+
+require_once dirname(__FILE__) . '/IRelationship.php';
+
 // todo moznost mit parametry/ data
 // ->add($entity, array('time' => time()))
 // todo rict entity ze se zmenila
