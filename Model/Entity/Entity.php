@@ -369,7 +369,7 @@ abstract class Entity extends Object implements IEntity
 	final private function getDefaultValueHelper($name, $rule)
 	{
 		$default = NULL;
-		if (array_key_exists('default', $rule))
+		if (isset($rule['default']))
 		{
 			$default = $rule['default'];
 		}

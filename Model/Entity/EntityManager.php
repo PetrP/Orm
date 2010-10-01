@@ -93,6 +93,24 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 					{
 						$params[$property]['relationship'] = MetaData::OneToMany;
 					}
+					
+					if (preg_match('#\{\s*default\s+([^\}]+)\s*\}#si', $string, $match))
+					{
+						$d = $match[1];
+						if (is_numeric($d))
+						{
+							$d = (float) $d;
+						}
+						else if (defined($d))
+						{
+							$d = constant($d);
+						}
+						else
+						{
+							$d = trim($d);
+						}
+						$params[$property]['default'] = $d;
+					}
 
 					if (!$mode OR $mode === '-read')
 					{
@@ -166,7 +184,8 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 				isset($param['fk']) ? $param['fk'] : NULL,
 				$param['since'],
 				$param['relationship'],
-				$param['relationshipParam']
+				$param['relationshipParam'],
+				isset($param['default']) ? $param['default'] : NULL
 			);
 		}
 
@@ -206,7 +225,7 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 	}
 
-	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL, $relationship = NULL, $relationshipParam = NULL)
+	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL, $relationship = NULL, $relationshipParam = NULL, $default = NULL)
 	{
 		if (isset($this->data[$name])) throw new Exception($name);
 
@@ -256,6 +275,7 @@ class MetaData extends Object
 			'since' => $since,
 			'relationship' => $relationship,
 			'relationshipParam' => $relationshipParam,
+			'default' => $default,
 		);
 	}
 

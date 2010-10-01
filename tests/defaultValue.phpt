@@ -4,7 +4,15 @@ require dirname(__FILE__) . '/base.php';
 
 
 /**
- * @property int $position {default 1}
+ * @property int $x1 {default 1}
+ * @property bool $x2 {default true}
+ * @property bool $x3 {default false}
+ * @property string|NULL $x4 {default NULL}
+ * @property string|NULL $x5 {default nazdar}
+ * @property int|NULL $x6 {default 5.65}
+ * @property float|NULL $x7 {default 5.65}
+ * @property DateTime $x8 {default 2010-01-01}
+ *
  * @property DateTime $date
  */
 class Def extends Entity
@@ -18,16 +26,35 @@ class Def extends Entity
 
 $d = new Def;
 
-dt($d->position);
-dt($d->date);
+foreach ($d->toArray() as $k => $v) dt($v, $k);
 
 
 __halt_compiler();
 ------EXPECT------
-int(1)
+id: NULL
 
-object(DateTime53) (3) {
-	"date" => string(19) "2010-06-23 20:01:01"
-	"timezone_type" => int(3)
-	"timezone" => string(%i%) "%a%"
-}
+x1: 1
+
+x2: TRUE
+
+x3: FALSE
+
+x4: NULL
+
+x5: "nazdar"
+
+x6: 5
+
+x7: 5.65
+
+x8: DateTime53(
+	"date" => "2010-01-01 00:00:00"
+	"timezone_type" => 3
+	"timezone" => "Europe/Prague"
+)
+
+date: DateTime53(
+	"date" => "2010-06-23 20:01:01"
+	"timezone_type" => 3
+	"timezone" => "Europe/Prague"
+)
