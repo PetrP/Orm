@@ -12,6 +12,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 
 	protected $parent;
 	protected $childs;
+	protected $get;
 
 	protected $parentIsFirst;
 
@@ -63,7 +64,10 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 			throw new UnexpectedValueException();
 		}
 
-		$this->get();
+		if ($this->childs === NULL)
+		{
+			$this->childs = $this->get()->fetchAll();
+		}
 
 		$this->childs[] = $entity;
 		return $this;
@@ -71,19 +75,24 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 
 	final public function get()
 	{
-		if ($this->childs === NULL)
+		if ($this->childs !== NULL)
+		{
+			$this->get = new ArrayDataSource($this->childs);
+			$this->childs = NULL;
+		}
+		else if ($this->get === NULL)
 		{
 			$data = $this->load();
-			$this->childs = $data ? $this->childRepository->findById($data)->fetchAll() : array();
+			$this->get = $data ? $this->childRepository->findById($data) : new ArrayDataSource(array());
 		}
-		return $this->childs;
+		return $this->get;
 	}
 
-	final public function set(array $array = NULL)
+	final public function set(array $data = NULL)
 	{
 		if ($data === NULL) return $this;
 		$this->childs = array();
-		array_map(array($this, 'add'), $array);
+		array_map(array($this, 'add'), $data);
 		return $this;
 	}
 
