@@ -185,6 +185,10 @@ abstract class Repository extends Object implements IRepository
 
 			Entity::___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
 			Entity::___event($entity, 'afterPersist', $this);
+			if ($entity->isChanged())
+			{
+				$this->getMapper()->persist($entity);
+			}
 			return $id;
 		}
 		throw new Exception(); // todo
