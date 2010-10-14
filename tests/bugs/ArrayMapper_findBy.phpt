@@ -1,7 +1,7 @@
 <?php
 
 require dirname(__FILE__) . '/../base.php';
-
+TestHelpers::$oldDump = false;
 /**
  * @property int $t1
  * @property int $t2
@@ -30,7 +30,7 @@ class TestsMapper extends FileMapper
 	}
 }
 
-$r = Model::getRepository('tests');
+$r = $model->tests;
 
 $r->persist(new Test);
 $r->persist(new Test);

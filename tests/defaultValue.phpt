@@ -1,7 +1,7 @@
 <?php
 
 require dirname(__FILE__) . '/base.php';
-
+TestHelpers::$oldDump = false;
 
 /**
  * @property int $x1 {default 1}

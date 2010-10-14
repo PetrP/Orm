@@ -1,6 +1,7 @@
 <?php
 
 require dirname(__FILE__) . '/base.php';
+TestHelpers::$oldDump = false;
 
 interface IFoo {}
 interface IBar {}

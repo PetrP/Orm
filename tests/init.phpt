@@ -42,27 +42,20 @@ for ($i=0;$i--;)
 	$t->text = $m;
 	$t->char = $m{0};
 	$t->int = $j;
-	dd(Model::getRepository('test')->persist($t));
+	dd($model->test->persist($t));
 }
-Model::getRepository('test')->flush();
-
-
-/*
-Model::init(array(
-	'User' => 'Users',
-	'Email' => 'Emails',
-));*/
+$model->test->flush();
 
 /*
 for ($i=1000;$i--;)
 	Model::getRepository('test')->getById(153548);
  */
-foreach (Model::getRepository('test')->findAll()->applyLimit(100) as $x)
+foreach ($model->test->findAll()->applyLimit(100) as $x)
 {
 	$x->toArray();
 }
-$x = Model::getRepository('test')->findAll()->applyLimit(100)->fetchAll();
-foreach (Model::getRepository('test')->findByChar('a')->applyLimit(100) as $x)
+$x = $model->test->findAll()->applyLimit(100)->fetchAll();
+foreach ($model->test->findByChar('a')->applyLimit(100) as $x)
 {
 	if ($x->char !== 'a')
 	{

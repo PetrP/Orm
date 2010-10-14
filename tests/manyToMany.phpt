@@ -66,8 +66,8 @@ $a = new Article('Clanek1');
 $a->tags->add(new Tag('kategorie'));
 
 
-Model::get()->articles->persist($a);
-Model::get()->articles->flush();
+$model->articles->persist($a);
+$model->articles->flush();
 
 
 __halt_compiler();

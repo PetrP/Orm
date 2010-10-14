@@ -20,7 +20,7 @@ class FoosRepository extends Repository
 
 }
 
-dt(Foo::getFk('Foo'));
+dt(Foo::___getFk('Foo'));
 
 __halt_compiler();
 ------EXPECT------

@@ -55,21 +55,15 @@ for ($i=1;$i--;)
 	$m = md5($i.$j);
 	$t->text = $m;
 	$t->char = $m{0};
-	$t->int = Model::getRepository('test')->getById(153546);
-	dd(Model::getRepository('test')->persist($t));
+	$t->int = $model->test->getById(153546);
+	dd($model->test->persist($t));
 }
-Model::getRepository('test')->flush();
+$model->test->flush();
 
-
-/*
-Model::init(array(
-	'User' => 'Users',
-	'Email' => 'Emails',
-));*/
 
 /*
 for ($i=1000;$i--;)
-	Model::getRepository('test')->getById(153548);
+	$model->test->getById(153548);
  */
 foreach (Model::getRepository('test')->findById($t->id) as $x)
 {
@@ -93,10 +87,10 @@ class Test3Repository extends Repository
 
 $t3 = new Test3;
 $t3->parent = $t;
-Model::getRepository('test3')->persist($t3);
-Model::getRepository('test3')->flush();
+$model->test3->persist($t3);
+$model->test3->flush();
 
-$t3 = Model::getRepository('test3')->findAll()->fetch();
+$t3 = $model->test3->findAll()->fetch();
 dt($t3->toArray(Entity::ENTITY_TO_ID));
 
 __halt_compiler();

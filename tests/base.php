@@ -40,3 +40,10 @@ class Model extends AbstractModel
 {
 
 }
+/**
+ * @var Model
+ * @global
+ */
+$model = new Model;
+
+TestHelpers::$oldDump = true;

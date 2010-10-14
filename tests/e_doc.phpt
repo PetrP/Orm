@@ -5,7 +5,6 @@ require dirname(__FILE__) . '/base.php';
 /**
  * @property $readWrite
  * @property-read $read
- * @property-write $write
  */
 class Test extends Entity
 {
@@ -15,15 +14,11 @@ class Test extends Entity
 $t = new Test;
 
 $t->readWrite = 'Lorem ipsum';
-$t->write = 'Ipsum lorem';
 try {
 	$t->read = 'Xxxxx';
 } catch (Exception $e) { dt($e, 'set read'); }
 
 dt($t->readWrite, 'get readWrite');
-try {
-	dt($t->write, 'get write');
-} catch (Exception $e) { dt($e, 'get write'); }
 dt($t->read, 'get read');
 
 
@@ -35,23 +30,24 @@ set read: Exception MemberAccessException: Cannot write to a read-only property 
 
 get readWrite: string(11) "Lorem ipsum"
 
-get write: Exception MemberAccessException: Cannot read to a write-only property Test::$write.
-
 get read: NULL
 
-array(4) {
+array(3) {
 	"id" => array(%i%) {
 		"types" => array(1) {
 			0 => string(3) "int"
 		}
 		"get" => array(1) {
-			"method" => NULL
+			"method" => string(5) "getId"
 		}
 		"set" => NULL
 		"fk" => NULL
 		"since" => string(6) "Entity"
+		"relationship" => NULL
+		"relationshipParam" => NULL
+		"default" => NULL
 	}
-	"readWrite" => array(%i%) {
+	"readWrite" => array(8) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
@@ -61,8 +57,11 @@ array(4) {
 		}
 		"fk" => NULL
 		"since" => string(4) "Test"
+		"relationship" => NULL
+		"relationshipParam" => NULL
+		"default" => NULL
 	}
-	"read" => array(%i%) {
+	"read" => array(8) {
 		"types" => array(0)
 		"get" => array(1) {
 			"method" => NULL
@@ -70,14 +69,8 @@ array(4) {
 		"set" => NULL
 		"fk" => NULL
 		"since" => string(4) "Test"
-	}
-	"write" => array(%i%) {
-		"types" => array(0)
-		"get" => NULL
-		"set" => array(1) {
-			"method" => NULL
-		}
-		"fk" => NULL
-		"since" => string(4) "Test"
+		"relationship" => NULL
+		"relationshipParam" => NULL
+		"default" => NULL
 	}
 }

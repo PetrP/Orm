@@ -61,7 +61,7 @@ class PersonsRepository extends Repository
 	
 }
 
-$prm = Model::getRepository('persons');
+$prm = $model->persons;
 
 
 Debug::timer();
