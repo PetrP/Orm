@@ -88,9 +88,8 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 		return $this->get;
 	}
 
-	final public function set(array $data = NULL)
+	final public function set(array $data)
 	{
-		if ($data === NULL) return $this;
 		$this->childs = array();
 		array_map(array($this, 'add'), $data);
 		return $this;

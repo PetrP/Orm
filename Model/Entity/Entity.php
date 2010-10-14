@@ -379,7 +379,7 @@ abstract class Entity extends Object implements IEntity
 			{
 				$tmp = $this->values[$name];
 			}
-			$tmp->set($value);
+			if ($value !== NULL) $tmp->set($value);
 			$value = $tmp;
 		}
 

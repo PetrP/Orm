@@ -86,9 +86,8 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 		return $this->get()->fetchAssoc('id');
 	}
 
-	public function set(array $data = NULL)
+	public function set(array $data)
 	{
-		if ($data === NULL) return $this;
 		$all = $this->prepareAllForSet();
 		$repository = $this->getSecondRepository();
 		$param = $this->getSecondParamName();
