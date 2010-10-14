@@ -97,7 +97,11 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 		foreach (array_values($data) as $order => $row)
 		{
 			$row = $this->row($row);
-			if ($row instanceof IEntity)
+			if ($row === NULL)
+			{
+				continue;
+			}
+			else if ($row instanceof IEntity)
 			{
 				$row = $row->toArray();
 			}
