@@ -93,7 +93,8 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 		$param = $this->getSecondParamName();
 		$result = array();
 
-		foreach (array_values($data) as $order => $row)
+		$order = 0;
+		foreach (array_values($data) as $row)
 		{
 			$row = $this->row($row);
 			if ($row === NULL)
@@ -116,10 +117,11 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 				$entity = new $en;
 			}
 			$entity->setValues($row);
-			if ($entity->hasParam('order')) $entity->order = $order;
+			if ($entity->hasParam('order')) $entity->order = ++$order;
 			$entity->$param = $this->parent;
 			$result[] = $entity;
 		}
+		
 
 		$this->get = new ArrayDataSource($result);
 
