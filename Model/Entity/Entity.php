@@ -363,12 +363,12 @@ abstract class Entity extends Object implements IEntity
 			$value = $this->getDefaultValueHelper($name, $rule);
 		}
 
-		if (isset($rule['fk']) AND !($value instanceof IEntity))
+		if (($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne) AND !($value instanceof IEntity))
 		{
 			$id = (string) $value;
 			if ($id)
 			{
-				$value = Model::get()->getRepository($rule['fk'])->getById($id);
+				$value = Model::get()->getRepository($rule['relationshipParam'])->getById($id);
 			}
 		}
 		else if ($rule['relationship'] === MetaData::OneToMany OR $rule['relationship'] === MetaData::ManyToMany)
@@ -547,8 +547,8 @@ abstract class Entity extends Object implements IEntity
 		$result = array();
 		foreach (Entity::getEntityRules($entityName) as $name => $rule)
 		{
-			if (!isset($rule['fk'])) continue;
-			$result[$name] = $rule['fk'];
+			if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
+			$result[$name] = $rule['relationshipParam'];
 		}
 		return $result;
 	}

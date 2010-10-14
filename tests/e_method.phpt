@@ -71,7 +71,6 @@ array(
 			"method" => "getId"
 		)
 		"set" => NULL
-		"fk" => NULL
 		"since" => "Entity"
 		"relationship" => NULL
 		"relationshipParam" => NULL
@@ -86,7 +85,6 @@ array(
 		"set" => array(
 			"method" => "setReadWrite"
 		)
-		"fk" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL
@@ -99,7 +97,6 @@ array(
 			"method" => NULL
 		)
 		"set" => NULL
-		"fk" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL
@@ -116,7 +113,6 @@ array(
 		"set" => array(
 			"method" => "setDate"
 		)
-		"fk" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL

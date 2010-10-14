@@ -41,7 +41,6 @@ array(
 			"method" => "getId"
 		)
 		"set" => NULL
-		"fk" => NULL
 		"since" => "Entity"
 		"relationship" => NULL
 		"relationshipParam" => NULL
@@ -56,7 +55,6 @@ array(
 		"set" => array(
 			"method" => NULL
 		)
-		"fk" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL
@@ -69,7 +67,6 @@ array(
 			"method" => NULL
 		)
 		"set" => NULL
-		"fk" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL

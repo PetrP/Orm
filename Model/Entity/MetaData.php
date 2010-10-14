@@ -92,7 +92,6 @@ class MetaDataProperty extends Object
 		'types' => array(),
 		'get' => NULL,
 		'set' => NULL,
-		'fk' => NULL,
 		'since' => NULL,
 		'relationship' => NULL,
 		'relationshipParam' => NULL,
@@ -163,7 +162,6 @@ class MetaDataProperty extends Object
 
 		$this->data['relationship'] = MetaData::OneToOne;
 		$this->data['relationshipParam'] = $repositoryName;
-		$this->data['fk'] = $repositoryName; // deprecated
 	}
 
 	public function setManyToOne($repositoryName)
