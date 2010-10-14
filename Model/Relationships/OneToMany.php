@@ -101,7 +101,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 			{
 				continue;
 			}
-			else if ($row instanceof IEntity)
+			else if ($row instanceof IEntity) // todo original entitu zahodin, to neni dobre
 			{
 				$row = $row->toArray();
 			}
