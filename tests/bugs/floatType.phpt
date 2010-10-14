@@ -53,16 +53,16 @@ __halt_compiler();
 
 NULL: 0.0
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', boolean given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'boolean' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', boolean given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'boolean' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', string given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'string' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', string given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'string' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', string given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'string' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', string given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'string' given
 
-Exception UnexpectedValueException: Param Test::$float must be 'float', string given
+Exception UnexpectedValueException: Param Test::$float must be 'float', 'string' given
