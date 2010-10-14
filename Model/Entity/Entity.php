@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/IEntity.php';
 
-require_once dirname(__FILE__) . '/EntityManager.php';
+require_once dirname(__FILE__) . '/AnnotationMetaData.php';
 
 require_once dirname(__FILE__) . '/ValidationHelper.php';
 
@@ -60,7 +60,7 @@ abstract class Entity extends Object implements IEntity
 
 	protected static function createEntityRules($entityClass)
 	{
-		return EntityManager::getEntityParams($entityClass);
+		return AnnotationMetaData::getEntityParams($entityClass);
 	}
 
 	final protected static function getEntityRules($entityClass) // todo private?
@@ -68,7 +68,9 @@ abstract class Entity extends Object implements IEntity
 		static $cache = array();
 		if (!isset($cache[$entityClass]))
 		{
-			$cache[$entityClass] = call_user_func(array($entityClass, 'createEntityRules'), $entityClass);
+			$meta = call_user_func(array($entityClass, 'createEntityRules'), $entityClass);
+			if (!($meta instanceof MetaData)) throw new Exception();
+			$cache[$entityClass] = $meta->toArray();
 		}
 		return $cache[$entityClass];
 	}

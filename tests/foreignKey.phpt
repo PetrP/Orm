@@ -5,9 +5,8 @@ require dirname(__FILE__) . '/base.php';
 /**
  * @property-read int $id
  * @property string $text
- * @property Test|NULL $int
+ * @property Test|NULL $int {1:1 Test}
  * @property string $char
- * @foreignKey $int Test
  */
 class Test extends Entity
 {
@@ -72,8 +71,7 @@ foreach (Model::getRepository('test')->findById($t->id) as $x)
 
 
 /**
- * @property Test $parent
- * @fk $parent Test
+ * @property Test $parent {1:1 Test}
  */
 class Test3 extends Entity
 {

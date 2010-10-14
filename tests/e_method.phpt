@@ -42,7 +42,7 @@ dt($t->readWrite, 'readWrite');
 dt($t->setDate(time())->getDate(), 'getDate');
 
 
-dt(EntityManager::getEntityParams('Test'));
+dt(AnnotationMetaData::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------
@@ -76,6 +76,7 @@ array(
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
+		"enum" => NULL
 	)
 	"readWrite" => array(
 		"types" => array()
@@ -90,6 +91,7 @@ array(
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
+		"enum" => NULL
 	)
 	"read" => array(
 		"types" => array()
@@ -102,6 +104,7 @@ array(
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
+		"enum" => NULL
 	)
 	"date" => array(
 		"types" => array(
@@ -118,5 +121,6 @@ array(
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
+		"enum" => NULL
 	)
 )

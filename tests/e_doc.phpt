@@ -1,7 +1,7 @@
 <?php
 
 require dirname(__FILE__) . '/base.php';
-
+TestHelpers::$oldDump = false;
 /**
  * @property $readWrite
  * @property-read $read
@@ -22,55 +22,58 @@ dt($t->readWrite, 'get readWrite');
 dt($t->read, 'get read');
 
 
-dt(EntityManager::getEntityParams('Test'));
+dt(AnnotationMetaData::getEntityParams('Test'));
 
 __halt_compiler();
 ------EXPECT------
 set read: Exception MemberAccessException: Cannot write to a read-only property Test::$read.
 
-get readWrite: string(11) "Lorem ipsum"
+get readWrite: "Lorem ipsum"
 
 get read: NULL
 
-array(3) {
-	"id" => array(%i%) {
-		"types" => array(1) {
-			0 => string(3) "int"
-		}
-		"get" => array(1) {
-			"method" => string(5) "getId"
-		}
+array(
+	"id" => array(
+		"types" => array(
+			"int"
+		)
+		"get" => array(
+			"method" => "getId"
+		)
 		"set" => NULL
 		"fk" => NULL
-		"since" => string(6) "Entity"
+		"since" => "Entity"
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
-	}
-	"readWrite" => array(8) {
-		"types" => array(0)
-		"get" => array(1) {
+		"enum" => NULL
+	)
+	"readWrite" => array(
+		"types" => array()
+		"get" => array(
 			"method" => NULL
-		}
-		"set" => array(1) {
+		)
+		"set" => array(
 			"method" => NULL
-		}
+		)
 		"fk" => NULL
-		"since" => string(4) "Test"
+		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
-	}
-	"read" => array(8) {
-		"types" => array(0)
-		"get" => array(1) {
+		"enum" => NULL
+	)
+	"read" => array(
+		"types" => array()
+		"get" => array(
 			"method" => NULL
-		}
+		)
 		"set" => NULL
 		"fk" => NULL
-		"since" => string(4) "Test"
+		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL
 		"default" => NULL
-	}
-}
+		"enum" => NULL
+	)
+)
