@@ -68,7 +68,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	 */
 	protected function compare(& $all, $row)
 	{
-		if (isset($all[$row['id']]))
+		if (isset($row['id']) AND isset($all[$row['id']]))
 		{
 			$entity = $all[$row['id']];
 			unset($all[$row['id']]);
