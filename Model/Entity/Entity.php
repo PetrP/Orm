@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/EntityManager.php';
 
 require_once dirname(__FILE__) . '/ValidationHelper.php';
 
+require_once dirname(__FILE__) . '/EntityToArray.php';
 
 /**
  * @property-read int $id
@@ -86,42 +87,7 @@ abstract class Entity extends Object implements IEntity
 
 	final public function toArray($mode = NULL)
 	{
-		$result = array(
-			'id' => $this->__isset('id') ? $this->__get('id') : NULL,
-		);
-
-		foreach ($this->rules as $name => $rule)
-		{
-			if ($name === 'id') continue;
-
-			if (isset($rule['get']))
-			{
-				$result[$name] = $this->__get($name);
-				if (isset($rule['fk']) AND in_array($mode, array(self::ENTITY_TO_ID, self::ENTITY_TO_ARRAY)) AND $result[$name] instanceof IEntity)
-				{
-					if ($mode === self::ENTITY_TO_ID)
-					{
-						$result[$name] = $result[$name]->id;
-					}
-					else if ($mode === self::ENTITY_TO_ARRAY)
-					{
-						$result[$name] = $result[$name]->toArray($mode); // todo co rekurze?
-					}
-					else throw new InvalidStateException();
-				}
-				else if ($mode === self::ENTITY_TO_ID AND $result[$name] instanceof IRelationship)
-				{
-					$arr = array();
-					foreach ($result[$name] as $entity)
-					{
-						$arr[] = $entity->id;
-					}
-					$result[$name] = $arr;
-				}
-			}
-		}
-
-		return $result;
+		return EntityToArray::toArray($this, $this->rules, $mode);
 	}
 
 	const EXISTS = NULL;
