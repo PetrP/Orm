@@ -74,6 +74,8 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 					$params[$property]['types'] = $type;
 					$params[$property]['relationship'] = NULL;
 					$params[$property]['relationshipParam'] = NULL;
+					
+					// todo cele prepsat a kontrolovat vsechny {* }
 
 					if (preg_match('#\{\s*(OneToOne|1\:1)\s+([^\s]*)\s*\}#si', $string, $match))
 					{
@@ -93,10 +95,51 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 					{
 						$params[$property]['relationship'] = MetaData::OneToMany;
 					}
-					
+
+					if (preg_match('#\{\s*enum\s+([^\}]+)\s*\}#si', $string, $match))
+					{
+						
+						if (preg_match('#^([a-z0-9_-]+::[a-z0-9_-]+)\(\)$#si', trim($match[1]), $tmp))
+						{
+							$original = $enum = array_keys(callback($tmp[1])->invoke());
+						}
+						else
+						{
+							$original = array_map('trim', explode(',', $match[1]));
+							$enum = array();
+							foreach ($original as $d)
+							{
+								if (substr($d, 0, 6) === 'self::')
+								{
+									$d = str_replace('self::', "$class::", $d);
+								}
+
+								if (is_numeric($d))
+								{
+									$d = (float) $d;
+								}
+								else if (defined($d))
+								{
+									$d = constant($d);
+								}
+								else if (strpos($d, '::') !== false)
+								{
+									throw new Exception();
+								}
+								$enum[] = $d;
+							}
+						}
+						$params[$property]['enum'] = array('constants' => $enum, 'original' => implode(', ', $original));
+					}
+
 					if (preg_match('#\{\s*default\s+([^\}]+)\s*\}#si', $string, $match))
 					{
-						$d = $match[1];
+						$d = trim($match[1]);
+						if (substr($d, 0, 6) === 'self::')
+						{
+							$d = str_replace('self::', "$class::", $d);
+						}
+
 						if (is_numeric($d))
 						{
 							$d = (float) $d;
@@ -105,9 +148,9 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 						{
 							$d = constant($d);
 						}
-						else
+						else if (strpos($d, '::') !== false)
 						{
-							$d = trim($d);
+							throw new Exception();
 						}
 						$params[$property]['default'] = $d;
 					}
@@ -185,7 +228,8 @@ class EntityManager extends Object // rename AnotationMetaDataZiskavac
 				$param['since'],
 				$param['relationship'],
 				$param['relationshipParam'],
-				isset($param['default']) ? $param['default'] : NULL
+				isset($param['default']) ? $param['default'] : NULL,
+				isset($param['enum']) ? $param['enum'] : NULL
 			);
 		}
 
@@ -225,7 +269,7 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 	}
 
-	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL, $relationship = NULL, $relationshipParam = NULL, $default = NULL)
+	public function add($name, $types = array(), $access = NULL, $fk = NULL, $since = NULL, $relationship = NULL, $relationshipParam = NULL, $default = NULL, array $enum = NULL)
 	{
 		if (isset($this->data[$name])) throw new Exception($name);
 
@@ -276,6 +320,7 @@ class MetaData extends Object
 			'relationship' => $relationship,
 			'relationshipParam' => $relationshipParam,
 			'default' => $default,
+			'enum' => $enum,
 		);
 	}
 

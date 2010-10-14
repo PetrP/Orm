@@ -382,11 +382,27 @@ abstract class Entity extends Object implements IEntity
 			if ($value !== NULL) $tmp->set($value);
 			$value = $tmp;
 		}
-
+		
+		if (isset($rule['enum']))
+		{
+			if (in_array($value, $rule['enum']['constants'], true)) {}
+			else if (($tmp = array_search($value, $rule['enum']['constants'])) !== false)
+			{
+				$value = $rule['enum']['constants'][$tmp];
+			}
+			else if (in_array('null', $rule['types']) AND $value === NULL)
+			{
+				$value = NULL;
+			}
+			else
+			{
+				throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '{$rule['enum']['original']}', '" . (is_object($value) ? 'object ' . get_class($value) : (is_scalar($value) ? $value : gettype($value))) . "' given");
+			}
+		}
 		if (!ValidationHelper::isValid($rule['types'], $value))
 		{
 			$type = implode('|',$rule['types']);
-			throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '$type', " . (is_object($value) ? get_class($value) : gettype($value)) . " given");
+			throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '$type', '" . (is_object($value) ? get_class($value) : gettype($value)) . "' given");
 		}
 
 		$this->values[$name] = $value;
