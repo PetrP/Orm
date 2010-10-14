@@ -95,11 +95,6 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 	abstract public function persist();
 	abstract protected function load();
 
-	protected function getTableName()
-	{
-		$conventional = $this->getFirstRepository()->getMapper()->getConventional();
-		return $conventional->getManyToManyTableName($this->getFirstRepository(), $this->getSecondRepository());
-	}
 	protected function getFirstParamName()
 	{
 		$conventional = $this->getFirstRepository()->getMapper()->getConventional();
@@ -118,11 +113,22 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 	{
 		return $this->parentIsFirst ? $this->getSecondParamName() : $this->getFirstParamName();
 	}
+	
+	public function count()
+	{
+		return iterator_count($this->getIterator());
+	}
 }
 
 
 abstract class DibiManyToMany extends ManyToMany
 {
+	protected function getTableName()
+	{
+		$conventional = $this->getFirstRepository()->getMapper()->getConventional();
+		return $conventional->getManyToManyTableName($this->getFirstRepository(), $this->getSecondRepository());
+	}
+
 	public function persist()
 	{
 		$connection = $this->getFirstRepository()->getMapper()->getConnection();
