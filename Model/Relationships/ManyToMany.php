@@ -121,7 +121,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 	{
 		return $this->parentIsFirst ? $this->getSecondParamName() : $this->getFirstParamName();
 	}
-	
+
 	public function count()
 	{
 		return iterator_count($this->getIterator());

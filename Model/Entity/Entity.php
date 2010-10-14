@@ -373,6 +373,7 @@ abstract class Entity extends Object implements IEntity
 		}
 		else if ($rule['relationship'] === MetaData::OneToMany OR $rule['relationship'] === MetaData::ManyToMany)
 		{
+
 			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IRelationship))
 			{
 				$tmp = new $rule['relationshipParam']($this);
@@ -384,7 +385,7 @@ abstract class Entity extends Object implements IEntity
 			if ($value !== NULL) $tmp->set($value);
 			$value = $tmp;
 		}
-		
+
 		if (isset($rule['enum']))
 		{
 			if (in_array($value, $rule['enum']['constants'], true)) {}
