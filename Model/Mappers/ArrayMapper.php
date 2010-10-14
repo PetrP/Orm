@@ -111,7 +111,7 @@ abstract class ArrayMapper extends Mapper
 		{
 			Environment::enterCriticalSection(get_class($this));
 			$originData = $this->loadData();
-			$id = $this->data ? max(array_keys($originData)) + 1 : 1;
+			$id = $originData ? max(array_keys($originData)) + 1 : 1;
 			$originData[$id] = NULL;
 			$this->saveData($originData);
 			Environment::leaveCriticalSection(get_class($this));
