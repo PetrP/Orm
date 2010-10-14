@@ -169,13 +169,14 @@ class DibiPersistenceHelper extends Object
 	public $witchParams = NULL;
 	public $witchParamsNot = NULL;
 
-	public function persist(IEntity $entity)
+	public function persist(IEntity $entity, $id = NULL)
 	{
 		$values = $entity->toArray();
+		if ($id !== NULL) $values['id'] = $id;
 
 		foreach ($values as $key => $value)
 		{
-			if (($this->witchParams !== NULL AND !in_array($key, $this->witchParams)) OR ($this->witchParamsNot !== NULL AND in_array($key, $this->witchParamsNot)))
+			if ($key !== 'id' AND (($this->witchParams !== NULL AND !in_array($key, $this->witchParams)) OR ($this->witchParamsNot !== NULL AND in_array($key, $this->witchParamsNot))))
 			{
 				unset($values[$key]);
 				continue;
@@ -211,12 +212,14 @@ class DibiPersistenceHelper extends Object
 		}
 		else
 		{
+			if (array_key_exists('id', $values) AND $values['id'] === NULL) unset($values['id']);
 			$this->connection->insert($table, $values)->execute();
 			try {
 				$id = $this->connection->getInsertId();
 			} catch (DibiException $e) {
-				if (!isset($entity->id)) throw $e;
-				$id = $entity->id;
+				if (isset($values['id'])) $id = $values['id'];
+				else if (isset($entity->id)) $id = $entity->id;
+				else throw $e;
 			}
 		}
 
