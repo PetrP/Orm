@@ -88,12 +88,27 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  string  		 sorting direction
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function orderBy($row, $sorting = 'ASC')
+	public function orderBy($row, $direction = Dibi::ASC)
 	{
-		if (is_array($row)) {
-			$this->sorting = $row;
-		} else {
-			$this->sorting[$row] = $sorting;
+		if (is_array($row))
+		{
+			$this->sorting = array();
+			foreach ($row as $name => $direction)
+			{
+				$this->orderBy((string) $name, $direction);
+			}
+		}
+		else
+		{
+			$direction = strtoupper($direction);
+			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
+			{
+				if ($direction === false OR $direction === NULL) $direction = Dibi::ASC;
+				else if ($direction === true) $direction = Dibi::DESC;
+				else $direction = Dibi::ASC;
+			}
+
+			$this->sorting[] = array($row, $direction);
 		}
 		$this->result = NULL;
 		return $this;
@@ -118,21 +133,50 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 
 	/********************* executing ****************d*g**/
 
-
 	private $_sort;
-	private function _sort($v1, $v2)
+	private function _sort($aRow, $bRow)
 	{
-		$k = key($this->_sort);
-		$s = current($this->_sort);
+		foreach ($this->_sort as $tmp)
+		{
+			$key = $tmp[0];
+			$direction = $tmp[1];
+			if (!$aRow->hasParam($key) OR !$bRow->hasParam($key))
+			{
+				throw new InvalidArgumentException("'$key' is not key");
+			}
 
-		if ($s == 'ASC')
-		{
-			return strnatcasecmp($v1[$k], $v2[$k]);
+			$a = $aRow->{$key};
+			$b = $bRow->{$key};
+
+			if (is_scalar($a) AND is_scalar($b))
+			{
+				$r = strnatcasecmp($a, $b);
+			}
+			else if ($a instanceof DateTime AND $b instanceof DateTime)
+			{
+				$r = $a < $b ? -1 : 1;
+			}
+			else if ($b === NULL)
+			{
+				$r = 1;
+			}
+			else if ($a === NULL)
+			{
+				$r = -1;
+			}
+			else
+			{
+				throw new InvalidArgumentException("'$key' is not sortable key");
+			}
+
+			if ($r !== 0)
+			{
+				break;
+			}
 		}
-		else
-		{
-			return strnatcasecmp($v2[$k], $v1[$k]);
-		}
+
+		if ($direction === Dibi::DESC) return -$r;
+		return $r;
 	}
 	/**
 	 * Returns (and queries) DibiResult.
@@ -164,12 +208,13 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 				}
 			}
 
-			foreach (array_reverse($this->sorting) as $row => $sorting)
+			if ($this->sorting)
 			{
-				$this->_sort = array($row => $sorting);
-				uasort($source, array($this,'_sort'));
+				$this->_sort = array_reverse($this->sorting);
+				$this->_sort[] = array('id', Dibi::ASC);
+				uasort($source, array($this, '_sort'));
+				$this->_sort = NULL;
 			}
-			$this->_sort = NULL;
 
 			if ($this->offset !== NULL OR $this->limit !== NULL)
 			{
