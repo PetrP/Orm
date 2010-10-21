@@ -54,7 +54,22 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 
 	final public function add($entity)
 	{
-		if (!($entity instanceof IEntity))
+		$data = NULL;
+		if (is_array($entity))
+		{
+			$data = $entity;
+			if (isset($data['id']))
+			{
+				$entity = $this->childRepository->getById($data['id']);
+			}
+			if (!$entity)
+			{
+				$entityClass = $this->childRepository->getEntityClassName($data);
+				$entity = new $entityClass;
+			}
+			$entity->setValues($data);
+		}
+		else if (!($entity instanceof IEntity))
 		{
 			$entity = $this->childRepository->getById($entity);
 		}
