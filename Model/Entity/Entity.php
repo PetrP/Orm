@@ -79,10 +79,25 @@ abstract class Entity extends Object implements IEntity
 	{
 		foreach ($values as $name => $value)
 		{
-			// todo nepokusit se zapsat i nezname?
 			if ($this->hasParam($name, self::WRITE))
 			{
 				$this->__set($name, $value);
+			}
+			else if (method_exists($this, "set$name"))
+			{
+				$r = $this->getReflection()->getMethod("set$name");
+				if ($r->isPublic())
+				{
+					$r->invoke($this, $value);
+				}
+			}
+			else if (property_exists($this, $name))
+			{
+				$r = $this->getReflection()->getProperty($name);
+				if ($r->isPublic())
+				{
+					$r->setValue($this, $value);
+				}
 			}
 		}
 	}
