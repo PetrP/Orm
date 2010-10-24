@@ -42,26 +42,56 @@ abstract class AbstractModel extends Object
 		if (!isset($this->repositories[$name]))
 		{
 			$class = $this->getRepositoryClass($name);
-			$r = new $class($name, $this);
-			if (!($r instanceof IRepository))
-			{
-				throw new InvalidStateException("Repository '{$r}' must implement IRepository");
-			}
-			$this->repositories[$name] = $r;
+			$this->checkRepositoryClass($class, $name);
+			$this->repositories[$name] = new $class($name, $this);
 		}
 		return $this->repositories[$name];
 	}
 
+	/**
+	 * @param string
+	 * @return bool
+	 */
 	final public function isRepository($name)
 	{
 		$name = strtolower($name);
 		if (isset($this->repositories[$name])) return true;
 		try {
-			$implements = class_implements($this->getRepositoryClass($name));
-			return isset($implements['IRepository']);
-		} catch (UnexpectedValueException $e) {
+			return $this->checkRepositoryClass($this->getRepositoryClass($name), $name);
+		} catch (InvalidStateException $e) {
 			return false;
 		}
+	}
+
+	/**
+	 * @param string
+	 * @param string
+	 * @return bool
+	 * @throws InvalidStateException
+	 */
+	final private function checkRepositoryClass($class, $name)
+	{
+		if (!class_exists($class))
+		{
+			throw new InvalidStateException("Repository '{$name}' doesn't exists");
+		}
+
+		$reflection = new ClassReflection($class);
+
+		if (!$reflection->implementsInterface('IRepository'))
+		{
+			throw new InvalidStateException("Repository '{$name}' must implement IRepository");
+		}
+		else if ($reflection->isAbstract())
+		{
+			throw new InvalidStateException("Repository '{$name}' is abstract.");
+		}
+		else if (!$reflection->isInstantiable())
+		{
+			throw new InvalidStateException("Repository '{$name}' isn't instantiable");
+		}
+
+		return true;
 	}
 
 	/**
@@ -73,11 +103,6 @@ abstract class AbstractModel extends Object
 	{
 		$class = $name . 'Repository';
 		$class[0] = strtoupper($class[0]);
-
-		if (!class_exists($class))
-		{
-			throw new UnexpectedValueException("Repository '{$name}' doesn't exists");
-		}
 		return $class;
 	}
 
