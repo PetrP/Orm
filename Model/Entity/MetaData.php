@@ -72,11 +72,25 @@ class MetaData extends Object
 			{
 				$var = substr($method, 3);
 				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
-
-				if (isset($properties[$var][$m]))
+			}
+			else if (substr($method, 0, 2) === 'is')
+			{
+				$m = 'get';
+				$var = substr($method, 2);
+				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+				if (!isset($properties[$var]) OR $properties[$var]['types'] !== array('bool'))
 				{
-					$properties[$var][$m]['method'] = $method;
+					continue;
 				}
+			}
+			else
+			{
+				continue;
+			}
+
+			if (isset($properties[$var][$m]))
+			{
+				$properties[$var][$m]['method'] = $method;
 			}
 		}
 

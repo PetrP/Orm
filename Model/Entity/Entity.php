@@ -323,6 +323,15 @@ abstract class Entity extends Object implements IEntity
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
 		}
+		else if (substr($name, 0, 2) === 'is')
+		{
+			$var = substr($name, 2);
+			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+			if (isset($this->rules[$var]) AND $this->rules[$var]['types'] === array('bool'))
+			{
+				return $this->__get($var);
+			}
+		}
 
 		return parent::__call($name, $args);
 	}
