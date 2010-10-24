@@ -25,8 +25,9 @@ class MetaData extends Object
 		else
 		{
 			if (!class_exists($entityClass)) throw new InvalidStateException();
-			$implements = class_implements($entityClass);
-			if (!isset($implements['IEntity'])) throw new InvalidStateException();
+			$r = new ClassReflection($entityClass);
+			$entityClass = $r->getName();
+			if (!$r->implementsInterface('IEntity')) throw new InvalidStateException();
 		}
 		$this->entityClass = $entityClass;
 	}
@@ -160,7 +161,7 @@ class MetaDataProperty extends Object
 	protected function setAccess($access)
 	{
 		if ($access === NULL) $access = MetaData::READWRITE;
-		if ($access === MetaData::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: {$this->name}");
+		if ($access === MetaData::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: {$this->class}::\${$this->name}");
 		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new Exception();
 		$this->data['get'] = $access & MetaData::READ ? array('method' => NULL) : NULL;
 		$this->data['set'] = $access & MetaData::WRITE ? array('method' => NULL) : NULL;
@@ -168,10 +169,14 @@ class MetaDataProperty extends Object
 
 	public function setOneToOne($repositoryName)
 	{
-		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->name}");
-		if (!Model::get()->isRepository($repositoryName))
+		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
+		if (!$repositoryName)
 		{
-			throw new InvalidStateException("$repositoryName isn't repository in {$this->name}");
+			throw new InvalidStateException("You must specify foreign repository in {$this->class}::\${$this->name}");
+		}
+		else if (!Model::get()->isRepository($repositoryName))
+		{
+			throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
 		}
 
 		$this->data['relationship'] = MetaData::OneToOne;
@@ -186,7 +191,7 @@ class MetaDataProperty extends Object
 
 	private function setToMany($relationship)
 	{
-		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->name}");
+		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
 		if (count($this->data['types']) != 1) throw new InvalidStateException();
 		$relationshipClassName = current($this->data['types']);
 		if (!class_exists($relationshipClassName)) throw new InvalidStateException();
