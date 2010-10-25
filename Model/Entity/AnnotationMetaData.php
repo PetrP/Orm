@@ -21,37 +21,51 @@ class AnnotationMetaData extends Object
 		{
 			$annotations = AnnotationsParser::getAll(new ClassReflection($class));
 
-			if (isset($annotations['property']))
+			foreach (array(
+				MetaData::READWRITE => isset($annotations['property']) ? $annotations['property'] : array(),
+				MetaData::READ => isset($annotations['property-read']) ? $annotations['property-read'] : array(),
+				MetaData::WRITE => isset($annotations['property-write']) ? $annotations['property-write'] : array(),
+			) as $_mode => $annotation)
 			{
-				foreach ($annotations['property'] as $string)
+				foreach ($annotation as $string)
 				{
-					if (preg_match('#^(-read|-write)?\s?([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
+					$mode = $_mode;
+					if ($mode === MetaData::READWRITE) // bc; drive AnnotationsParser na pomlcce zkoncil
 					{
-						$property = $match[3];
-						$type = $match[2];
-						$mode = $match[1];
-						$string = $match[4];
+						if (preg_match('#^(-read|-write)?\s?(.*)$#si', $string, $match))
+						{
+							$mode = $match[1];
+							$mode = ((!$mode OR $mode === '-read') ? MetaData::READ : 0) | ((!$mode OR $mode === '-write') ? MetaData::WRITE : 0);
+							$string = $match[2];
+						}
+						else
+						{
+							throw new InvalidStateException($string);
+						}
 					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s(.*)$)#si', $string, $match))
+
+					if (preg_match('#^([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
 					{
 						$property = $match[2];
-						$type = $match[3];
-						$mode = $match[1];
-						$string = $match[4];
-					}
-					else if (preg_match('#^(-read|-write)?\s?\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
-					{
-						$property = $match[2];
-						$type = 'mixed';
-						$mode = $match[1];
+						$type = $match[1];
 						$string = $match[3];
+					}
+					else if (preg_match('#^\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s(.*)$)#si', $string, $match))
+					{
+						$property = $match[1];
+						$type = $match[2];
+						$string = $match[3];
+					}
+					else if (preg_match('#^\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
+					{
+						$property = $match[1];
+						$type = 'mixed';
+						$string = $match[2];
 					}
 					else
 					{
 						throw new InvalidStateException($string);
 					}
-
-					$mode = ((!$mode OR $mode === '-read') ? MetaData::READ : 0) | ((!$mode OR $mode === '-write') ? MetaData::WRITE : 0);
 
 					$property = $metaData->addProperty($property, $type, $mode, $class);
 					self::$property = $property;
