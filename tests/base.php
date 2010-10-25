@@ -10,7 +10,7 @@ define('LIBS_DIR',WWW_DIR.'/../../!libs');
 
 require_once dirname(__FILE__) . '/run.php';
 
-require_once LIBS_DIR.'/Nette/loader.php';
+if (!defined('NETTE')) require_once LIBS_DIR.'/Nette/loader.php';
 require_once LIBS_DIR.'/xdibi/dibi.php';
 
 if (PHP_SAPI !== 'cli' AND !isset($_GET['command']))
