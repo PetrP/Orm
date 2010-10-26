@@ -23,11 +23,11 @@ $config->setProxyNamespace('CompareTest\Proxy');
 $config->setProxyDir(__DIR__ . '/d/proxy');
 // připravíme si konfiguraci databázového připojení
 $database = array(
-    'driver' => 'pdo_mysql',
-    'host' => 'localhost',
-    'dbname' => 'test',
-    'user' => 'root',
-    'password' => '',
+		'driver' => 'pdo_mysql',
+		'host' => 'localhost',
+		'dbname' => 'test',
+		'user' => 'root',
+		'password' => '',
 );
 // vytvoříme instanci entity manageru
 $em = EntityManager::create($database, $config);
@@ -35,11 +35,11 @@ $em = EntityManager::create($database, $config);
 $prd = $em->getRepository('PersonD');
 
 dibi::connect(array(
-    'driver' => 'mysqli',
-    'host' => 'localhost',
-    'database' => 'test',
-    'user' => 'root',
-    'password' => '',
+		'driver' => 'mysqli',
+		'host' => 'localhost',
+		'database' => 'test',
+		'user' => 'root',
+		'password' => '',
 ));
 
 class Model extends AbstractModel
@@ -53,12 +53,12 @@ class Model extends AbstractModel
  */
 class Person extends Entity
 {
-	
+
 }
 
 class PersonsRepository extends Repository
 {
-	
+
 }
 
 $prm = $model->persons;

@@ -20,7 +20,7 @@ class Bar extends Entity
 class BarsRepository extends Repository
 {
 	static $mock;
-	
+
 	public function findByFoo()
 	{
 		foreach (self::$mock as $bar)
@@ -50,7 +50,7 @@ class FoosMapper extends BaseMapper{}
 
 class FooToBars extends OneToMany
 {
-	
+
 }
 
 function t($v)

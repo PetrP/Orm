@@ -19,7 +19,7 @@ class Test extends Entity
 
 class TestsRepository extends Repository
 {
-	
+
 }
 
 class TestsMapper extends FileMapper

@@ -1,20 +1,20 @@
 <?php
 /**
-* @property string $name
-* @property string $name2 
-* @property array $name2 
-* @property $name3 bool
-* @property-read $name4s
-* @property-write $name5 bool
-* @property $test int
-*/
+ * @property string $name
+ * @property string $name2
+ * @property array $name2
+ * @property $name3 bool
+ * @property-read $name4s
+ * @property-write $name5 bool
+ * @property $test int
+ */
 class Article extends Entity
 {
 	public function getId()
 	{
 		return $this->id;
 	}
-	
+
 	private function getTest()
 	{
 		return $this->id;
@@ -23,7 +23,7 @@ class Article extends Entity
 
 class ArticleRepository extends Repository
 {
-	
+
 }
 
 
@@ -48,4 +48,3 @@ dd($article->name2);
 
 exit;
 /**/
-

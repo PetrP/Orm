@@ -1,6 +1,6 @@
 <?php
 /**
- * @Entity 
+ * @Entity
  * @Table(name="persons")
  */
 class PersonD

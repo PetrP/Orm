@@ -7,7 +7,7 @@ TestHelpers::$oldDump = false;
  */
 class Test extends Entity
 {
-	
+
 }
 
 $test = new Test;

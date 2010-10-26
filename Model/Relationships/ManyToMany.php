@@ -73,8 +73,8 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 		{
 			$entity = $this->childRepository->getById($entity);
 		}
-		
-		
+
+
 		if ($this->ignore($entity, $data))
 		{
 			return $this;
