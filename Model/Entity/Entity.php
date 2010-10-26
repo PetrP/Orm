@@ -63,7 +63,7 @@ abstract class Entity extends Object implements IEntity
 		return AnnotationMetaData::getEntityParams($entityClass);
 	}
 
-	final protected static function getEntityRules($entityClass) // todo private?
+	final protected static function getEntityRules($entityClass)
 	{
 		static $cache = array();
 		if (!isset($cache[$entityClass]))
@@ -204,7 +204,7 @@ abstract class Entity extends Object implements IEntity
 	}
 
 	// todo zvazit
-	final public function getGeneratingRepository($need = true)
+	final public function getGeneratingRepository($need = true) // todo generating je blbost, lepsi nazev by bylo neco jako getOwningReppository nebo jen getRepository
 	{
 		if ($this->repository) return $this->repository;
 		else if (!$need) return NULL;
@@ -526,7 +526,6 @@ abstract class Entity extends Object implements IEntity
 		if (!($entity instanceof IEntity)) throw new InvalidStateException();
 		// TODO kdyz je instanceof self tak pouzivat private pristup, jinak vymyslet neco jineho
 
-		//$entity->repositoryName = $repository->getRepositoryName(); // proc jsem neudrzoval rovnou referenci?
 		$entity->repository = $repository;
 		$entity->values = $data;
 		$entity->valid = array();

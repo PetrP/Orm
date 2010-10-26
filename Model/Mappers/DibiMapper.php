@@ -44,7 +44,7 @@ class DibiMapper extends Mapper
 	{
 		$all = $this->findAll();
 		$where = $this->getConventional()->formatEntityToStorage($where);
-		// todo instanceof IModelDataSource
+		// todo instanceof IEntityCollection
 		foreach ($where as $key => $value)
 		{
 			if ($value instanceof IEntityCollection)
