@@ -97,6 +97,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 */
 	public function fetchAssoc($assoc)
 	{
+		// todo conventional
 		return $this->createEntityRecursive($this->getResult()->fetchAssoc($assoc));
 	}
 
