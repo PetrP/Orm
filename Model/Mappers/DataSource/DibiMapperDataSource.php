@@ -110,7 +110,18 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 */
 	public function fetchPairs($key = NULL, $value = NULL)
 	{
-		// todo conventional $key a value;
+		/** @var SqlConventional */
+		$conventional = $this->repository->getMapper()->getConventional();
+
+		if ($key !== NULL)
+		{
+			$key = key($conventional->formatEntityToStorage(array($key => NULL)));
+		}
+		if ($value !== NULL)
+		{
+			$value = key($conventional->formatEntityToStorage(array($value => NULL)));
+		}
+
 		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
 	}
 
