@@ -210,7 +210,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 
 			if ($this->sorting)
 			{
-				$this->_sort = array_reverse($this->sorting);
+				$this->_sort = $this->sorting;
 				$this->_sort[] = array('id', Dibi::ASC);
 				uasort($source, array($this, '_sort'));
 				$this->_sort = NULL;
