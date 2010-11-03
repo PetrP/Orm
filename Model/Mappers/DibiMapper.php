@@ -69,6 +69,10 @@ class DibiMapper extends Mapper
 			{
 				$all->where('%n IS NULL', $key);
 			}
+			else if ($value instanceof DateTime)
+			{
+				$all->where('%n = %t', $key, $value);
+			}
 			else
 			{
 				$all->where('%n = %s', $key, $value);
