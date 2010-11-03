@@ -40,52 +40,6 @@ class DibiMapper extends Mapper
 		return $this->dataSource($this->getTableName());
 	}
 
-	protected function findBy(array $where)
-	{
-		$all = $this->findAll();
-		$where = $this->getConventional()->formatEntityToStorage($where);
-		// todo instanceof IEntityCollection
-		foreach ($where as $key => $value)
-		{
-			if ($value instanceof IEntityCollection)
-			{
-				$value = $value->fetchPairs(NULL, 'id');
-			}
-			if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-			}
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
-						$value
-					)
-				);
-				$all->where('%n IN %in', $key, $value);
-			}
-			else if ($value === NULL)
-			{
-				$all->where('%n IS NULL', $key);
-			}
-			else if ($value instanceof DateTime)
-			{
-				$all->where('%n = %t', $key, $value);
-			}
-			else
-			{
-				$all->where('%n = %s', $key, $value);
-			}
-		}
-		return $all;
-	}
-
-	protected function getBy(array $where)
-	{
-		return $this->findBy($where)->applyLimit(1)->fetch();
-	}
-
 	protected function getPersistenceHelper()
 	{
 		$h = new DibiPersistenceHelper;

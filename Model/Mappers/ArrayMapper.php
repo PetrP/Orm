@@ -34,64 +34,6 @@ abstract class ArrayMapper extends Mapper
 		throw new NotImplementedException();
 	}
 
-	protected function findBy(array $where)
-	{
-		foreach ($where as $key => $value)
-		{
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? $v->id : $v;'),
-						$value
-					)
-				);
-				$where[$key] = $value;
-			}
-			else if ($value instanceof IEntityCollection)
-			{
-				$where[$key] = $value->fetchPairs(NULL, 'id');
-			}
-			else if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-				$where[$key] = $value;
-			}
-		}
-
-		$all = $this->getData();
-		$result = array();
-		foreach ($all as $entity)
-		{
-			$equal = false;
-			foreach ($where as $key => $value)
-			{
-				$eValue = $entity[$key];
-				$eValue = $eValue instanceof IEntity ? (isset($eValue->id) ? $eValue->id : NULL) : $eValue;
-
-				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
-				{
-					$equal = true;
-				}
-				else
-				{
-					$equal = false;
-					break;
-				}
-			}
-			if ($equal)
-			{
-				$result[] = $entity;
-			}
-		}
-
-		return new ArrayDataSource($result);
-	}
-	protected function getBy(array $where)
-	{
-		return $this->findBy($where)->applyLimit(1)->fetch();
-	}
-
 	public function getById($id)
 	{
 		if (!$id) return NULL;
