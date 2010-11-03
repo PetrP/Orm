@@ -189,7 +189,7 @@ abstract class Repository extends Object implements IRepository
 			{
 				$this->getMapper()->persist($entity);
 			}
-			return $id;
+			return $entity;
 		}
 		throw new Exception(); // todo
 	}
