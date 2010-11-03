@@ -246,6 +246,10 @@ class MetaDataProperty extends Object
 				{
 					throw new Exception();
 				}
+				else
+				{
+					$value = trim($d,'\'"'); // todo lepe?
+				}
 				$enum[] = $value;
 				$original[] = $d;
 			}
