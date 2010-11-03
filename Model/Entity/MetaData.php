@@ -32,7 +32,7 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 	}
 
-	public function addProperty($name, $types, $access, $since = NULL)
+	public function addProperty($name, $types, $access = MetaData::READWRITE, $since = NULL)
 	{
 		if (isset($this->properties[$name]))
 		{
@@ -119,7 +119,7 @@ class MetaDataProperty extends Object
 		return $this->data;
 	}
 
-	public function __construct(MetaData $meta, $name, $types, $access, $since = NULL)
+	public function __construct(MetaData $meta, $name, $types, $access = MetaData::READWRITE, $since = NULL)
 	{
 		$this->class = $meta->getEntityClass();
 		$this->name = $name;
