@@ -140,13 +140,41 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 		{
 			$key = $tmp[0];
 			$direction = $tmp[1];
-			if (!$aRow->hasParam($key) OR !$bRow->hasParam($key))
+			if (strpos($key, '->') !== false)
 			{
-				throw new InvalidArgumentException("'$key' is not key");
-			}
+				$a = $aRow;
+				$b = $bRow;
+				foreach (explode('->', $key) as $k)
+				{
+					if (!($a instanceof IEntity)) $a = NULL;
+					else if (!$a->hasParam($k))
+					{
+						throw new InvalidArgumentException("'$k' is not key in '{$key}'");
+					}
+					else $a = $a->{$k};
 
-			$a = $aRow->{$key};
-			$b = $bRow->{$key};
+					if (!($b instanceof IEntity)) $b = NULL;
+					else if (!$b->hasParam($k))
+					{
+						throw new InvalidArgumentException("'$k' is not key in '{$key}'");
+					}
+					else $b = $b->{$k};
+				}
+			}
+			else
+			{
+				if (!$aRow->hasParam($key) OR !$bRow->hasParam($key))
+				{
+					throw new InvalidArgumentException("'$key' is not key");
+				}
+				if (!isset($aRow->{$key}) OR !isset($bRow->{$key}))
+				{
+					throw new InvalidArgumentException("'$key' is not key");
+				}
+
+				$a = $aRow->{$key};
+				$b = $bRow->{$key};
+			}
 
 			if (is_scalar($a) AND is_scalar($b))
 			{
