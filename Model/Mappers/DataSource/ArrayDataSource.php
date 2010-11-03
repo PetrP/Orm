@@ -359,4 +359,16 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	{
 		return count($this->data);
 	}
+
+	/** @return ArrayDataSource */
+	public function toArrayDataSource()
+	{
+		return new ArrayDataSource($this->getResult());
+	}
+
+	/** @return ArrayDataSource */
+	public function toDataSource()
+	{
+		return $this->toArrayDataSource();
+	}
 }

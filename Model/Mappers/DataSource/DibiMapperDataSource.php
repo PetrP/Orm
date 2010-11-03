@@ -140,6 +140,17 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 		return $a;
 	}
 
+	/** @return ArrayDataSource */
+	public function toArrayDataSource()
+	{
+		return new ArrayDataSource($this->fetchAll());
+	}
+
+	/** @return DibiModelDataSource */
+	public function toDataSource()
+	{
+		return new DibiModelDataSource($this->__toString(), $this->connection, $this->repository);
+	}
 
 }
 class ModelDataSource extends DibiModelDataSource {}
