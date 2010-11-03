@@ -109,12 +109,14 @@ abstract class ArrayMapper extends Mapper
 		}
 		else
 		{
-			Environment::enterCriticalSection(get_class($this));
+			if (method_exists('Tools', 'enterCriticalSection')) Tools::enterCriticalSection();
+			else Environment::enterCriticalSection(get_class($this));
 			$originData = $this->loadData();
 			$id = $originData ? max(array_keys($originData)) + 1 : 1;
 			$originData[$id] = NULL;
 			$this->saveData($originData);
-			Environment::leaveCriticalSection(get_class($this));
+			if (method_exists('Tools', 'leaveCriticalSection')) Tools::leaveCriticalSection();
+			else Environment::leaveCriticalSection(get_class($this));
 		}
 		$this->data[$id] = $entity;
 
@@ -144,7 +146,8 @@ abstract class ArrayMapper extends Mapper
 	{
 		if (!$this->data) return;
 
-		Environment::enterCriticalSection(get_class($this));
+		if (method_exists('Tools', 'enterCriticalSection')) Tools::enterCriticalSection();
+		else Environment::enterCriticalSection(get_class($this));
 		$originData = $this->loadData();
 
 		foreach ($this->data as $id => $entity)
@@ -185,6 +188,7 @@ abstract class ArrayMapper extends Mapper
 		}
 
 		$this->saveData($originData);
-		Environment::leaveCriticalSection(get_class($this));
+		if (method_exists('Tools', 'leaveCriticalSection')) Tools::leaveCriticalSection();
+		else Environment::leaveCriticalSection(get_class($this));
 	}
 }
