@@ -185,7 +185,7 @@ class DibiPersistenceHelper extends Object
 			{
 				$values[$key] = $value->id;
 			}
-			else if (is_array($value))
+			else if (is_array($value) OR ($value instanceof ArrayObject AND get_class($value) == 'ArrayObject'))
 			{
 				$values[$key] = serialize($value); // todo zkontrolovat jestli je jednodimenzni a neobrahuje zadne nesmysly
 			}
