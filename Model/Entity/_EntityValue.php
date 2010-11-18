@@ -7,9 +7,6 @@
 abstract class _EntityValue extends _EntityGeneratingRepository
 {
 
-	/** Kdyz parametr obrahuje tuto hodnotu tak se pouzije jeho defaultni hodnota */
-	const DEFAULT_VALUE = "\0";
-
 	/** @var array of mixed Hodnoty parametru */
 	private $values = array();
 
@@ -62,7 +59,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
-		$value = self::DEFAULT_VALUE;
+		$value = IEntity::DEFAULT_VALUE;
 		$valid = false;
 		if (isset($this->values[$name]) OR array_key_exists($name, $this->values))
 		{
@@ -258,7 +255,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		}
 		if ($rule['set']['method'])
 		{
-			if ($value === self::DEFAULT_VALUE)
+			if ($value === IEntity::DEFAULT_VALUE)
 			{
 				$value = $this->getDefaultValueHelper($name, $rule);
 			}
@@ -365,7 +362,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	{
 		$rule = $this->rules[$name];
 
-		if ($value === self::DEFAULT_VALUE)
+		if ($value === IEntity::DEFAULT_VALUE)
 		{
 			$value = $this->getDefaultValueHelper($name, $rule);
 		}
