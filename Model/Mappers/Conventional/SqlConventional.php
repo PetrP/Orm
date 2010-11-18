@@ -103,7 +103,7 @@ class SqlConventional extends Object implements IConventional
 			{
 				foreach ($entityNames as $entityName)
 				{
-					foreach (Entity::___getFK($entityName) as $name => $foo)
+					foreach (call_user_func(array($entityName, '___getFK'), $entityName) as $name => $foo)
 					{
 						$fk = $this->foreignKeyFormat($this->storageFormat($name));
 						$result[$fk] = $name;

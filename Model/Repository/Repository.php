@@ -139,7 +139,7 @@ abstract class Repository extends Object implements IRepository
 			$this->checkEntityName($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidStateException();
-			Entity::___event($entity, 'load', $this, $data);
+			$entity->___event($entity, 'load', $this, $data);
 			$this->entities[$data['id']] = $entity;
 		}
 		return $this->entities[$data['id']];
@@ -158,11 +158,11 @@ abstract class Repository extends Object implements IRepository
 		{
 			return $entity->id;
 		}
-		Entity::___event($entity, 'beforePersist', $this);
-		Entity::___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
+		$entity->___event($entity, 'beforePersist', $this);
+		$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
 
 		$relationshipValues = array();
-		$fk = Entity::___getFk(get_class($entity));
+		$fk = $entity->___getFk(get_class($entity));
 		foreach ($entity->toArray() as $key => $value)
 		{
 			if (isset($fk[$key]) AND $value instanceof IEntity)
@@ -177,7 +177,7 @@ abstract class Repository extends Object implements IRepository
 
 		if ($id = $this->getMapper()->persist($entity))
 		{
-			Entity::___event($entity, 'persist', $this, $id);
+			$entity->___event($entity, 'persist', $this, $id);
 			$this->entities[$entity->id] = $entity;
 
 			foreach ($relationshipValues as $relationship)
@@ -185,8 +185,8 @@ abstract class Repository extends Object implements IRepository
 				$relationship->persist();
 			}
 
-			Entity::___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
-			Entity::___event($entity, 'afterPersist', $this);
+			$entity->___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
+			$entity->___event($entity, 'afterPersist', $this);
 			if ($entity->isChanged())
 			{
 				$this->getMapper()->persist($entity);
@@ -201,7 +201,7 @@ abstract class Repository extends Object implements IRepository
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkEntityName(get_class($entity));
 
-		Entity::___event($entity, 'beforeDelete', $this);
+		$entity->___event($entity, 'beforeDelete', $this);
 		if (isset($entity->id))
 		{
 			if ($this->getMapper()->delete($entity))
@@ -213,7 +213,7 @@ abstract class Repository extends Object implements IRepository
 				throw new Exception(); // todo
 			}
 		}
-		Entity::___event($entity, 'afterDelete', $this);
+		$entity->___event($entity, 'afterDelete', $this);
 		return true;
 	}
 
