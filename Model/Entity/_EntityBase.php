@@ -16,7 +16,7 @@ abstract class _EntityBase extends _EntityValue
 	 */
 	final public function toArray($mode = EntityToArray::AS_IS)
 	{
-		return EntityToArray::toArray($this, Entity::getEntityRules(get_class($this)), $mode);
+		return EntityToArray::toArray($this, MetaData::getEntityRules(get_class($this)), $mode);
 	}
 
 	/**
@@ -116,7 +116,7 @@ abstract class _EntityBase extends _EntityValue
 	final public static function ___getFk($entityName)
 	{
 		$result = array();
-		foreach (Entity::getEntityRules($entityName) as $name => $rule)
+		foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 		{
 			if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
 			$result[$name] = $rule['relationshipParam'];

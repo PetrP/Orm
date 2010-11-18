@@ -10,13 +10,10 @@ TestHelpers::$oldDump = false;
  */
 class Test extends Entity
 {
-	public static function ger()
-	{
-		return Entity::getEntityRules('Test');
-	}
+
 }
 
-foreach (Test::ger() as $property => $rule)
+foreach (MetaData::getEntityRules('Test') as $property => $rule)
 {
 	dt(trim((isset($rule['get']) ? 'get' : '') . ' ' . (isset($rule['set']) ? 'set' : '')), $property);
 }

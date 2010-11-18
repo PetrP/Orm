@@ -125,4 +125,29 @@ class MetaData extends Object
 
 		return $properties;
 	}
+
+	/** @var array runtime cache */
+	static private $cache = array();
+
+	/**
+	 * Vraci MetaData v internal formatu.
+	 * Entita ma metadata jako pole pro lepsi vykon.
+	 * Vysledek se cachuje.
+	 * @internal
+	 * @param string class name
+	 * @return array internal format
+	 */
+	public static function getEntityRules($entityClass)
+	{
+		if (!isset(self::$cache[$entityClass]))
+		{
+			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
+			$implements = class_implements($entityClass);
+			if (!isset($implements['IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
+			$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
+			if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
+			self::$cache[$entityClass] = $meta->toArray();
+		}
+		return self::$cache[$entityClass];
+	}
 }

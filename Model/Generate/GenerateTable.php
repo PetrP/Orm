@@ -13,25 +13,13 @@ class GenerateTable extends Object
 		$this->model = $model;
 	}
 
-	private function getEntityRules($entityName)
-	{
-		if (!class_exists('MockEntity__')) eval('
-			class MockEntity__ extends Entity
-			{
-				static function gr($entityName) {return self::getEntityRules($entityName);}
-			}
-		');
-
-		return MockEntity__::gr($entityName);
-	}
-
 	private function getRules(Repository $repository)
 	{
 		$entities = (array) $repository->getEntityClassName(NULL);
 		$properties = array();
 		foreach ($entities as $entityName)
 		{
-			$properties = array_merge($properties, $this->getEntityRules($entityName));
+			$properties = array_merge($properties, MetaData::getEntityRules($entityName));
 		}
 		return $properties;
 	}

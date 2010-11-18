@@ -5,10 +5,7 @@ TestHelpers::$oldDump = false;
 
 class Test1 extends Entity
 {
-	static function m($en)
-	{
-		return self::getEntityRules($en);
-	}
+
 }
 
 class Test4 extends Entity
@@ -40,10 +37,10 @@ function dte($f)
 
 
 
-dte('typeof(Test1::m("Test1"))');
-dte('typeof(Test1::m("Test2"))');
-dte('typeof(Test1::m("Test3"))');
-dte('typeof(Test1::m("Test4"))');
+dte('typeof(MetaData::getEntityRules("Test1"))');
+dte('typeof(MetaData::getEntityRules("Test2"))');
+dte('typeof(MetaData::getEntityRules("Test3"))');
+dte('typeof(MetaData::getEntityRules("Test4"))');
 
 
 __halt_compiler();
