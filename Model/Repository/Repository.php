@@ -20,6 +20,12 @@ abstract class Repository extends Object implements IRepository
 	/** @var PerformanceHelper */
 	private $performanceHelper;
 
+	/**
+	 * @var string
+	 * @see self::getEntityClassName()
+	 */
+	protected $entityClassName;
+
 	public function getById($id)
 	{
 		if ($id instanceof IEntity)
@@ -103,6 +109,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	public function getEntityClassName(array $data = NULL)
 	{
+		if (isset($this->entityClassName)) return (string) $this->entityClassName;
 		return rtrim($this->getRepositoryName(), 's');
 	}
 
