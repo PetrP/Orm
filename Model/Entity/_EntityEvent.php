@@ -4,7 +4,7 @@
  * Udalosti
  * @see Entity
  */
-abstract class _EntityEvent extends _EntityMeta
+abstract class _EntityEvent extends Object
 {
 	/**
 	 * Pro kontrolu jestli bylo v podedene udalosti volano parent::on*.

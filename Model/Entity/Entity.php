@@ -8,7 +8,6 @@ require_once dirname(__FILE__) . '/ValidationHelper.php';
 
 require_once dirname(__FILE__) . '/EntityToArray.php';
 
-require_once dirname(__FILE__) . '/_EntityMeta.php';
 require_once dirname(__FILE__) . '/_EntityEvent.php';
 require_once dirname(__FILE__) . '/_EntityGeneratingRepository.php';
 require_once dirname(__FILE__) . '/_EntityValue.php';

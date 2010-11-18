@@ -3,6 +3,11 @@
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
  * moznost iterovat (IteratorAggregate) a pristupovat k parametrum jako k poli (ArrayAccess)
+ *
+ * Vytvareni MetaData, tedy informaci o parametrech entit (createMetaData).
+ * Defaultne se nacita z anotaci.
+ * @see AnnotationMetaData
+ *
  * @see Entity
  */
 abstract class _EntityBase extends _EntityValue
@@ -54,6 +59,16 @@ abstract class _EntityBase extends _EntityValue
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Vytvori MetaData
+	 * @param string|IEntity class name or object
+	 * @return MetaData
+	 */
+	public static function createMetaData($entityClass)
+	{
+		return AnnotationMetaData::getMetaData($entityClass);
 	}
 
 	/**
@@ -138,13 +153,17 @@ abstract class _EntityBase extends _EntityValue
 	const WRITE = MetaData::WRITE;
 	/** @deprecated */
 	const READWRITE = MetaData::READWRITE;
-
 	/** @deprecated */
 	final protected function check(){}
 	/** @deprecated */
 	final public function toPlainArray()
 	{
 		return $this->toArray(EntityToArray::AS_ID);
+	}
+	/** @deprecated */
+	final protected static function createEntityRules($entityClass)
+	{
+	 	return call_user_func(array($entityClass, 'createMetaData'));
 	}
 
 }
