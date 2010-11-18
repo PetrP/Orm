@@ -13,7 +13,7 @@ class Test1 extends Entity
 
 class Test4 extends Entity
 {
-	protected static function createEntityRules($entityClass)
+	public static function createMetaData($entityClass)
 	{
 		return array();
 	}
@@ -54,4 +54,4 @@ Exception InvalidStateException: 'Test2' isn`t instance of IEntity
 
 Exception InvalidStateException: Class 'Test3' doesn`t exists
 
-Exception InvalidStateException: It`s expected that 'IEntity::createEntityRules' will return 'MetaData'.
+Exception InvalidStateException: It`s expected that 'IEntity::createMetaData' will return 'MetaData'.

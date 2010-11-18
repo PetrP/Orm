@@ -78,7 +78,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * @param string|IEntity class name or object
 	 * @return MetaData
 	 */
-	//protected static function createEntityRules($entityClass);
+	public static function createMetaData($entityClass);
 
 
 	/** Vytvorena nova entita */

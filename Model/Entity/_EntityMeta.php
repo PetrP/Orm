@@ -14,9 +14,15 @@ abstract class _EntityMeta extends Object
 	 * @param string|IEntity class name or object
 	 * @return MetaData
 	 */
-	protected static function createEntityRules($entityClass)
+	public static function createMetaData($entityClass)
 	{
 		return AnnotationMetaData::getMetaData($entityClass);
+	}
+
+	/** @deprecated */
+	final protected static function createEntityRules($entityClass)
+	{
+	 	return call_user_func(array($entityClass, 'createMetaData'));
 	}
 
 	/**
@@ -33,7 +39,7 @@ abstract class _EntityMeta extends Object
 			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
 			$implements = class_implements($entityClass);
 			if (!isset($implements['IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
-			$meta = call_user_func(array($entityClass, 'createEntityRules'), $entityClass);
+			$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
 			if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'IEntity::createEntityRules' will return 'MetaData'.");
 			$cache[$entityClass] = $meta->toArray();
 		}
