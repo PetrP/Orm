@@ -16,7 +16,7 @@ abstract class _EntityMeta extends Object
 	 */
 	protected static function createEntityRules($entityClass)
 	{
-		return AnnotationMetaData::getEntityParams($entityClass);
+		return AnnotationMetaData::getMetaData($entityClass);
 	}
 
 	/**

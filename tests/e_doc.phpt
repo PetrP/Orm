@@ -22,7 +22,7 @@ dt($t->readWrite, 'get readWrite');
 dt($t->read, 'get read');
 
 
-dt(AnnotationMetaData::getEntityParams('Test')->toArray());
+dt(AnnotationMetaData::getMetaData('Test')->toArray());
 
 __halt_compiler();
 ------EXPECT------

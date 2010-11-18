@@ -44,7 +44,7 @@ class AnnotationMetaData extends Object
 	 * @param string|IEntity class name or object
 	 * @return MetaData
 	 */
-	public static function getEntityParams($class) // todo rename na getMetaData
+	public static function getMetaData($class)
 	{
 		$metaData = new MetaData($class);
 		$class = $metaData->getEntityClass();
