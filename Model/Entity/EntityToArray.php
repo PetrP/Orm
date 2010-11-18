@@ -3,10 +3,9 @@
 
 class EntityToArray extends Object
 {
-	const AS_IS = NULL;
-	const AS_ID = Entity::ENTITY_TO_ID;
-	const AS_ARRAY = Entity::ENTITY_TO_ARRAY;
-
+	const AS_IS = 9; // self::ENTITY_AS_IS | self::RELATIONSHIP_AS_IS
+	const AS_ID = 18; // self::ENTITY_AS_ID | self::RELATIONSHIP_AS_ARRAY_OF_ID
+	const AS_ARRAY = 36; // self::ENTITY_AS_ARRAY | self::RELATIONSHIP_AS_ARRAY_OF_ARRAY
 
 	const ENTITY_AS_IS = 1;
 	const ENTITY_AS_ID = 2;
@@ -23,9 +22,7 @@ class EntityToArray extends Object
 	 */
 	public static function toArray(IEntity $entity, array $rules, $mode = self::AS_IS)
 	{
-		if ($mode === self::AS_IS) $mode = self::ENTITY_AS_IS | self::RELATIONSHIP_AS_IS;
-		else if ($mode === self::AS_ID) $mode = self::ENTITY_AS_ID | self::RELATIONSHIP_AS_ARRAY_OF_ID;
-		else if ($mode === self::AS_ARRAY) $mode = self::ENTITY_AS_ARRAY | self::RELATIONSHIP_AS_ARRAY_OF_ARRAY;
+		if ($mode === NULL) $mode = self::AS_IS;
 		$result = array(
 			'id' => $entity->__isset('id') ? $entity->__get('id') : NULL,
 		);

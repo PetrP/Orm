@@ -13,8 +13,8 @@ require_once dirname(__FILE__) . '/EntityToArray.php';
  */
 abstract class Entity extends Object implements IEntity
 {
-	const ENTITY_TO_ID = 'entityToId';
-	const ENTITY_TO_ARRAY = 'entityToArray';
+	const ENTITY_TO_ID = EntityToArray::AS_ID; // deprecated
+	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY; // deprecated
 
 	const DEFAULT_VALUE = "\0";
 
@@ -105,7 +105,7 @@ abstract class Entity extends Object implements IEntity
 		}
 	}
 
-	final public function toArray($mode = NULL)
+	final public function toArray($mode = EntityToArray::AS_IS)
 	{
 		return EntityToArray::toArray($this, $this->rules, $mode);
 	}
