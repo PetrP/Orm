@@ -75,17 +75,17 @@ abstract class _EntityEvent extends _EntityMeta
 	/**
 	 * @internal
 	 */
-	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $id = NULL)
+	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
 	{
 		$method = 'on' . ucfirst($event);
 		$entity->checkEvent = NULL;
-		if ($id === NULL)
+		if ($more === NULL)
 		{
 			$entity->{$method}($repository);
 		}
 		else
 		{
-			$entity->{$method}($repository, $id);
+			$entity->{$method}($repository, $more);
 		}
 
 		if ($entity->checkEvent !== $method)
