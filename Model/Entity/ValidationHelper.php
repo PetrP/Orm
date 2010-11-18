@@ -15,6 +15,7 @@ class ValidationHelper
 	 */
 	public static function isValid(array $types, & $value)
 	{
+		// todo anglickej zpusob zadavani dat 100,000.00 tady uplne zkolabuje
 		$intValue = is_string($value) ? str_replace(array(',', ' '), array('.', ''), $value) : NULL;
 		$_value = $value;
 
