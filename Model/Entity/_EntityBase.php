@@ -34,6 +34,8 @@ abstract class _EntityBase extends _EntityValue
 				}
 			}
 		}
+
+		return $this;
 	}
 
 	final public function getIterator()
