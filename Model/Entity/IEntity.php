@@ -66,14 +66,6 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	public function isChanged();
 
 	/**
-	 * @todo zrusit
-	 * @internal
-	 * @param string
-	 * @return array
-	 */
-	public static function ___getFk($entityName);
-
-	/**
 	 * Vytvori MetaData
 	 * @param string|IEntity class name or object
 	 * @return MetaData

@@ -122,24 +122,6 @@ abstract class _EntityBase extends _EntityValue
 
 
 
-	/**
-	 * @todo zrusit
-	 * @internal
-	 * @param string
-	 * @return array
-	 */
-	final public static function ___getFk($entityName)
-	{
-		$result = array();
-		foreach (MetaData::getEntityRules($entityName) as $name => $rule)
-		{
-			if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
-			$result[$name] = $rule['relationshipParam'];
-		}
-		return $result;
-	}
-
-
 	/** @deprecated */
 	const ENTITY_TO_ID = EntityToArray::AS_ID;
 	/** @deprecated */

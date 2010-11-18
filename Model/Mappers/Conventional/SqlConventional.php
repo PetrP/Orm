@@ -103,8 +103,9 @@ class SqlConventional extends Object implements IConventional
 			{
 				foreach ($entityNames as $entityName)
 				{
-					foreach (call_user_func(array($entityName, '___getFK'), $entityName) as $name => $foo)
+					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 					{
+						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
 						$fk = $this->foreignKeyFormat($this->storageFormat($name));
 						$result[$fk] = $name;
 						$result[$name] = $fk;

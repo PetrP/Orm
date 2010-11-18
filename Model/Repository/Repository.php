@@ -162,7 +162,7 @@ abstract class Repository extends Object implements IRepository
 		$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
 
 		$relationshipValues = array();
-		$fk = $entity->___getFk(get_class($entity));
+		$fk = $this->getFkForEntity(get_class($entity));
 		foreach ($entity->toArray() as $key => $value)
 		{
 			if (isset($fk[$key]) AND $value instanceof IEntity)
@@ -194,6 +194,22 @@ abstract class Repository extends Object implements IRepository
 			return $entity;
 		}
 		throw new Exception(); // todo
+	}
+
+	private function getFkForEntity($entityName)
+	{
+		static $fks = array();
+		if (!isset($fks[$entityName]))
+		{
+			$fk = array();
+			foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+			{
+				if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
+				$fk[$name] = $rule['relationshipParam'];
+			}
+			$fks[$entityName] = $fk;
+		}
+		return $fks[$entityName];
 	}
 
 	public function delete($entity) // todo prejmenovat na remove?

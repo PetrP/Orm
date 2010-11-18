@@ -18,7 +18,18 @@ class FoosRepository extends Repository
 
 }
 
-dt(Foo::___getFk('Foo'));
+function getFk($entityName)
+{
+	$fk = array();
+	foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+	{
+		if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
+		$fk[$name] = $rule['relationshipParam'];
+	}
+	return $fk;
+}
+
+dt(getFk('Foo'));
 
 __halt_compiler();
 ------EXPECT------
