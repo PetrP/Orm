@@ -1,14 +1,32 @@
 <?php
+
+/**
+ * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
+ * moznost iterovat (IteratorAggregate) a pristupovat k parametrum jako k poli (ArrayAccess)
+ * @see Entity
+ */
 abstract class _EntityBase extends _EntityValue
 {
-	const ENTITY_TO_ID = EntityToArray::AS_ID; // deprecated
-	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY; // deprecated
 
+	/**
+	 * Entity prevadi na array, je monze nastavit co udelat z asociacemi.
+	 * @see EntityToArray
+	 * @param int EntityToArray::*
+	 * @return array
+	 */
 	final public function toArray($mode = EntityToArray::AS_IS)
 	{
 		return EntityToArray::toArray($this, self::getEntityRules(get_class($this)), $mode);
 	}
 
+	/**
+	 * Nastavuje parametry.
+	 * Kdyz neexistuje parametr:
+	 * vola setter `set<Param>` kdyz existuje takova methoda a je public;
+	 * plni property `$param` kdyz existuje a je public.
+	 * @param array|Traversable $values
+	 * @return Entity $this
+	 */
 	final public function setValues($values)
 	{
 		foreach ($values as $name => $value)
@@ -38,23 +56,50 @@ abstract class _EntityBase extends _EntityValue
 		return $this;
 	}
 
+	/**
+	 * @return ArrayIterator
+	 * @see IteratorAggregate
+	 */
 	final public function getIterator()
 	{
 		return new ArrayIterator($this->toArray());
 	}
 
+	/**
+	 * @param string
+	 * @return bool
+	 * @see ArrayAccess
+	 */
 	final public function offsetExists($name)
 	{
 		return $this->__isset($name);
 	}
+
+	/**
+	 * @param string
+	 * @return mixed
+	 * @see ArrayAccess
+	 */
 	final public function offsetGet($name)
 	{
 		return $this->__get($name);
 	}
+
+	/**
+	 * @param string
+	 * @param mixed
+	 * @return Entity $this
+	 * @see ArrayAccess
+	 */
 	final public function offsetSet($name, $value)
 	{
 		return $this->__set($name, $value);
 	}
+
+	/**
+	 * @throws NotSupportedException
+	 * @see ArrayAccess
+	 */
 	final public function offsetUnset($name)
 	{
 		throw new NotSupportedException();
@@ -63,7 +108,10 @@ abstract class _EntityBase extends _EntityValue
 
 
 	/**
+	 * @todo zrusit
 	 * @internal
+	 * @param string
+	 * @return array
 	 */
 	final public static function ___getFk($entityName)
 	{
@@ -77,6 +125,10 @@ abstract class _EntityBase extends _EntityValue
 	}
 
 
+	/** @deprecated */
+	const ENTITY_TO_ID = EntityToArray::AS_ID;
+	/** @deprecated */
+	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY;
 
 	/** @deprecated */
 	final protected function check(){}

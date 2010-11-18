@@ -2,9 +2,49 @@
 
 require_once dirname(__FILE__) . '/MetaData.php';
 
+/**
+ * Ziskava meta data z enotaci.
+ *
+ * <pre>
+ * /**
+ *  * @property int $id
+ *  * @property string $param
+ *  * @property float|NULL $price
+ *  * @property DateTime $date {default now}
+ *  * @property Bar $bar {m:1 Bars}
+ *  *⁄
+ * class Foo extends Entity
+ * <pre>
+ */
 class AnnotationMetaData extends Object
 {
-	public static function getEntityParams($class)
+
+	/** @var array mozne aliasy method */
+	static private $aliases = array(
+		'1:1' => 'onetoone',
+		'm:1' => 'manytoone',
+		'n:1' => 'manytoone',
+		'm:m' => 'manytomany',
+		'n:n' => 'manytomany',
+		'm:n' => 'manytomany',
+		'n:m' => 'manytomany',
+		'1:m' => 'onetomany',
+		'1:n' => 'onetomany',
+	);
+
+	/**
+	 * temporary save
+	 * @internal
+	 * @var MetaDataProperty|NULL
+	 * @see self::callOnProperty()
+	 */
+	static private $property;
+
+	/**
+	 * @param string|IEntity class name or object
+	 * @return MetaData
+	 */
+	public static function getEntityParams($class) // todo rename na getMetaData
 	{
 		$metaData = new MetaData($class);
 		$class = $metaData->getEntityClass();
@@ -85,20 +125,13 @@ class AnnotationMetaData extends Object
 		return $metaData;
 	}
 
-	static private $property;
-
-	static private $aliases = array(
-		'1:1' => 'onetoone',
-		'm:1' => 'manytoone',
-		'n:1' => 'manytoone',
-		'm:m' => 'manytomany',
-		'n:n' => 'manytomany',
-		'm:n' => 'manytomany',
-		'n:m' => 'manytomany',
-		'1:m' => 'onetomany',
-		'1:n' => 'onetomany',
-	);
-
+	/**
+	 * callback
+	 * Vola metodu na property. To je cokoli v kudrnatych zavorkach.
+	 * @internal
+	 * @param array
+	 * @see self::$property
+	 */
 	private static function callOnProperty($match)
 	{
 		$property = self::$property;

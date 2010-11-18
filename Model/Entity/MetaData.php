@@ -2,22 +2,34 @@
 
 require_once dirname(__FILE__) . '/MetaDataProperty.php';
 
+/**
+ * Informace o parametrech entity.
+ */
 class MetaData extends Object
 {
+	/**#@+ @see MetaDataProperty::setAccess() */
 	const READ = 1;
 	const WRITE = 2;
 	const READWRITE = 3;
+	/**#@-*/
 
-	const ManyToMany ='m:m';
-	const OneToMany ='1:m';
+	/** @see MetaDataProperty::setManyToMany() */
+	const ManyToMany = 'm:m';
+	/** @see MetaDataProperty::setOneToMany() */
+	const OneToMany = '1:m';
 
-	const ManyToOne ='m:1';
-	const OneToOne ='1:1';
+	/** @see MetaDataProperty::setManyToOne() */
+	const ManyToOne = 'm:1';
+	/** @see MetaDataProperty::setOneToOne() */
+	const OneToOne = '1:1';
 
+	/** @var string Nazev entity ke ktere patri informace */
 	private $entityClass;
 
+	/** @var array of MetaDataProperty Jednotlive parametry */
 	private $properties = array();
 
+	/** @param string string|IEntity class name or object */
 	public function __construct($entityClass)
 	{
 		if ($entityClass instanceof IEntity)
@@ -34,6 +46,14 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 	}
 
+	/**
+	 * Prida parametr.
+	 * @param string
+	 * @param array|string
+	 * @param int MetaData::READ MetaData::READWRITE
+	 * @param string|NULL internal Od jake entity tento parametr existuje.
+	 * @return MetaDataProperty
+	 */
 	public function addProperty($name, $types, $access = MetaData::READWRITE, $since = NULL)
 	{
 		if (isset($this->properties[$name]))
@@ -52,11 +72,17 @@ class MetaData extends Object
 		return $this->properties[$name];
 	}
 
+	/** @return string Nazev entity ke ktere patri informace */
 	public function getEntityClass()
 	{
 		return $this->entityClass;
 	}
 
+	/**
+	 * internal format, ktery entita pouziva pro lepsi vykon.
+	 * Take nacita informace o getterech a setterech
+	 * @return array
+	 */
 	public function toArray()
 	{
 		$properties = array();

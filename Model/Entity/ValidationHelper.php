@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Helper ktery pouziva entita pro validovani.
+ */
 class ValidationHelper
 {
 
+	/**
+	 * Je value validni?
+	 * Kdyz je to vhodne tak se value pretypuje.
+	 * @param array
+	 * @param mixed
+	 * @return bool
+	 */
 	public static function isValid(array $types, & $value)
 	{
 		$intValue = is_string($value) ? str_replace(array(',', ' '), array('.', ''), $value) : NULL;
@@ -83,7 +93,7 @@ class ValidationHelper
 
 	/**
 	 * Email validator: is value valid email address?
-	 * @param  string
+	 * @param string
 	 * @return bool
 	 * @author David Grudl
 	 */
@@ -98,7 +108,7 @@ class ValidationHelper
 
 	/**
 	 * URL validator: is value valid URL?
-	 * @param  string
+	 * @param string
 	 * @return bool
 	 * @author David Grudl
 	 */

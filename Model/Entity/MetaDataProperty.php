@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Informace o jednom parametru
+ * @see MetaData
+ */
 class MetaDataProperty extends Object
 {
-	private $class, $name;
+	/** @var string Nazev parametru */
+	private $name;
 
+	/** @var string Nazev entity */
+	private $class;
+
+	/** @var array informace */
 	private $data = array(
 		'types' => array(),
 		'get' => NULL,
@@ -15,11 +24,13 @@ class MetaDataProperty extends Object
 		'enum' => NULL,
 	);
 
-	public function toArray()
-	{
-		return $this->data;
-	}
-
+	/**
+	 * @param MetaData
+	 * @param string
+	 * @param array|string
+	 * @param int MetaData::READ MetaData::READWRITE
+	 * @param string|NULL internal Od jake entity tento parametr existuje.
+	 */
 	public function __construct(MetaData $meta, $name, $types, $access = MetaData::READWRITE, $since = NULL)
 	{
 		$this->class = $meta->getEntityClass();
@@ -29,13 +40,31 @@ class MetaDataProperty extends Object
 		$this->setAccess($access);
 	}
 
+	/**
+	 * Pouziva se pro kontrolu napr. anotaci, jestli neni v jedne tride 2x stejnej parametr (coz je vetsinou chyba).
+	 * Pri rucnim vytvareni MetaDat neni potreba vyplnovat, neni pak mozne 2x zadat stejny parametr.
+	 * @internal
+	 * @return string|NULL
+	 */
 	public function getSince()
 	{
 		return $this->data['since'];
 	}
 
 	/**
+	 * Povolene typy.
+	 * Pole nebo hodnoty rozdelene svislitkem |
+	 *
+	 * <pre>
+	 * Napr.:
+	 * string|int|float|bool|array|object
+	 * NULL
+	 * DateTime|JakakoliTrida
+	 * mixed
+	 * </pre>
+	 *
 	 * @param array|string
+	 * @return MetaDataProperty $this
 	 */
 	protected function setTypes($types)
 	{
@@ -54,10 +83,14 @@ class MetaDataProperty extends Object
 		}
 
 		$this->data['types'] = $types;
+
+		return $this;
 	}
 
 	/**
+	 * Jestli je parametr ke cteni nebo jen pro zapis
 	 * @param MetaData::READ|MetaData::READWRITE
+	 * @return MetaDataProperty $this
 	 */
 	protected function setAccess($access)
 	{
@@ -66,8 +99,22 @@ class MetaDataProperty extends Object
 		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new Exception();
 		$this->data['get'] = $access & MetaData::READ ? array('method' => NULL) : NULL;
 		$this->data['set'] = $access & MetaData::WRITE ? array('method' => NULL) : NULL;
+
+		return $this;
 	}
 
+	/**
+	 * Vytvoreni vstahu z jinou entitou.
+	 * V anotaci lze zapsat i aliasem 1:1
+	 * Mapper vetsinou uklada jako cizy klic.
+	 *
+	 * <pre>
+	 * * @property Foo $foo {1:1 Foos}
+	 * </pre>
+	 *
+	 * @param string Nazev repository pripojene polozky
+	 * @return MetaDataProperty $this
+	 */
 	public function setOneToOne($repositoryName)
 	{
 		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
@@ -82,14 +129,36 @@ class MetaDataProperty extends Object
 
 		$this->data['relationship'] = MetaData::OneToOne;
 		$this->data['relationshipParam'] = $repositoryName;
+
+		return $this;
 	}
 
+	/**
+	 * Vytvoreni vstahu z jinou entitou.
+	 * V anotaci lze zapsat i aliasem m:1
+	 * Mapper vetsinou uklada jako cizy klic.
+	 *
+	 * <pre>
+	 * * @property Foo $foo {m:1 Foos}
+	 * </pre>
+	 *
+	 * @param string Nazev repository pripojene polozky
+	 * @return MetaDataProperty $this
+	 */
 	public function setManyToOne($repositoryName)
 	{
 		$this->setOnetoOne($repositoryName);
 		$this->data['relationship'] = MetaData::ManyToOne;
+
+		return $this;
 	}
 
+	/**
+	 * @param MetaData::OneToMany|MetaData::ManyToMany
+	 * @return MetaDataProperty $this
+	 * @see self::setOneToMany()
+	 * @see self::setManyToMany()
+	 */
 	private function setToMany($relationship)
 	{
 		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
@@ -101,18 +170,57 @@ class MetaDataProperty extends Object
 
 		$this->data['relationship'] = $relationship;
 		$this->data['relationshipParam'] = $relationshipClassName;
+
+		return $this;
 	}
 
+	/**
+	 * Vytvoreni vstahu z jinou entitou.
+	 * V anotaci lze zapsat i aliasem 1:m
+	 * Mapper vetsinou uklada jako cizy klic na pripojenou entitu.
+	 * Obsahuje tridu ktera je potomkem OneToMany
+	 *
+	 * <pre>
+	 * * @property FooToBars $bars {1:m}
+	 * </pre>
+	 *
+	 * @return MetaDataProperty $this
+	 * @see OneToMany
+	 */
 	public function setOneToMany()
 	{
 		$this->setToMany(MetaData::OneToMany);
+
+		return $this;
 	}
 
+	/**
+	 * Vytvoreni vstahu z jinou entitou.
+	 * V anotaci lze zapsat i aliasem m:n
+	 * Mapper vetsinou uklada do propojovaci tabulky.
+	 * Obsahuje tridu ktera je potomkem ManyToMany
+	 *
+	 * <pre>
+	 * * @property FoosToBars $bars {m:n}
+	 * </pre>
+	 *
+	 * @return MetaDataProperty $this
+	 * @see ManyToMany
+	 */
 	public function setManyToMany()
 	{
 		$this->setToMany(MetaData::ManyToMany);
+
+		return $this;
 	}
 
+	/**
+	 * Nahradi self:: za nazev entity
+	 * @param string
+	 * @return string
+	 * @see self::setEnum()
+	 * @see self::setDefault()
+	 */
 	private function builtSelf($string)
 	{
 		if (substr($string, 0, 6) === 'self::')
@@ -122,6 +230,22 @@ class MetaDataProperty extends Object
 		return $string;
 	}
 
+	/**
+	 * Upravi vstupni parametry pro enum, kdyz jsou zadavany jako string (napr. v anotaci)
+	 * Vytvori pole z hodnot rozdelenych carkou, umoznuje zapis konstant.
+	 * Nebo umoznuje zavolat statickou tridu ktera vrati pole hodnot (pouzijou se klice)
+	 *
+	 * <pre>
+	 * 1, 2, 3
+	 * bla1, 'bla2', "bla3"
+	 * TRUE, false, NULL, self::CONSTANT, Foo::CONSTANT
+	 * self::tadyZiskejHodnoty()
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setEnum()
+	 */
 	public function builtParamsEnum($string)
 	{
 		if (preg_match('#^([a-z0-9_-]+::[a-z0-9_-]+)\(\)$#si', trim($string), $tmp))
@@ -158,6 +282,22 @@ class MetaDataProperty extends Object
 		return array($enum, implode(', ', $original));
 	}
 
+	/**
+	 * Upravi vstupni parametry pro default, kdyz jsou zadavany jako string (napr. v anotaci)
+	 * Umoznuje zapsat konstantu.
+	 *
+	 * <pre>
+	 * 568
+	 * bla1
+	 * TRUE
+	 * self::CONSTANT
+	 * Foo::CONSTANT
+	 * </pre>
+	 *
+	 * @param mixed $string
+	 * @return mixed
+	 * @see self::setDefault()
+	 */
 	public function builtParamsDefault($string)
 	{
 		$string = $this->builtSelf(trim($string));
@@ -176,15 +316,42 @@ class MetaDataProperty extends Object
 		return array($string);
 	}
 
+	/**
+	 * Parametr muze byt jen jedna z techto hodnot.
+	 * @param array
+	 * @param string|NULL internal pouzije se pro zobrazeni v chybe (pri pouziti anotaci se pak v chybe zobrazuji nazvy konstant misto jejich hodnot)
+	 * @return MetaDataProperty $this
+	 * @see self::builtParamsEnum()
+	 */
 	public function setEnum(array $values, $original = NULL)
 	{
 		$this->data['enum'] = array('constants' => array_unique($values), 'original' => $original ? $original : implode(', ', $values));
 		// todo original zrusit
+
+		return $this;
 	}
 
+	/**
+	 * Kdyz se parametr nevyplni pouzije se toto jako defaultni hodnota.
+	 * Pri necem slozitejsim se muze vytvorit protected methoda na entite `getDefault<Param>` ktera vrati default hodnotu
+	 * @param mixed
+	 * @return MetaDataProperty $this
+	 * @see self::builtParamsDefault()
+	 */
 	public function setDefault($value)
 	{
 		$this->data['default'] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * @return array internal format
+ 	 * @see MetaData::toArray()
+	 */
+	public function toArray()
+	{
+		return $this->data;
 	}
 
 }

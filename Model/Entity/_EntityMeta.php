@@ -1,13 +1,30 @@
 <?php
 
+/**
+ * Vytvareni MetaData, tedy informaci o parametrech entit.
+ * Defaultne se nacita z anotaci.
+ * @see AnnotationMetaData
+ * @see Entity
+ */
 abstract class _EntityMeta extends Object
 {
 
+	/**
+	 * Vytvori MetaData
+	 * @param string|IEntity class name or object
+	 * @return MetaData
+	 */
 	protected static function createEntityRules($entityClass)
 	{
 		return AnnotationMetaData::getEntityParams($entityClass);
 	}
 
+	/**
+	 * Vraci MetaData.
+	 * Entita ma metadata jako pole pro lepsi vykon
+	 * @param string class name
+	 * @return array internal format
+	 */
 	final protected static function getEntityRules($entityClass)
 	{
 		static $cache = array();

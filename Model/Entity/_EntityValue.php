@@ -1,65 +1,42 @@
 <?php
 
+/**
+ * Obstarava cteni, kontrolu, plneni, nastavovani, validovani dat
+ * @see Entity
+ */
 abstract class _EntityValue extends _EntityGeneratingRepository
 {
 
+	/** Kdyz parametr obrahuje tuto hodnotu tak se pouzije jeho defaultni hodnota */
 	const DEFAULT_VALUE = "\0";
 
+	/** @var array of mixed Hodnoty parametru */
 	private $values = array();
 
+	/** @var array of bool Jsou parametry validni? */
 	private $valid = array();
 
+	/** @var array internal format MetaData */
 	private $rules;
 
+	/** @var bool Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni? */
 	private $changed = false;
 
-	/** Vytvorena nova entita */
-	protected function onCreate()
-	{
-		parent::onCreate();
-		$this->changed = true;
-		$this->rules = self::getEntityRules(get_class($this));
-	}
-
-	/** Vytazena z mapperu */
-	protected function onLoad(IRepository $repository, array $data)
-	{
-		parent::onLoad($repository);
-		$this->rules = self::getEntityRules(get_class($this));
-		$this->values = $data;
-		$this->valid = array();
-	}
-
-	/** Behem persistovani, vsechny subentity nemusi byt jeste persistovany */
-	final protected function onPersist(IRepository $repository, $id)
-	{
-		parent::onPersist($repository, $id);
-		if (!$id) throw new UnexpectedValueException();
-		$this->values['id'] = $id;
-		$this->valid['id'] = false;
-		$this->changed = false;
-	}
-
-	/** Po vymazani */
-	protected function onAfterDelete(IRepository $repository)
-	{
-		parent::onAfterDelete($repository);
-		$this->values['id'] = NULL;
-		$this->valid['id'] = false;
-		$this->changed = true;
-	}
-
-	public function __clone()
-	{
-		$this->values['id'] = NULL;
-		$this->valid['id'] = false;
-		$this->changed = true;
-	}
-
+	/**#@+ @var int nastaveni prevodu */
+	// todo refaktorovat
 	const EXISTS = NULL;
 	const READ = 'r';
 	const WRITE = 'w';
 	const READWRITE = 'rw';
+	/**#@-*/
+
+	/**
+	 * Existuje tento parametr?
+	 * Mozno i zjisti jestli je pro cteni/zapis.
+	 * @param string
+	 * @param mixed
+	 * @return bool
+	 */
 	final public function hasParam($name, $mode = self::EXISTS)
 	{
 		if ($mode === self::EXISTS) return isset($this->rules[$name]);
@@ -72,6 +49,13 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return false;
 	}
 
+	/**
+	 * Pouziva se pouze ve vlastnich geterech.
+	 * Vrati hodnotu parametru, ale nepouzije getter
+	 * @param string
+	 * @param bool
+	 * @return mixed
+	 */
 	final protected function getValue($name, $need = true)
 	{
 		if (!isset($this->rules[$name]))
@@ -133,6 +117,14 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return $value;
 	}
 
+	/**
+	 * Pouziva se pouze ve vlastnich seterech.
+	 * Nastavi hodnotu parametru, ale nepouzije setter
+	 * @param string
+	 * @param mixed
+	 * @param bool
+	 * @return Entity $this
+	 */
 	final protected function setValue($name, $value)
 	{
 		if (!isset($this->rules[$name]))
@@ -152,12 +144,77 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return $this;
 	}
 
+	/**
+	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
+	 * @return bool
+	 * @see self::$changed
+	 */
 	final public function isChanged()
 	{
 		return $this->__isset('id') ? $this->changed : true;
 	}
 
+	/** Vytvorena nova entita */
+	protected function onCreate()
+	{
+		parent::onCreate();
+		$this->changed = true;
+		$this->rules = self::getEntityRules(get_class($this));
+	}
 
+	/**
+	 * Vytazena z mapperu
+	 * @param IRepository
+	 * @param array
+	 */
+	protected function onLoad(IRepository $repository, array $data)
+	{
+		parent::onLoad($repository, $data);
+		$this->rules = self::getEntityRules(get_class($this));
+		$this->values = $data;
+		$this->valid = array();
+	}
+
+	/**
+	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
+	 * @param IRepository
+	 * @param int
+	 */
+	final protected function onPersist(IRepository $repository, $id)
+	{
+		parent::onPersist($repository, $id);
+		if (!$id) throw new UnexpectedValueException();
+		$this->values['id'] = $id;
+		$this->valid['id'] = false;
+		$this->changed = false;
+	}
+
+	/**
+	 * Po vymazani
+	 * @param IRepository
+	 */
+	protected function onAfterDelete(IRepository $repository)
+	{
+		parent::onAfterDelete($repository);
+		$this->values['id'] = NULL;
+		$this->valid['id'] = false;
+		$this->changed = true;
+	}
+
+	/** Pri klonovani vznika nova entita se stejnejma datama */
+	public function __clone()
+	{
+		$this->values['id'] = NULL;
+		$this->valid['id'] = false;
+		$this->changed = true;
+	}
+
+	/**
+	 * Pristup k parametru jako k property.
+	 * @param string
+	 * @return mixed
+	 * @throws MemberAccessException
+	 */
 	final public function & __get($name)
 	{
 		if (!isset($this->rules[$name]))
@@ -186,6 +243,14 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return $value;
 	}
 
+	/**
+	 * Nastav parametr jako property.
+	 * @param string
+	 * @param mixed
+	 * @return Entity $this
+	 * @throws MemberAccessException
+	 * @throws UnexpectedValueException
+	 */
 	final public function __set($name, $value)
 	{
 		if (!isset($this->rules[$name]))
@@ -215,6 +280,14 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return $this;
 	}
 
+	/**
+	 * Pristup/nastaveni parametru prese getter/setter `get<Param>` `set<Param>`
+	 * @param string
+	 * @param array
+	 * @return mixed
+	 * @throws MemberAccessException
+	 * @throws UnexpectedValueException
+	 */
 	final public function __call($name, $args)
 	{
 		$m = substr($name, 0, 3);
@@ -241,6 +314,11 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return parent::__call($name, $args);
 	}
 
+	/**
+	 * Existuje parametr?
+	 * @param string
+	 * @return bool
+	 */
 	final public function __isset($name)
 	{
 		if (!isset($this->rules[$name]))
@@ -259,10 +337,12 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return false;
 	}
 
-
-
-
-
+	/**
+	 * Vrati defaultni hodnotu parametru.
+	 * @param string
+	 * @param array
+	 * @return mixed
+	 */
 	final private function getDefaultValueHelper($name, $rule)
 	{
 		$default = NULL;
@@ -282,7 +362,13 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		return $default;
 	}
 
-
+	/**
+	 * Nastavi parametr na hodnotu.
+	 * @param string
+	 * @param mixed
+	 * @return void
+	 * @throws UnexpectedValueException
+	 */
 	final private function setValueHelper($name, $value)
 	{
 		$rule = $this->rules[$name];

@@ -21,7 +21,7 @@ require_once dirname(__FILE__) . '/_EntityBase.php';
 abstract class Entity extends _EntityBase implements IEntity
 {
 
-	/** @var int */
+	/** @return int */
 	final public function getId()
 	{
 		$id = $this->getValue('id');
@@ -29,6 +29,7 @@ abstract class Entity extends _EntityBase implements IEntity
 		return $id;
 	}
 
+	/** @return string */
 	public function __toString()
 	{
 		try {
