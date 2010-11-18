@@ -144,7 +144,7 @@ abstract class _EntityBase extends _EntityValue
 	/** @deprecated */
 	final public function toPlainArray()
 	{
-		return $this->toArray(self::ENTITY_TO_ID);
+		return $this->toArray(EntityToArray::AS_ID);
 	}
 
 }
