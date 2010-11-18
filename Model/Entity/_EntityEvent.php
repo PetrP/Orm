@@ -17,7 +17,7 @@ abstract class _EntityEvent extends _EntityMeta
 	}
 
 	/** Vytazena z mapperu */
-	protected function onLoad(IRepository $repository)
+	protected function onLoad(IRepository $repository, array $data)
 	{
 		$this->checkEvent = 'onLoad';
 	}

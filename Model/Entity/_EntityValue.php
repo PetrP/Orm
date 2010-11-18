@@ -22,10 +22,12 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	}
 
 	/** Vytazena z mapperu */
-	protected function onLoad(IRepository $repository)
+	protected function onLoad(IRepository $repository, array $data)
 	{
 		parent::onLoad($repository);
 		$this->rules = self::getEntityRules(get_class($this));
+		$this->values = $data;
+		$this->valid = array();
 	}
 
 	/** Behem persistovani, vsechny subentity nemusi byt jeste persistovany */
@@ -339,23 +341,5 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		$this->valid[$name] = true;
 		$this->changed = true;
 	}
-
-
-
-	/**
-	 * @internal
-	 */
-	final public static function ___create($entityName, array $data, IRepository $repository)
-	{
-		$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
-		if (!($entity instanceof IEntity)) throw new InvalidStateException();
-		// TODO kdyz je instanceof self tak pouzivat private pristup, jinak vymyslet neco jineho
-
-		$entity->values = $data;
-		$entity->valid = array();
-		return $entity;
-	}
-
-
 
 }

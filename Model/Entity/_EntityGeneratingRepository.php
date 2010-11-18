@@ -5,9 +5,9 @@ class _EntityGeneratingRepository extends _EntityEvent
 	private $repository;
 
 	/** Vytazena z mapperu */
-	protected function onLoad(IRepository $repository)
+	protected function onLoad(IRepository $repository, array $data)
 	{
-		parent::onLoad($repository);
+		parent::onLoad($repository, $data);
 		$this->repository = $repository;
 	}
 
