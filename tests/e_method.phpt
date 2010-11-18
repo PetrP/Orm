@@ -42,7 +42,7 @@ dt($t->readWrite, 'readWrite');
 dt($t->setDate(time())->getDate(), 'getDate');
 
 
-dt(AnnotationMetaData::getEntityParams('Test'));
+dt(AnnotationMetaData::getEntityParams('Test')->toArray());
 
 __halt_compiler();
 ------EXPECT------
@@ -91,18 +91,6 @@ array(
 		"default" => NULL
 		"enum" => NULL
 	)
-	"read" => array(
-		"types" => array()
-		"get" => array(
-			"method" => NULL
-		)
-		"set" => NULL
-		"since" => "Test"
-		"relationship" => NULL
-		"relationshipParam" => NULL
-		"default" => NULL
-		"enum" => NULL
-	)
 	"date" => array(
 		"types" => array(
 			"datetime"
@@ -113,6 +101,18 @@ array(
 		"set" => array(
 			"method" => "setDate"
 		)
+		"since" => "Test"
+		"relationship" => NULL
+		"relationshipParam" => NULL
+		"default" => NULL
+		"enum" => NULL
+	)
+	"read" => array(
+		"types" => array()
+		"get" => array(
+			"method" => NULL
+		)
+		"set" => NULL
 		"since" => "Test"
 		"relationship" => NULL
 		"relationshipParam" => NULL

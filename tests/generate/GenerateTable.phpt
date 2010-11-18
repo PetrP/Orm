@@ -33,6 +33,7 @@ class TestToTests extends OneToMany {}
 dt($g->getCreateTableSql($model->tests));
 
 $rl = new RobotLoader();
+if (method_exists($rl, 'setCacheStorage')) $rl->setCacheStorage(Environment::getService('Nette\\Caching\\ICacheStorage'));
 $rl->addDirectory(__FILE__);
 dt($g->getAllCreateTablesSql($rl));
 

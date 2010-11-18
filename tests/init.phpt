@@ -34,7 +34,7 @@ class TestRepository extends Repository
 
 }
 
-for ($i=0;$i--;)
+for ($i=10;$i--;)
 {
 	$j = rand(0, PHP_INT_MAX);
 	$t = new Test();
@@ -50,12 +50,12 @@ $model->test->flush();
 for ($i=1000;$i--;)
 	Model::getRepository('test')->getById(153548);
  */
-foreach ($model->test->findAll()->applyLimit(100) as $x)
+foreach ($model->test->mapper->findAll()->applyLimit(100) as $x)
 {
 	$x->toArray();
 }
-$x = $model->test->findAll()->applyLimit(100)->fetchAll();
-foreach ($model->test->findByChar('a')->applyLimit(100) as $x)
+$x = $model->test->mapper->findAll()->applyLimit(100)->fetchAll();
+foreach ($model->test->mapper->findByChar('a')->applyLimit(100) as $x)
 {
 	if ($x->char !== 'a')
 	{

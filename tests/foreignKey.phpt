@@ -64,7 +64,7 @@ $model->test->flush();
 for ($i=1000;$i--;)
 	$model->test->getById(153548);
  */
-foreach (Model::getRepository('test')->findById($t->id) as $x)
+foreach ($model->test->mapper->findById($t->id) as $x)
 {
 	dt($x->toArray(Entity::ENTITY_TO_ARRAY));
 }

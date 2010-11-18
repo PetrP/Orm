@@ -11,7 +11,7 @@ class Foo extends Entity
 }
 
 /**
- * @property Foo|NULL $foo {m:1}
+ * @property Foo|NULL $foo {m:1 Foos}
  */
 class Bar extends Entity
 {
