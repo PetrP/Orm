@@ -69,7 +69,7 @@ class AnnotationMetaData extends Object
 
 					$property = $metaData->addProperty($property, $type, $mode, $class);
 					self::$property = $property;
-					$string = preg_replace_callback('#\{\s*([^\s\}]+)(?:\s+([^\}]*))?\s*\}#si', array(__CLASS__, 'addProperty'), $string);
+					$string = preg_replace_callback('#\{\s*([^\s\}]+)(?:\s+([^\}]*))?\s*\}#si', array(__CLASS__, 'callOnProperty'), $string);
 					self::$property = NULL;
 
 					if (preg_match('#\{|\}#',$string)) throw new Exception($string);
@@ -99,7 +99,7 @@ class AnnotationMetaData extends Object
 		'1:n' => 'onetomany',
 	);
 
-	private static function addProperty($match)
+	private static function callOnProperty($match)
 	{
 		$property = self::$property;
 
