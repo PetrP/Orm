@@ -151,7 +151,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	{
 		parent::onCreate();
 		$this->changed = true;
-		$this->rules = self::getEntityRules(get_class($this));
+		$this->rules = Entity::getEntityRules(get_class($this));
 	}
 
 	/**
@@ -162,7 +162,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	protected function onLoad(IRepository $repository, array $data)
 	{
 		parent::onLoad($repository, $data);
-		$this->rules = self::getEntityRules(get_class($this));
+		$this->rules = Entity::getEntityRules(get_class($this));
 		$this->values = $data;
 		$this->valid = array();
 	}
