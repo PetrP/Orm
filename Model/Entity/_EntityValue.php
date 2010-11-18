@@ -22,30 +22,22 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	/** @var bool Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni? */
 	private $changed = false;
 
-	/**#@+ @var int nastaveni prevodu */
-	// todo refaktorovat
-	const EXISTS = NULL;
-	const READ = 'r';
-	const WRITE = 'w';
-	const READWRITE = 'rw';
-	/**#@-*/
-
 	/**
 	 * Existuje tento parametr?
 	 * Mozno i zjisti jestli je pro cteni/zapis.
 	 * @param string
-	 * @param mixed
+	 * @param int|NULL MetaData::READWRITE MetaData::READ MetaData::WRITE
 	 * @return bool
 	 */
-	final public function hasParam($name, $mode = self::EXISTS)
+	final public function hasParam($name, $mode = NULL)
 	{
-		if ($mode === self::EXISTS) return isset($this->rules[$name]);
+		if ($mode === NULL) return isset($this->rules[$name]);
 		if (!isset($this->rules[$name])) return false;
 
 		$rule = $this->rules[$name];
-		if ($mode === self::READWRITE) return isset($rule['get']) AND isset($rule['set']);
-		else if ($mode === self::READ) return isset($rule['get']);
-		else if ($mode === self::WRITE) return isset($rule['set']);
+		if ($mode === MetaData::READWRITE) return isset($rule['get']) AND isset($rule['set']);
+		else if ($mode === MetaData::READ) return isset($rule['get']);
+		else if ($mode === MetaData::WRITE) return isset($rule['set']);
 		return false;
 	}
 

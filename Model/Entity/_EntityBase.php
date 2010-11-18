@@ -31,7 +31,7 @@ abstract class _EntityBase extends _EntityValue
 	{
 		foreach ($values as $name => $value)
 		{
-			if ($this->hasParam($name, self::WRITE))
+			if ($this->hasParam($name, MetaData::WRITE))
 			{
 				$this->__set($name, $value);
 			}
@@ -129,6 +129,15 @@ abstract class _EntityBase extends _EntityValue
 	const ENTITY_TO_ID = EntityToArray::AS_ID;
 	/** @deprecated */
 	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY;
+
+	/** @deprecated */
+	const EXISTS = NULL;
+	/** @deprecated */
+	const READ = MetaData::READ;
+	/** @deprecated */
+	const WRITE = MetaData::WRITE;
+	/** @deprecated */
+	const READWRITE = MetaData::READWRITE;
 
 	/** @deprecated */
 	final protected function check(){}
