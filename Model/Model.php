@@ -6,10 +6,67 @@ require_once dirname(__FILE__) . '/Repository/Repository.php';
 
 require_once dirname(__FILE__) . '/Mappers/Mapper.php';
 
+/**
+ * Kolekce Repository.
+ * Stara se o jejich vytvareni.
+ * Je to vstupni bod do modelu z jinych casti aplikace.
+ *
+ * V kazdem projektu si vytvorte tridu model:
+ * <pre>
+ * /**
+ *  * @property-read ArticlesRepository $articles
+ *  * @property-read UsersRepository $users
+ *  *⁄
+ * class Model extends AbstractModel
+ * {
+ *
+ * }
+ * </pre>
+ * Psat anotace neni nutne, ale pomaha ide napovidat.
+ *
+ * Na repository se pristupuje jako k property:
+ * <pre>
+ *
+ * $model; // instanceof Model
+ *
+ * $model->articles; // instanceof ArticlesRepository
+ *
+ * $article = $model->articles->getById(1); // instanceof Article
+ *
+ * </pre>
+ *
+ * Do aplikace model vsunete napriklad takto:
+ * <pre>
+ * // config.ini
+ * service.Model = Model
+ *
+ * // BasePresenter.php
+ * /**
+ *  * @property-read Model $model
+ *  *⁄
+ * abstract class BasePresenter extends Presenter
+ * {
+ * 	/** @var Model *⁄
+ * 	private $model;
+ *
+ *  /** @return Model *⁄
+ * 	public function getModel()
+ * 	{
+ * 		if (!isset($this->model))
+ * 		{
+ * 			$this->model = $this->context->getService('Model');;
+ * 		}
+ * 		return $this->model;
+ * 	}
+ * }
+ * </pre>
+ */
 abstract class AbstractModel extends Object
 {
-	static private $instance; // todo di
+	/** @var Model @todo di @see self::get() */
+	static private $instance;
 
+	/** @var array repositoryName => IRepository */
 	private $repositories = array();
 
 	public function __construct()
@@ -24,7 +81,14 @@ abstract class AbstractModel extends Object
 		}
 	}
 
-	public static function get() // todo di
+	/**
+	 * Vraci prvni vytvoreny model, je pro zpetnou kompatibilitu.
+	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
+	 * Bohuzel zatim pouziva: Entity::getModel(), Entity::setValueHelper(), ManyToMany, MetaDataProperty::setOneToOne()
+	 * @return Model
+	 * @todo di
+	 */
+	public static function get()
 	{
 		if (!isset(self::$instance))
 		{
@@ -34,7 +98,9 @@ abstract class AbstractModel extends Object
 	}
 
 	/**
-	 * @return Repository
+	 * Dej mi instanci repository.
+	 * @var string repositoryName
+	 * @return Repository |IRepository
 	 */
 	public function getRepository($name)
 	{
@@ -49,7 +115,8 @@ abstract class AbstractModel extends Object
 	}
 
 	/**
-	 * @param string
+	 * Existuje repository pod timto nazvem?
+	 * @param string repositoryName
 	 * @return bool
 	 */
 	final public function isRepository($name)
@@ -64,9 +131,10 @@ abstract class AbstractModel extends Object
 	}
 
 	/**
-	 * @param string
-	 * @param string
-	 * @return bool
+	 * Je tato trida repository?
+	 * @param string repositoryClass
+	 * @param string repositoryName
+	 * @return true or throw exception
 	 * @throws InvalidStateException
 	 */
 	final private function checkRepositoryClass($class, $name)
@@ -95,9 +163,9 @@ abstract class AbstractModel extends Object
 	}
 
 	/**
-	 * @throws UnexpectedValueException
-	 * @param string
-	 * @return string
+	 * repositoryName > repositoryClass
+	 * @param string repositoryName
+	 * @return string repositoryClass
 	 */
 	final private function getRepositoryClass($name)
 	{
@@ -106,12 +174,26 @@ abstract class AbstractModel extends Object
 		return $class;
 	}
 
+	/**
+	 * <pre>
+	 * $model->articles;
+	 * </pre>
+	 * Do not call directly.
+	 * @param string repositoryName
+	 * @return IRepository
+	 */
 	public function & __get($name)
 	{
 		$r = $this->getRepository($name);
 		return $r;
 	}
 
+	/**
+	 * Primitne vsechny zmeny do uloziste na vsech repository.
+	 * @return void
+	 * @see IRepository::flush()
+	 * @see IMapper::flush()
+	 */
 	final public function flush()
 	{
 		foreach ($this->repositories as $repo)
@@ -120,6 +202,13 @@ abstract class AbstractModel extends Object
 		}
 	}
 
+	/**
+	 * Zrusi vsechny zmeny na vsech repository, ale do ukonceni scriptu se zmeny porad drzi.
+	 * @todo zrusit i zmeny na entitach, aby se hned vratili do puvodniho stavu.
+	 * @return void
+	 * @see IRepository::clean()
+	 * @see IMapper::clean()
+	 */
 	final public function clean()
 	{
 		foreach ($this->repositories as $repo)
