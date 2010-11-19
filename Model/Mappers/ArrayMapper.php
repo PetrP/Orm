@@ -65,7 +65,7 @@ abstract class ArrayMapper extends Mapper
 		return $id;
 	}
 
-	public function delete(IEntity $entity)
+	public function remove(IEntity $entity)
 	{
 		// todo pri vymazavani odstanit i vazby v IRelationship
 		$this->begin();

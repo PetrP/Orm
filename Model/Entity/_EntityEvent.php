@@ -66,18 +66,18 @@ abstract class _EntityEvent extends Object
 	 * Pred vymazanim
 	 * @param IRepository
 	 */
-	protected function onBeforeDelete(IRepository $repository)
+	protected function onBeforeRemove(IRepository $repository)
 	{
-		$this->checkEvent = 'onBeforeDelete';
+		$this->checkEvent = 'onBeforeRemove';
 	}
 
 	/**
 	 * Po vymazani
 	 * @param IRepository
 	 */
-	protected function onAfterDelete(IRepository $repository)
+	protected function onAfterRemove(IRepository $repository)
 	{
-		$this->checkEvent = 'onAfterDelete';
+		$this->checkEvent = 'onAfterRemove';
 	}
 
 	/**
@@ -143,6 +143,19 @@ abstract class _EntityEvent extends Object
 			$class = get_class($entity);
 			throw new InvalidStateException("Method $class::$method() or its descendant doesn't call parent::$method().");
 		}
+	}
+
+
+
+	/** @deprecated @see self::onBeforeRemove() */
+	final protected function onBeforeDelete(IRepository $repository)
+	{
+		throw new DeprecatedException();
+	}
+	/** @deprecated @see self::onAfterRemove() */
+	final protected function onAfterDelete(IRepository $repository)
+	{
+		throw new DeprecatedException();
 	}
 
 }

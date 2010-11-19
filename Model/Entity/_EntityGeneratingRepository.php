@@ -37,9 +37,9 @@ class _EntityGeneratingRepository extends _EntityEvent
 	 * Po vymazani
 	 * @param IRepository
 	 */
-	protected function onAfterDelete(IRepository $repository)
+	protected function onAfterRemove(IRepository $repository)
 	{
-		parent::onAfterDelete($repository);
+		parent::onAfterRemove($repository);
 		$this->repository = NULL;
 	}
 

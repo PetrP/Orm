@@ -153,7 +153,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 		$repository = $this->getSecondRepository();
 		foreach ($this->del as $entity)
 		{
-			$repository->delete($entity);
+			$repository->remove($entity);
 		}
 
 		$repository = $this->getSecondRepository();

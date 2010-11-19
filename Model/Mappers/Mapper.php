@@ -9,7 +9,7 @@ abstract class Mapper extends Object implements IMapper
 {
 	abstract public function findAll();
 	abstract public function persist(IEntity $entity);
-	abstract public function delete(IEntity $entity);
+	abstract public function remove(IEntity $entity);
 	abstract public function begin(); // todo rename?
 	abstract public function flush();
 
@@ -65,5 +65,9 @@ abstract class Mapper extends Object implements IMapper
 	}
 
 
-
+	/** @deprecated @see self::remove() */
+	final public function delete(IEntity $entity)
+	{
+		return $this->remove($entity);
+	}
 }

@@ -51,7 +51,7 @@
  *
  * @see self::getById() ziskani zaznamu
  * @see self::persist() ukladani
- * @see self::delete() mazani
+ * @see self::remove() mazani
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
  *
@@ -84,17 +84,17 @@ interface IRepository
 	public function persist(IEntity $entity);
 
 	/**
-	 * Smaze entitu z uloziste {@see IMapper::delete()} a odpoji ji z repository.
+	 * Smaze entitu z uloziste {@see IMapper::remove()} a odpoji ji z repository.
 	 * Z entitou lze pak jeste pracovat do ukonceni scriptu, ale uz nema id a neni zapojena na repository.
 	 *
 	 * Vola udalosti:
-	 * @see Entity::onBeforeDelete()
-	 * @see Entity::onAfterDelete()
+	 * @see Entity::onBeforeRemove()
+	 * @see Entity::onAfterRemove()
 	 *
 	 * @param int|IEntity
 	 * @return bool
 	 */
-	public function delete($entity);
+	public function remove($entity);
 
 	/**
 	 * Primitne vsechny zmeny do uloziste.

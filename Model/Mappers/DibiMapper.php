@@ -82,7 +82,7 @@ class DibiMapper extends Mapper
 	}
 
 
-	public function delete(IEntity $entity)
+	public function remove(IEntity $entity)
 	{
 		$this->begin();
 		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entity->id)->execute();

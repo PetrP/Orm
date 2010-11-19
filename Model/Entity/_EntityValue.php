@@ -182,9 +182,9 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	 * Po vymazani
 	 * @param IRepository
 	 */
-	protected function onAfterDelete(IRepository $repository)
+	protected function onAfterRemove(IRepository $repository)
 	{
-		parent::onAfterDelete($repository);
+		parent::onAfterRemove($repository);
 		$this->values['id'] = NULL;
 		$this->valid['id'] = false;
 		$this->changed = true;

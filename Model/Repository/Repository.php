@@ -53,7 +53,7 @@ require_once dirname(__FILE__) . '/IRepository.php';
  *
  * @see self::getById() ziskani zaznamu
  * @see self::persist() ukladani
- * @see self::delete() mazani
+ * @see self::remove() mazani
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
  *
@@ -196,25 +196,25 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
-	 * Smaze entitu z uloziste {@see IMapper::delete()} a odpoji ji z repository.
+	 * Smaze entitu z uloziste {@see IMapper::remove()} a odpoji ji z repository.
 	 * Z entitou lze pak jeste pracovat do ukonceni scriptu, ale uz nema id a neni zapojena na repository.
 	 *
 	 * Vola udalosti:
-	 * @see Entity::onBeforeDelete()
-	 * @see Entity::onAfterDelete()
+	 * @see Entity::onBeforeRemove()
+	 * @see Entity::onAfterRemove()
 	 *
 	 * @param int|IEntity
 	 * @return bool
 	 */
-	final public function delete($entity) // todo prejmenovat na remove?
+	final public function remove($entity) // todo prejmenovat na remove?
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkEntityName(get_class($entity));
 
-		$entity->___event($entity, 'beforeDelete', $this);
+		$entity->___event($entity, 'beforeRemove', $this);
 		if (isset($entity->id))
 		{
-			if ($this->getMapper()->delete($entity))
+			if ($this->getMapper()->remove($entity))
 			{
 				unset($this->entities[$entity->id]);
 			}
@@ -223,7 +223,7 @@ abstract class Repository extends Object implements IRepository
 				throw new Exception(); // todo
 			}
 		}
-		$entity->___event($entity, 'afterDelete', $this);
+		$entity->___event($entity, 'afterRemove', $this);
 		return true;
 	}
 
@@ -452,6 +452,11 @@ abstract class Repository extends Object implements IRepository
 	final public function getEntityName(array $data = NULL)
 	{
 		throw new DeprecatedException();
+	}
+	/** @deprecated @see self::remove() */
+	final public function delete($entity)
+	{
+		return $this->remove($entity);
 	}
 
 }

@@ -106,13 +106,13 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * Pred vymazanim
 	 * @param IRepository
 	 */
-	//protected function onBeforeDelete(IRepository $repository);
+	//protected function onBeforeRemove(IRepository $repository);
 
 	/**
 	 * Po vymazani
 	 * @param IRepository
 	 */
-	//protected function onAfterDelete(IRepository $repository);
+	//protected function onAfterRemove(IRepository $repository);
 
 	/**
 	 * Persistovane zmeny (update)
