@@ -104,7 +104,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param int
 	 * @return IEntity
 	 */
-	public function getById($id)
+	final public function getById($id)
 	{
 		if ($id instanceof IEntity)
 		{
@@ -149,7 +149,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param IEntity
 	 * @return IEntity
 	 */
-	public function persist(IEntity $entity)
+	final public function persist(IEntity $entity)
 	{
 		$this->checkEntityName(get_class($entity));
 		$hasId = isset($entity->id);
@@ -206,7 +206,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param int|IEntity
 	 * @return bool
 	 */
-	public function delete($entity) // todo prejmenovat na remove?
+	final public function delete($entity) // todo prejmenovat na remove?
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkEntityName(get_class($entity));
@@ -234,7 +234,7 @@ abstract class Repository extends Object implements IRepository
 	 * @see IMapper::flush()
 	 * @see Model::flush()
 	 */
-	public function flush($onlyThis = false)
+	final public function flush($onlyThis = false)
 	{
 		if ($onlyThis) return $this->getMapper()->flush();
 		return $this->getModel()->flush();
@@ -248,7 +248,7 @@ abstract class Repository extends Object implements IRepository
 	 * @see IMapper::clean()
 	 * @see Model::clean()
 	 */
-	public function clean($onlyThis = false)
+	final public function clean($onlyThis = false)
 	{
 		if ($onlyThis) return $this->getMapper()->rollback();
 		return $this->getModel()->clean();
