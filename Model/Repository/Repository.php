@@ -2,6 +2,8 @@
 
 require_once dirname(__FILE__) . '/IRepository.php';
 
+require_once dirname(__FILE__) . '/PerformanceHelper.php';
+
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.
  * Ukladani, mazani, nacitani entit.
