@@ -1,10 +1,7 @@
 <?php
 
 
-class StdObject extends ArrayObject
+class StdObject extends DibiRow
 {
-	public function __construct($input = array(), $flags = self::ARRAY_AS_PROPS, $iterator_class = 'ArrayIterator')
-	{
-		parent::__construct($input, $flags, $iterator_class);
-	}
+
 }
