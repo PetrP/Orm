@@ -65,7 +65,7 @@ abstract class Mapper extends Object implements IMapper
 	}
 
 
-	/** @deprecated @see self::remove() */
+	/** @ignore @deprecated @see self::remove() */
 	final public function delete(IEntity $entity)
 	{
 		return $this->remove($entity);

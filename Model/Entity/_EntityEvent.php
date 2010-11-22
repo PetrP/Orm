@@ -147,12 +147,12 @@ abstract class _EntityEvent extends Object
 
 
 
-	/** @deprecated @see self::onBeforeRemove() */
+	/** @ignore @deprecated @see self::onBeforeRemove() */
 	final protected function onBeforeDelete(IRepository $repository)
 	{
 		throw new DeprecatedException();
 	}
-	/** @deprecated @see self::onAfterRemove() */
+	/** @ignore @deprecated @see self::onAfterRemove() */
 	final protected function onAfterDelete(IRepository $repository)
 	{
 		throw new DeprecatedException();

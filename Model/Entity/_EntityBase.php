@@ -122,27 +122,27 @@ abstract class _EntityBase extends _EntityValue
 
 
 
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const ENTITY_TO_ID = EntityToArray::AS_ID;
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY;
 
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const EXISTS = NULL;
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const READ = MetaData::READ;
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const WRITE = MetaData::WRITE;
-	/** @deprecated */
+	/** @ignore @deprecated */
 	const READWRITE = MetaData::READWRITE;
-	/** @deprecated */
+	/** @ignore @deprecated */
 	final protected function check(){}
-	/** @deprecated */
+	/** @ignore @deprecated */
 	final public function toPlainArray()
 	{
 		return $this->toArray(EntityToArray::AS_ID);
 	}
-	/** @deprecated */
+	/** @ignore @deprecated */
 	final protected static function createEntityRules($entityClass)
 	{
 	 	return call_user_func(array($entityClass, 'createMetaData'));
