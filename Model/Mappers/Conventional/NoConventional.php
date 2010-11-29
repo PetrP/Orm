@@ -24,13 +24,15 @@ class NoConventional extends Object implements IConventional
 		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}
 
-	// todo deprecated
-	public function format($data)
+
+	/** @ignore @deprecated */
+	final public function format($data)
 	{
 		throw new DeprecatedException();
 		return $this->formatEntityToStorage($data);
 	}
-	public function unformat($data)
+	/** @ignore @deprecated */
+	final public function unformat($data)
 	{
 		throw new DeprecatedException();
 		return $this->formatStorageToEntity($data);

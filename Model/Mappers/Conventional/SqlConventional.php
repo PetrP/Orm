@@ -125,23 +125,26 @@ class SqlConventional extends Object implements IConventional
 
 
 
-	// todo deprecated
-	public function format($data)
+	/** @ignore @deprecated */
+	final public function format($data)
 	{
 		throw new DeprecatedException();
 		return $this->formatEntityToStorage($data);
 	}
-	public function unformat($data)
+	/** @ignore @deprecated */
+	final public function unformat($data)
 	{
 		throw new DeprecatedException();
 		return $this->formatStorageToEntity($data);
 	}
-	protected function formatKey($key)
+	/** @ignore @deprecated */
+	final protected function formatKey($key)
 	{
 		throw new DeprecatedException();
 		return $this->storageFormat($key);
 	}
-	protected function unformatKey($key)
+	/** @ignore @deprecated */
+	final protected function unformatKey($key)
 	{
 		throw new DeprecatedException();
 		return $this->entityFormat($key);
