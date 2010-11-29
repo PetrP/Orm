@@ -220,9 +220,9 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 			if ($mode AND $by)
 			{
 				$where = array();
-				// todo prvni na male pismeno udelat rychleji
-				foreach (array_map(create_function('$v', 'if ($v{0} != "_") $v{0} = $v{0} | "\x20"; return $v;'),explode('And', $by)) as $n => $key) // lcfirst
+				foreach (explode('And', $by) as $n => $key)
 				{
+					if ($key{0} != "_") $key{0} = $key{0} | "\x20"; // lcfirst
 					if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key'.");
 					$where[$key] = $args[$n];
 				}
