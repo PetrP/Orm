@@ -243,6 +243,20 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
+	 * Ulozit entitu a primitne vsechny zmeny do uloziste.
+	 * @see self::persist()
+	 * @see self::flush()
+	 * @param IEntity
+	 * @return IEntity
+	 */
+	final public function persistAndFlush(IEntity $entity)
+	{
+		$this->persist($entity);
+		$this->flush();
+		return $entity;
+	}
+
+	/**
 	 * Zrusi vsechny zmeny, ale do ukonceni scriptu se zmeny porad drzi.
 	 * @todo zrusit i zmeny na entitach, aby se hned vratili do puvodniho stavu.
 	 * @param bool true jenom pro tuto repository; false pro vsechny repository
