@@ -100,12 +100,14 @@ class MetaData extends Object
 			if ($m === 'get' OR $m === 'set')
 			{
 				$var = substr($method, 3);
+				if (!$var) continue;
 				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 			}
 			else if (substr($method, 0, 2) === 'is')
 			{
 				$m = 'get';
 				$var = substr($method, 2);
+				if (!$var) continue;
 				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 				if (!isset($properties[$var]) OR $properties[$var]['types'] !== array('bool'))
 				{
