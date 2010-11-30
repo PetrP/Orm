@@ -6,6 +6,8 @@ require_once dirname(__FILE__) . '/IEntityCollection.php';
 
 require_once dirname(__FILE__) . '/FetchAssoc.php';
 
+require_once dirname(__FILE__) . '/FindByHelper.php';
+
 class ArrayDataSource extends Object implements IModelDataSource, IEntityCollection
 {
 	protected $source;
@@ -464,31 +466,10 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 		try {
 			return parent::__call($name, $args);
 		} catch (MemberAccessException $e) {
-
-			$mode = $by = NULL;
-			if (substr($name, 0, 6) === 'findBy')
+			if (FindByHelper::parse($name, $args));
 			{
-				$mode = 'find';
-				$by = substr($name, 6);
+				return $this->$name($args);
 			}
-			else if (substr($name, 0, 5) === 'getBy')
-			{
-				$mode = 'get';
-				$by = substr($name, 5);
-			}
-
-			if ($mode AND $by)
-			{
-				$where = array();
-				foreach (explode('And', $by) as $n => $key)
-				{
-					if ($key{0} != "_") $key{0} = $key{0} | "\x20"; // lcfirst
-					if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key'.");
-					$where[$key] = $args[$n];
-				}
-				return $mode === 'get' ? $this->getBy($where) : $this->findBy($where);
-			}
-
 			throw $e;
 		}
 	}
