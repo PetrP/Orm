@@ -25,6 +25,11 @@ class FindByHelper
 				if ($key{0} != "_") $key{0} = $key{0} | "\x20"; // lcfirst
 				if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key' in '$name'.");
 				$where[$key] = $args[$n];
+				unset($args[$n]);
+			}
+			if (count($args))
+			{
+				throw new InvalidArgumentException("There is extra value in '$name'.");
 			}
 			$name = $mode === 'get' ? 'getBy' : 'findBy';
 			$args = $where;
