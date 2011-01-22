@@ -118,7 +118,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 
 	final public function getIterator()
 	{
-		return new ArrayIterator($this->get());
+		return new IteratorIterator($this->get());
 	}
 
 	abstract public function persist();
@@ -145,7 +145,7 @@ abstract class ManyToMany extends Object implements IteratorAggregate, Countable
 
 	public function count()
 	{
-		return iterator_count($this->getIterator());
+		return $this->get()->count();
 	}
 
 	protected function ignore(IEntity $entity, array $data = NULL)
