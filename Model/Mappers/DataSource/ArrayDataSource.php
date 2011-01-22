@@ -344,29 +344,48 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 				return $data;
 			}
 
-			$value = $tmp[1];
+			$key = array($key);
+			$value = array($tmp[1]);
 
 		} else {
-			if (!$row->hasParam($value)) {
-				throw new InvalidArgumentException("Unknown value column '$value'.");
+			$value = explode('->', $value);
+			if (!$row->hasParam(current($value))) {
+				throw new InvalidArgumentException("Unknown value column '".current($value)."'.");
 			}
 
-			if ($key === NULL) { // indexed-array
+			if ($key === NULL) // indexed-array
+			{
 				foreach ($this->getResult() as $row)
 				{
-					$data[] = $row[$value];
+					$tmp = $row;
+					foreach ($value as $v)
+					{
+						$tmp = ($tmp instanceof IEntity AND $tmp->hasParam($v)) ? $tmp[$v] : NULL;
+					}
+					$data[] = $tmp;
 				}
 				return $data;
 			}
 
-			if (!$row->hasParam($key)) {
-				throw new InvalidArgumentException("Unknown key column '$key'.");
+			$key = explode('->', $key);
+			if (!$row->hasParam(current($key))) {
+				throw new InvalidArgumentException("Unknown key column '".current($key)."'.");
 			}
 		}
 
 		foreach ($this->getResult() as $row)
 		{
-			$data[ $row[$key] ] = $row[$value];
+			$tmp = $row;
+			foreach ($value as $k)
+			{
+				$tmp = ($tmp instanceof IEntity AND $tmp->hasParam($k)) ? $tmp[$k] : NULL;
+			}
+			$tmp2 = $row;
+			foreach ($key as $k)
+			{
+				$tmp2 = ($tmp2 instanceof IEntity AND $tmp2->hasParam($k)) ? $tmp2[$k] : NULL;
+			}
+			$data[$tmp2] = $tmp;
 		}
 
 		return $data;
