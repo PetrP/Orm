@@ -22,7 +22,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * @param  string  		 sorting direction
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function orderBy($row, $sorting = 'ASC')
+	final public function orderBy($row, $sorting = 'ASC')
 	{
 		$conventional = $this->repository->getMapper()->getConventional();
 		if (is_array($row))
@@ -36,13 +36,13 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 		}
 	}
 
-	public function __construct($sql, DibiConnection $connection, IRepository $repository)
+	final public function __construct($sql, DibiConnection $connection, IRepository $repository)
 	{
 		$this->repository = $repository;
 		parent::__construct($sql, $connection);
 	}
 
-	public function getResult()
+	final public function getResult()
 	{
 		$result = parent::getResult();
 		return $result->setRowClass('StdObject');
@@ -51,7 +51,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	/**
 	 * @return DibiResultIterator
 	 */
-	public function getIterator()
+	final public function getIterator()
 	{
 		return new EntityIterator($this->repository, $this->getResult()->getIterator());
 	}
@@ -62,7 +62,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * Generates, executes SQL query and fetches the single row.
 	 * @return DibiRow|FALSE  array on success, FALSE if no next record
 	 */
-	public function fetch()
+	final public function fetch()
 	{
 		$row = $this->getResult()->fetch();
 		return $this->createEntityRecursive($row === false ? NULL : $row);
@@ -74,7 +74,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * Like fetch(), but returns only first field.
 	 * @return mixed  value on success, FALSE if no next record
 	 */
-	public function fetchSingle()
+	final public function fetchSingle()
 	{
 		return $this->getResult()->fetchSingle();
 	}
@@ -85,7 +85,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * Fetches all records from table.
 	 * @return array
 	 */
-	public function fetchAll()
+	final public function fetchAll()
 	{
 		return $this->createEntityRecursive($this->getResult()->fetchAll());
 	}
@@ -97,7 +97,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * @param  string  associative descriptor
 	 * @return array
 	 */
-	public function fetchAssoc($assoc)
+	final public function fetchAssoc($assoc)
 	{
 		// todo conventional
 		return $this->createEntityRecursive($this->getResult()->fetchAssoc($assoc));
@@ -111,7 +111,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	 * @param  string  value
 	 * @return array
 	 */
-	public function fetchPairs($key = NULL, $value = NULL)
+	final public function fetchPairs($key = NULL, $value = NULL)
 	{
 		/** @var SqlConventional */
 		$conventional = $this->repository->getMapper()->getConventional();
@@ -143,7 +143,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	}
 
 	/** @return ArrayDataSource */
-	public function toArrayDataSource()
+	final public function toArrayDataSource()
 	{
 		return new ArrayDataSource($this->fetchAll());
 	}
@@ -151,10 +151,11 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	/** @return DibiModelDataSource */
 	public function toDataSource()
 	{
-		return new DibiModelDataSource($this->__toString(), $this->connection, $this->repository);
+		$class = get_class($this);
+		return new $class($this->__toString(), $this->connection, $this->repository);
 	}
 
-	protected function findBy(array $where)
+	final protected function findBy(array $where)
 	{
 		$all = $this->toDataSource();
 		/** @var SqlConventional */
@@ -196,12 +197,12 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 		return $all->toDataSource();
 	}
 
-	protected function getBy(array $where)
+	final protected function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
 
-	public function __call($name, $args)
+	final public function __call($name, $args)
 	{
 		try {
 			return parent::__call($name, $args);
@@ -213,6 +214,18 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 			throw $e;
 		}
 	}
+
+	final protected function getConnventional()
+	{
+		return $this->repository->getMapper()->getConventional();
+	}
+
+	final protected function getConnventionalKey($key)
+	{
+		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
+	}
+
+	// todo final count totalCount a toString a dalsi
 
 }
 class ModelDataSource extends DibiModelDataSource {}

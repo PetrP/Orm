@@ -38,7 +38,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 
 
 
-	public function __construct(array $source)
+	final public function __construct(array $source)
 	{
 		$this->source = $source;
 	}
@@ -51,7 +51,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  string  		 column alias
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function select($col, $as = NULL)
+	final public function select($col, $as = NULL)
 	{
 		throw new NotImplementedException();
 		if (is_array($col)) {
@@ -70,7 +70,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  mixed  conditions
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function where($cond)
+	final public function where($cond)
 	{
 		if (is_array($cond)) {
 			// TODO: not consistent with select and orderBy
@@ -90,7 +90,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  string  		 sorting direction
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function orderBy($row, $direction = Dibi::ASC)
+	final public function orderBy($row, $direction = Dibi::ASC)
 	{
 		if (is_array($row))
 		{
@@ -124,7 +124,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  int offset
 	 * @return DibiDataSource  provides a fluent interface
 	 */
-	public function applyLimit($limit, $offset = NULL)
+	final public function applyLimit($limit, $offset = NULL)
 	{
 		$this->limit = $limit;
 		$this->offset = $offset;
@@ -212,7 +212,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Returns (and queries) DibiResult.
 	 * @return DibiResult
 	 */
-	public function getResult()
+	final public function getResult()
 	{
 		if ($this->result === NULL)
 		{
@@ -261,7 +261,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	/**
 	 * @return DibiResultIterator
 	 */
-	public function getIterator()
+	final public function getIterator()
 	{
 		return new ArrayIterator($this->getResult());
 	}
@@ -272,7 +272,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Generates, executes SQL query and fetches the single row.
 	 * @return DibiRow|FALSE  array on success, FALSE if no next record
 	 */
-	public function fetch()
+	final public function fetch()
 	{
 		$row = current($this->getResult());
 		return $row === false ? NULL : $row;
@@ -284,7 +284,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Like fetch(), but returns only first field.
 	 * @return mixed  value on success, FALSE if no next record
 	 */
-	public function fetchSingle()
+	final public function fetchSingle()
 	{
 		throw new NotImplementedException();
 		return $this->getResult()->fetchSingle();
@@ -296,7 +296,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Fetches all records from table.
 	 * @return array
 	 */
-	public function fetchAll()
+	final public function fetchAll()
 	{
 		return $this->getResult();
 	}
@@ -308,7 +308,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  string  associative descriptor
 	 * @return array
 	 */
-	public function fetchAssoc($assoc)
+	final public function fetchAssoc($assoc)
 	{
 		return FetchAssoc::apply($this->fetchAll(), $assoc);
 	}
@@ -321,7 +321,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * @param  string  value
 	 * @return array
 	 */
-	public function fetchPairs($key = NULL, $value = NULL)
+	final public function fetchPairs($key = NULL, $value = NULL)
 	{
 		$row = $this->fetch();
 		if (!$row) return array();  // empty result set
@@ -344,48 +344,29 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 				return $data;
 			}
 
-			$key = array($key);
-			$value = array($tmp[1]);
+			$value = $tmp[1];
 
 		} else {
-			$value = explode('->', $value);
-			if (!$row->hasParam(current($value))) {
-				throw new InvalidArgumentException("Unknown value column '".current($value)."'.");
+			if (!$row->hasParam($value)) {
+				throw new InvalidArgumentException("Unknown value column '$value'.");
 			}
 
-			if ($key === NULL) // indexed-array
-			{
+			if ($key === NULL) { // indexed-array
 				foreach ($this->getResult() as $row)
 				{
-					$tmp = $row;
-					foreach ($value as $v)
-					{
-						$tmp = ($tmp instanceof IEntity AND $tmp->hasParam($v)) ? $tmp[$v] : NULL;
-					}
-					$data[] = $tmp;
+					$data[] = $row[$value];
 				}
 				return $data;
 			}
 
-			$key = explode('->', $key);
-			if (!$row->hasParam(current($key))) {
-				throw new InvalidArgumentException("Unknown key column '".current($key)."'.");
+			if (!$row->hasParam($key)) {
+				throw new InvalidArgumentException("Unknown key column '$key'.");
 			}
 		}
 
 		foreach ($this->getResult() as $row)
 		{
-			$tmp = $row;
-			foreach ($value as $k)
-			{
-				$tmp = ($tmp instanceof IEntity AND $tmp->hasParam($k)) ? $tmp[$k] : NULL;
-			}
-			$tmp2 = $row;
-			foreach ($key as $k)
-			{
-				$tmp2 = ($tmp2 instanceof IEntity AND $tmp2->hasParam($k)) ? $tmp2[$k] : NULL;
-			}
-			$data[$tmp2] = $tmp;
+			$data[ $row[$key] ] = $row[$value];
 		}
 
 		return $data;
@@ -395,7 +376,7 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Returns the number of rows in a given data source.
 	 * @return int
 	 */
-	public function count()
+	final public function count()
 	{
 		return count($this->getResult());
 	}
@@ -404,13 +385,13 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	 * Returns the number of rows in a given data source.
 	 * @return int
 	 */
-	public function getTotalCount()
+	final public function getTotalCount()
 	{
 		return count($this->data);
 	}
 
 	/** @return ArrayDataSource */
-	public function toArrayDataSource()
+	final public function toArrayDataSource()
 	{
 		return new ArrayDataSource($this->getResult());
 	}
@@ -418,10 +399,11 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 	/** @return ArrayDataSource */
 	public function toDataSource()
 	{
-		return $this->toArrayDataSource();
+		$class = get_class($this);
+		return new $class($this->getResult());
 	}
 
-	protected function findBy(array $where)
+	final protected function findBy(array $where)
 	{
 		foreach ($where as $key => $value)
 		{
@@ -475,12 +457,12 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 		return new ArrayDataSource($result);
 	}
 
-	protected function getBy(array $where)
+	final protected function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
 
-	public function __call($name, $args)
+	final public function __call($name, $args)
 	{
 		try {
 			return parent::__call($name, $args);

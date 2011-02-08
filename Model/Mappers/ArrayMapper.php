@@ -10,8 +10,15 @@ abstract class ArrayMapper extends Mapper
 
 	public function findAll()
 	{
-		return new ArrayDataSource(array_values($this->getData()));
+		$class = $this->getCollectionClass();
+		return new $class(array_values($this->getData()));
 	}
+
+	protected function createCollectionClass()
+	{
+		return 'ArrayDataSource';
+	}
+
 	protected function getData()
 	{
 		if (!isset($this->data))

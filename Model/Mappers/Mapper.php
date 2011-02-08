@@ -17,6 +17,8 @@ abstract class Mapper extends Object implements IMapper
 
 	private $conventional;
 
+	private $collectionClass;
+
 	public function __construct(IRepository $repository)
 	{
 		$this->repository = $repository;
@@ -50,6 +52,35 @@ abstract class Mapper extends Object implements IMapper
 	{
 		return new NoConventional($this);
 	}
+
+	final protected function getCollectionClass()
+	{
+		if (!isset($this->collectionClass))
+		{
+			$class = $this->createCollectionClass();
+			if (!class_exists($class))
+			{
+				throw new InvalidStateException("Collection '{$class}' doesn't exists");
+			}
+			$reflection = new ClassReflection($class);
+			if (!$reflection->implementsInterface('IEntityCollection'))
+			{
+				throw new InvalidStateException("Collection '{$class}' must implement IEntityCollection");
+			}
+			else if ($reflection->isAbstract())
+			{
+				throw new InvalidStateException("Collection '{$class}' is abstract.");
+			}
+			else if (!$reflection->isInstantiable())
+			{
+				throw new InvalidStateException("Collection '{$class}' isn't instantiable");
+			}
+			$this->collectionClass = $class;
+		}
+		return $this->collectionClass;
+	}
+
+	abstract protected function createCollectionClass();
 
 	public function __call($name, $args)
 	{
