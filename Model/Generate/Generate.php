@@ -43,4 +43,12 @@ class Generate extends Object
 		return $count;
 	}
 
+	public static function comment(Repository $repository)
+	{
+		$g = new GenerateEntityComment($repository->mapper);
+		echo '<pre>';
+		echo $g->getComment();
+		exit;
+	}
+
 }
