@@ -17,7 +17,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  *  * @property-read ArticlesRepository $articles
  *  * @property-read UsersRepository $users
  *  *⁄
- * class Model extends AbstractModel
+ * class Model extends RepositoriesCollection
  * {
  *
  * }
@@ -61,7 +61,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  * }
  * </pre>
  */
-abstract class AbstractModel extends Object
+abstract class RepositoriesCollection extends Object
 {
 	/** @var Model @todo di @see self::get() */
 	static private $instance;
@@ -218,3 +218,6 @@ abstract class AbstractModel extends Object
 	}
 
 }
+
+/** @deprecated */
+abstract class AbstractModel extends RepositoriesCollection {}

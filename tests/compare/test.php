@@ -42,7 +42,7 @@ dibi::connect(array(
 		'password' => '',
 ));
 
-class Model extends AbstractModel
+class Model extends RepositoriesCollection
 {
 }
 

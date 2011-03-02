@@ -37,7 +37,7 @@ require_once dirname(__FILE__) . '/../../dump.php';
 require_once dirname(__FILE__) . '/../../DataSourceX/DataSourceX/extension.php';
 require_once dirname(__FILE__) . '/../Model/loader.php';
 
-class Model extends AbstractModel
+class Model extends RepositoriesCollection
 {
 
 }
