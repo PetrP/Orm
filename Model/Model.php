@@ -54,7 +54,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  * 	{
  * 		if (!isset($this->model))
  * 		{
- * 			$this->model = $this->context->getService('Model');;
+ * 			$this->model = $this->context->getService('Model');
  * 		}
  * 		return $this->model;
  * 	}
@@ -63,7 +63,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  */
 abstract class RepositoriesCollection extends Object
 {
-	/** @var Model @todo di @see self::get() */
+	/** @var Model @deprecated @todo di @see self::get() */
 	static private $instance;
 
 	/** @var array repositoryName => IRepository */
@@ -71,7 +71,7 @@ abstract class RepositoriesCollection extends Object
 
 	public function __construct()
 	{
-		if (!($this instanceof Model))
+		if (!($this instanceof Model)) // todo
 		{
 			throw new InvalidStateException();
 		}
@@ -87,6 +87,7 @@ abstract class RepositoriesCollection extends Object
 	 * Bohuzel zatim pouziva: Entity::getModel(), Entity::setValueHelper(), ManyToMany, MetaDataProperty::setOneToOne()
 	 * @return Model
 	 * @todo di
+	 * @deprecated
 	 */
 	public static function get()
 	{
@@ -189,7 +190,7 @@ abstract class RepositoriesCollection extends Object
 	}
 
 	/**
-	 * Primitne vsechny zmeny do uloziste na vsech repository.
+	 * Promitne vsechny zmeny do uloziste na vsech repository.
 	 * @return void
 	 * @see IRepository::flush()
 	 * @see IMapper::flush()
