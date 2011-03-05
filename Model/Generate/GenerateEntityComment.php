@@ -4,7 +4,7 @@ class GenerateEntityComment extends Object
 {
 	/** @var DibiMapper */
 	private $mapper;
-	
+
 	public function __construct(DibiMapper $mapper)
 	{
 		$this->mapper = $mapper;
@@ -49,7 +49,7 @@ class GenerateEntityComment extends Object
 			$name = key($conventional->formatStorageToEntity(array($meta->name => NULL)));
 			if ($name === 'id') continue;
 			$comment = array();
-			
+
 			$bool = false;
 			$type = $types[$meta->nativetype];
 			if ($meta->nativetype === 'TINYINT' AND $meta->size == 1)
@@ -60,7 +60,7 @@ class GenerateEntityComment extends Object
 			if ($meta->nullable) $type .= '|NULL';
 
 			$comment[] = " * @property $type \${$name}";
-			
+
 			if ($meta->nativetype === 'ENUM')
 			{
 				$e = preg_replace('#^enum\((.*)\)$#', '$1', $meta->vendor['Type']);
