@@ -7,7 +7,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	const DEFAULT_VALUE = "\0";
 
 	/**
-	 * Entity prevadi na array, je monze nastavit co udelat z asociacemi.
+	 * Entity prevadi na array, je mozne nastavit co udelat z asociacemi.
 	 * @see EntityToArray
 	 * @param int EntityToArray::*
 	 * @return array

@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/PerformanceHelper.php';
  * O uloziste se stara Mapper {@see DibiMapper} {@see IMapper}
  *
  * Konvence je pojmenovavat metody na vytahovani dat
- * getBy<...>() pro ziskani jednoho zaznamu
+ * getBy<...>() pro ziskani jednoho zaznamu {@see IEntity}
  * findBy<...>() pro ziskani kolekce zaznamu {@see IEntityCollection}
  * findAll() vsechny zaznamy
  *
