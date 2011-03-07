@@ -51,8 +51,8 @@ class FooToBars extends OneToMany
 function t($v)
 {
 	$r = array();
-	dt($r);
 	foreach ($v as $e) $r[] = get_class($e) . '#' . (isset($e->id) ? $e->id : NULL);
+	dt($r);
 }
 
 $foo = new Foo;

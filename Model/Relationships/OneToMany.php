@@ -2,10 +2,13 @@
 
 require_once dirname(__FILE__) . '/IRelationship.php';
 
-class OneToMany extends Object implements IteratorAggregate, Countable, IRelationship
+class OneToMany extends Object implements IRelationship
 {
 	/** @var Entity */
 	private $parent;
+
+	/** @var string get_class */
+	private $name;
 
 	/** @var IEntityCollection @see self::get() */
 	private $get;
@@ -34,13 +37,17 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	/** @var string cache @see self::getSecondParamName() */
 	private $param;
 
-	/** @param IEntity $parent */
-	public function __construct(IEntity $parent)
+	/**
+	 * @param IEntity
+	 * @param string|NULL internal get_class
+	 */
+	public function __construct(IEntity $parent, $name = NULL)
 	{
+		$this->name = $name ? $name : get_class($this);
 		$entityName = $this->getFirstEntityName();
 		if (!($parent instanceof $entityName))
 		{
-			throw new UnexpectedValueException(get_class($this) . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
+			throw new UnexpectedValueException($this->name . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
 		}
 		$this->parent = $parent;
 		$this->param = $this->getSecondParamName();
@@ -116,7 +123,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 						$array[spl_object_hash($entity)] = $entity;
 					}
 				}
-				if ($this->add) foreach ($this->add as $hash => $entity)
+				foreach ($this->add as $hash => $entity)
 				{
 					if (isset($entity->{$this->param}) AND $entity->{$this->param} === $this->parent)
 					{
@@ -124,12 +131,9 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 						$array[$hash] = $entity;
 					}
 				}
-				if ($this->del)
+				foreach ($this->del as $hash => $entity)
 				{
-					foreach ($this->del as $hash => $entity)
-					{
-						unset($array[$hash]);
-					}
+					unset($array[$hash]);
 				}
 				$all = new ArrayDataSource($array);
 			}
@@ -141,24 +145,36 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	public function persist()
 	{
 		$repository = $this->getSecondRepository();
+
 		foreach ($this->del as $entity)
 		{
 			$repository->remove($entity);
 		}
 
-		foreach ($this->edit as $entity)
-		{
-			$repository->persist($entity);
-		}
 
-		$order = 0;
-		foreach ($this->add as $entity)
+		if ($this->get)
 		{
-			if ($entity->hasParam('order')) $entity->order = ++$order; // todo
-			$repository->persist($entity);
+			foreach ($this->get as $entity)
+			{
+				$repository->persist($entity);
+			}
+		}
+		else
+		{
+			foreach ($this->edit as $entity)
+			{
+				$repository->persist($entity);
+			}
+			$order = 0; // todo
+			foreach ($this->add as $entity)
+			{
+				if ($entity->hasParam('order')) $entity->order = ++$order; // todo
+				$repository->persist($entity);
+			}
 		}
 
 		$this->del = $this->edit = $this->add = array();
+		if ($this->get instanceof ArrayDataSource) $this->get = NULL; // free memory
 	}
 
 	/** @return int */
@@ -185,7 +201,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	 */
 	protected function getFirstEntityName()
 	{
-		return substr(get_class($this), 0, strpos(get_class($this), 'To'));
+		return substr($this->name, 0, strpos($this->name, 'To'));
 	}
 
 	/**
@@ -205,7 +221,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	 */
 	protected function getSecondRepository()
 	{
-		return $this->getModel()->getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
+		return $this->getModel()->getRepository(substr($this->name, strpos($this->name, 'To') + 2));
 	}
 
 	/**
@@ -217,16 +233,7 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 	private function createEntity($entity)
 	{
 		$repository = $this->getSecondRepository();
-		if ($entity instanceof IEntity)
-		{
-			// $entity
-		}
-		else if (is_scalar($entity))
-		{
-			$entity = $repository->getById($entity);
-			if (!$entity) throw new Exception(); // todo
-		}
-		else if (is_array($entity) OR $entity instanceof Traversable)
+		if (!($entity instanceof IEntity) AND (is_array($entity) OR $entity instanceof Traversable))
 		{
 			$array = $entity instanceof Traversable ? iterator_to_array($entity) : $entity;
 			$entity = NULL;
@@ -241,6 +248,12 @@ class OneToMany extends Object implements IteratorAggregate, Countable, IRelatio
 			}
 			$entity->setValues($array);
 		}
+		if (!($entity instanceof IEntity))
+		{
+			$entity = $repository->getById($entity);
+			if (!$entity) throw new Exception(); // todo
+		}
+		if (!$repository->isEntity($entity)) throw new UnexpectedValueException();
 		$hash = spl_object_hash($entity);
 		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
 		$this->get = NULL;
