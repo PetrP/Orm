@@ -77,10 +77,10 @@ class MetaDataProperty extends Object
 			$this->originalTypes = explode('|', $types);
 			$types = array_map('strtolower', $types);
 		}
-		else if(is_scalar($types))
+		else if (is_scalar($types))
 		{
 			$this->originalTypes = $types;
-			$types = explode('|',strtolower($types));
+			$types = explode('|', strtolower($types));
 		}
 
 		if (in_array('mixed', $types))
@@ -191,7 +191,6 @@ class MetaDataProperty extends Object
 	public function setOneToMany()
 	{
 		$this->setToMany(MetaData::OneToMany);
-
 		return $this;
 	}
 
@@ -211,7 +210,6 @@ class MetaDataProperty extends Object
 	public function setManyToMany()
 	{
 		$this->setToMany(MetaData::ManyToMany);
-
 		return $this;
 	}
 
