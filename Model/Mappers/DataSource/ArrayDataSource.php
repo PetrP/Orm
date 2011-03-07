@@ -40,7 +40,9 @@ class ArrayDataSource extends Object implements IModelDataSource, IEntityCollect
 
 	final public function __construct(array $source)
 	{
-		$this->source = $source;
+		$tmp = array();
+		foreach ($source as $entity) $tmp[spl_object_hash($entity)] = $entity;
+		$this->source = array_values($tmp);
 	}
 
 
