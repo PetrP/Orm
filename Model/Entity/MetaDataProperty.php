@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/../Relationships/RelationshipLoader.php';
+
 /**
  * Informace o jednom parametru
  * @see MetaData
@@ -11,6 +13,8 @@ class MetaDataProperty extends Object
 
 	/** @var string Nazev entity */
 	private $class;
+
+	private $originalTypes;
 
 	/** @var array informace */
 	private $data = array(
@@ -70,10 +74,12 @@ class MetaDataProperty extends Object
 	{
 		if (is_array($types))
 		{
+			$this->originalTypes = explode('|', $types);
 			$types = array_map('strtolower', $types);
 		}
 		else if(is_scalar($types))
 		{
+			$this->originalTypes = $types;
 			$types = explode('|',strtolower($types));
 		}
 
@@ -163,14 +169,9 @@ class MetaDataProperty extends Object
 	{
 		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
 		if (count($this->data['types']) != 1) throw new InvalidStateException();
-		$relationshipClassName = current($this->data['types']);
-		if (!class_exists($relationshipClassName)) throw new InvalidStateException();
-		$parents = class_parents($relationshipClassName);
-		if (!isset($parents[$relationship === MetaData::ManyToMany ? 'ManyToMany' : 'OneToMany'])) throw new InvalidStateException();
-
+		$relationshipClassName = $this->originalTypes;
 		$this->data['relationship'] = $relationship;
-		$this->data['relationshipParam'] = $relationshipClassName;
-
+		$this->data['relationshipLoader'] = new RelationshipLoader($relationship, $relationshipClassName);
 		return $this;
 	}
 

@@ -385,7 +385,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 
 			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IRelationship))
 			{
-				$tmp = new $rule['relationshipParam']($this);
+				$tmp = $rule['relationshipLoader']->create($this);
 			}
 			else
 			{
