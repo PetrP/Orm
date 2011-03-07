@@ -15,34 +15,29 @@ class Foo extends Entity
  */
 class Bar extends Entity
 {
-
+	function __construct($foo = NULL)
+	{
+		parent::__construct();
+		$this->foo = $foo;
+	}
 }
 class BarsRepository extends Repository
 {
-	static $mock;
-
-	public function findByFoo()
-	{
-		foreach (self::$mock as $bar)
-		{
-			$this->persist($bar);
-		}
-		return new ArrayDataSource(self::$mock);
-	}
 }
 class FoosRepository extends Repository
 {
-
 }
 abstract class BaseMapper extends ArrayMapper
 {
+	public $data = array();
+	
 	protected function loadData()
 	{
-		return array();
+		return $this->data;
 	}
 	protected function saveData(array $data)
 	{
-
+		$this->data = $data;
 	}
 }
 class BarsMapper extends BaseMapper{}
@@ -56,43 +51,61 @@ class FooToBars extends OneToMany
 function t($v)
 {
 	$r = array();
-	foreach ($v as $e) $r[] = get_class($e);
 	dt($r);
+	foreach ($v as $e) $r[] = get_class($e) . '#' . (isset($e->id) ? $e->id : NULL);
 }
 
 $foo = new Foo;
-BarsRepository::$mock = array();
-t($foo->bars->get()->fetchAll());
+t($foo->bars);
 
 $foo = new Foo;
-BarsRepository::$mock = array(new Bar, new Bar);
-t($foo->bars->get()->fetchAll());
+$model->bars->persist(new Bar($foo));
+$model->bars->persist(new Bar($foo));
+t($foo->bars);
 
 $foo = new Foo;
-BarsRepository::$mock = array(new Bar, new Bar);
+$model->bars->persist(new Bar($foo));
+$model->bars->persist(new Bar($foo));
 $foo->bars = array(new Bar);
-t($foo->bars->get()->fetchAll());
+t($foo->bars);
 
 $foo = new Foo;
-BarsRepository::$mock = array(new Bar, new Bar);
+$model->bars->persist(new Bar($foo));
+$model->bars->persist(new Bar($foo));
 try{$foo->bars->add(array(new Bar));}catch(Exception $e){dt($e);}
-t($foo->bars->get()->fetchAll());
+t($foo->bars);
+$foo->bars->remove(6);
+t($foo->bars);
+$model->bars->getById(1)->foo = NULL;
+$foo->bars->add(1);
+t($foo->bars);
 
 __halt_compiler();
 ------EXPECT------
 array()
 
 array(
-	"Bar"
-	"Bar"
+	"Bar#1"
+	"Bar#2"
 )
 
 array(
-	"Bar"
+	"Bar#"
 )
 
 array(
-	"Bar"
-	"Bar"
-	"Bar"
+	"Bar#5"
+	"Bar#6"
+	"Bar#"
+)
+
+array(
+	"Bar#5"
+	"Bar#"
+)
+
+array(
+	"Bar#5"
+	"Bar#"
+	"Bar#1"
 )
