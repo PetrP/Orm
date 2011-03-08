@@ -106,6 +106,11 @@ abstract class ArrayMapper extends Mapper
 				$values = $entity->toArray();
 				foreach ($values as $key => $value)
 				{
+					if ($value instanceof IEntityInjection)
+					{
+						$values[$key] = $value = $value->getInjectedValue();
+					}
+
 					if ($value instanceof IEntity)
 					{
 						$values[$key] = $value->id;

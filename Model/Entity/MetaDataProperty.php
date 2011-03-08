@@ -26,6 +26,7 @@ class MetaDataProperty extends Object
 		'relationshipParam' => NULL,
 		'default' => NULL,
 		'enum' => NULL,
+		'injection' => NULL,
 	);
 
 	/**
@@ -362,6 +363,40 @@ class MetaDataProperty extends Object
 	public function setDefault($value)
 	{
 		$this->data['default'] = $value;
+
+		return $this;
+	}
+
+	public function setInjection($factory)
+	{
+		if (isset($this->data['injection'])) throw new InvalidStateException("Already has injection in {$this->class}::\${$this->name}");
+
+		$types = $this->data['types'];
+		//unset($types['null']); // todo dava smysl aby mohl byt null? i kdyby ano tak v entityvalue je potreba nevytvaret injection kdyz je null a je mozne byt null
+		if (count($types) != 1) throw new InvalidStateException(); // todo
+		$class = current($types);
+		if (!class_exists($class)) throw new Exception();
+		$reflection = new ClassReflection($class);
+		$class = $reflection->getName();
+
+		if (!$reflection->implementsInterface('IEntityInjection')) throw new Exception("$class not implements IEntityInjection");
+		if (!$reflection->isInstantiable()) throw new Exception("$class not instantiable");
+
+		if ($factory instanceof Callback OR $factory instanceof Closure)
+		{
+			$factory = callback($factory);
+		}
+		else if (strpos($factory, '::'))
+		{
+			$factory = callback($this->builtSelf($factory));
+		}
+		else if (!$factory)
+		{
+			$factory = callback($class, 'create');
+		}
+		else throw new Exception();
+
+		$this->data['injection'] = InjectionFactory::create($factory, $class);
 
 		return $this;
 	}

@@ -145,6 +145,11 @@ class DibiPersistenceHelper extends Object
 				unset($values[$key]);
 				continue;
 			}
+			if ($value instanceof IEntityInjection)
+			{
+				$values[$key] = $value = $value->getInjectedValue();
+			}
+
 			if ($value instanceof IEntity)
 			{
 				$values[$key] = $value->id;
