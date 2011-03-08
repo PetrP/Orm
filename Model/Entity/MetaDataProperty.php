@@ -403,7 +403,7 @@ class MetaDataProperty extends Object
 
 	/**
 	 * @return array internal format
- 	 * @see MetaData::toArray()
+	 * @see MetaData::toArray()
 	 */
 	public function toArray()
 	{
