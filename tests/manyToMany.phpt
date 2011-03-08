@@ -1,10 +1,11 @@
 <?php
 
 require dirname(__FILE__) . '/base.php';
+TestHelpers::$oldDump = false;
 
 /**
  * @property string $name
- * @property ArticlesToTags $tags
+ * @property ArticlesToTags $tags {m:m}
  */
 class Article extends Entity
 {
@@ -12,7 +13,6 @@ class Article extends Entity
 	{
 		parent::__construct();
 		$this->name = $name;
-		$this->tags = new ArticlesToTags($this);
 	}
 }
 
@@ -33,13 +33,14 @@ class TagsRepository extends Repository {}
 
 abstract class BaseMapper extends ArrayMapper
 {
+	public $data = array();
 	protected function loadData()
 	{
-		return array();
+		return $this->data;
 	}
 	protected function saveData(array $data)
 	{
-		dt($data);
+		$this->data = $data;
 	}
 }
 
@@ -48,14 +49,9 @@ class TagsMapper extends BaseMapper {}
 
 class ArticlesToTags extends ManyToMany
 {
-	public function persist()
+	protected function createMapper()
 	{
-		dt('persist');
-	}
-	protected function load()
-	{
-		dt('load');
-		return array();
+		return new ArrayManyToManyMapper;
 	}
 }
 
@@ -63,26 +59,63 @@ class ArticlesToTags extends ManyToMany
 
 
 $a = new Article('Clanek1');
-$a->tags->add(new Tag('kategorie'));
 
+$a->tags->add($x = new Tag('kategorie'));
+$model->articles->persistAndFlush($a);
+dt($model->articles->mapper->data);
 
-$model->articles->persist($a);
-$model->articles->flush();
+$a->tags->add(new Tag('kategorie2'));
+$model->articles->persistAndFlush($a);
+dt($model->articles->mapper->data);
 
+$a->tags->remove($x);
+$model->articles->persistAndFlush($a);
+dt($model->articles->mapper->data);
+
+$a->tags->set(array(new Tag('kategorie3'), new Tag('kategorie4')));
+$model->articles->persistAndFlush($a);
+dt($model->articles->mapper->data);
 
 __halt_compiler();
 ------EXPECT------
-string(4) "load"
+array(
+	1 => array(
+		"id" => 1
+		"name" => "Clanek1"
+		"tags" => array(
+			1 => 1
+		)
+	)
+)
 
-array(1) {
-	1 => NULL
-}
+array(
+	1 => array(
+		"id" => 1
+		"name" => "Clanek1"
+		"tags" => array(
+			1 => 1
+			2 => 2
+		)
+	)
+)
 
-string(7) "persist"
+array(
+	1 => array(
+		"id" => 1
+		"name" => "Clanek1"
+		"tags" => array(
+			2 => 2
+		)
+	)
+)
 
-array(1) {
-	1 => array(2) {
-		"id" => int(1)
-		"name" => string(7) "Clanek1"
-	}
-}
+array(
+	1 => array(
+		"id" => 1
+		"name" => "Clanek1"
+		"tags" => array(
+			3 => 3
+			4 => 4
+		)
+	)
+)

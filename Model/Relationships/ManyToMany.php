@@ -4,6 +4,8 @@ require_once dirname(__FILE__) . '/IRelationship.php';
 
 require_once dirname(__FILE__) . '/DibiManyToManyMapper.php';
 
+require_once dirname(__FILE__) . '/ArrayManyToManyMapper.php';
+
 // todo moznost mit parametry/ data
 // ->add($entity, array('time' => time()))
 // todo rict entity ze se zmenila
@@ -170,6 +172,11 @@ class ManyToMany extends Object implements IRelationship
 
 	public function getInjectedValue()
 	{
+		$mapper = $this->getMapper();
+		if ($mapper instanceof ArrayManyToManyMapper)
+		{
+			return $mapper->value;
+		}
 	}
 
 	public function setInjectedValue($value)
@@ -179,7 +186,12 @@ class ManyToMany extends Object implements IRelationship
 
 	public static function create($className, IEntity $entity, $value = NULL, $name = NULL)
 	{
-		return new $className($entity, $name);
+		$r = new $className($entity, $name);
+		$mapper = $r->getMapper();
+		if ($mapper instanceof ArrayManyToManyMapper)
+		{
+			$mapper->value = ValidationHelper::isValid(array('array'), $value) ? $value : array();
+		}
 		return $r;
 	}
 
