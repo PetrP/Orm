@@ -157,7 +157,7 @@ abstract class Repository extends Object implements IRepository
 		$hasId = isset($entity->id);
 		if ($hasId AND !$entity->isChanged())
 		{
-			return $entity->id;
+			return $entity;
 		}
 		$entity->___event($entity, 'beforePersist', $this);
 		$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
