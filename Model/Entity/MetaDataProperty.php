@@ -222,6 +222,7 @@ class MetaDataProperty extends Object
 	 */
 	private function builtSelf($string)
 	{
+		$string = trim($string);
 		if (substr($string, 0, 6) === 'self::')
 		{
 			$string = str_replace('self::', "{$this->class}::", $string);
@@ -254,7 +255,7 @@ class MetaDataProperty extends Object
 		else
 		{
 			$original = $enum = array();
-			foreach (array_map('trim', explode(',', $string)) as $d)
+			foreach (explode(',', $string) as $d)
 			{
 				$d = $this->builtSelf($d);
 
@@ -299,7 +300,7 @@ class MetaDataProperty extends Object
 	 */
 	public function builtParamsDefault($string)
 	{
-		$string = $this->builtSelf(trim($string));
+		$string = $this->builtSelf($string);
 		if (is_numeric($string))
 		{
 			$string = (float) $string;
