@@ -195,6 +195,21 @@ class OneToMany extends Object implements IRelationship
 		return $this->parent->getModel();
 	}
 
+	public function getInjectedValue()
+	{
+		return NULL;
+	}
+
+	public function setInjectedValue($value)
+	{
+		if ($value !== NULL) $this->set($value);
+	}
+
+	public static function create($className, IEntity $entity, $value = NULL, $name = NULL)
+	{
+		return new $className($entity, $name);
+	}
+
 	/**
 	 * Nazev entity s kterou na kterou se pripojuje.
 	 * @return string

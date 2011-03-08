@@ -22,10 +22,10 @@ class RelationshipLoader extends Object
 		}
 	}
 
-	public function create(IEntity $parent)
+	public function create($className, IEntity $parent, $value = NULL)
 	{
-		$class = $this->class;
-		return new $class($parent, $this->name);
+		if ($this->class !== $className) throw new Exception();
+		return call_user_func(array($className, 'create'), $className, $parent, $value, $this->name);
 	}
 
 }

@@ -168,6 +168,21 @@ class ManyToMany extends Object implements IRelationship
 		return $this->parent->getModel();
 	}
 
+	public function getInjectedValue()
+	{
+	}
+
+	public function setInjectedValue($value)
+	{
+		if ($value !== NULL) $this->set($value);
+	}
+
+	public static function create($className, IEntity $entity, $value = NULL, $name = NULL)
+	{
+		return new $className($entity, $name);
+		return $r;
+	}
+
 	/** @return Repository */
 	protected function getFirstRepository()
 	{

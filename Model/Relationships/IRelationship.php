@@ -1,6 +1,8 @@
 <?php
 
-interface IRelationship extends IteratorAggregate, Countable
+require_once dirname(__FILE__) . '/../Entity/Injection/IEntityInjection.php';
+
+interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 
 	/**

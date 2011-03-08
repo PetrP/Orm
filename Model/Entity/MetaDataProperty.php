@@ -22,8 +22,8 @@ class MetaDataProperty extends Object
 		'get' => NULL,
 		'set' => NULL,
 		'since' => NULL,
-		'relationship' => NULL,
-		'relationshipParam' => NULL,
+		'relationship' => NULL, // deprecated
+		'relationshipParam' => NULL, // deprecated
 		'default' => NULL,
 		'enum' => NULL,
 		'injection' => NULL,
@@ -193,7 +193,8 @@ class MetaDataProperty extends Object
 		if (count($this->data['types']) != 1) throw new InvalidStateException();
 		$relationshipClassName = $this->originalTypes;
 		$this->data['relationship'] = $relationship;
-		$this->data['relationshipLoader'] = new RelationshipLoader($relationship, $relationshipClassName);
+		$loader = new RelationshipLoader($relationship, $relationshipClassName);
+		$this->setInjection(callback($loader, 'create'));
 		return $this;
 	}
 

@@ -380,21 +380,6 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				}
 			}
 		}
-		else if ($rule['relationship'] === MetaData::OneToMany OR $rule['relationship'] === MetaData::ManyToMany)
-		{
-
-			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IRelationship))
-			{
-				$tmp = $rule['relationshipLoader']->create($this);
-			}
-			else
-			{
-				$tmp = $this->values[$name];
-			}
-			if ($value !== NULL) $tmp->set($value);
-			$value = $tmp;
-		}
-
 		else if (isset($rule['injection']))
 		{
 			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IEntityInjection))
