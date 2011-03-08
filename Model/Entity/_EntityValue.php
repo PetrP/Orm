@@ -402,7 +402,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			{
 				$value = $rule['enum']['constants'][$tmp];
 			}
-			else if (in_array('null', $rule['types']) AND $value === NULL)
+			else if (isset($rule['types']['null']) AND $value === NULL)
 			{
 				$value = NULL;
 			}

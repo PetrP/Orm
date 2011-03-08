@@ -23,7 +23,7 @@ class ValidationHelper
 
 		foreach ($types as $type)
 		{
-			if ($type === 'void' OR $type === 'null')
+			if ($type === 'null')
 			{
 				if ($value === NULL) return true;
 				continue;

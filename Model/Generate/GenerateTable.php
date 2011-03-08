@@ -56,7 +56,7 @@ class GenerateTable extends Object
 				$driver->addPrimary($name);
 			else
 			{
-				$null = (in_array('void', $rule->types) OR in_array('null', $rule->types));
+				$null = isset($rule->types['null']);
 				if (in_array('string', $rule->types))
 					$driver->addString($name, $null);
 				else if (in_array('int', $rule->types))

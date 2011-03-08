@@ -75,18 +75,39 @@ class MetaDataProperty extends Object
 		if (is_array($types))
 		{
 			$this->originalTypes = explode('|', $types);
-			$types = array_map('strtolower', $types);
+			$types = $types;
 		}
 		else if (is_scalar($types))
 		{
 			$this->originalTypes = $types;
-			$types = explode('|', strtolower($types));
+			$types = explode('|', $types);
 		}
 
-		if (in_array('mixed', $types))
+		static $alliases = array(
+			'void' => 'null',
+			'double' => 'float',
+			'real' => 'float',
+			'numeric' => 'float',
+			'number' => 'float',
+			'integer' => 'int',
+			'boolean' => 'bool',
+			'text' => 'string',
+			//'scalar' => '', todo
+		);
+
+		$tmp = array();
+		foreach ($types as $k => $type)
 		{
-			$types = array();
+			$type = strtolower($type);
+			if (isset($alliases[$type]))
+			{
+				$type = $alliases[$type];
+			}
+			$tmp[$type] = $type;
 		}
+		$types = $tmp;
+
+		if (isset($types['mixed'])) $types = array();
 
 		$this->data['types'] = $types;
 
