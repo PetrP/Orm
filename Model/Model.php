@@ -195,7 +195,7 @@ abstract class RepositoriesCollection extends Object
 	 * @see IRepository::flush()
 	 * @see IMapper::flush()
 	 */
-	final public function flush()
+	public function flush()
 	{
 		foreach ($this->repositories as $repo)
 		{
