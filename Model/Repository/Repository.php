@@ -104,7 +104,7 @@ abstract class Repository extends Object implements IRepository
 
 	/**
 	 * @param int
-	 * @return IEntity
+	 * @return IEntity|NULL
 	 */
 	final public function getById($id)
 	{
@@ -123,16 +123,31 @@ abstract class Repository extends Object implements IRepository
 		$this->performanceHelper->access($id);
 		if (isset($this->entities[$id]))
 		{
-			return $this->entities[$id];
-		}
-		$ids = $this->performanceHelper->get();
-		if ($ids) $this->mapper->findById($ids)->fetchAll();
-		if (isset($this->entities[$id]))
-		{
-			return $this->entities[$id];
+			if ($this->entities[$id]) return $this->entities[$id];
+			return NULL;
 		}
 
-		return $this->getMapper()->getById($id);
+		// nactu vsechny ktere budu pravdepodobne potrebovat
+		if ($ids = $this->performanceHelper->get())
+		{
+			$this->mapper->findById($ids)->fetchAll();
+			foreach ($ids as $tmp)
+			{
+				if (!isset($this->entities[$tmp])) $this->entities[$tmp] = false;
+			}
+			if (isset($this->entities[$id]))
+			{
+				if ($this->entities[$id]) return $this->entities[$id];
+				return NULL;
+			}
+		}
+
+		$entity = $this->getMapper()->getById($id);
+		if (!$entity)
+		{
+			$this->entities[$id] = false;
+		}
+		return $entity;
 	}
 
 	/**
@@ -218,7 +233,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			if ($this->getMapper()->remove($entity))
 			{
-				unset($this->entities[$entity->id]);
+				$this->entities[$entity->id] = false;
 			}
 			else
 			{
@@ -408,7 +423,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function createEntity($data) // todo rename
 	{
-		if (!isset($this->entities[$data['id']]))
+		if (!isset($this->entities[$data['id']]) OR !$this->entities[$data['id']])
 		{
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
