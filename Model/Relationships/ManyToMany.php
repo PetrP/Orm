@@ -50,11 +50,12 @@ class ManyToMany extends Object implements IRelationship
 
 	/**
 	 * @param IEntity|int|array
-	 * @return IEntity
+	 * @return IEntity|NULL
 	 */
 	final public function add($entity)
 	{
 		$entity = $this->createEntity($entity);
+		if ($this->ignore($entity)) return NULL;
 		// $entity->manytomany->add($this->parent); // todo kdyz existuje?
 		$this->add[spl_object_hash($entity)] = $entity;
 		return $entity;
@@ -269,9 +270,14 @@ class ManyToMany extends Object implements IRelationship
 		return $entity;
 	}
 
+	protected function ignore(IEntity $entity)
+	{
+		return false;
+	}
+
 	final protected function getFirstParamName() {throw new DeprecatedException();}
 	final protected function getSecondParamName() {throw new DeprecatedException();}
 	final protected function getParentParamName() {throw new DeprecatedException();}
 	final protected function getChildParamName() {throw new DeprecatedException();}
-	final protected function ignore(IEntity $entity, array $data = NULL) {throw new DeprecatedException();}
+
 }
