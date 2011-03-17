@@ -47,7 +47,7 @@ class ValidationHelper
 				if (call_user_func("is_$type", $value)) return true;
 				else
 				{
-					if (in_array($type, array('float', 'int')) AND is_numeric($value) OR empty($value))
+					if (in_array($type, array('float', 'int')) AND (is_numeric($value) OR empty($value)))
 					{
 						$_value = $value;
 						settype($_value, $type);
