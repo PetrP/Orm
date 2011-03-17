@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../Relationships/RelationshipLoader.php';
+require_once dirname(__FILE__) . '/../../Relationships/RelationshipLoader.php';
 
 /**
  * Informace o jednom parametru

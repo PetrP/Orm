@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/IEntity.php';
 
-require_once dirname(__FILE__) . '/AnnotationMetaData.php';
+require_once dirname(__FILE__) . '/MetaData/AnnotationMetaData.php';
 
 require_once dirname(__FILE__) . '/ValidationHelper.php';
 
