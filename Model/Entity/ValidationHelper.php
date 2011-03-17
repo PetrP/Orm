@@ -62,7 +62,7 @@ class ValidationHelper
 						$_value = $value;
 						settype($_value, $type);
 					}
-					else if ($type === 'string' AND (is_int($value) OR is_float($value) OR (is_object($value) AND method_exists($value, '__toString'))))
+					else if ($type === 'string' AND ($value === NULL OR is_int($value) OR is_float($value) OR (is_object($value) AND method_exists($value, '__toString'))))
 					{
 						$_value = (string) $value;
 					}
