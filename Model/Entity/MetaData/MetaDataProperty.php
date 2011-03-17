@@ -274,7 +274,9 @@ class MetaDataProperty extends Object
 	{
 		if (preg_match('#^([a-z0-9_-]+::[a-z0-9_-]+)\(\)$#si', trim($string), $tmp))
 		{
-			$original = $enum = array_keys(callback($this->builtSelf($tmp[1]))->invoke());
+			$enum = callback($this->builtSelf($tmp[1]))->invoke();
+			if (!is_array($enum)) throw new InvalidStateException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
+			$original = $enum = array_keys($enum);
 		}
 		else
 		{
