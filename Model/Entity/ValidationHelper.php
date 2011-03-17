@@ -28,7 +28,7 @@ class ValidationHelper
 				if ($value === NULL) return true;
 				continue;
 			}
-			else if (!in_array($type, array('string', 'float', 'int', 'bool', 'array', 'object')))
+			else if (!in_array($type, array('string', 'float', 'int', 'bool', 'array', 'object', 'mixed')))
 			{
 				if ($value instanceof $type) return true;
 				else if ($type === 'datetime')
