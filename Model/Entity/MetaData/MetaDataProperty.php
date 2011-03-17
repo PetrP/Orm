@@ -339,6 +339,10 @@ class MetaDataProperty extends Object
 		{
 			throw new Exception();
 		}
+		else
+		{
+			$string = trim($string, '\'"'); // todo lepe?
+		}
 		return array($string);
 	}
 
