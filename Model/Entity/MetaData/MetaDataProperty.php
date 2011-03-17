@@ -75,7 +75,7 @@ class MetaDataProperty extends Object
 	{
 		if (is_array($types))
 		{
-			$this->originalTypes = explode('|', $types);
+			$this->originalTypes = implode('|', $types);
 			$types = $types;
 		}
 		else if (is_scalar($types))
