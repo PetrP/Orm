@@ -14,5 +14,9 @@ Environment::getRobotLoader()->addDirectory(__DIR__);
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-
+	public function assertException(Exception $e, $type, $message)
+	{
+		$this->assertEquals($type, get_class($e));
+		$this->assertEquals($e->getMessage(), $message);
+	}
 }
