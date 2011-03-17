@@ -99,7 +99,7 @@ class MetaDataProperty extends Object
 		$tmp = array();
 		foreach ($types as $k => $type)
 		{
-			$type = strtolower($type);
+			$type = strtolower(trim($type));
 			if (isset($alliases[$type]))
 			{
 				$type = $alliases[$type];
@@ -108,7 +108,8 @@ class MetaDataProperty extends Object
 		}
 		$types = $tmp;
 
-		if (isset($types['mixed'])) $types = array();
+		if (isset($types['mixed']) OR $types === array('' => '')) $types = array();
+		unset($types['']);
 
 		$this->data['types'] = $types;
 
