@@ -294,7 +294,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		{
 			$var = substr($name, 2);
 			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
-			if (isset($this->rules[$var]) AND $this->rules[$var]['types'] === array('bool'))
+			if (isset($this->rules[$var]) AND $this->rules[$var]['types'] === array('bool' => 'bool'))
 			{
 				return $this->__get($var);
 			}
