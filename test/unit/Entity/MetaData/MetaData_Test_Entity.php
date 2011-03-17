@@ -16,4 +16,12 @@ class MetaData_Test_Entity extends Entity
 	public function setGetterSetter($v) {}
 	public function isGetter() {}
 	public function isBool() {}
+
+	public static function enum()
+	{
+		return array('foo' => 'bar');
+	}
+
+	const XXX = 'xxx';
+	const YYY = 'yyy';
 }
