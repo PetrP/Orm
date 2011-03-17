@@ -35,7 +35,7 @@ class ValidationHelper
 				{
 					$_value = Tools::createDateTime($value);
 				}
-				else if ($type === 'arrayobject' AND is_string($value) AND substr($value, 0, 19) === 'O:11:"ArrayObject":' AND ($tmp = @unserialize($value)) instanceof ArrayObject) // intentionally @
+				else if ($type === 'arrayobject' AND is_string($value) AND in_array(@$value{0}, array('O','C')) AND substr($value, 1, 18) === ':11:"ArrayObject":' AND ($tmp = @unserialize($value)) instanceof ArrayObject) // intentionally @
 				{
 					$_value = $tmp;
 				}
