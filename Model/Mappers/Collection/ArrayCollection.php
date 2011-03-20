@@ -1,14 +1,12 @@
 <?php
 
-require_once dirname(__FILE__) . '/IModelDataSource.php';
-
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 
-require_once dirname(__FILE__) . '/FetchAssoc.php';
+require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
 
-require_once dirname(__FILE__) . '/FindByHelper.php';
+require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
-class ArrayDataSource extends Object implements IModelDataSource, IEntityCollection
+class ArrayDataSource extends Object implements IEntityCollection
 {
 	protected $source;
 

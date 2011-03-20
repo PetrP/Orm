@@ -1,17 +1,15 @@
 <?php
 
-require_once dirname(__FILE__) . '/IModelDataSource.php';
-
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 
-require_once dirname(__FILE__) . '/EntityIterator.php';
+require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
 
-require_once dirname(__FILE__) . '/StdObject.php';
+require_once dirname(__FILE__) . '/Helpers/StdObject.php'; // todo remove
 
-require_once dirname(__FILE__) . '/FindByHelper.php';
+require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 
-class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, IEntityCollection
+class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 {
 	/** @var Repository */
 	private $repository;
@@ -228,4 +226,3 @@ class DibiModelDataSource extends DibiDataSourceX implements IModelDataSource, I
 	// todo final count totalCount a toString a dalsi
 
 }
-class ModelDataSource extends DibiModelDataSource {}
