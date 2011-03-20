@@ -4,8 +4,6 @@ require_once dirname(__FILE__) . '/IEntityCollection.php';
 
 require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
 
-require_once dirname(__FILE__) . '/Helpers/StdObject.php'; // todo remove
-
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 
@@ -42,8 +40,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 
 	final public function getResult()
 	{
-		$result = parent::getResult();
-		return $result->setRowClass('StdObject');
+		return parent::getResult();
 	}
 
 	/**
@@ -129,7 +126,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 
 	private function createEntityRecursive($a)
 	{
-		if ($a instanceof StdObject)
+		if ($a instanceof DibiRow)
 		{
 			return $this->repository->createEntity($a);
 		}
