@@ -383,7 +383,7 @@ class MetaDataProperty extends Object
 		//unset($types['null']); // todo dava smysl aby mohl byt null? i kdyby ano tak v entityvalue je potreba nevytvaret injection kdyz je null a je mozne byt null
 		if (count($types) != 1) throw new InvalidStateException(); // todo
 		$class = current($types);
-		if (!class_exists($class)) throw new Exception();
+		if (!class_exists($class)) throw new Exception($class);
 		$reflection = new ClassReflection($class);
 		$class = $reflection->getName();
 
