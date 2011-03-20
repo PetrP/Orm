@@ -135,7 +135,7 @@ class OneToMany extends Object implements IRelationship
 				{
 					unset($array[$hash]);
 				}
-				$all = new ArrayDataSource($array);
+				$all = new ArrayCollection($array);
 			}
 			$this->get = $all;
 		}
@@ -174,7 +174,7 @@ class OneToMany extends Object implements IRelationship
 		}
 
 		$this->del = $this->edit = $this->add = array();
-		if ($this->get instanceof ArrayDataSource) $this->get = NULL; // free memory
+		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
 	/** @return int */

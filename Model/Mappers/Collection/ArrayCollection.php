@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
 
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
-class ArrayDataSource extends Object implements IEntityCollection
+class ArrayCollection extends Object implements IEntityCollection, ArrayDataSource
 {
 	protected $source;
 
@@ -49,7 +49,7 @@ class ArrayDataSource extends Object implements IEntityCollection
 	 * Selects columns to query.
 	 * @param  string|array  column name or array of column names
 	 * @param  string  		 column alias
-	 * @return DibiDataSource  provides a fluent interface
+	 * @return ArrayCollection  provides a fluent interface
 	 */
 	final public function select($col, $as = NULL)
 	{
@@ -68,7 +68,7 @@ class ArrayDataSource extends Object implements IEntityCollection
 	/**
 	 * Adds conditions to query.
 	 * @param  mixed  conditions
-	 * @return DibiDataSource  provides a fluent interface
+	 * @return ArrayCollection  provides a fluent interface
 	 */
 	final public function where($cond)
 	{
@@ -88,7 +88,7 @@ class ArrayDataSource extends Object implements IEntityCollection
 	 * Selects columns to order by.
 	 * @param  string|array  column name or array of column names
 	 * @param  string  		 sorting direction
-	 * @return DibiDataSource  provides a fluent interface
+	 * @return ArrayCollection  provides a fluent interface
 	 */
 	final public function orderBy($row, $direction = Dibi::ASC)
 	{
@@ -122,7 +122,7 @@ class ArrayDataSource extends Object implements IEntityCollection
 	 * Limits number of rows.
 	 * @param  int limit
 	 * @param  int offset
-	 * @return DibiDataSource  provides a fluent interface
+	 * @return ArrayCollection  provides a fluent interface
 	 */
 	final public function applyLimit($limit, $offset = NULL)
 	{
@@ -390,14 +390,14 @@ class ArrayDataSource extends Object implements IEntityCollection
 		return count($this->data);
 	}
 
-	/** @return ArrayDataSource */
-	final public function toArrayDataSource()
+	/** @return ArrayCollection */
+	final public function toArrayCollection()
 	{
-		return new ArrayDataSource($this->getResult());
+		return new ArrayCollection($this->getResult());
 	}
 
-	/** @return ArrayDataSource */
-	public function toDataSource()
+	/** @return ArrayCollection */
+	final public function toCollection()
 	{
 		$class = get_class($this);
 		return new $class($this->getResult());
@@ -454,7 +454,7 @@ class ArrayDataSource extends Object implements IEntityCollection
 			}
 		}
 
-		return new ArrayDataSource($result);
+		return new ArrayCollection($result);
 	}
 
 	final protected function getBy(array $where)
@@ -473,5 +473,17 @@ class ArrayDataSource extends Object implements IEntityCollection
 			}
 			throw $e;
 		}
+	}
+
+	/** @deprecated */
+	final public function toArrayDataSource()
+	{
+		return $this->toArrayCollection();
+	}
+
+	/** @deprecated */
+	public function toDataSource()
+	{
+		return $this->toCollection();
 	}
 }

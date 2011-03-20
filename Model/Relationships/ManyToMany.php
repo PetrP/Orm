@@ -97,7 +97,7 @@ class ManyToMany extends Object implements IRelationship
 		if (!isset($this->get))
 		{
 			$ids = $this->getMapper()->load($this->parent);
-			$all = $ids ? $this->childRepository->mapper->findById($ids) : new ArrayDataSource(array());
+			$all = $ids ? $this->childRepository->mapper->findById($ids) : new ArrayCollection(array());
 			if ($this->add OR $this->del)
 			{
 				$array = array();
@@ -114,7 +114,7 @@ class ManyToMany extends Object implements IRelationship
 				{
 					unset($array[$hash]);
 				}
-				$all = new ArrayDataSource($array);
+				$all = new ArrayCollection($array);
 			}
 			$this->get = $all;
 		}
@@ -150,7 +150,7 @@ class ManyToMany extends Object implements IRelationship
 		if ($del) $this->getMapper()->remove($this->parent, $del);
 
 		$this->del = $this->add = array();
-		if ($this->get instanceof ArrayDataSource) $this->get = NULL; // free memory
+		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
 	/** @return int */

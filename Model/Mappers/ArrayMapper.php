@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/Mapper.php';
 
-require_once dirname(__FILE__) . '/DataSource/ArrayDataSource.php';
+require_once dirname(__FILE__) . '/Collection/ArrayCollection.php';
 
 abstract class ArrayMapper extends Mapper
 {
@@ -16,7 +16,7 @@ abstract class ArrayMapper extends Mapper
 
 	protected function createCollectionClass()
 	{
-		return 'ArrayDataSource';
+		return 'ArrayCollection';
 	}
 
 	protected function getData()

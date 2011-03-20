@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/Mapper.php';
 
 require_once dirname(__FILE__) . '/Conventional/SqlConventional.php';
 
-require_once dirname(__FILE__) . '/DataSource/DibiMapperDataSource.php';
+require_once dirname(__FILE__) . '/Collection/DataSourceCollection.php';
 
 
 /**
@@ -107,7 +107,7 @@ class DibiMapper extends Mapper
 
 	protected function createCollectionClass()
 	{
-		return 'DibiModelDataSource';
+		return 'DataSourceCollection';
 	}
 
 	public function getById($id)

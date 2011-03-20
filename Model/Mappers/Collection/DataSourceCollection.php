@@ -9,7 +9,7 @@ require_once dirname(__FILE__) . '/Helpers/StdObject.php'; // todo remove
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 
-class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
+class DataSourceCollection extends DibiDataSourceX implements IEntityCollection, DibiModelDataSource
 {
 	/** @var Repository */
 	private $repository;
@@ -18,7 +18,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 	 * Selects columns to order by.
 	 * @param  string|array  column name or array of column names
 	 * @param  string  		 sorting direction
-	 * @return DibiDataSource  provides a fluent interface
+	 * @return DataSourceCollection  provides a fluent interface
 	 */
 	final public function orderBy($row, $sorting = 'ASC')
 	{
@@ -140,14 +140,14 @@ class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 		return $a;
 	}
 
-	/** @return ArrayDataSource */
-	final public function toArrayDataSource()
+	/** @return ArrayCollection */
+	final public function toArrayCollection()
 	{
-		return new ArrayDataSource($this->fetchAll());
+		return new ArrayCollection($this->fetchAll());
 	}
 
-	/** @return DibiModelDataSource */
-	public function toDataSource()
+	/** @return DataSourceCollection */
+	public function toCollection()
 	{
 		$class = get_class($this);
 		return new $class($this->__toString(), $this->connection, $this->repository);
@@ -155,7 +155,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 
 	final protected function findBy(array $where)
 	{
-		$all = $this->toDataSource();
+		$all = $this->toCollection();
 		/** @var SqlConventional */
 		$conventional = $this->repository->getMapper()->getConventional();
 		$where = $conventional->formatEntityToStorage($where);
@@ -192,7 +192,7 @@ class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 				$all->where('%n = %s', $key, $value);
 			}
 		}
-		return $all->toDataSource();
+		return $all->toCollection();
 	}
 
 	final protected function getBy(array $where)
@@ -225,4 +225,15 @@ class DibiModelDataSource extends DibiDataSourceX implements IEntityCollection
 
 	// todo final count totalCount a toString a dalsi
 
+	/** @deprecated */
+	final public function toArrayDataSource()
+	{
+		return $this->toArrayCollection();
+	}
+
+	/** @deprecated */
+	public function toDataSource()
+	{
+		return $this->toCollection();
+	}
 }

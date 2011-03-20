@@ -2,5 +2,9 @@
 
 /** @deprecated */
 interface IModelDataSource {}
-
-class ModelDataSource extends DibiModelDataSource {}
+/** @deprecated */
+interface ArrayDataSource {}
+/** @deprecated */
+interface ModelDataSource {}
+/** @deprecated */
+interface DibiModelDataSource extends ModelDataSource {}
