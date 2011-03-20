@@ -37,6 +37,10 @@ class DibiMapper extends Mapper
 
 	public function findAll()
 	{
+		if ($this->createCollectionClass() === 'DataSourceCollection') // todo
+		{
+			return new DibiCollection($this->getTableName(), $this->getConnection(), $this->repository);
+		}
 		return $this->dataSource($this->getTableName());
 	}
 
