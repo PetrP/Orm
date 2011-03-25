@@ -4,7 +4,18 @@ require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 {
-	public $value;
+
+	private $value;
+
+	public function setValue($value)
+	{
+		$this->value = $value ? array_combine($value, $value) : array();
+	}
+
+	public function getValue()
+	{
+		return $this->value;
+	}
 
 	public function setParams($parentIsFirst, IRepository $firstRepository, IRepository $secondRepository)
 	{
