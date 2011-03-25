@@ -154,11 +154,19 @@ class DibiCollection extends Object implements IEntityCollection
 	final public function __toString()
 	{
 		list($sorting, $limit, $offset) = $this->process();
+		$orderBy = array();
+		end($sorting); $end = key($sorting);
+		foreach ($sorting as $i => $tmp)
+		{
+			list($row, $direction) = $tmp;
+			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
+			$orderBy[] = array($row => $direction);
+		}
 		return $this->connectionTranslate('
 			SELECT *
 			FROM %n', $this->tableName, '
 			%ex', $this->where ? array('WHERE %and', $this->where) : NULL, '
-			%ex', $sorting ? array('ORDER BY %by', $sorting) : NULL, '
+			%ex', $orderBy ? array('ORDER BY %sql', $orderBy) : NULL, '
 			%ofs %lmt', $offset, $limit
 		);
 	}
