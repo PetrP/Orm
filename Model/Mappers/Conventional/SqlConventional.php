@@ -2,14 +2,76 @@
 
 require_once dirname(__FILE__) . '/IConventional.php';
 
+/**
+ * Rozdily nazvu klicu v entite a v ulozisti.
+ * V entite camelCase
+ * V ulozisti underscore_separated
+ * @todo Rename?
+ */
 class SqlConventional extends Object implements IConventional
 {
 
+	/** @var array */
 	private $cache = array();
 
+	/** @param IMapper */
 	public function __construct(IMapper $mapper)
 	{
 		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
+	}
+
+	/**
+	 * Prejmenuje klice z entity do formatu uloziste
+	 * @param array|Traversable
+	 * @return array
+	 */
+	final public function formatEntityToStorage($data)
+	{
+		$result = array();
+		foreach ($data as $key => $value)
+		{
+			if (isset($this->cache['fk']['entity'][$key]))
+			{
+				$k = $this->cache['fk']['entity'][$key];
+			}
+			else if (isset($this->cache['entity'][$key]))
+			{
+				$k = $this->cache['entity'][$key];
+			}
+			else
+			{
+				$k = $this->cache['entity'][$key] = $this->storageFormat($key);
+			}
+			$result[$k] = $value;
+		}
+		return $result;
+	}
+
+	/**
+	 * Prejmenuje klice z uloziste do formatu entity
+	 * @param array|Traversable
+	 * @return array
+	 */
+	final public function formatStorageToEntity($data)
+	{
+		$result = array();
+		foreach ($data as $key => $value)
+		{
+			if (isset($this->cache['fk']['storage'][$key]))
+			{
+				$k = $this->cache['fk']['storage'][$key];
+			}
+			else if (isset($this->cache['storage'][$key]))
+			{
+				$k = $this->cache['storage'][$key];
+			}
+			else
+			{
+				$k = $this->cache['storage'][$key] = $this->entityFormat($key);
+			}
+			$result[$k] = $value;
+		}
+		return $result;
 	}
 
 	/**
@@ -42,56 +104,27 @@ class SqlConventional extends Object implements IConventional
 	 * fk
 	 * @param  string
 	 * @return string
+	 * @todo public?
 	 */
 	public function foreignKeyFormat($s)
 	{
 		return $s . '_id';
 	}
 
-	final public function formatEntityToStorage($data)
+	/**
+	 * @todo
+	 * @param IRepository
+	 * @param IRepository
+	 */
+	public function getManyToManyTableName(IRepository $first, IRepository $second)
 	{
-		$result = array();
-		foreach ($data as $key => $value)
-		{
-			if (isset($this->cache['fk']['entity'][$key]))
-			{
-				$k = $this->cache['fk']['entity'][$key];
-			}
-			else if (isset($this->cache['entity'][$key]))
-			{
-				$k = $this->cache['entity'][$key];
-			}
-			else
-			{
-				$k = $this->cache['entity'][$key] = $this->storageFormat($key);
-			}
-			$result[$k] = $value;
-		}
-		return $result;
+		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}
 
-	final public function formatStorageToEntity($data)
-	{
-		$result = array();
-		foreach ($data as $key => $value)
-		{
-			if (isset($this->cache['fk']['storage'][$key]))
-			{
-				$k = $this->cache['fk']['storage'][$key];
-			}
-			else if (isset($this->cache['storage'][$key]))
-			{
-				$k = $this->cache['storage'][$key];
-			}
-			else
-			{
-				$k = $this->cache['storage'][$key] = $this->entityFormat($key);
-			}
-			$result[$k] = $value;
-		}
-		return $result;
-	}
-
+	/**
+	 * Nastavi $this->cache['fk']
+	 * @param array of entityname
+	 */
 	final private function loadFk(array $entityNames)
 	{
 		$result = array();
@@ -110,14 +143,6 @@ class SqlConventional extends Object implements IConventional
 		}
 		$this->cache['fk'] = $result;
 	}
-
-	public function getManyToManyTableName(IRepository $first, IRepository $second)
-	{
-		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
-	}
-
-
-
 
 
 	/** @ignore @deprecated */
