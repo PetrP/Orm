@@ -4,13 +4,11 @@ require_once dirname(__FILE__) . '/IConventional.php';
 
 class SqlConventional extends Object implements IConventional
 {
-	private static $staticCache = array();
 
 	private $cache = array();
 
 	public function __construct(IMapper $mapper)
 	{
-		$this->cache = & self::$staticCache[$mapper->getRepository()->getRepositoryName()];
 		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
 	}
 
@@ -96,24 +94,21 @@ class SqlConventional extends Object implements IConventional
 
 	final private function loadFk(array $entityNames)
 	{
-		if (!isset($this->cache['fk']))
+		$result = array();
+		if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi
 		{
-			$result = array();
-			if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi
+			foreach ($entityNames as $entityName)
 			{
-				foreach ($entityNames as $entityName)
+				foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 				{
-					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
-					{
-						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
-						$fk = $this->foreignKeyFormat($this->storageFormat($name));
-						$result['storage'][$fk] = $name;
-						$result['entity'][$name] = $fk;
-					}
+					if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
+					$fk = $this->foreignKeyFormat($this->storageFormat($name));
+					$result['storage'][$fk] = $name;
+					$result['entity'][$name] = $fk;
 				}
 			}
-			$this->cache['fk'] = $result;
 		}
+		$this->cache['fk'] = $result;
 	}
 
 	public function getManyToManyTableName(IRepository $first, IRepository $second)
