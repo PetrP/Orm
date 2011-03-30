@@ -55,17 +55,17 @@ class SqlConventional extends Object implements IConventional
 		$result = array();
 		foreach ($data as $key => $value)
 		{
-			if (isset($this->cache['fk'][$key]))
+			if (isset($this->cache['fk']['entity'][$key]))
 			{
-				$k = $this->cache['fk'][$key];
+				$k = $this->cache['fk']['entity'][$key];
 			}
-			else if (isset($this->cache[$key]))
+			else if (isset($this->cache['entity'][$key]))
 			{
-				$k = $this->cache[$key];
+				$k = $this->cache['entity'][$key];
 			}
 			else
 			{
-				$k = $this->cache[$key] = $this->storageFormat($key);
+				$k = $this->cache['entity'][$key] = $this->storageFormat($key);
 			}
 			$result[$k] = $value;
 		}
@@ -77,17 +77,17 @@ class SqlConventional extends Object implements IConventional
 		$result = array();
 		foreach ($data as $key => $value)
 		{
-			if (isset($this->cache['fk'][$key]))
+			if (isset($this->cache['fk']['storage'][$key]))
 			{
-				$k = $this->cache['fk'][$key];
+				$k = $this->cache['fk']['storage'][$key];
 			}
-			else if (isset($this->cache[$key]))
+			else if (isset($this->cache['storage'][$key]))
 			{
-				$k = $this->cache[$key];
+				$k = $this->cache['storage'][$key];
 			}
 			else
 			{
-				$k = $this->cache[$key] = $this->entityFormat($key);
+				$k = $this->cache['storage'][$key] = $this->entityFormat($key);
 			}
 			$result[$k] = $value;
 		}
@@ -107,8 +107,8 @@ class SqlConventional extends Object implements IConventional
 					{
 						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
 						$fk = $this->foreignKeyFormat($this->storageFormat($name));
-						$result[$fk] = $name;
-						$result[$name] = $fk;
+						$result['storage'][$fk] = $name;
+						$result['entity'][$name] = $fk;
 					}
 				}
 			}
