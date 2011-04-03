@@ -15,8 +15,6 @@ class ValidationHelper
 	 */
 	public static function isValid(array $types, & $value)
 	{
-		// todo anglickej zpusob zadavani dat 100,000.00 tady uplne zkolabuje
-		$intValue = is_string($value) ? str_replace(array(',', ' '), array('.', ''), $value) : NULL;
 		$_value = $value;
 
 		if ($types === array()) return true; // mean mixed
@@ -52,11 +50,6 @@ class ValidationHelper
 						$_value = $value;
 						settype($_value, $type);
 					}
-					else if ($intValue !== NULL AND in_array($type, array('float', 'int')) AND is_numeric($intValue))
-					{
-						$_value = $intValue;
-						settype($_value, $type);
-					}
 					else if (in_array($type, array('array', 'object')) AND (is_array($value) OR is_object($value)))
 					{
 						$_value = $value;
@@ -73,6 +66,16 @@ class ValidationHelper
 					else if ($type === 'bool')
 					{
 						$_value = (bool) $value;
+					}
+					else if (is_string($value) AND in_array($type, array('float', 'int')))
+					{
+						// todo anglickej zpusob zadavani dat 100,000.00 tady uplne zkolabuje
+						if (!isset($intValue)) $intValue = str_replace(array(',', ' '), array('.', ''), $value);
+						if (is_numeric($intValue))
+						{
+							$_value = $intValue;
+							settype($_value, $type);
+						}
 					}
 					continue;
 				}
