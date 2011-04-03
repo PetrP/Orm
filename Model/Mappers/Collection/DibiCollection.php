@@ -311,15 +311,11 @@ class DibiCollection extends Object implements IEntityCollection
 
 	final public function __call($name, $args)
 	{
-		try {
-			return parent::__call($name, $args);
-		} catch (MemberAccessException $e) {
-			if (FindByHelper::parse($name, $args));
-			{
-				return $this->$name($args);
-			}
-			throw $e;
+		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
+		{
+			return $this->$name($args);
 		}
+		return parent::__call($name, $args);
 	}
 
 	final public function where($cond)

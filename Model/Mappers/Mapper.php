@@ -84,15 +84,14 @@ abstract class Mapper extends Object implements IMapper
 
 	public function __call($name, $args)
 	{
-		try {
-			return parent::__call($name, $args);
-		} catch (MemberAccessException $e) {
+		if (!method_exists($this, $name))
+		{
 			if (substr($name, 0, 6) === 'findBy' OR substr($name, 0, 5) === 'getBy')
 			{
 				return call_user_func_array(array($this->findAll(), $name), $args);
 			}
-			throw $e;
 		}
+		return parent::__call($name, $args);
 	}
 
 
