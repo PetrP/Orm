@@ -23,6 +23,8 @@ class ManyToMany extends Object implements IRelationship
 
 	private $mapper;
 
+	private $model;
+
 	public function __construct(IEntity $entity, $name = NULL)
 	{
 		$this->parent = $entity;
@@ -168,7 +170,11 @@ class ManyToMany extends Object implements IRelationship
 	/** @return Model */
 	public function getModel()
 	{
-		return $this->parent->getModel();
+		if (!isset($this->model))
+		{
+			$this->model = $this->parent->getModel();
+		}
+		return $this->model;
 	}
 
 	public function getInjectedValue()
