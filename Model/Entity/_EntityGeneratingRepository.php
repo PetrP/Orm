@@ -11,6 +11,9 @@ class _EntityGeneratingRepository extends _EntityEvent
 	/** @var IRepository|NULL null kdyz jeste nebylo ulozeno */
 	private $repository;
 
+	/** @var Model|NULL cache */
+	private $model;
+
 	/**
 	 * Vytazena z mapperu
 	 * @param IRepository
@@ -41,6 +44,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	{
 		parent::onAfterRemove($repository);
 		$this->repository = NULL;
+		$this->model = NULL;
 	}
 
 	/**
@@ -63,12 +67,16 @@ class _EntityGeneratingRepository extends _EntityEvent
 	 */
 	final public function getModel($need = true)
 	{
-		$need = false; // todo
-		if ($this->getGeneratingRepository($need))
+		if (!isset($this->model))
 		{
-			return $this->getGeneratingRepository()->getModel();
+			$need = false; // todo
+			if ($this->getGeneratingRepository($need))
+			{
+				$this->model = $this->getGeneratingRepository()->getModel();
+			}
+			$this->model = Model::get(); // todo di
 		}
-		return Model::get(); // todo di
+		return $this->model;
 		return NULL;
 	}
 
