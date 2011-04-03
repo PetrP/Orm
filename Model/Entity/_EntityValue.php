@@ -92,7 +92,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				}
 				else
 				{
-					$this->setValueHelper($name, $value);
+					$this->setValueHelper($name, $value, $rule);
 				}
 			} catch (UnexpectedValueException $e) {
 				$this->changed = $tmpChanged;
@@ -128,7 +128,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
-		$this->setValueHelper($name, $value);
+		$this->setValueHelper($name, $value, $rule);
 
 		return $this;
 	}
@@ -358,10 +358,8 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	 * @return void
 	 * @throws UnexpectedValueException
 	 */
-	final private function setValueHelper($name, $value)
+	final private function setValueHelper($name, $value, $rule)
 	{
-		$rule = $this->rules[$name];
-
 		if ($value === IEntity::DEFAULT_VALUE)
 		{
 			$value = $this->getDefaultValueHelper($name, $rule);
