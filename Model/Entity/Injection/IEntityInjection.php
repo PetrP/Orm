@@ -57,14 +57,14 @@ class InjectionFactory
 	public static function create(Callback $callback, $className)
 	{
 		$factory = new self;
-		$factory->callback = $callback;
+		$factory->callback = $callback->getNative();
 		$factory->className = $className;
 		return callback($factory, 'call');
 	}
 
 	public function call(IEntity $entity, $value = NULL)
 	{
-		return $this->callback->invoke($this->className, $entity, $value);
+		return call_user_func($this->callback, $this->className, $entity, $value);
 	}
 
 }
