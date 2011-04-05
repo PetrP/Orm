@@ -305,7 +305,6 @@ class DibiCollection extends Object implements IEntityCollection
 
 	final protected function getBy(array $where)
 	{
-		return $this->findBy($where)->fetch(); // todo
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
 

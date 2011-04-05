@@ -6,7 +6,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
 	public $firstParamName;
 	public $secondParamName;
-	
+
 	private $firstRepository;
 	private $secondRepository;
 
