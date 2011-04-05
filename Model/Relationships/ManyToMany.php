@@ -47,7 +47,11 @@ class ManyToMany extends Object implements IRelationship
 		{
 			throw new UnexpectedValueException();
 		}
-		$this->getMapper()->setParams($parentIsFirst, $firstRepository, $secondRepository);
+
+		$mapper = $this->createMapper($firstRepository, $secondRepository);
+		if (!($mapper instanceof IManyToManyMapper)) throw new Exception(); // todo
+		$mapper->setParams($parentIsFirst, $firstRepository, $secondRepository);
+		$this->mapper = $mapper;
 	}
 
 	/**
@@ -214,29 +218,14 @@ class ManyToMany extends Object implements IRelationship
 		return $this->getModel()->getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
 	}
 
-	protected function createMapper()
+	protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
 	{
-		$mapper1 = $this->parentRepository->getMapper();
-		$mapper2 = $this->childRepository->getMapper();
-		// and mam protejsi property (protoze pole je potreba udrzovat na obou stranach)
-		if ($mapper1 instanceof ArrayMapper AND $mapper2 instanceof ArrayMapper)
-		{
-			return new ArrayManyToManyMapper;
-		}
-		else if ($mapper1 instanceof DibiMapper OR $mapper2 instanceof DibiMapper)
-		{
-			return new DibiManyToManyMapper;
-		}
+		return $firstRepository->getMapper()->createDefaultManyToManyMapper();
+		// todo array jen kdyz mam na obou stranach arraymapper a mam protejsi property (protoze pole je potreba udrzovat na obou stranach)
 	}
 
 	protected function getMapper()
 	{
-		if (!isset($this->mapper))
-		{
-			$mapper = $this->createMapper();
-			if (!($mapper instanceof IManyToManyMapper)) throw new Exception(); // todo
-			$this->mapper = $mapper;
-		}
 		return $this->mapper;
 	}
 

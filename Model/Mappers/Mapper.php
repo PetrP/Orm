@@ -12,6 +12,7 @@ abstract class Mapper extends Object implements IMapper
 	abstract public function remove(IEntity $entity);
 	abstract public function begin(); // todo rename?
 	abstract public function flush();
+	abstract public function createDefaultManyToManyMapper();
 
 	protected $repository;
 

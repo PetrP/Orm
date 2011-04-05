@@ -12,6 +12,13 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	private $parentIsFirst;
 
+	private $connection;
+
+	public function __construct(DibiConnection $connection)
+	{
+		$this->connection = $connection;
+	}
+
 	protected function getFirstParamName()
 	{
 		return 'first';
@@ -53,16 +60,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		return $conventional->getManyToManyTableName($this->firstRepository, $this->secondRepository);
 	}
 
-	protected function getConnection()
-	{
-		return $this->firstRepository->getMapper()->getConnection();
-		throw new NotImplementedException();
-	}
-
 	public function add(IEntity $parent, array $ids)
 	{
 		$this->begin();
-		$connection = $this->getConnection();
+		$connection = $this->connection;
 		$table = $this->getTableName();
 		$parentId = $parent->id;
 		$parentParamName = $this->getParentParamName();
@@ -80,7 +81,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public function remove(IEntity $parent, array $ids)
 	{
 		$this->begin();
-		$connection = $this->getConnection();
+		$connection = $this->connection;
 		$parentId = $parent->id;
 		$connection->delete($this->getTableName())
 			->where('%n = %s AND %n IN %in',
@@ -94,7 +95,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	{
 		if (!isset($parent->id)) return array();
 		$table = $this->getTableName();
-		$connection = $this->getConnection();
+		$connection = $this->connection;
 		return $connection->select($this->getChildParamName())
 			->from($this->getTableName())
 			->where('%n = %s',

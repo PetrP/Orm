@@ -125,6 +125,11 @@ class DibiMapper extends Mapper
 		return $this->repository->getRepositoryName();
 	}
 
+	public function createDefaultManyToManyMapper()
+	{
+		$c = $this->getConnection();
+		return new DibiManyToManyMapper($c);
+	}
 }
 // todo refactor
 class DibiPersistenceHelper extends Object
