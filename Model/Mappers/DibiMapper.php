@@ -104,7 +104,17 @@ class DibiMapper extends Mapper
 		$connection->driver;
 		if (!$connection->isConnected())
 			$connection->sql(''); // protoze nema public metodu DibiConnection::connect()
-		$translator = new DibiTranslator($connection->driver);
+		static $dibiTranslatorVersion;
+		if ($dibiTranslatorVersion === NULL)
+		{
+			$dibiTranslatorVersion = 'driver';
+			$r = new MethodReflection('DibiTranslator', '__construct');
+			if (current($r->getParameters())->name === 'connection')
+			{
+				$dibiTranslatorVersion = 'connection';
+			}
+		}
+		$translator = new DibiTranslator($dibiTranslatorVersion === 'connection' ? $connection : $connection->getDriver());
 		$class = $this->getCollectionClass();
 		return new $class($translator->translate($args), $connection, $this->repository);
 	}
