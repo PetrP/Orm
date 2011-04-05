@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/Mapper.php';
 
 require_once dirname(__FILE__) . '/Conventional/SqlConventional.php';
 
-require_once dirname(__FILE__) . '/Collection/DataSourceCollection.php';
+require_once dirname(__FILE__) . '/Collection/DibiCollection.php';
 
 
 /**
