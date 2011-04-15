@@ -87,8 +87,8 @@ class DibiCollection extends Object implements IEntityCollection
 			}
 			else
 			{
-				// todo conventional
-				$key = 'e.' . $key;
+				$conventional = $this->repository->getMapper()->getConventional();
+				$key = 'e.' . key($conventional->formatEntityToStorage(array($key => NULL)));
 			}
 
 			$this->sorting[] = array($key, $direction);
