@@ -71,10 +71,6 @@ abstract class RepositoriesCollection extends Object
 
 	public function __construct()
 	{
-		if (!($this instanceof Model)) // todo
-		{
-			throw new InvalidStateException();
-		}
 		if (!isset(self::$instance))
 		{
 			self::$instance = $this;

@@ -74,7 +74,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 			{
 				$this->model = $this->getGeneratingRepository()->getModel();
 			}
-			$this->model = Model::get(); // todo di
+			$this->model = RepositoriesCollection::get(); // todo di
 		}
 		return $this->model;
 		return NULL;

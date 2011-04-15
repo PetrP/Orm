@@ -94,7 +94,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param string
 	 * @param Model
 	 */
-	public function __construct($repositoryName, Model $model)
+	public function __construct($repositoryName, RepositoriesCollection $model)
 	{
 		$this->model = $model;
 		$this->repositoryName = $repositoryName;
