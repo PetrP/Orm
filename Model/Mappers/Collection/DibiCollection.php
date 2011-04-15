@@ -60,12 +60,12 @@ class DibiCollection extends Object implements IEntityCollection
 	 * @param  string  		 sorting direction
 	 * @return DibiCollection  provides a fluent interface
 	 */
-	final public function orderBy($row, $direction = Dibi::ASC)
+	final public function orderBy($key, $direction = Dibi::ASC)
 	{
-		if (is_array($row))
+		if (is_array($key))
 		{
 			$this->sorting = array();
-			foreach ($row as $name => $direction)
+			foreach ($key as $name => $direction)
 			{
 				$this->orderBy((string) $name, $direction);
 			}
@@ -80,18 +80,18 @@ class DibiCollection extends Object implements IEntityCollection
 				else $direction = Dibi::ASC;
 			}
 
-			if ($join = $this->repository->getMapper()->getJoinInfo($row))
+			if ($join = $this->repository->getMapper()->getJoinInfo($key))
 			{
-				$this->join($row);
-				$row = $join->key;
+				$this->join($key);
+				$key = $join->key;
 			}
 			else
 			{
 				// todo conventional
-				$row = 'e.' . $row;
+				$key = 'e.' . $key;
 			}
 
-			$this->sorting[] = array($row, $direction);
+			$this->sorting[] = array($key, $direction);
 		}
 		$this->result = NULL;
 		return $this;
@@ -169,9 +169,9 @@ class DibiCollection extends Object implements IEntityCollection
 		end($sorting); $end = key($sorting);
 		foreach ($sorting as $i => $tmp)
 		{
-			list($row, $direction) = $tmp;
+			list($key, $direction) = $tmp;
 			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
-			$orderBy[] = array($row => $direction);
+			$orderBy[] = array($key => $direction);
 		}
 
 		$join = array();
