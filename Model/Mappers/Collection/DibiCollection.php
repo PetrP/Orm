@@ -80,6 +80,17 @@ class DibiCollection extends Object implements IEntityCollection
 				else $direction = Dibi::ASC;
 			}
 
+			if ($join = $this->repository->getMapper()->getJoinInfo($row))
+			{
+				$this->join($row);
+				$row = $join->key;
+			}
+			else
+			{
+				// todo conventional
+				$row = 'e.' . $row;
+			}
+
 			$this->sorting[] = array($row, $direction);
 		}
 		$this->result = NULL;
@@ -162,10 +173,16 @@ class DibiCollection extends Object implements IEntityCollection
 			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
 			$orderBy[] = array($row => $direction);
 		}
+
+		$join = array();
+		foreach ($this->join as $tmp) $join = array_merge($join, $tmp);
+
 		return $this->connectionTranslate('
-			SELECT *
-			FROM %n', $this->tableName, '
+			SELECT [e.*]
+			FROM %n', $this->tableName, ' as e
+			%ex', $join,'
 			%ex', $this->where ? array('WHERE %and', $this->where) : NULL, '
+			' . ($join ? 'GROUP BY [e.id]' : '') . '
 			%ex', $orderBy ? array('ORDER BY %sql', $orderBy) : NULL, '
 			%ofs %lmt', $offset, $limit
 		);
@@ -266,9 +283,18 @@ class DibiCollection extends Object implements IEntityCollection
 		$all = $this->toCollection();
 		/** @var SqlConventional */
 		$conventional = $this->repository->getMapper()->getConventional();
-		$where = $conventional->formatEntityToStorage($where);
 		foreach ($where as $key => $value)
 		{
+			if ($join = $this->repository->getMapper()->getJoinInfo($key))
+			{
+				$this->join($key);
+				$key = $join->key;
+			}
+			else
+			{
+				$key = key($conventional->formatEntityToStorage(array($key => NULL)));
+				$key = 'e.' . $key;
+			}
 			if ($value instanceof IEntityCollection)
 			{
 				$value = $value->fetchPairs(NULL, 'id');
@@ -319,6 +345,7 @@ class DibiCollection extends Object implements IEntityCollection
 
 	final public function where($cond)
 	{
+		// todo nepridava e.
 		if (is_array($cond)) {
 			// TODO: not consistent with select and orderBy
 			$this->where[] = $cond;
@@ -326,6 +353,25 @@ class DibiCollection extends Object implements IEntityCollection
 			$this->where[] = func_get_args();
 		}
 		$this->result = $this->count = NULL;
+		return $this;
+	}
+
+	protected $join = array();
+
+	final protected function join($key)
+	{
+		$lastAlias = 'e';
+		foreach ($this->repository->getMapper()->getJoinInfo($key)->joins as $join)
+		{
+			if (!isset($this->join[$join['alias']]))
+			{
+				$this->join[$join['alias']] = array(
+					"LEFT JOIN %n as %n ON %n = %n",
+					$join['table'], $join['alias'], $join['alias'] . '.id', $lastAlias . '.' . $join['sourceConventionalKey']
+				);
+				$lastAlias = $join['alias'];
+			}
+		}
 		return $this;
 	}
 

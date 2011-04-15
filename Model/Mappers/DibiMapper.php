@@ -140,6 +140,99 @@ class DibiMapper extends Mapper
 		$c = $this->getConnection();
 		return new DibiManyToManyMapper($c);
 	}
+
+	/**
+	 * @internal
+	 * @param string author->lastName or author->group->name
+	 * @return object
+	 * 	->key author.last_name
+	 *  ->joins[] array(
+	 * 		alias => author
+	 * 	?	sourceKey => author
+	 * 		sourceConventionalKey => author_id
+	 * 	?	targetKey => lastName
+	 * 	?	targetConventionalKey => last_name
+	 * 		table => users
+	 * )
+	 */
+	public function getJoinInfo($key, stdClass $result = NULL)
+	{
+		if (strpos($key, '->') === false)
+		{
+			return NULL;
+		}
+		if (!$result)
+		{
+			$result = (object) array('key' => NULL, 'joins' => array());
+		}
+		$lastJoin = end($result->joins);
+
+		$tmp = explode('->', $key, 3);
+		$sourceKey = $tmp[0];
+		$targetKey = $tmp[1];
+		$next = isset($tmp[2]) ? $tmp[2] : NULL;
+
+		$cache = array(); // todo
+		static $cacheFk;
+		if (!isset($cache[$sourceKey]))
+		{
+			$mappper = $this;
+			$conventional = $this->getConventional();
+			$model = $this->getModel();
+			if ($cacheFk === NULL)
+			{
+				foreach ((array) $this->repository->getEntityClassName() as $entityName)
+				{
+					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+					{
+						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
+						$cacheFk[$name] = $rule['relationshipParam'];
+					}
+				}
+			}
+			if (!isset($cacheFk[$sourceKey]))
+			{
+				throw new InvalidStateException(get_class($this->repository) . ": neni zadna vazba na `$sourceKey`");
+			}
+			$tmp['repository'] = $model->getRepository($cacheFk[$sourceKey]);
+			$tmp['mapper'] = $tmp['repository']->getMapper();
+			if (!($tmp['mapper'] instanceof DibiMapper))
+			{
+				throw new InvalidStateException(get_class($tmp['repository']) . " ($sourceKey) nepouziva DibiMapper, data nelze propojit.");
+			}
+			$tmp['conventional'] = $tmp['mapper']->getConventional();
+			$tmp['connection'] = $tmp['mapper']->getConnection();
+			$tmp['table'] = $tmp['mapper']->getTableName();
+			if ($tmp['connection'] !== $this->connection)
+			{
+				throw new InvalidStateException(get_class($tmp['repository']) . " ($sourceKey) pouziva jiny DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
+			}
+			$tmp['sourceKey'] = $sourceKey;
+			$tmp['sourceConventionalKey'] = key($conventional->formatEntityToStorage(array($sourceKey => NULL)));
+			$tmp['targetKey'] = $targetKey;
+			$tmp['targetConventionalKey'] = key($tmp['conventional']->formatEntityToStorage(array($targetKey => NULL)));
+			$tmp['alias'] = $tmp['sourceKey'];
+			$cache[$sourceKey] = $tmp;
+		}
+
+		$join = $cache[$sourceKey];
+
+		if ($lastJoin)
+		{
+			$join['alias'] = $lastJoin['alias'] . '~' . $join['alias'];
+		}
+
+		$result->joins[] = $join;
+		if ($next)
+		{
+			$result = $join['mapper']->getJoinInfo($targetKey . '->' . $next, $result);
+		}
+		else
+		{
+			$result->key = $join['alias'] . '.' . $join['targetConventionalKey'];
+		}
+		return $result;
+	}
 }
 // todo refactor
 class DibiPersistenceHelper extends Object
