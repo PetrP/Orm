@@ -2,7 +2,7 @@
 
 set_time_limit(0);
 
-require_once __DIR__ . '/libs/nette.min.php';
+require_once __DIR__ . '/libs/Nette/loader.php';
 Environment::setMode('console');
 
 set_include_path(__DIR__ . '/libs/PHPUnit');
