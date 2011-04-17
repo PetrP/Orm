@@ -20,7 +20,7 @@
 class RobotLoader extends AutoLoader
 {
 	/** @var array */
-	public $scanDirs;
+	public $scanDirs = array();
 
 	/** @var string  comma separated wildcards */
 	public $ignoreDirs = '.*, *.old, *.bak, *.tmp, temp';
