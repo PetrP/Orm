@@ -19,6 +19,9 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	/** @var bool Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni? */
 	private $changed = false;
 
+	/** @var array Za behu informace ktere metody se volaji, aby bylo mozne magicke pretezovani */
+	private $overwriteMethodTemp = array();
+
 	/**
 	 * Existuje tento parametr?
 	 * Mozno i zjisti jestli je pro cteni/zapis.
@@ -51,6 +54,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		{
 			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
 		}
+		unset($this->overwriteMethodTemp['get'][$name]);
 
 		$rule = $this->rules[$name];
 
@@ -120,6 +124,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		{
 			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
+		unset($this->overwriteMethodTemp['set'][$name]);
 
 		$rule = $this->rules[$name];
 
@@ -222,7 +227,22 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		$value = NULL;
 		if ($rule['get']['method'])
 		{
-			$value = $this->{$rule['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			if (!isset($this->overwriteMethodTemp['get'][$name]))
+			{
+				$this->overwriteMethodTemp['get'][$name] = true;
+				try {
+					$value = $this->{$rule['get']['method']}(); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+				} catch (Exception $e) {
+					unset($this->overwriteMethodTemp['get'][$name]);
+					throw $e;
+				}
+				unset($this->overwriteMethodTemp['get'][$name]);
+			}
+			else
+			{
+				unset($this->overwriteMethodTemp['get'][$name]);
+				$value = $this->getValue($name);
+			}
 		}
 		else
 		{
@@ -259,7 +279,22 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			{
 				$value = $this->getDefaultValueHelper($name, $rule);
 			}
-			$this->{$rule['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+			if (!isset($this->overwriteMethodTemp['set'][$name]))
+			{
+				$this->overwriteMethodTemp['set'][$name] = true;
+				try {
+					$this->{$rule['set']['method']}($value); // todo mohlo by zavolat private metodu, je potreba aby vse bylo final
+				} catch (Exception $e) {
+					unset($this->overwriteMethodTemp['set'][$name]);
+					throw $e;
+				}
+				unset($this->overwriteMethodTemp['set'][$name]);
+			}
+			else
+			{
+				unset($this->overwriteMethodTemp['set'][$name]);
+				return $this->setValue($name, $value);
+			}
 		}
 		else
 		{
@@ -287,6 +322,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 
 			if (isset($this->rules[$var]))
 			{
+				$this->overwriteMethodTemp[$m][$var] = true;
 				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
 			}
 		}
@@ -296,6 +332,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 			if (isset($this->rules[$var]) AND $this->rules[$var]['types'] === array('bool' => 'bool'))
 			{
+				$this->overwriteMethodTemp['get'][$var] = true;
 				return $this->__get($var);
 			}
 		}
