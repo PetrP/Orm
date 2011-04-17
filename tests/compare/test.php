@@ -8,8 +8,6 @@ $r->addDirectory('c:/www/projectsfork/doctrine2/Doctrine');
 $r->autoRebuild = true;
 $r->register();
 
-require_once 'c:/www/projects/DataSourceX/DataSourceX/extension.php';
-
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 // ...

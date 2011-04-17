@@ -3,7 +3,6 @@
 require_once __DIR__ . '/libs/Nette/loader.php';
 require_once __DIR__ . '/libs/dump.php';
 require_once __DIR__ . '/libs/dibi/dibi.php';
-require_once __DIR__ . '/../../DataSourceX/DataSourceX/extension.php';
 require_once __DIR__ . '/../Model/loader.php';
 
 Debug::enable(false);
