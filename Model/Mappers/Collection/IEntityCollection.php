@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/bc.php';
 
-interface IEntityCollection extends IDataSource, IModelDataSource
+interface IEntityCollection extends Countable, IteratorAggregate, IModelDataSource
 {
 	public function orderBy($row, $direction = Dibi::ASC);
 	public function applyLimit($limit, $offset = NULL);
