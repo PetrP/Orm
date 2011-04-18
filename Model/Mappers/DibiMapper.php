@@ -14,6 +14,8 @@ class DibiMapper extends Mapper
 {
 	private $connection;
 
+	/** @var array @see self::getJoinInfo() */
+	private $joinInfoCache = array('cache' => array(), 'fk' => NULL);
 
 	public function getConnection()
 	{
@@ -172,29 +174,27 @@ class DibiMapper extends Mapper
 		$targetKey = $tmp[1];
 		$next = isset($tmp[2]) ? $tmp[2] : NULL;
 
-		$cache = array(); // todo
-		$cacheFk = NULL; // todo
-		if (!isset($cache[$sourceKey]))
+		if (!isset($this->joinInfoCache['cache'][$sourceKey]))
 		{
 			$mappper = $this;
 			$conventional = $this->getConventional();
 			$model = $this->getModel();
-			if ($cacheFk === NULL)
+			if ($this->joinInfoCache['fk'] === NULL)
 			{
 				foreach ((array) $this->repository->getEntityClassName() as $entityName)
 				{
 					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 					{
 						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
-						$cacheFk[$name] = $rule['relationshipParam'];
+						$this->joinInfoCache['fk'][$name] = $rule['relationshipParam'];
 					}
 				}
 			}
-			if (!isset($cacheFk[$sourceKey]))
+			if (!isset($this->joinInfoCache['fk'][$sourceKey]))
 			{
 				throw new InvalidStateException(get_class($this->repository) . ": neni zadna vazba na `$sourceKey`");
 			}
-			$tmp['repository'] = $model->getRepository($cacheFk[$sourceKey]);
+			$tmp['repository'] = $model->getRepository($this->joinInfoCache['fk'][$sourceKey]);
 			$tmp['mapper'] = $tmp['repository']->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
 			{
@@ -211,8 +211,6 @@ class DibiMapper extends Mapper
 			}
 			$tmp['sourceKey'] = $sourceKey;
 			$tmp['sourceConventionalKey'] = key($conventional->formatEntityToStorage(array($sourceKey => NULL)));
-			$tmp['targetKey'] = $targetKey;
-			$tmp['targetConventionalKey'] = key($tmp['conventional']->formatEntityToStorage(array($targetKey => NULL)));
 			$tmp['alias'] = $tmp['sourceKey'];
 
 			$tmp['collection'] = $tmp['mapper']->findAll();
@@ -227,10 +225,13 @@ class DibiMapper extends Mapper
 			}
 			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
 
-			$cache[$sourceKey] = $tmp;
+			$this->joinInfoCache['cache'][$sourceKey] = $tmp;
 		}
 
-		$join = $cache[$sourceKey];
+		$join = $this->joinInfoCache['cache'][$sourceKey];
+
+		$join['targetKey'] = $targetKey;
+		$join['targetConventionalKey'] = key($join['conventional']->formatEntityToStorage(array($targetKey => NULL)));
 
 		if ($lastJoin)
 		{
