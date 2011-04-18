@@ -1,16 +1,21 @@
 <?php
 
-require_once __DIR__ . '/libs/Nette/loader.php';
-require_once __DIR__ . '/libs/dump.php';
-require_once __DIR__ . '/libs/dibi/dibi.php';
-require_once __DIR__ . '/../Model/loader.php';
+define('ORM_DIR', __DIR__ . '/../Model');
+define('LIBS_DIR', __DIR__ . '/libs');
+define('TMP_DIR', __DIR__ . '/tmp');
+
+require_once LIBS_DIR . '/Nette/loader.php';
+require_once LIBS_DIR . '/dump.php';
+require_once LIBS_DIR . '/dibi/dibi.php';
+require_once ORM_DIR . '/loader.php';
 
 Debug::enable(false);
 Debug::$strictMode = true;
 
-define('TMP_DIR', __DIR__ . '/tmp');
 Environment::setVariable('tempDir', TMP_DIR);
 Environment::getRobotLoader()->addDirectory(__DIR__);
+
+require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
