@@ -4,6 +4,7 @@
  * @property string $name
  * @property DibiCollection_join2_Entity $join2 {m:1 DibiCollection_join2_}
  * @property DibiCollection_join3_Entity $join3 {m:1 DibiCollection_join3_}
+ * @property DibiCollection_join4_Entity $join4 {m:1 DibiCollection_join4_}
  */
 class DibiCollection_join1_Entity extends Entity
 {
@@ -13,8 +14,10 @@ class DibiCollection_join1_Entity extends Entity
 /**
  * @property string $name
  * @property DibiCollection_join1_Entity $join1 {m:1 DibiCollection_join1_}
- * @property DibiCollection_joinBadMapper_Entity $joinBadMapper {m:1 DibiCollection_joinBadMapper_}
- * @property DibiCollection_joinDifferentConnection_Entity $joinDifferentConnection {m:1 DibiCollection_joinDifferentConnection_}
+ * @property DibiCollection_join2_Entity $joinBadMapper {m:1 DibiCollection_joinBadMapper_}
+ * @property DibiCollection_join2_Entity $joinDifferentConnection {m:1 DibiCollection_joinDifferentConnection_}
+ * @property DibiCollection_join2_Entity $joinHasWhere {m:1 DibiCollection_joinHasWhere_}
+ * @property DibiCollection_join2_Entity $joinBadCollection {m:1 DibiCollection_joinBadCollection_}
  */
 class DibiCollection_join2_Entity extends Entity
 {
@@ -84,5 +87,45 @@ class DibiCollection_join3_Mapper extends DibiCollection_join_Mapper
 	public function findAll()
 	{
 		return parent::findAll()->findByType('xyz');
+	}
+}
+
+
+class DibiCollection_join4_Repository extends Repository
+{
+	protected $entityClassName = 'DibiCollection_join2_Entity';
+}
+
+class DibiCollection_join4_Mapper extends DibiCollection_join_Mapper
+{
+	public function findAll()
+	{
+		return parent::findAll()->{'findByJoin1->join3->type'}('aaa')->{'findByJoin1->type'}('bbb');
+	}
+}
+
+class DibiCollection_joinBadCollection_Repository extends Repository
+{
+	protected $entityClassName = 'DibiCollection_join2_Entity';
+}
+
+class DibiCollection_joinBadCollection_Mapper extends DibiCollection_join_Mapper
+{
+	public function findAll()
+	{
+		return $this->dataSource($this->getTableName());
+	}
+}
+
+class DibiCollection_joinHasWhere_Repository extends Repository
+{
+	protected $entityClassName = 'DibiCollection_join2_Entity';
+}
+
+class DibiCollection_joinHasWhere_Mapper extends DibiCollection_join_Mapper
+{
+	public function findAll()
+	{
+		return parent::findAll()->where('1=1');
 	}
 }

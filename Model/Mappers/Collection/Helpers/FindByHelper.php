@@ -39,4 +39,54 @@ class FindByHelper
 		return false;
 	}
 
+	public static function dibiProcess(DibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $prefix = NULL)
+	{
+		foreach ($findBy as $tmp)
+		foreach ($tmp as $key => $value)
+		{
+			if ($prefix) $key = $prefix . '->' . $key;
+			if ($join = $mapper->getJoinInfo($key))
+			{
+				$collection->join($key);
+				$key = $join->key;
+			}
+			else
+			{
+				$key = key($conventional->formatEntityToStorage(array($key => NULL)));
+				$key =  'e.' . $key;
+			}
+			if ($value instanceof IEntityCollection)
+			{
+				$value = $value->fetchPairs(NULL, 'id');
+			}
+			if ($value instanceof IEntity)
+			{
+				$value = isset($value->id) ? $value->id : NULL;
+			}
+			if (is_array($value))
+			{
+				$value = array_unique(
+					array_map(
+						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
+						$value
+					)
+				);
+				$where[] = array('%n IN %in', $key, $value);
+			}
+			else if ($value === NULL)
+			{
+				$where[] = array('%n IS NULL', $key);
+			}
+			else if ($value instanceof DateTime)
+			{
+				$where[] = array('%n = %t', $key, $value);
+			}
+			else
+			{
+				$where[] = array('%n = %s', $key, $value);
+			}
+		}
+		$findBy = array();
+	}
+
 }

@@ -11,11 +11,12 @@ class DibiCollection_join_Test extends TestCase
 	/** @var DibiCollection */
 	private $c;
 
-	private function a($sql, DibiCollection $c)
+	private function a($expectedSql, DibiCollection $c)
 	{
-		$csql = trim(preg_replace('#\s+#', ' ', $c->__toString()));
-		$sql = trim(preg_replace('#\s+#', ' ', $sql));
-		$this->assertSame($sql, $csql);
+		$csql = $c->__toString();
+		$trimcsql = trim(preg_replace('#\s+#', ' ', $csql));
+		$trimsql = trim(preg_replace('#\s+#', ' ', $expectedSql));
+		$this->assertSame($trimsql, $trimcsql, "$expectedSql\n\n$csql");
 	}
 
 	protected function setUp()
@@ -48,9 +49,9 @@ class DibiCollection_join_Test extends TestCase
 		$this->a('
 			SELECT [e].* FROM [dibicollection_join1_] as e
 			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
 			GROUP BY [e].[id]
-			ORDER BY [join2~join1].[name] ASC
+			ORDER BY [join2->join1].[name] ASC
 		', $this->c->orderBy('join2->join1->name'));
 	}
 
@@ -59,9 +60,9 @@ class DibiCollection_join_Test extends TestCase
 		$this->a('
 			SELECT [e].* FROM [dibicollection_join1_] as e
 			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
 			GROUP BY [e].[id]
-			ORDER BY [join2~join1].[name] ASC, [join2].[name] ASC
+			ORDER BY [join2->join1].[name] ASC, [join2].[name] ASC
 		', $this->c->orderBy('join2->join1->name')->orderBy('join2->name'));
 	}
 
@@ -70,8 +71,8 @@ class DibiCollection_join_Test extends TestCase
 		$this->a("
 			SELECT [e].* FROM [dibicollection_join1_] as e
 			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
-			WHERE ([join2~join1].[name] = 'xyz')
+			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
+			WHERE ([join2->join1].[name] = 'xyz')
 			GROUP BY [e].[id]
 			ORDER BY [join2].[name] ASC
 		", $this->c->{'findByJoin2->join1->name'}('xyz')->orderBy('join2->name'));
@@ -82,8 +83,8 @@ class DibiCollection_join_Test extends TestCase
 		$this->a("
 			SELECT [e].* FROM [dibicollection_join1_] as e
 			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
-			WHERE ([join2~join1].[name] = 'xyz')
+			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
+			WHERE ([join2->join1].[name] = 'xyz')
 			GROUP BY [e].[id]
 			ORDER BY [join2].[name] ASC
 		", $this->c->orderBy('join2->name')->{'findByJoin2->join1->name'}('xyz'));
@@ -117,7 +118,7 @@ class DibiCollection_join_Test extends TestCase
 	{
 		$this->a("
 			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join3_] as [join3] ON [join3].[id] = [e].[join3_id] AND [join3].[type] = 'xyz'
+			LEFT JOIN [dibicollection_join3_] as [join3] ON [join3].[id] = [e].[join3_id] AND ([join3].[type] = 'xyz')
 			GROUP BY [e].[id]
 			ORDER BY [join3].[name] ASC
 		", $this->c->orderBy('join3->name'));
@@ -128,11 +129,36 @@ class DibiCollection_join_Test extends TestCase
 		$this->a("
 			SELECT [e].* FROM [dibicollection_join1_] as e
 			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
-			LEFT JOIN [dibicollection_join3_] as [join2~join1~join3] ON [join2~join1~join3].[id] = [join2~join1].[join3_id] AND [join3].[type] = 'xyz'
-			LEFT JOIN [dibicollection_join1_] as [join2~join1~join3~join1] ON [join2~join1~join3~join1].[id] = [join2~join1~join3].[join1_id]
+			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
+			LEFT JOIN [dibicollection_join3_] as [join2->join1->join3] ON [join2->join1->join3].[id] = [join2->join1].[join3_id] AND ([join2->join1->join3].[type] = 'xyz')
+			LEFT JOIN [dibicollection_join1_] as [join2->join1->join3->join1] ON [join2->join1->join3->join1].[id] = [join2->join1->join3].[join1_id]
 			GROUP BY [e].[id]
-			ORDER BY [join2~join1~join3~join1].[name] ASC
+			ORDER BY [join2->join1->join3->join1].[name] ASC
 		", $this->c->orderBy('join2->join1->join3->join1->name'));
 	}
+
+	public function testFindAllWithJoin()
+	{
+		$this->a("
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join4_] as [join4] ON [join4].[id] = [e].[join4_id] AND ([join4->join1->join3].[type] = 'aaa') AND ([join4->join1].[type] = 'bbb')
+			LEFT JOIN [dibicollection_join1_] as [join4->join1] ON [join4->join1].[id] = [join4].[join1_id]
+			LEFT JOIN [dibicollection_join3_] as [join4->join1->join3] ON [join4->join1->join3].[id] = [join4->join1].[join3_id] AND ([join4->join1->join3].[type] = 'xyz')
+			GROUP BY [e].[id]
+			ORDER BY [join4].[name] ASC
+		", $this->c->orderBy('join4->name'));
+	}
+
+	public function testFindAllBadCollection()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinBadCollection_Repository (joinBadCollection) nepouziva DibiCollection, data nelze propojit.');
+		$this->c->orderBy('join2->joinBadCollection->name');
+	}
+
+	public function testFindAllHasWhere()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinHasWhere_Repository (joinHasWhere) DibiCollection pouziva where(), data nelze propojit.');
+		$this->c->orderBy('join2->joinHasWhere->name');
+	}
+
 }

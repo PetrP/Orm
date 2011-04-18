@@ -203,8 +203,10 @@ class DibiMapper extends Mapper
 			$tmp['conventional'] = $tmp['mapper']->getConventional();
 			$tmp['connection'] = $tmp['mapper']->getConnection();
 			$tmp['table'] = $tmp['mapper']->getTableName();
+			// todo brat table z collection
 			if ($tmp['connection'] !== $this->connection)
 			{
+				// todo porovnavat connection na collection
 				throw new InvalidStateException(get_class($tmp['repository']) . " ($sourceKey) pouziva jiny DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
@@ -212,6 +214,19 @@ class DibiMapper extends Mapper
 			$tmp['targetKey'] = $targetKey;
 			$tmp['targetConventionalKey'] = key($tmp['conventional']->formatEntityToStorage(array($targetKey => NULL)));
 			$tmp['alias'] = $tmp['sourceKey'];
+
+			$tmp['collection'] = $tmp['mapper']->findAll();
+			if (!($tmp['collection'] instanceof DibiCollection))
+			{
+				throw new InvalidStateException(get_class($tmp['repository']) . " ($sourceKey) nepouziva DibiCollection, data nelze propojit.");
+			}
+			$collectionArray = (array) $tmp['collection']; // hack
+			if ($collectionArray["\0*\0where"])
+			{
+				throw new InvalidStateException(get_class($tmp['repository']) . " ($sourceKey) DibiCollection pouziva where(), data nelze propojit.");
+			}
+			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
+
 			$cache[$sourceKey] = $tmp;
 		}
 
@@ -219,7 +234,7 @@ class DibiMapper extends Mapper
 
 		if ($lastJoin)
 		{
-			$join['alias'] = $lastJoin['alias'] . '~' . $join['alias'];
+			$join['alias'] = $lastJoin['alias'] . '->' . $join['alias'];
 		}
 
 		$result->joins[] = $join;

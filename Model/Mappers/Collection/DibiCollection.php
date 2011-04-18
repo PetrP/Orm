@@ -30,6 +30,9 @@ class DibiCollection extends Object implements IEntityCollection
 	protected $where = array();
 
 	/** @var array */
+	protected $findBy = array();
+
+	/** @var array */
 	protected $sorting = array();
 
 	/** @var array */
@@ -173,6 +176,7 @@ class DibiCollection extends Object implements IEntityCollection
 			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
 			$orderBy[] = array($key => $direction);
 		}
+		$this->processFindBy();
 
 		$join = array();
 		foreach ($this->join as $tmp) $join = array_merge($join, $tmp);
@@ -281,52 +285,19 @@ class DibiCollection extends Object implements IEntityCollection
 	final protected function findBy(array $where)
 	{
 		$all = $this->toCollection();
-		/** @var SqlConventional */
-		$conventional = $this->repository->getMapper()->getConventional();
-		foreach ($where as $key => $value)
-		{
-			if ($join = $this->repository->getMapper()->getJoinInfo($key))
-			{
-				$all->join($key);
-				$key = $join->key;
-			}
-			else
-			{
-				$key = key($conventional->formatEntityToStorage(array($key => NULL)));
-				$key = 'e.' . $key;
-			}
-			if ($value instanceof IEntityCollection)
-			{
-				$value = $value->fetchPairs(NULL, 'id');
-			}
-			if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-			}
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
-						$value
-					)
-				);
-				$all->where[] = array('%n IN %in', $key, $value);
-			}
-			else if ($value === NULL)
-			{
-				$all->where[] = array('%n IS NULL', $key);
-			}
-			else if ($value instanceof DateTime)
-			{
-				$all->where[] = array('%n = %t', $key, $value);
-			}
-			else
-			{
-				$all->where[] = array('%n = %s', $key, $value);
-			}
-		}
+		$all->findBy[] = $where;
 		return $all;
+	}
+
+	final private function processFindBy()
+	{
+		FindByHelper::dibiProcess(
+			$this,
+			$this->repository->getMapper(),
+			$this->repository->getMapper()->getConventional(),
+			$this->where,
+			$this->findBy
+		);
 	}
 
 	final protected function getBy(array $where)
@@ -358,7 +329,7 @@ class DibiCollection extends Object implements IEntityCollection
 
 	protected $join = array();
 
-	final protected function join($key)
+	final public function join($key)
 	{
 		$lastAlias = 'e';
 		foreach ($this->repository->getMapper()->getJoinInfo($key)->joins as $join)
@@ -369,6 +340,21 @@ class DibiCollection extends Object implements IEntityCollection
 					"LEFT JOIN %n as %n ON %n = %n",
 					$join['table'], $join['alias'], $join['alias'] . '.id', $lastAlias . '.' . $join['sourceConventionalKey']
 				);
+				if ($join['findBy'])
+				{
+					$findBy = $join['findBy'];
+					$where = array();
+					FindByHelper::dibiProcess(
+						$this,
+						$this->repository->getMapper(),
+						$this->repository->getMapper()->getConventional(),
+						$where,
+						$findBy,
+						$join['alias']
+					);
+					$this->join[$join['alias']][] = 'AND %and';
+					$this->join[$join['alias']][] = $where;
+				}
 			}
 			$lastAlias = $join['alias'];
 		}
