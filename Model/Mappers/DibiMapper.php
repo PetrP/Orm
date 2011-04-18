@@ -173,7 +173,7 @@ class DibiMapper extends Mapper
 		$next = isset($tmp[2]) ? $tmp[2] : NULL;
 
 		$cache = array(); // todo
-		static $cacheFk;
+		$cacheFk = NULL; // todo
 		if (!isset($cache[$sourceKey]))
 		{
 			$mappper = $this;

@@ -287,7 +287,7 @@ class DibiCollection extends Object implements IEntityCollection
 		{
 			if ($join = $this->repository->getMapper()->getJoinInfo($key))
 			{
-				$this->join($key);
+				$all->join($key);
 				$key = $join->key;
 			}
 			else
@@ -369,8 +369,8 @@ class DibiCollection extends Object implements IEntityCollection
 					"LEFT JOIN %n as %n ON %n = %n",
 					$join['table'], $join['alias'], $join['alias'] . '.id', $lastAlias . '.' . $join['sourceConventionalKey']
 				);
-				$lastAlias = $join['alias'];
 			}
+			$lastAlias = $join['alias'];
 		}
 		return $this;
 	}

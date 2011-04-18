@@ -1,0 +1,138 @@
+<?php
+
+require_once __DIR__ . '/../../../../boot.php';
+
+class DibiCollection_join_Test extends TestCase
+{
+	/** @var DibiCollection_join1_Repository */
+	private $r1;
+	/** @var DibiCollection_join2_Repository */
+	private $r2;
+	/** @var DibiCollection */
+	private $c;
+
+	private function a($sql, DibiCollection $c)
+	{
+		$csql = trim(preg_replace('#\s+#', ' ', $c->__toString()));
+		$sql = trim(preg_replace('#\s+#', ' ', $sql));
+		$this->assertSame($sql, $csql);
+	}
+
+	protected function setUp()
+	{
+		$model = new Model;
+		$this->r1 = $model->dibiCollection_join1_;
+		$this->r2 = $model->dibiCollection_join2_;
+		$this->c = $this->r1->mapper->findAll();
+	}
+
+	public function testNoJoin()
+	{
+		$this->a('
+			SELECT [e].* FROM [dibicollection_join1_] as e
+		', $this->c);
+	}
+
+	public function testOneTable()
+	{
+		$this->a('
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			GROUP BY [e].[id]
+			ORDER BY [join2].[name] ASC
+		', $this->c->orderBy('join2->name'));
+	}
+
+	public function testOverTwoTable()
+	{
+		$this->a('
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			GROUP BY [e].[id]
+			ORDER BY [join2~join1].[name] ASC
+		', $this->c->orderBy('join2->join1->name'));
+	}
+
+	public function testTwoJoin()
+	{
+		$this->a('
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			GROUP BY [e].[id]
+			ORDER BY [join2~join1].[name] ASC, [join2].[name] ASC
+		', $this->c->orderBy('join2->join1->name')->orderBy('join2->name'));
+	}
+
+	public function testFindBy()
+	{
+		$this->a("
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			WHERE ([join2~join1].[name] = 'xyz')
+			GROUP BY [e].[id]
+			ORDER BY [join2].[name] ASC
+		", $this->c->{'findByJoin2->join1->name'}('xyz')->orderBy('join2->name'));
+	}
+
+	public function testFindBy2()
+	{
+		$this->a("
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			WHERE ([join2~join1].[name] = 'xyz')
+			GROUP BY [e].[id]
+			ORDER BY [join2].[name] ASC
+		", $this->c->orderBy('join2->name')->{'findByJoin2->join1->name'}('xyz'));
+	}
+
+	public function testUnexistFK()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_join1_Repository: neni zadna vazba na `neexistuje`');
+		$this->c->orderBy('neexistuje->name');
+	}
+
+	public function testUnexistFK2()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_join2_Repository: neni zadna vazba na `neexistuje`');
+		$this->c->orderBy('join2->neexistuje->name');
+	}
+
+	public function testBadMapper()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinBadMapper_Repository (joinBadMapper) nepouziva DibiMapper, data nelze propojit.');
+		$this->c->orderBy('join2->joinBadMapper->name');
+	}
+
+	public function testDifferentConnection()
+	{
+		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinDifferentConnection_Repository (joinDifferentConnection) pouziva jiny DibiConnection nez DibiCollection_join2_Repository, data nelze propojit.');
+		$this->c->orderBy('join2->joinDifferentConnection->name');
+	}
+
+	public function testModifyFindAll()
+	{
+		$this->a("
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join3_] as [join3] ON [join3].[id] = [e].[join3_id] AND [join3].[type] = 'xyz'
+			GROUP BY [e].[id]
+			ORDER BY [join3].[name] ASC
+		", $this->c->orderBy('join3->name'));
+	}
+
+	public function testModifyFindAllOverMore()
+	{
+		$this->a("
+			SELECT [e].* FROM [dibicollection_join1_] as e
+			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
+			LEFT JOIN [dibicollection_join1_] as [join2~join1] ON [join2~join1].[id] = [join2].[join1_id]
+			LEFT JOIN [dibicollection_join3_] as [join2~join1~join3] ON [join2~join1~join3].[id] = [join2~join1].[join3_id] AND [join3].[type] = 'xyz'
+			LEFT JOIN [dibicollection_join1_] as [join2~join1~join3~join1] ON [join2~join1~join3~join1].[id] = [join2~join1~join3].[join1_id]
+			GROUP BY [e].[id]
+			ORDER BY [join2~join1~join3~join1].[name] ASC
+		", $this->c->orderBy('join2->join1->join3->join1->name'));
+	}
+}
