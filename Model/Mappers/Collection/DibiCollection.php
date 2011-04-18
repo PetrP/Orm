@@ -294,7 +294,6 @@ class DibiCollection extends Object implements IEntityCollection
 		FindByHelper::dibiProcess(
 			$this,
 			$this->repository->getMapper(),
-			$this->repository->getMapper()->getConventional(),
 			$this->where,
 			$this->findBy
 		);
@@ -347,7 +346,6 @@ class DibiCollection extends Object implements IEntityCollection
 					FindByHelper::dibiProcess(
 						$this,
 						$this->repository->getMapper(),
-						$this->repository->getMapper()->getConventional(),
 						$where,
 						$findBy,
 						$join['alias']
