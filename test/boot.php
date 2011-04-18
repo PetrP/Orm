@@ -8,7 +8,8 @@ require_once __DIR__ . '/../Model/loader.php';
 Debug::enable(false);
 Debug::$strictMode = true;
 
-Environment::setVariable('tempDir', __DIR__ . '/tmp');
+define('TMP_DIR', __DIR__ . '/tmp');
+Environment::setVariable('tempDir', TMP_DIR);
 Environment::getRobotLoader()->addDirectory(__DIR__);
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
