@@ -39,11 +39,19 @@ class DibiMapper extends Mapper
 
 	public function findAll()
 	{
-		if ($this->createCollectionClass() === 'DataSourceCollection') // todo
+		list($class, $classInfo) = $this->getCollectionClass(true);
+		if ($classInfo === 'dibi')
 		{
-			return new DibiCollection($this->getTableName(), $this->getConnection(), $this->repository);
+			return new $class($this->getTableName(), $this->getConnection(), $this->repository);
 		}
-		return $this->dataSource($this->getTableName());
+		else if ($classInfo === 'datasource')
+		{
+			return $this->dataSource($this->getTableName());
+		}
+		else
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	protected function getPersistenceHelper()
@@ -101,6 +109,17 @@ class DibiMapper extends Mapper
 
 	protected function dataSource()
 	{
+		list($class, $classInfo) = $this->getCollectionClass(true);
+		if ($class === 'DibiCollection')
+		{
+			// bc, i kdyz se pouziva DibiCollection tak dataSource muze fungovat, kdyz se nepouziva custom collection
+			$class = 'DataSourceCollection';
+		}
+		else if ($classInfo !== 'datasource')
+		{
+			throw new NotSupportedException();
+		}
+
 		$connection = $this->getConnection();
 		$args = func_get_args();
 		$connection->driver;
@@ -117,13 +136,12 @@ class DibiMapper extends Mapper
 			}
 		}
 		$translator = new DibiTranslator($dibiTranslatorVersion === 'connection' ? $connection : $connection->getDriver());
-		$class = $this->getCollectionClass();
 		return new $class($translator->translate($args), $connection, $this->repository);
 	}
 
 	protected function createCollectionClass()
 	{
-		return 'DataSourceCollection';
+		return 'DibiCollection';
 	}
 
 	public function getById($id)

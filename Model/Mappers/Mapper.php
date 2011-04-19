@@ -54,7 +54,7 @@ abstract class Mapper extends Object implements IMapper
 		return new NoConventional($this);
 	}
 
-	final protected function getCollectionClass()
+	final protected function getCollectionClass($info = false)
 	{
 		if (!isset($this->collectionClass))
 		{
@@ -76,9 +76,22 @@ abstract class Mapper extends Object implements IMapper
 			{
 				throw new InvalidStateException("Collection '{$class}' isn't instantiable");
 			}
-			$this->collectionClass = $class;
+			$this->collectionClass = array($class, NULL);
+
+			if ($class === 'DibiCollection' OR is_subclass_of($class, 'DibiCollection'))
+			{
+				$this->collectionClass[1] = 'dibi';
+			}
+			else if ($class === 'DataSourceCollection' OR is_subclass_of($class, 'DataSourceCollection'))
+			{
+				$this->collectionClass[1] = 'datasource';
+			}
+			else if ($class === 'ArrayCollection' OR is_subclass_of($class, 'ArrayCollection'))
+			{
+				$this->collectionClass[1] = 'array';
+			}
 		}
-		return $this->collectionClass;
+		return $info ? $this->collectionClass : $this->collectionClass[0];
 	}
 
 	abstract protected function createCollectionClass();
