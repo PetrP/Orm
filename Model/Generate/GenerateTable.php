@@ -59,15 +59,15 @@ class GenerateTable extends Object
 				$null = isset($rule->types['null']);
 				if (in_array('string', $rule->types))
 					$driver->addString($name, $null);
-				else if (in_array('int', $rule->types))
+				else if (isset($rule->types['int']))
 					$driver->addInt($name, $null);
-				else if (in_array('float', $rule->types))
+				else if (isset($rule->types['float']))
 					$driver->addFloat($name, $null);
-				else if (in_array('bool', $rule->types))
+				else if (isset($rule->types['bool']))
 					$driver->addBool($name, $null);
-				else if (in_array('datetime', $rule->types))
+				else if (isset($rule->types['datetime']))
 					$driver->addDatetime($name, $null);
-				else if (in_array('array', $rule->types))
+				else if (isset($rule->types['array']))
 					$driver->addArray($name, $null);
 				else if ($rule->relationship === MetaData::OneToOne OR $rule->relationship === MetaData::ManyToOne)
 					$driver->addForeignKey($name, $null);
