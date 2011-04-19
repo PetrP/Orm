@@ -419,17 +419,19 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		{
 			if (!isset($this->values[$name]) OR !($this->values[$name] instanceof IEntityInjection))
 			{
-				$tmp = $rule['injection']->invoke($this, $value);
+				$xValues = isset($this->values[$name]) ? $this->values[$name] : NULL;
+				$tmp = $rule['injection']->invoke($this, $xValues);
+				if (!($tmp instanceof IEntityInjection))
+				{
+					throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be 'IEntityInjection', '" . (is_object($value) ? 'object ' . get_class($value) : (is_scalar($value) ? $value : gettype($value))) . "' given");
+				}
+				if ($xValues !== $value) $tmp->setInjectedValue($value);
 			}
 			else
 			{
 				$tmp = $this->values[$name];
+				$tmp->setInjectedValue($value);
 			}
-			if (!($tmp instanceof IEntityInjection))
-			{
-				throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be 'IEntityInjection', '" . (is_object($value) ? 'object ' . get_class($value) : (is_scalar($value) ? $value : gettype($value))) . "' given");
-			}
-			$tmp->setInjectedValue($value);
 			$value = $tmp;
 		}
 
