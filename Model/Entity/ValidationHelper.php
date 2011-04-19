@@ -17,7 +17,7 @@ class ValidationHelper
 	{
 		$_value = $value;
 
-		if ($types === array()) return true; // mean mixed
+		if (isset($types['mixed']) OR !$types) return true;
 
 		foreach ($types as $type)
 		{

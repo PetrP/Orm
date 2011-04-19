@@ -108,7 +108,7 @@ class MetaDataProperty extends Object
 		}
 		$types = $tmp;
 
-		if (isset($types['mixed']) OR $types === array('' => '')) $types = array();
+		if (isset($types['mixed']) OR $types === array('' => '') OR !$types) $types = array('mixed' => 'mixed', 'null' => 'null');
 		unset($types['']);
 
 		$this->data['types'] = $types;

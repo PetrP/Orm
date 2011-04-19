@@ -4,6 +4,8 @@ require_once __DIR__ . '/../../../../boot.php';
 
 class MetaDataProperty_setTypes_Test extends TestCase
 {
+	private $mixed = array('mixed' => 'mixed', 'null' => 'null');
+
 	private function setTypes($types)
 	{
 		$m = new MetaData('MetaData_Test_Entity');
@@ -37,8 +39,9 @@ class MetaDataProperty_setTypes_Test extends TestCase
 
 	public function testMixed()
 	{
-		$this->assertEquals(array(), $this->setTypes('mixed'));
-		$this->assertEquals(array(), $this->setTypes('BlaBla|mIXed|bool'));
+		$this->assertEquals($this->mixed, $this->setTypes('mixed'));
+		$this->assertEquals($this->mixed, $this->setTypes('BlaBla|mIXed|bool'));
+		$this->assertEquals($this->mixed, $this->setTypes('mixed|NULL'));
 	}
 
 	public function testAllias()
@@ -65,17 +68,54 @@ class MetaDataProperty_setTypes_Test extends TestCase
 
 	public function testEmpty()
 	{
-		$this->assertEquals(array(), $this->setTypes(array()));
-		$this->assertEquals(array(), $this->setTypes(''));
+		$this->assertEquals($this->mixed, $this->setTypes(array()));
+		$this->assertEquals($this->mixed, $this->setTypes(''));
 	}
 
 	public function testTrim()
 	{
 		$this->assertEquals(array('int' => 'int', 'float' => 'float'), $this->setTypes(array('    int', ' float ')));
-		$this->assertEquals(array(), $this->setTypes('    '));
-		$this->assertEquals(array(), $this->setTypes(array('    ', '  ')));
+		$this->assertEquals($this->mixed, $this->setTypes('    '));
+		$this->assertEquals($this->mixed, $this->setTypes(array('    ', '  ')));
 		$this->assertEquals(array('int' => 'int'), $this->setTypes('    |int|  '));
 		$this->assertEquals(array('int' => 'int', 'bool' => 'bool'), $this->setTypes('int | bool |'));
 	}
 
+	/** Asociace se pta jestli je null, a mixed muze byt null */
+	public function testMixedContainsNull_ManyToOne()
+	{
+		new Model;
+		$m = new MetaData('MetaData_Test2_Entity');
+		$m->addProperty('fk', 'mixed')
+			->setManyToOne('MetaData_Test2')
+		;
+		$m->addProperty('enum', 'mixed')
+			->setEnum(array('a','b','c'))
+		;
+
+		MetaData_Test2_Entity::$metaData = $m;
+		$e = new MetaData_Test2_Entity;
+		MetaData_Test2_Entity::$metaData = NULL;
+
+		$e->fk = NULL;
+		$this->assertSame(NULL, $e->fk);
+
+		$e->fk = 'abc';
+		$this->assertSame(NULL, $e->fk);
+	}
+
+	/** Enum se pta jestli je null, a mixed muze byt null */
+	public function testMixedContainsNull_Enum()
+	{
+		$e = new MetaData_Test2_Entity;
+
+		$e->enum = NULL;
+		$this->assertSame(NULL, $e->enum);
+
+		$e->enum = 'a';
+		$this->assertSame('a', $e->enum);
+
+		$this->setExpectedException('UnexpectedValueException', "Param MetaData_Test2_Entity::\$enum must be 'a, b, c', 'd' given");
+		$e->enum = 'd';
+	}
 }

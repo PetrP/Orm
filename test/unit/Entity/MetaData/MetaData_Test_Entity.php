@@ -25,3 +25,17 @@ class MetaData_Test_Entity extends Entity
 	const XXX = 'xxx';
 	const YYY = 'yyy';
 }
+
+class MetaData_Test2_Entity extends MetaData_Test_Entity {}
+
+class MetaData_Test2Repository extends Repository
+{
+	protected $entityClassName = 'MetaData_Test2_Entity';
+}
+class MetaData_Test2Mapper extends ArrayMapper
+{
+	protected function loadData()
+	{
+		return array();
+	}
+}
