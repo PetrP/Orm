@@ -396,4 +396,10 @@ class DibiCollection extends Object implements IEntityCollection
 	{
 		return $this->toDataSourceCollection();
 	}
+
+	final protected function getConnventionalKey($key)
+	{
+		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
+	}
+
 }
