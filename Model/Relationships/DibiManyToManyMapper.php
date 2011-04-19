@@ -6,6 +6,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
 	public $firstParamName;
 	public $secondParamName;
+	public $tableName;
 
 	private $firstRepository;
 	private $secondRepository;
@@ -56,6 +57,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	protected function getTableName()
 	{
+		if ($this->tableName) return $this->tableName;
 		$conventional = $this->firstRepository->getMapper()->getConventional();
 		return $conventional->getManyToManyTableName($this->firstRepository, $this->secondRepository);
 	}
