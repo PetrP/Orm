@@ -55,12 +55,13 @@ class OneToMany extends Object implements IRelationship
 
 	/**
 	 * @param IEntity|scalar|array
-	 * @return IEntity
+	 * @return IEntity|NULL
 	 */
 	final public function add($entity)
 	{
 		$param = $this->param;
 		$entity = $this->createEntity($entity);
+		if ($this->ignore($entity)) return NULL;
 		if (isset($entity->$param) AND $entity->$param !== NULL) throw new Exception(); // todo
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
@@ -273,6 +274,11 @@ class OneToMany extends Object implements IRelationship
 		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
 		$this->get = NULL;
 		return $entity;
+	}
+
+	protected function ignore(IEntity $entity)
+	{
+		return false;
 	}
 
 	/** @deprecated */
