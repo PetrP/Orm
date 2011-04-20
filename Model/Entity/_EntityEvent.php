@@ -143,6 +143,7 @@ abstract class _EntityEvent extends Object
 			$class = get_class($entity);
 			throw new InvalidStateException("Method $class::$method() or its descendant doesn't call parent::$method().");
 		}
+		$entity->checkEvent = NULL;
 	}
 
 
