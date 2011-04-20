@@ -30,7 +30,7 @@ class FoosRepository extends Repository
 abstract class BaseMapper extends ArrayMapper
 {
 	public $data = array();
-	
+
 	protected function loadData()
 	{
 		return $this->data;
