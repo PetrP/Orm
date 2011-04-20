@@ -51,7 +51,7 @@
  * @author     Raphael Stolt <raphael.stolt@gmail.com>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    Release: @package_version@
+ * @version    Release: 3.5.13
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.0
  */

@@ -51,7 +51,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    Release: @package_version@
+ * @version    Release: 3.5.13
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
@@ -64,7 +64,7 @@ class PHPUnit_Runner_Version
      */
     public static function id()
     {
-        return '@package_version@';
+        return '3.5.13';
     }
 
     /**
@@ -72,6 +72,6 @@ class PHPUnit_Runner_Version
      */
     public static function getVersionString()
     {
-        return 'PHPUnit @package_version@ by Sebastian Bergmann.';
+        return 'PHPUnit 3.5.13 by Sebastian Bergmann.';
     }
 }
