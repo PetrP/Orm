@@ -19,7 +19,7 @@ if (PHP_SAPI !== 'cli' AND !isset($_GET['command']))
 	Debug::$showBar = true;
 	Debug::$strictMode = true;
 }
-Environment::setVariable('tempDir', APP_DIR . '/temp');
+Environment::setVariable('tempDir', APP_DIR . '/tests/tmp');
 
 dibi::connect(array(
 	'driver' => 'mysql',
