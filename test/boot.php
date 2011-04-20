@@ -20,3 +20,8 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$this->assertEquals($e->getMessage(), $message);
 	}
 }
+
+class Model extends RepositoriesCollection
+{
+	
+}
