@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/** 
+ * @covers DibiCollection::join
+ */
 class DibiCollection_join_Test extends TestCase
 {
 	/** @var DibiCollection_join1_Repository */

@@ -2,6 +2,10 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers _EntityValue::__get
+ * @covers _EntityValue::__call
+ */
 class EntityValue_getter_Test extends EntityValue_setter_Test
 {
 	protected function a(EntityValue_gettersetter_Test_Entity $e, $key, $count = NULL, $callmode = 1, $bugValue = NULL)

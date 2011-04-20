@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaData::getEntityClass
+ */
 class MetaData_getEntityClass_Test extends TestCase
 {
 	public function testEntity()

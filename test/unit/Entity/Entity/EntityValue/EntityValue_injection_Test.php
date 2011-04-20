@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers _EntityValue::setValueHelper
+ */
 class EntityValue_injection_Test extends TestCase
 {
 	/** @var EntityValue_injectionEntity */

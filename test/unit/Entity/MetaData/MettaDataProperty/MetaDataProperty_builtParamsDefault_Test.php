@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaDataProperty::builtParamsDefault
+ */
 class MetaDataProperty_builtParamsDefault_Test extends TestCase
 {
 	private $p;

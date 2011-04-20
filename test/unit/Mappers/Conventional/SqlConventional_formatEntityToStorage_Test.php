@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../boot.php';
 
+/** 
+ * @covers SqlConventional::formatEntityToStorage
+ */
 class SqlConventional_formatEntityToStorage_Test extends TestCase
 {
 	protected $c;

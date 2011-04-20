@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaData::toArray
+ */
 class MetaData_toArray_Test extends TestCase
 {
 	public function test()

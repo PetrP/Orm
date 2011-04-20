@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaDataProperty::__construct
+ */
 class MetaDataProperty_construct_Test extends TestCase
 {
 	public function test()

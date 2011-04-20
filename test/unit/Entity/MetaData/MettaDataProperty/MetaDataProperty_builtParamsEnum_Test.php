@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaDataProperty::builtParamsEnum
+ */
 class MetaDataProperty_builtParamsEnum_Test extends TestCase
 {
 	private $p;

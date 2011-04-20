@@ -2,8 +2,12 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
+/**
+ * @covers MetaData::addProperty
+ */
 class MetaData_addProperty_Test extends TestCase
 {
+
 	public function testOverwrite()
 	{
 		$m = new MetaData('MetaData_Test_Entity');
