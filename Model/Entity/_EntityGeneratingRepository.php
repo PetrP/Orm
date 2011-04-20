@@ -69,15 +69,17 @@ class _EntityGeneratingRepository extends _EntityEvent
 	{
 		if (!isset($this->model))
 		{
-			$need = false; // todo
-			if ($this->getGeneratingRepository($need))
+			if ($r = $this->getGeneratingRepository(false))
 			{
-				$this->model = $this->getGeneratingRepository()->getModel();
+				$this->model = $r->getModel();
 			}
-			$this->model = RepositoriesCollection::get(); // todo di
+			else if ($need)
+			{
+				// todo throw exception
+				$this->model = RepositoriesCollection::get(); // todo di
+			}
 		}
 		return $this->model;
-		return NULL;
 	}
 
 }
