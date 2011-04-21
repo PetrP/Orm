@@ -38,10 +38,10 @@ class MetaData extends Object
 		}
 		else
 		{
-			if (!class_exists($entityClass)) throw new InvalidStateException();
+			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
 			$r = new ClassReflection($entityClass);
 			$entityClass = $r->getName();
-			if (!$r->implementsInterface('IEntity')) throw new InvalidStateException();
+			if (!$r->implementsInterface('IEntity')) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
 		}
 		$this->entityClass = $entityClass;
 	}
