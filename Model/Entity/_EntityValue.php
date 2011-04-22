@@ -352,11 +352,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	 */
 	final public function __isset($name)
 	{
-		if (!isset($this->rules[$name]))
-		{
-			return parent::__isset($name);
-		}
-		else if (isset($this->rules[$name]['get']))
+		if (isset($this->rules[$name]['get']))
 		{
 			try {
 				return $this->__get($name) !== NULL;
@@ -365,7 +361,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			}
 		}
 
-		return false;
+		return parent::__isset($name);
 	}
 
 	/**
