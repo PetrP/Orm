@@ -417,11 +417,12 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$id = (string) $value;
 			if ($id)
 			{
-				$value = $this->getModel()->getRepository($rule['relationshipParam'])->getById($id);
+				$repo = $this->getModel()->getRepository($rule['relationshipParam']);
+				$value = $repo->getById($id);
 				if (!$value AND !isset($rule['types']['null']))
 				{
 					$type = implode('|',$rule['types']);
-					throw new UnexpectedValueException("Entity($type) '$id' not exists in `{$rule['relationshipParam']}` in ".get_class($this)."::\$$name");
+					throw new UnexpectedValueException("Entity($type) '$id' not found in `" . get_class($repo) . "` in ".get_class($this)."::\$$name");
 				}
 			}
 		}
