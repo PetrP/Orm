@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../../boot.php';
  * @covers _EntityValue::__get
  * @covers _EntityValue::__call
  */
-class EntityValue_getter_Test extends EntityValue_setter_Test
+class EntityValue_getter_Test extends EntityValue_settergetter_Base
 {
 	protected function a(EntityValue_gettersetter_Test_Entity $e, $key, $count = NULL, $callmode = 1, $bugValue = NULL)
 	{
@@ -43,6 +43,21 @@ class EntityValue_getter_Test extends EntityValue_setter_Test
 		if ($count !== NULL) $this->assertSame($count, $e->{"get{$uckey}Count"});
 		if (func_num_args() >= 5) $string = $bugValue;
 		$this->assertSame($string, $value);
+	}
+
+	public function testOld()
+	{
+		$this->x('old');
+	}
+
+	public function testNew()
+	{
+		$this->x('new');
+	}
+
+	public function testWithoutMethod()
+	{
+		$this->x('withoutMethod', false);
 	}
 
 	public function testNewByProperty()

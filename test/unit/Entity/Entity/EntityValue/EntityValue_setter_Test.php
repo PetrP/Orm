@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../../boot.php';
  * @covers _EntityValue::__get
  * @covers _EntityValue::__call
  */
-class EntityValue_setter_Test extends TestCase
+class EntityValue_setter_Test extends EntityValue_settergetter_Base
 {
 	protected function a(EntityValue_gettersetter_Test_Entity $e, $key, $count = NULL, $callmode = 1)
 	{
@@ -39,16 +39,6 @@ class EntityValue_setter_Test extends TestCase
 		$this->assertSame($string, $e->$key);
 	}
 
-	protected function x($key, $testCount = true)
-	{
-		$e = new EntityValue_gettersetter_Test_Entity;
-		$this->a($e, $key, $testCount ? 1 : NULL, 0);
-		$this->a($e, $key, $testCount ? 2 : NULL, 1);
-		$this->a($e, $key, $testCount ? 3 : NULL, 2);
-		$this->a($e, $key, $testCount ? 4 : NULL, 3);
-		$this->a($e, $key, $testCount ? 4 : NULL, 4); // todo pri tomhle volani se nezavola setter
-	}
-
 	public function testOld()
 	{
 		$this->x('old');
@@ -57,6 +47,11 @@ class EntityValue_setter_Test extends TestCase
 	public function testNew()
 	{
 		$this->x('new');
+	}
+
+	public function testWithoutMethod()
+	{
+		$this->x('withoutMethod', false);
 	}
 
 	public function testNewByProperty()
@@ -86,11 +81,6 @@ class EntityValue_setter_Test extends TestCase
 
 		$e = new EntityValue_gettersetter_Test_Entity;
 		$this->a($e, $key, 0, 4); // bug pri tomhle volani se nezavola setter
-	}
-
-	public function testWithoutMethod()
-	{
-		$this->x('withoutMethod', false);
 	}
 
 	public function testException()
