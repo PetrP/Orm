@@ -55,7 +55,7 @@ class EntityToArray extends Object
 				{
 					if ($mode & self::ENTITY_AS_ID) $result[$name] = $result[$name]->id;
 					else if ($mode & self::ENTITY_AS_ARRAY) $result[$name] = $result[$name]->toArray($mode); // todo co rekurze?
-					else throw new InvalidStateException();
+					else throw new InvalidStateException('No mode for entity');
 				}
 				else if ($result[$name] instanceof IRelationship AND !($mode & self::RELATIONSHIP_AS_IS))
 				{
@@ -64,7 +64,7 @@ class EntityToArray extends Object
 					{
 						if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ID) $arr[] = $e->id;
 						else if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ARRAY) $arr[] = $e->toArray($mode); // todo co rekurze?
-						else throw new InvalidStateException();
+						else throw new InvalidStateException('No mode for relationship');
 					}
 					$result[$name] = $arr;
 				}
