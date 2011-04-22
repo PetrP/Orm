@@ -155,6 +155,7 @@ class MetaDataProperty extends Object
 		{
 			throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
 		}
+		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
 		$this->data['relationship'] = MetaData::OneToOne;
 		$this->data['relationshipParam'] = $repositoryName;
