@@ -97,6 +97,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				if (isset($rule['set']))
 				{
 					$this->__set($name, $value);
+					$this->valid[$name] = true; // zabranuje opakovanemu volani setteru, kdyz ten nic nedela
 				}
 				else
 				{

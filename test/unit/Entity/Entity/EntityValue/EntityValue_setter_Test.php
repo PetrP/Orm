@@ -117,7 +117,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->assertSame(NULL, $e->$key);
 		$e->$key = 'c';
 		$this->assertSame(NULL, $e->$key);
-		$this->assertSame(6, $e->{"set{$uckey}Count"}); // bug ma byt 4x protoze default; tzn ze se default vola opakovane
+		$this->assertSame(4, $e->{"set{$uckey}Count"}); // 4x protoze default
 
 		$e = new EntityValue_gettersetter_Test_Entity;
 		$e->$method('a');
@@ -132,7 +132,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->assertSame(NULL, $e->$key);
 		$e->$method('c');
 		$this->assertSame(NULL, $e->$key);
-		$this->assertSame(6, $e->{"set{$uckey}Count"}); // bug ma byt 4x protoze default; tzn ze se default vola opakovane
+		$this->assertSame(4, $e->{"set{$uckey}Count"}); // 4x protoze default
 
 	}
 
@@ -143,7 +143,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->a($e, $key, 1, 1);
 		$this->assertSame(1, $e->setNewCount);
 		$this->assertSame(1, $e->setOldCount);
-		$this->assertSame(3, $e->setNoParentSetCount); // bug ma byt 1x; tzn ze se default vola opakovane
+		$this->assertSame(2, $e->setNoParentSetCount); // 2x protoze default
 		$this->assertSame($e->$key, $e->new);
 		$this->assertSame($e->$key, $e->old);
 		$this->assertSame($e->$key, $e->withoutMethod);
@@ -153,7 +153,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->a($e, $key, 2, 2);
 		$this->assertSame(2, $e->setNewCount);
 		$this->assertSame(2, $e->setOldCount);
-		$this->assertSame(10, $e->setNoParentSetCount); // bug ma byt 3x protoze default; tzn ze se default vola opakovane
+		$this->assertSame(3, $e->setNoParentSetCount); // 3x protoze default
 		$this->assertSame($e->$key, $e->new);
 		$this->assertSame($e->$key, $e->old);
 		$this->assertSame($e->$key, $e->withoutMethod);
@@ -165,7 +165,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->a($e, $key, 1, 1);
 		$this->assertSame(3, $e->setNewCount);
 		$this->assertSame(3, $e->setOldCount);
-		$this->assertSame(17, $e->setNoParentSetCount); // bug ma byt 4x protoze default; tzn ze se default vola opakovane
+		$this->assertSame(4, $e->setNoParentSetCount); // 4x protoze default
 		$this->assertSame($e->$key, $e->new);
 		$this->assertSame($e->$key, $e->old);
 		$this->assertSame($e->$key, $e->withoutMethod);
@@ -175,7 +175,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$this->a($e, $key, 2, 2);
 		$this->assertSame(4, $e->setNewCount);
 		$this->assertSame(4, $e->setOldCount);
-		$this->assertSame(24, $e->setNoParentSetCount); // bug ma byt 5x protoze default; tzn ze se default vola opakovane
+		$this->assertSame(5, $e->setNoParentSetCount); // 5x protoze default
 		$this->assertSame($e->$key, $e->new);
 		$this->assertSame($e->$key, $e->old);
 		$this->assertSame($e->$key, $e->withoutMethod);
