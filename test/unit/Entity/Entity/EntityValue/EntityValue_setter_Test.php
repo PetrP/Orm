@@ -3,8 +3,10 @@
 require_once __DIR__ . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::__get
+ * @covers _EntityValue::__set
  * @covers _EntityValue::__call
+ * @covers _EntityValue::setValue
+ * @covers _EntityValue::setValueHelper
  */
 class EntityValue_setter_Test extends EntityValue_settergetter_Base
 {

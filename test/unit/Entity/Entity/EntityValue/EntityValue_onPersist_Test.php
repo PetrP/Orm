@@ -33,4 +33,13 @@ class EntityValue_onPersist_Test extends TestCase
 		$this->assertSame(false, $e->isChanged());
 	}
 
+	public function test2()
+	{
+		$e = new TestEntity;
+		$e->___event($e, 'persist', $this->r, 123);
+		$this->assertSame(array('id' => 123), $this->readAttribute($e, 'values'));
+		$this->assertSame(array('id' => false), $this->readAttribute($e, 'valid'));
+		$this->assertSame(false, $e->isChanged());
+	}
+
 }

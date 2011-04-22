@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../../../boot.php';
 /**
  * @covers _EntityValue::__get
  * @covers _EntityValue::__call
+ * @covers _EntityValue::getValue
  */
 class EntityValue_getter_Test extends EntityValue_settergetter_Base
 {
