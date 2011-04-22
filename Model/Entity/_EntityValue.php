@@ -382,7 +382,12 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$defaultMethod{10} = $defaultMethod{10} & "\xDF"; // ucfirst
 			if (method_exists($this, $defaultMethod))
 			{
-				$default = $this->{$defaultMethod}();
+				$r = new MethodReflection($this, $defaultMethod);
+				// todo predelat aby se methody zjistovali jednou v MetaData
+				if (!$r->isPrivate())
+				{
+					$default = $this->{$defaultMethod}();
+				}
 			}
 		}
 		return $default;
