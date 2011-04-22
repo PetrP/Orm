@@ -128,6 +128,12 @@ abstract class _EntityEvent extends Object
 	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
 	{
 		$method = 'on' . ucfirst($event);
+		if (!method_exists(__CLASS__, $method))
+		{
+			$class= get_class($entity);
+			throw new InvalidArgumentException("Call to undefined event $class::$method().");
+		}
+
 		$entity->checkEvent = NULL;
 		if ($more === NULL)
 		{
