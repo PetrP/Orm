@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @property $var
+ */
 class EntityEvent_Entity extends Entity
 {
 	public $event;
 	public $eventParam;
+
+	public $all = array();
 
 	protected function onCreate()
 	{
@@ -12,18 +17,83 @@ class EntityEvent_Entity extends Entity
 		parent::onCreate();
 	}
 
-	protected function onBeforePersist(IRepository $repository)
-	{
-		$this->event = __FUNCTION__;
-		$this->eventParam = func_get_args();
-		parent::onBeforePersist($repository);
-	}
-
 	protected function onLoad(IRepository $repository, array $data)
 	{
 		$this->event = __FUNCTION__;
 		$this->eventParam = func_get_args();
 		parent::onLoad($repository, $data);
+	}
+
+	protected function onBeforePersist(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onBeforePersist($repository);
+	}
+
+	protected function onAfterPersist(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onAfterPersist($repository);
+	}
+/*
+	protected function onPersist(IRepository $repository, $id)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onPersist($repository, $id);
+	}
+ */
+	protected function onBeforeRemove(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onBeforeRemove($repository);
+	}
+
+	protected function onAfterRemove(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onAfterRemove($repository);
+	}
+
+	protected function onBeforeUpdate(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onBeforeUpdate($repository);
+	}
+
+	protected function onAfterUpdate(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onAfterUpdate($repository);
+	}
+
+	protected function onBeforeInsert(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onBeforeInsert($repository);
+	}
+
+	protected function onAfterInsert(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onAfterInsert($repository);
 	}
 
 }
@@ -53,5 +123,17 @@ class EntityEventRepository extends Repository
 
 class EntityEventMapper extends ArrayMapper
 {
+	protected function loadData()
+	{
+		return array(
+			1 => array(
+				'id' => 1,
+			),
+		);
+	}
 
+	protected function saveData(array $data)
+	{
+
+	}
 }
