@@ -10,6 +10,8 @@
  * @property $testMethod3
  *
  * @property $testMethodAndMeta {default meta}
+ *
+ * @property $setterNoSet
  */
 class EntityValue_default_Entity extends Entity
 {
@@ -33,6 +35,18 @@ class EntityValue_default_Entity extends Entity
 	protected function getDefaultTestMethodAndMeta()
 	{
 		return 'method';
+	}
+
+
+	public $countSetterNoSet = 0;
+	protected function getDefaultSetterNoSet()
+	{
+		$this->countSetterNoSet++;
+		return 'method';
+	}
+	public function setSetterNoSet()
+	{
+		return $this;
 	}
 
 }

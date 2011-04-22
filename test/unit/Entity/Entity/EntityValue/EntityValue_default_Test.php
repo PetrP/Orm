@@ -68,4 +68,17 @@ class EntityValue_default_Test extends TestCase
 		$this->assertSame('testMethod1', $this->e->testMethod1);
 	}
 
+	public function testSetterNoSet()
+	{
+		$this->assertSame(NULL, $this->e->setterNoSet);
+		$this->assertSame(1, $this->e->countSetterNoSet);
+		$this->assertSame(NULL, $this->e->setterNoSet);
+		$this->assertSame(NULL, $this->e->setterNoSet);
+		$this->assertSame(NULL, $this->e->setterNoSet);
+		$this->assertSame(1, $this->e->countSetterNoSet);
+
+		$this->e->setterNoSet = 'xxx';
+		$this->assertSame(NULL, $this->e->setterNoSet);
+		$this->assertSame(1, $this->e->countSetterNoSet);
+	}
 }

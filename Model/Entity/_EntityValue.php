@@ -70,18 +70,22 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$valid = isset($this->valid[$name]) ? $this->valid[$name] : false;
 			$value = $this->values[$name];
 		}
-		else if ($this->getGeneratingRepository(false)) // lazy load
+		else
 		{
-			if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
+			$this->values[$name] = NULL; // zabranuje opakovanemu volani default a lazyload, kdyz setter nic nedela
+			if ($this->getGeneratingRepository(false)) // lazy load
 			{
-				foreach ($lazyLoadParams as $n => $v)
+				if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
 				{
-					$this->values[$n] = $v;
-					$this->valid[$n] = false;
-				}
-				if (array_key_exists($name, $this->values))
-				{
-					$value = $this->values[$name];
+					foreach ($lazyLoadParams as $n => $v)
+					{
+						$this->values[$n] = $v;
+						$this->valid[$n] = false;
+					}
+					if (array_key_exists($name, $this->values))
+					{
+						$value = $this->values[$name];
+					}
 				}
 			}
 		}
