@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../boot.php';
 
-/** 
+/**
  * @covers SqlConventional::formatStorageToEntity
  */
 class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatEntityToStorage_Test

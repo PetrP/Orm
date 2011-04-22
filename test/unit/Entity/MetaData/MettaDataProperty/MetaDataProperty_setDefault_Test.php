@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
-/** 
+/**
  * @covers MetaDataProperty::setDefault
  */
 class MetaDataProperty_setDefault_Test extends TestCase

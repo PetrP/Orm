@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../../boot.php';
 
 /**
  * @covers MetaDataProperty::__construct
+ * @covers MetaDataProperty::getSince
  */
 class MetaDataProperty_construct_Test extends TestCase
 {

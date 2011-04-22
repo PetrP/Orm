@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../../boot.php';
 
-/** 
+/**
  * @covers MetaDataProperty::setEnum
  */
 class MetaDataProperty_setEnum_Test extends TestCase

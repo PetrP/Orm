@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../boot.php';
 
-/** 
+/**
  * @covers ValidationHelper::isValid
  */
 class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
