@@ -24,6 +24,26 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		$this->assertEquals($type, get_class($e));
 		$this->assertEquals($e->getMessage(), $message);
 	}
+
+	public static function readAttribute($classOrObject, $attributeName)
+	{
+		try {
+			return parent::readAttribute($classOrObject, $attributeName);
+		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
+			if (is_object($classOrObject) AND $e->getMessage() == 'Failed asserting that object of class "'.get_class($classOrObject).'" has attribute "'.$attributeName.'".')
+			{
+				foreach ((array) $classOrObject as $key => $value)
+				{
+					if (String::endsWith($key, "\0$attributeName"))
+					{
+						return $value;
+					}
+				}
+			}
+			throw $e;
+		}
+	}
+
 }
 
 class Model extends RepositoriesCollection
