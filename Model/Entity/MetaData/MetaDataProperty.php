@@ -191,8 +191,8 @@ class MetaDataProperty extends Object
 	private function setToMany($relationship)
 	{
 		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
-		if (count($this->data['types']) != 1) throw new InvalidStateException();
 		$relationshipClassName = $this->originalTypes;
+		if (count($this->data['types']) != 1) throw new InvalidStateException("{$this->class}::\${$this->name} {{$relationship}} excepts " . ($relationship === MetaData::ManyToMany ? 'Many' : 'One') . "ToMany class as type, '$relationshipClassName' given");
 		$this->data['relationship'] = $relationship;
 		$loader = new RelationshipLoader($relationship, $relationshipClassName);
 		$this->setInjection(callback($loader, 'create'));
