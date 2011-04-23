@@ -227,7 +227,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param int|IEntity
 	 * @return bool
 	 */
-	final public function remove($entity) // todo prejmenovat na remove?
+	final public function remove($entity)
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkEntity(get_class($entity), $entity);
@@ -393,7 +393,6 @@ abstract class Repository extends Object implements IRepository
 	protected function createMapper()
 	{
 		$class = $this->getRepositoryName() . 'Mapper';
-		$class{0} = $class{0} & "\xDF"; // ucfirst
 		if (class_exists($class))
 		{
 			return new $class($this);
