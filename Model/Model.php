@@ -166,6 +166,7 @@ abstract class RepositoriesCollection extends Object
 	 */
 	final private function getRepositoryClass($name)
 	{
+		if (!$name) return NULL;
 		$class = $name . 'Repository';
 		$class[0] = strtoupper($class[0]);
 		return $class;
