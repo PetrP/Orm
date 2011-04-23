@@ -50,3 +50,7 @@ class Model extends RepositoriesCollection
 {
 	
 }
+
+PerformanceHelper::$keyCallback = function () {
+	return String::random(99);
+};
