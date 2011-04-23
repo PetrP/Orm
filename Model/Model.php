@@ -120,11 +120,7 @@ abstract class RepositoriesCollection extends Object
 	{
 		$name = strtolower($name);
 		if (isset($this->repositories[$name])) return true;
-		try {
-			return $this->checkRepositoryClass($this->getRepositoryClass($name), $name);
-		} catch (InvalidStateException $e) {
-			return false;
-		}
+		return $this->checkRepositoryClass($this->getRepositoryClass($name), $name, false);
 	}
 
 	/**
@@ -134,10 +130,11 @@ abstract class RepositoriesCollection extends Object
 	 * @return true or throw exception
 	 * @throws InvalidStateException
 	 */
-	final private function checkRepositoryClass($class, $name)
+	final private function checkRepositoryClass($class, $name, $throw = true)
 	{
 		if (!class_exists($class))
 		{
+			if (!$throw) return false;
 			throw new InvalidStateException("Repository '{$name}' doesn't exists");
 		}
 
@@ -145,14 +142,17 @@ abstract class RepositoriesCollection extends Object
 
 		if (!$reflection->implementsInterface('IRepository'))
 		{
+			if (!$throw) return false;
 			throw new InvalidStateException("Repository '{$name}' must implement IRepository");
 		}
 		else if ($reflection->isAbstract())
 		{
+			if (!$throw) return false;
 			throw new InvalidStateException("Repository '{$name}' is abstract.");
 		}
 		else if (!$reflection->isInstantiable())
 		{
+			if (!$throw) return false;
 			throw new InvalidStateException("Repository '{$name}' isn't instantiable");
 		}
 
