@@ -81,7 +81,7 @@ abstract class Repository extends Object implements IRepository
 	/** @var PerformanceHelper */
 	private $performanceHelper;
 
-	/** @var array cache {@see self::checkEntityName() */
+	/** @var array cache {@see self::checkEntity() */
 	private $allowedEntities;
 
 	/**
@@ -172,7 +172,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function persist(IEntity $entity)
 	{
-		$this->checkEntityName(get_class($entity));
+		$this->checkEntity(get_class($entity), $entity);
 		$hasId = isset($entity->id);
 		if ($hasId AND !$entity->isChanged())
 		{
@@ -230,7 +230,7 @@ abstract class Repository extends Object implements IRepository
 	final public function remove($entity) // todo prejmenovat na remove?
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
-		$this->checkEntityName(get_class($entity));
+		$this->checkEntity(get_class($entity), $entity);
 
 		$entity->___event($entity, 'beforeRemove', $this);
 		if (isset($entity->id))
@@ -409,7 +409,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function isEntity(IEntity $entity) // todo rename
 	{
-		return $this->checkEntityName(get_class($entity), false);
+		return $this->checkEntity(get_class($entity), $entity, false);
 	}
 
 	/**
@@ -430,7 +430,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
-			$this->checkEntityName($entityName);
+			$this->checkEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidStateException();
 			$entity->___event($entity, 'load', $this, $data);
@@ -447,7 +447,7 @@ abstract class Repository extends Object implements IRepository
 	 * @see self::isEntity()
 	 * @see self::getEntityClassName()
 	 */
-	final private function checkEntityName($entityName, $throw = true)
+	final private function checkEntity($entityName, IEntity $entity = NULL, $throw = true)
 	{
 		if (!isset($this->allowedEntities))
 		{
@@ -462,6 +462,15 @@ abstract class Repository extends Object implements IRepository
 				$tmpLast = array_pop($tmp);
 				$tmp = $tmp ? "'" . implode("', '", $tmp) . "' or '$tmpLast'" : "'$tmpLast'";
 				throw new UnexpectedValueException(get_class($this) . " can't work with entity '$entityName', only with $tmp");
+			}
+			return false;
+		}
+		if ($entity AND $r = $entity->getGeneratingRepository(false) AND $r !== $this)
+		{
+			if ($throw)
+			{
+				$id = isset($entity) ? '#' . $entity->id : NULL;
+				throw new UnexpectedValueException("{$entityName}{$id} is attached to another repository.");
 			}
 			return false;
 		}

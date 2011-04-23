@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../boot.php';
 
 /**
  * @covers Repository::isEntity
- * @covers Repository::checkEntityName
+ * @covers Repository::checkEntity
  */
 class Repository_isEntity_Test extends TestCase
 {
@@ -41,4 +41,18 @@ class Repository_isEntity_Test extends TestCase
 		$this->r->persist(new TestEntity);
 	}
 
+	public function testRightEntityFromAnotherRepository()
+	{
+		$r1 = new TestsRepository(new Model);
+		$r2 = new TestsRepository(new Model);
+		$this->assertFalse($r1->isEntity($r2->getById(1)));
+	}
+
+	public function testRightEntityFromAnotherRepositoryException()
+	{
+		$r1 = new TestsRepository(new Model);
+		$r2 = new TestsRepository(new Model);
+		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
+		$r1->persist($r2->getById(1));
+	}
 }

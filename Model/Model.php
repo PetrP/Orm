@@ -71,14 +71,11 @@ abstract class RepositoriesCollection extends Object
 
 	public function __construct()
 	{
-		if (!isset(self::$instance))
-		{
-			self::$instance = $this;
-		}
+		self::$instance = $this;
 	}
 
 	/**
-	 * Vraci prvni vytvoreny model, je pro zpetnou kompatibilitu.
+	 * Vraci posledni vytvoreny model, je pro zpetnou kompatibilitu.
 	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
 	 * Bohuzel zatim pouziva: Entity::getModel(), Entity::setValueHelper(), ManyToMany, MetaDataProperty::setOneToOne()
 	 * @return Model
