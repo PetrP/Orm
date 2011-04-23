@@ -122,7 +122,7 @@ abstract class Repository extends Object implements IRepository
 		}
 		else if (!is_scalar($id))
 		{
-			throw new UnexpectedValueException();
+			throw new UnexpectedValueException("Id must be scalar, '" . (is_object($id) ? 'object ' . get_class($id) : gettype($id)) . "' given");
 		}
 		$this->performanceHelper->access($id);
 		if (isset($this->entities[$id]))
@@ -310,7 +310,11 @@ abstract class Repository extends Object implements IRepository
 			$mapper = $this->createMapper();
 			if (!($mapper instanceof IMapper))
 			{
-				throw new InvalidStateException();
+				if (is_object($mapper))
+				{
+					throw new InvalidStateException('Mapper ' . get_class($mapper) . ' must implement IMapper');
+				}
+				throw new InvalidStateException(get_class($this) . "::createMapper() must return IMapper, '" . gettype($mapper) . "' given");
 			}
 			$this->mapper = $mapper;
 		}
