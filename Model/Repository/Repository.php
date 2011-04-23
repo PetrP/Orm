@@ -213,7 +213,7 @@ abstract class Repository extends Object implements IRepository
 			}
 			return $entity;
 		}
-		throw new Exception(); // todo
+		throw new InvalidStateException('Something wrong with mapper.');
 	}
 
 	/**
@@ -241,7 +241,7 @@ abstract class Repository extends Object implements IRepository
 			}
 			else
 			{
-				throw new Exception(); // todo
+				throw new InvalidStateException('Something wrong with mapper.');
 			}
 		}
 		$entity->___event($entity, 'afterRemove', $this);

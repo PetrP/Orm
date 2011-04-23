@@ -1,0 +1,25 @@
+<?php
+
+class Repository_persist_Entity extends Entity
+{
+
+}
+
+class Repository_persist_Repository extends Repository
+{
+	protected $entityClassName = 'TestEntity';
+}
+
+class Repository_persist_Mapper extends TestsMapper
+{
+	public $count = 0;
+
+	public $returnNull = false;
+
+	public function persist(IEntity $entity)
+	{
+		$this->count++;
+		if ($this->returnNull) return NULL;
+		return parent::persist($entity);
+	}
+}
