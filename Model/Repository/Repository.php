@@ -409,12 +409,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function isEntity(IEntity $entity) // todo rename
 	{
-		try {
-			$this->checkEntityName(get_class($entity));
-		} catch (Exception $e) {
-			return false;
-		}
-		return true;
+		return $this->checkEntityName(get_class($entity), false);
 	}
 
 	/**
@@ -452,7 +447,7 @@ abstract class Repository extends Object implements IRepository
 	 * @see self::isEntity()
 	 * @see self::getEntityClassName()
 	 */
-	final private function checkEntityName($entityName)
+	final private function checkEntityName($entityName, $throw = true)
 	{
 		if (!isset($this->allowedEntities))
 		{
@@ -461,8 +456,16 @@ abstract class Repository extends Object implements IRepository
 		// todo strtolower mozna bude moc pomale
 		if (!isset($this->allowedEntities[strtolower($entityName)]))
 		{
-			throw new UnexpectedValueException();
+			if ($throw)
+			{
+				$tmp = (array) $this->getEntityClassName();
+				$tmpLast = array_pop($tmp);
+				$tmp = $tmp ? "'" . implode("', '", $tmp) . "' or '$tmpLast'" : "'$tmpLast'";
+				throw new UnexpectedValueException(get_class($this) . " can't work with entity '$entityName', only with $tmp");
+			}
+			return false;
 		}
+		return true;
 	}
 
 	/**
