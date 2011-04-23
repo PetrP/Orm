@@ -91,12 +91,16 @@ abstract class Repository extends Object implements IRepository
 	protected $entityClassName;
 
 	/**
-	 * @param string
 	 * @param Model
 	 */
-	public function __construct($repositoryName, RepositoriesCollection $model)
+	public function __construct(RepositoriesCollection $model)
 	{
 		$this->model = $model;
+		$repositoryName = strtolower(get_class($this));
+		if (String::endsWith($repositoryName, 'repository'))
+		{
+			$repositoryName = substr($repositoryName, 0, strlen($repositoryName) - 10);
+		}
 		$this->repositoryName = $repositoryName;
 		$this->conventional = $this->getMapper()->getConventional(); // speedup
 		$this->performanceHelper = new PerformanceHelper($this);

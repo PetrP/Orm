@@ -19,7 +19,7 @@ class MockSqlConventional extends SqlConventional
 
 	public function __construct()
 	{
-		$r = new SqlConventional_TestRepository('sqlconventional_test', new Model);
+		$r = new SqlConventional_TestRepository(new Model);
 		parent::__construct($r->mapper);
 	}
 

@@ -106,7 +106,7 @@ abstract class RepositoriesCollection extends Object
 		{
 			$class = $this->getRepositoryClass($name);
 			$this->checkRepositoryClass($class, $name);
-			$this->repositories[$name] = new $class($name, $this);
+			$this->repositories[$name] = new $class($this);
 		}
 		return $this->repositories[$name];
 	}
