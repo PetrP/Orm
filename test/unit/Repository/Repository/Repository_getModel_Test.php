@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../boot.php';
 
 /**
  * @covers Repository::getModel
+ * @covers Repository::__construct
  */
 class Repository_getModel_Test extends TestCase
 {

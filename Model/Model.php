@@ -204,7 +204,7 @@ abstract class RepositoriesCollection extends Object
 	 * @see IRepository::clean()
 	 * @see IMapper::clean()
 	 */
-	final public function clean()
+	public function clean()
 	{
 		foreach ($this->repositories as $repo)
 		{

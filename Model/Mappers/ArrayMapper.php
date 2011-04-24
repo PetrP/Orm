@@ -90,7 +90,7 @@ abstract class ArrayMapper extends Mapper
 		$this->getData();
 	}
 
-	final public function rollback()
+	public function rollback()
 	{
 		$this->data = NULL;
 		// todo zmeny zustanou v Repository::$entities
