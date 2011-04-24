@@ -425,7 +425,12 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function createEntity($data) // todo rename
 	{
-		if (!isset($this->entities[$data['id']]) OR !$this->entities[$data['id']])
+		$id = & $data['id'];
+		if (!$id)
+		{
+			throw new InvalidStateException("Data, that is returned from storage, doesn't contain id.");
+		}
+		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
@@ -433,9 +438,9 @@ abstract class Repository extends Object implements IRepository
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidStateException();
 			$entity->___event($entity, 'load', $this, $data);
-			$this->entities[$data['id']] = $entity;
+			$this->entities[$id] = $entity;
 		}
-		return $this->entities[$data['id']];
+		return $this->entities[$id];
 	}
 
 	/**
