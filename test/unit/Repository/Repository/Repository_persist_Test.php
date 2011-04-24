@@ -70,4 +70,16 @@ class Repository_persist_Test extends TestCase
 		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
 		$this->r->persist($e);
 	}
+
+	public function testChangedDuringPersist()
+	{
+		$this->r = new Repository_persist2_Repository($this->r->model);
+		$e = $this->r->getById(1);
+		$e->string = 'xxx';
+		$this->assertSame($e, $this->r->persist($e));
+		$this->assertSame(2, $this->r->mapper->count);
+		$this->assertSame('xxx_changedDuringPersist', $e->string);
+		$this->assertFalse($e->isChanged());
+	}
+
 }

@@ -1,8 +1,12 @@
 <?php
 
-class Repository_persist_Entity extends Entity
+class Repository_persist_Entity extends TestEntity
 {
-
+	protected function onAfterPersist(IRepository $repository)
+	{
+		parent::onAfterPersist($repository);
+		$this->string .= '_changedDuringPersist';
+	}
 }
 
 class Repository_persist_Repository extends Repository
@@ -22,4 +26,14 @@ class Repository_persist_Mapper extends TestsMapper
 		if ($this->returnNull) return NULL;
 		return parent::persist($entity);
 	}
+}
+
+class Repository_persist2_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_Entity';
+}
+
+class Repository_persist2_Mapper extends Repository_persist_Mapper
+{
+
 }
