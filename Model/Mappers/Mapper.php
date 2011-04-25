@@ -42,7 +42,7 @@ abstract class Mapper extends Object implements IMapper
 			$conventional = $this->createConventional();
 			if (!($conventional instanceof IConventional))
 			{
-				throw new InvalidStateException();
+				throw new InvalidStateException(get_class($this) . '::createConventional() must return IConventional');
 			}
 			$this->conventional = $conventional;
 		}
