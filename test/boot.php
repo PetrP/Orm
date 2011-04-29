@@ -13,7 +13,11 @@ Debug::enable(false);
 Debug::$strictMode = true;
 
 Environment::setVariable('tempDir', TMP_DIR);
-Environment::getRobotLoader()->addDirectory(__DIR__);
+
+$r = new RobotLoader;
+$r->setCacheStorage(Environment::getService('Nette\\Caching\\ICacheStorage'));
+$r->addDirectory(__DIR__);
+$r->register();
 
 require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';
 
