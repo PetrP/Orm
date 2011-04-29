@@ -12,6 +12,8 @@ require_once ORM_DIR . '/loader.php';
 Debug::enable(false);
 Debug::$strictMode = true;
 
+date_default_timezone_set('Europe/Prague');
+
 Environment::setVariable('tempDir', TMP_DIR);
 
 $r = new RobotLoader;
