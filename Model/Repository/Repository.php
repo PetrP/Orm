@@ -426,7 +426,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function createEntity($data) // todo rename
 	{
-		$id = & $data['id'];
+		$id = isset($data['id']) ? $data['id'] : NULL;
 		if (!$id)
 		{
 			throw new InvalidStateException("Data, that is returned from storage, doesn't contain id.");
