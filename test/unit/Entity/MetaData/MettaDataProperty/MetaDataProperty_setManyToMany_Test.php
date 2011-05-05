@@ -3,11 +3,11 @@
 require_once __DIR__ . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::setOneToMany
+ * @covers MetaDataProperty::setManyToMany
  * @covers MetaDataProperty::setToMany
  * @covers RelationshipLoader::__construct
  */
-class MetaDataProperty_setOneToMany_Test extends TestCase
+class MetaDataProperty_setManyToMany_Test extends TestCase
 {
 	private $m;
 
@@ -25,7 +25,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	private function t(MetaDataProperty $p, $class, $name)
 	{
-		$this->assertSame(MetaData::OneToMany, $this->get($p));
+		$this->assertSame(MetaData::ManyToMany, $this->get($p));
 
 		$i = $this->get($p, 'injection');
 		$this->assertInstanceOf('Callback', $i);
@@ -43,62 +43,62 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testBase()
 	{
-		$p = $this->m->addProperty('id', 'MetaDataProperty_setOneToMany_OneToMany')
-			->setOneToMany()
+		$p = $this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
+			->setManyToMany()
 		;
-		$this->t($p, 'MetaDataProperty_setOneToMany_OneToMany', 'MetaDataProperty_setOneToMany_OneToMany');
+		$this->t($p, 'MetaDataProperty_setManyToMany_ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany');
 	}
 
 	public function testTwice()
 	{
 		$this->setExpectedException('InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
-		$this->m->addProperty('id', 'MetaDataProperty_setOneToMany_OneToMany')
-			->setOneToMany()
-			->setOneToMany()
+		$this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
+			->setManyToMany()
+			->setManyToMany()
 		;
 	}
 
 	public function testMultipleType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts OneToMany class as type, \'string|int\' given');
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts ManyToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
-			->setOneToMany()
+			->setManyToMany()
 		;
 	}
 
 	public function testBadType_unexist()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts OneToMany class as type, class \'BadClass\' doesn\'t exists');
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts ManyToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
-			->setOneToMany()
+			->setManyToMany()
 		;
 	}
 
 	public function testBadType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} Class \'Html\' isn\'t instanceof OneToMany');
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} Class \'Html\' isn\'t instanceof ManyToMany');
 		$this->m->addProperty('id', 'Html')
-			->setOneToMany()
+			->setManyToMany()
 		;
 	}
 
 	public function testFunctionalWithoutClass()
 	{
-		$p = $this->m->addProperty('id', 'OneToMany')
-			->setOneToMany('MetaData_Test2', 'param')
+		$p = $this->m->addProperty('id', 'ManyToMany')
+			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
 	}
 
 	public function testFunctionalWithoutClass2()
 	{
 		$p = $this->m->addProperty('id', '')
-			->setOneToMany('MetaData_Test2', 'param')
+			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
 	}
 }
 
-class MetaDataProperty_setOneToMany_OneToMany extends OldOneToMany
+class MetaDataProperty_setManyToMany_ManyToMany extends OldManyToMany
 {
 }

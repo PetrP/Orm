@@ -16,14 +16,16 @@ class Repository_getMapper_Test extends TestCase
 
 	public function testBadMapper()
 	{
+		$r = new Repository_getMapper_BadMapper_Repository($this->m);
 		$this->setExpectedException('InvalidStateException', 'Mapper Repository_getMapper_BadMapper_Mapper must implement IMapper');
-		new Repository_getMapper_BadMapper_Repository($this->m);
+		$r->getMapper();
 	}
 
 	public function testBadMapper2()
 	{
+		$r = new Repository_getMapper_BadMapper2_Repository($this->m);
 		$this->setExpectedException('InvalidStateException', "Repository_getMapper_BadMapper2_Repository::createMapper() must return IMapper, 'string' given");
-		new Repository_getMapper_BadMapper2_Repository($this->m);
+		$r->getMapper();
 	}
 
 	public function testOk()

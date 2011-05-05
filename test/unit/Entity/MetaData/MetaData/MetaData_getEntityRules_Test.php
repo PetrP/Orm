@@ -7,6 +7,12 @@ require_once __DIR__ . '/../../../../boot.php';
  */
 class MetaData_getEntityRules_Test extends TestCase
 {
+	protected function setUp()
+	{
+		MetaData::clean();
+		MetaData_Test_Entity::$metaData = NULL;
+	}
+
 	public function testCache()
 	{
 		MetaData_Test_Entity::$count = 0;
@@ -18,28 +24,21 @@ class MetaData_getEntityRules_Test extends TestCase
 
 	public function testNotExists()
 	{
-		try {
-			MetaData::getEntityRules('Xxxasdsad');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		$this->setExpectedException('InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		MetaData::getEntityRules('Xxxasdsad');
 	}
 
 	public function testNotEntity()
 	{
-		try {
-			MetaData::getEntityRules('Html');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "'Html' isn`t instance of IEntity");
+		$this->setExpectedException('InvalidStateException', "'Html' isn`t instance of IEntity");
+		MetaData::getEntityRules('Html');
 	}
 
 	public function testBadReturn()
 	{
+		$this->setExpectedException('InvalidStateException', "It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
 		MetaData_Test_Entity::$metaData = new Html;
-		try {
-			MetaData::getEntityRules('MEtaData_Test_Entity');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
-		MetaData_Test_Entity::$metaData = NULL;
+		MetaData::getEntityRules('MetaData_Test_Entity');
 	}
 
 	public function testReturn()

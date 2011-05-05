@@ -102,7 +102,6 @@ abstract class Repository extends Object implements IRepository
 			$repositoryName = substr($repositoryName, 0, strlen($repositoryName) - 10);
 		}
 		$this->repositoryName = $repositoryName;
-		$this->conventional = $this->getMapper()->getConventional(); // speedup
 		$this->performanceHelper = new PerformanceHelper($this);
 	}
 
@@ -433,6 +432,10 @@ abstract class Repository extends Object implements IRepository
 		}
 		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{
+			if (!isset($this->conventional))
+			{
+				$this->conventional = $this->getMapper()->getConventional(); // speedup
+			}
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
 			$this->checkEntity($entityName);

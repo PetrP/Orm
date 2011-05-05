@@ -190,18 +190,35 @@ class MetaDataProperty extends Object
 
 	/**
 	 * @param MetaData::OneToMany|MetaData::ManyToMany
+	 * @param string
+	 * @param string
 	 * @return MetaDataProperty $this
 	 * @see self::setOneToMany()
 	 * @see self::setManyToMany()
 	 */
-	private function setToMany($relationship)
+	private function setToMany($relationship, $repositoryName, $param)
 	{
-		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
-		$relationshipClassName = $this->originalTypes;
-		if (count($this->data['types']) != 1) throw new InvalidStateException("{$this->class}::\${$this->name} {{$relationship}} excepts " . ($relationship === MetaData::ManyToMany ? 'Many' : 'One') . "ToMany class as type, '$relationshipClassName' given");
-		$this->data['relationship'] = $relationship;
-		$loader = new RelationshipLoader($relationship, $relationshipClassName);
+		if (isset($this->data['relationship']))
+		{
+			throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
+		}
+		$mainClass = $relationship === MetaData::ManyToMany ? 'ManyToMany' : 'OneToMany';
+		if (isset($this->data['types']['mixed']))
+		{
+			$this->setTypes($mainClass);
+		}
+		$class = $this->originalTypes;
+
+		if (count($this->data['types']) != 1)
+		{
+			throw new InvalidStateException("{$this->class}::\${$this->name} {{$relationship}} excepts $mainClass class as type, '$class' given");
+		}
+
+
+		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name);
 		$this->setInjection(callback($loader, 'create'));
+		$this->data['relationship'] = $relationship;
+		$this->data['relationshipParam'] = $loader;
 		return $this;
 	}
 
@@ -212,16 +229,38 @@ class MetaDataProperty extends Object
 	 * Obsahuje tridu ktera je potomkem OneToMany
 	 *
 	 * <pre>
+	 * * @property OneToMany $bars {1:m bars foo}
+	 * * typ lze vynechat
+	 * * @property $bars {1:m bars foo}
+	 * * zpetna kompatibila
 	 * * @property FooToBars $bars {1:m}
 	 * </pre>
+	 *
+	 * @param string
+	 * @param string parametr na child entitach (m:1)
 	 *
 	 * @return MetaDataProperty $this
 	 * @see OneToMany
 	 */
-	public function setOneToMany()
+	public function setOneToMany($repositoryName = NULL, $param = NULL)
 	{
-		$this->setToMany(MetaData::OneToMany);
+		$this->setToMany(MetaData::OneToMany, $repositoryName, $param);
 		return $this;
+	}
+
+	/**
+	 * <pre>
+	 * repositoryName paramName
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setOneToMany()
+	 */
+	public function builtParamsOneToMany($string)
+	{
+		$string = preg_replace('#\s+#', ' ', trim($string));
+		return array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, 2) + array(NULL, NULL);
 	}
 
 	/**
@@ -231,16 +270,37 @@ class MetaDataProperty extends Object
 	 * Obsahuje tridu ktera je potomkem ManyToMany
 	 *
 	 * <pre>
+	 * * @property ManyToMany $bars {m:n bars foos}
+	 * * typ lze vynechat
+	 * * @property $bars {m:n bars foos}
+	 * * zpetna kompatibila
 	 * * @property FoosToBars $bars {m:n}
 	 * </pre>
+	 *
+	 * @param string
+	 * @param string|NULL parametr na child entitach (m:m)
 	 *
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */
-	public function setManyToMany()
+	public function setManyToMany($repositoryName = NULL, $param = NULL)
 	{
-		$this->setToMany(MetaData::ManyToMany);
+		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param);
 		return $this;
+	}
+
+	/**
+	 * <pre>
+	 * repositoryName paramName
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setManyToMany()
+	 */
+	public function builtParamsManyToMany($string)
+	{
+		return $this->builtParamsOneToMany($string);
 	}
 
 	/**
@@ -421,6 +481,10 @@ class MetaDataProperty extends Object
 	 */
 	public function toArray()
 	{
+		if ($this->data['relationshipParam'] instanceof RelationshipLoader)
+		{
+			$this->data['relationshipParam']->check();
+		}
 		return $this->data;
 	}
 

@@ -131,6 +131,9 @@ class MetaData extends Object
 	/** @var array runtime cache */
 	static private $cache = array();
 
+	/** @var array runtime cache */
+	static private $cache2 = array();
+
 	/**
 	 * Vraci MetaData v internal formatu.
 	 * Entita ma metadata jako pole pro lepsi vykon.
@@ -143,13 +146,29 @@ class MetaData extends Object
 	{
 		if (!isset(self::$cache[$entityClass]))
 		{
-			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
-			$implements = class_implements($entityClass);
-			if (!isset($implements['IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
-			$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
-			if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
-			self::$cache[$entityClass] = $meta->toArray();
+			$lowerEntityClass = strtolower($entityClass);
+			if (!isset(self::$cache[$lowerEntityClass]))
+			{
+				if (isset(self::$cache2[$lowerEntityClass]))
+				{
+					return self::$cache2[$lowerEntityClass]->toArray();
+				}
+				if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
+				$implements = class_implements($entityClass);
+				if (!isset($implements['IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
+				$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
+				if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
+				self::$cache2[$lowerEntityClass] = $meta;
+				self::$cache[$lowerEntityClass] = $meta->toArray();
+				unset(self::$cache2[$lowerEntityClass]);
+			}
+			self::$cache[$entityClass] = & self::$cache[$lowerEntityClass];
 		}
 		return self::$cache[$entityClass];
+	}
+
+	public static function clean()
+	{
+		self::$cache2 = self::$cache = array();
 	}
 }
