@@ -5,15 +5,19 @@ interface IEntityInjection
 	function getInjectedValue();
 
 	function setInjectedValue($value);
+}
 
+interface IEntityInjectionLoader
+{
+	function create($className, IEntity $entity, $value = NULL);
+}
+
+interface IEntityInjectionStaticLoader
+{
 	static function create($className, IEntity $entity, $value = NULL);
 }
 
-interface IEntityInjectionArray extends IEntityInjection // todo?
-{
-}
-
-abstract class Injection extends Object implements IEntityInjection
+abstract class Injection extends Object implements IEntityInjection, IEntityInjectionStaticLoader
 {
 	protected $value;
 
