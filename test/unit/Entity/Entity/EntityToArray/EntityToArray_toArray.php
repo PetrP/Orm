@@ -20,7 +20,7 @@ class EntityToArray_toArray_1m_Repository extends Repository
 class EntityToArray_toArray_1m_Mapper extends ArrayMapper
 {
 }
-class EntityToArray_ManyToMany extends ManyToMany
+class EntityToArray_ManyToMany extends OldManyToMany
 {
 	protected function getFirstRepository()
 	{

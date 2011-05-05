@@ -5,21 +5,20 @@ require_once __DIR__ . '/../../../boot.php';
 /**
  * @covers ManyToMany::setInjectedValue
  */
-class ManyToMany_setInjectedValue_Test extends TestCase
+class ManyToMany_setInjectedValue_Test extends ManyToMany_Test
 {
-	private $m;
 
-	protected function setUp()
+	public function test()
 	{
-		$m = new Model;
-		$this->m = new ManyToMany($m->TestEntity->getById(1), $m->TestEntity);
+		$this->m2m->setInjectedValue(array(11, 10));
+		$this->t(11, 10);
 	}
 
 	public function testNull()
 	{
-		$this->m->setInjectedValue(array(1, 2));
-		$this->m->setInjectedValue(NULL);
-		$this->assertSame(2, count($this->m->get()));
+		$this->m2m->setInjectedValue(array(11, 10));
+		$this->m2m->setInjectedValue(NULL);
+		$this->t(11, 10);
 	}
 
 }

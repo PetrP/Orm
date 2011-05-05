@@ -64,7 +64,6 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	public function add(IEntity $parent, array $ids)
 	{
-		$this->begin();
 		$connection = $this->connection;
 		$table = $this->getTableName();
 		$parentId = $parent->id;
@@ -82,7 +81,6 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	public function remove(IEntity $parent, array $ids)
 	{
-		$this->begin();
 		$connection = $this->connection;
 		$parentId = $parent->id;
 		$connection->delete($this->getTableName())

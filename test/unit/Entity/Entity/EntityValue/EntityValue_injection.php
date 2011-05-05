@@ -26,7 +26,7 @@ class EntityValue_injectionMapper extends ArrayMapper
 	}
 }
 
-class EntityValue_injectionToEntityValue_injection extends ManyToMany
+class EntityValue_injectionToEntityValue_injection extends OldManyToMany
 {
 	protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
 	{
@@ -39,11 +39,10 @@ class EntityValue_injectionToEntityValue_injection extends ManyToMany
 	}
 
 	public $create = 0;
-	public static function create($className, IEntity $entity, $value = NULL, $name = NULL)
+	public function __construct(IEntity $entity, $repository, $param, $value = NULL)
 	{
-		$r = parent::create($className, $entity, $value, $name);
-		$r->{__FUNCTION__}++;
-		return $r;
+		parent::__construct($entity, $repository, $param, $value);
+		$this->create++;
 	}
 
 	public $setInjectedValue = 0;

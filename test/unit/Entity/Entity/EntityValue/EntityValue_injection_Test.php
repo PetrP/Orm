@@ -22,6 +22,7 @@ class EntityValue_injection_Test extends TestCase
 
 	public function testNewRead()
 	{
+		$this->markTestSkipped('di');
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
 		$this->assertSame(1, $this->e->many->mapper->setValue);
@@ -34,6 +35,7 @@ class EntityValue_injection_Test extends TestCase
 
 	public function testNewWrite()
 	{
+		$this->markTestSkipped('di');
 		$this->e->many = array(1,2,3);
 		$this->assertSame(1, $this->e->many->create);
 		$this->assertSame(1, $this->e->many->mapper->setValue);
