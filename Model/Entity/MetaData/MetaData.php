@@ -26,6 +26,9 @@ class MetaData extends Object
 	/** @var string Nazev entity ke ktere patri informace */
 	private $entityClass;
 
+	/** @var array */
+	private $methods;
+
 	/** @var array of MetaDataProperty Jednotlive parametry */
 	private $properties = array();
 
@@ -79,6 +82,38 @@ class MetaData extends Object
 	}
 
 	/**
+	 * @param string property
+	 * @return array get => string|NULL, set => string|NULL, is => string|NULL
+	 */
+	public function getMethods($name)
+	{
+		if (!isset($this->methods))
+		{
+			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('_EntityBase'));
+			// TODO neumoznuje pouzit vlastni IEntity
+			foreach ($methods as $method)
+			{
+				$var = NULL;
+				$m = substr($method, 0, 3);
+				if ($m === 'get' OR $m === 'set')
+				{
+					$var = substr($method, 3);
+				}
+				else if (String::startsWith($method, 'is'))
+				{
+					$m = 'is';
+					$var = substr($method, 2);
+				}
+				if (!$var) continue;
+				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+				$this->methods[$var][$m] = $method;
+			}
+		}
+		static $default = array('get' => NULL, 'set' => NULL, 'is' => NULL);
+		return (isset($this->methods[$name]) ? $this->methods[$name] + $default : $default);
+	}
+
+	/**
 	 * internal format, ktery entita pouziva pro lepsi vykon.
 	 * Take nacita informace o getterech a setterech
 	 * @return array
@@ -90,41 +125,6 @@ class MetaData extends Object
 		{
 			$properties[$name] = $property->toArray();
 		}
-
-		$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Entity'));
-		$methods[] = 'getId';
-		// TODO neumoznuje pouzit vlastni IEntity
-		foreach ($methods as $method)
-		{
-			$m = substr($method, 0, 3);
-			if ($m === 'get' OR $m === 'set')
-			{
-				$var = substr($method, 3);
-				if (!$var) continue;
-				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
-			}
-			else if (substr($method, 0, 2) === 'is')
-			{
-				$m = 'get';
-				$var = substr($method, 2);
-				if (!$var) continue;
-				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
-				if (!isset($properties[$var]) OR $properties[$var]['types'] !== array('bool' => 'bool'))
-				{
-					continue;
-				}
-			}
-			else
-			{
-				continue;
-			}
-
-			if (isset($properties[$var][$m]))
-			{
-				$properties[$var][$m]['method'] = $method;
-			}
-		}
-
 		return $properties;
 	}
 

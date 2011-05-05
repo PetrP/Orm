@@ -42,7 +42,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 	{
 		$this->assertEquals(MetaData::READ, $this->setAccess(MetaData::READ, $a));
 
-		$this->assertEquals(array('method' => NULL), $a['get']);
+		$this->assertEquals(array('method' => 'getId'), $a['get']);
 		$this->assertEquals(NULL, $a['set']);
 	}
 
@@ -50,7 +50,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 	{
 		$this->assertEquals(MetaData::READWRITE, $this->setAccess(MetaData::READWRITE, $a));
 
-		$this->assertEquals(array('method' => NULL), $a['get']);
+		$this->assertEquals(array('method' => 'getId'), $a['get']);
 		$this->assertEquals(array('method' => NULL), $a['set']);
 	}
 

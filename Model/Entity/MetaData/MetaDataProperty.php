@@ -42,7 +42,7 @@ class MetaDataProperty extends Object
 		$this->name = $name;
 		$this->data['since'] = $since;
 		$this->setTypes($types);
-		$this->setAccess($access);
+		$this->setAccess($access, $meta);
 	}
 
 	/**
@@ -119,16 +119,21 @@ class MetaDataProperty extends Object
 	/**
 	 * Jestli je parametr ke cteni nebo jen pro zapis
 	 * @param MetaData::READ|MetaData::READWRITE
+	 * @param MetaData
 	 * @return MetaDataProperty $this
 	 */
-	protected function setAccess($access)
+	protected function setAccess($access, MetaData $meta)
 	{
 		if ($access === NULL) $access = MetaData::READWRITE;
 		if ($access === MetaData::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: {$this->class}::\${$this->name}");
 		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new Exception();
-		$this->data['get'] = $access & MetaData::READ ? array('method' => NULL) : NULL;
-		$this->data['set'] = $access & MetaData::WRITE ? array('method' => NULL) : NULL;
-
+		$methods = $meta->getMethods($this->name);
+		if ($methods['is'] AND $this->data['types'] === array('bool' => 'bool'))
+		{
+			$methods['get'] = $methods['is'];
+		}
+		$this->data['get'] = $access & MetaData::READ ? array('method' => $methods['get']) : NULL;
+		$this->data['set'] = $access & MetaData::WRITE ? array('method' => $methods['set']) : NULL;
 		return $this;
 	}
 

@@ -15,7 +15,7 @@ class MetaDataProperty_construct_Test extends TestCase
 		$this->assertEquals(
 			array(
 				'types' => array('types' => 'types'),
-				'get' => array('method' => NULL),
+				'get' => array('method' => 'getId'),
 				'set' => array('method' => NULL),
 				'since' => 'since',
 				'relationship' => NULL,
