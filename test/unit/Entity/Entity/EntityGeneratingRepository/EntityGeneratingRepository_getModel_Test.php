@@ -33,10 +33,15 @@ class EntityGeneratingRepository_getModel_Test extends TestCase
 
 	public function testNeed2()
 	{
-		$this->markTestSkipped();
 		$e = new TestEntity;
-		$this->setExpectedException('InvalidStateException'); // bug di
-		$e->getModel(true);
+		$this->setExpectedException('InvalidStateException', 'TestEntity is not attached to repository.');
+		$e->getModel();
+	}
+
+	public function testNeedBc()
+	{
+		$e = new TestEntity;
+		$this->assertSame($this->m, $e->getModel(NULL));
 	}
 
 }

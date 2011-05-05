@@ -56,9 +56,12 @@ class _EntityGeneratingRepository extends _EntityEvent
 	 */
 	final public function getGeneratingRepository($need = true) // todo generating je blbost, lepsi nazev by bylo neco jako getOwningReppository nebo jen getRepository
 	{
-		if ($this->repository) return $this->repository;
-		else if (!$need) return NULL;
-		else throw new InvalidStateException();
+		if (!$this->repository AND $need)
+		{
+			$tmp = get_class($this) . (isset($this->id) ? '#' . $this->id : NULL);
+			throw new InvalidStateException("{$tmp} is not attached to repository.");
+		}
+		return $this->repository;
 	}
 
 	/**
@@ -69,14 +72,13 @@ class _EntityGeneratingRepository extends _EntityEvent
 	{
 		if (!isset($this->model))
 		{
-			if ($r = $this->getGeneratingRepository(false))
+			if ($need === NULL AND !$this->getGeneratingRepository(false)) // bc
+			{
+				return RepositoriesCollection::get(); // todo di
+			}
+			if ($r = $this->getGeneratingRepository($need))
 			{
 				$this->model = $r->getModel();
-			}
-			else if ($need)
-			{
-				// todo throw exception
-				$this->model = RepositoriesCollection::get(); // todo di
 			}
 		}
 		return $this->model;
