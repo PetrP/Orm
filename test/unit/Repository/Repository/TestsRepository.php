@@ -7,7 +7,7 @@ class TestsRepository extends Repository
 
 class TestsMapper extends ArrayMapper
 {
-	private $array = array(
+	protected $array = array(
 		1 => array('id' => 1),
 		2 => array('id' => 2),
 	);

@@ -23,4 +23,4 @@ class AnnotationMetaData_MockEntity extends Entity
 }
 
 class AnnotationMetaData_ManyToMany extends ManyToMany {};
-class AnnotationMetaData_OneToMany extends OneToMany {};
+class AnnotationMetaData_OneToMany extends OldOneToMany {};

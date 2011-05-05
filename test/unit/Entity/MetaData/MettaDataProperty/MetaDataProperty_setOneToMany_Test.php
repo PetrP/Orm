@@ -38,7 +38,6 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$this->assertSame('create', $ii[1]);
 
 		$this->assertAttributeSame($class, 'class', $ii[0]);
-		$this->assertAttributeSame($name, 'name', $ii[0]);
 	}
 
 	public function testBase()
@@ -103,6 +102,6 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 	}
 }
 
-class MetaDataProperty_setOneToMany_OneToMany extends OneToMany
+class MetaDataProperty_setOneToMany_OneToMany extends OldOneToMany
 {
 }

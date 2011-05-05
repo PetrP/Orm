@@ -6,12 +6,6 @@ interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 
 	/**
-	 * @param IEntity
-	 * @param string|NULL internal get_class
-	 */
-	function __construct(IEntity $parent, $name = NULL);
-
-	/**
 	 * @param IEntity|int|array
 	 * @return IEntity
 	 */

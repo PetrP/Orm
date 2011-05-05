@@ -2,13 +2,15 @@
 
 require_once dirname(__FILE__) . '/IRelationship.php';
 
-class OneToMany extends Object implements IRelationship
+require_once dirname(__FILE__) . '/BaseToMany.php';
+
+class OneToMany extends BaseToMany implements IRelationship
 {
 	/** @var Entity */
 	private $parent;
 
-	/** @var string get_class */
-	private $name;
+	/** @var string */
+	private $param;
 
 	/** @var IEntityCollection @see self::get() */
 	private $get;
@@ -34,23 +36,16 @@ class OneToMany extends Object implements IRelationship
 	 */
 	private $del = array();
 
-	/** @var string cache @see self::getSecondParamName() */
-	private $param;
-
 	/**
 	 * @param IEntity
-	 * @param string|NULL internal get_class
+	 * @param IRepository|string repositoryName for lazy load
+	 * @param string m:1 param on child entity
 	 */
-	public function __construct(IEntity $parent, $name = NULL)
+	public function __construct(IEntity $parent, $repository, $param)
 	{
-		$this->name = $name ? $name : get_class($this);
-		$entityName = $this->getFirstEntityName();
-		if (!($parent instanceof $entityName))
-		{
-			throw new UnexpectedValueException($this->name . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
-		}
 		$this->parent = $parent;
-		$this->param = $this->getSecondParamName();
+		$this->param = $param;
+		parent::__construct($repository);
 	}
 
 	/**
@@ -62,28 +57,14 @@ class OneToMany extends Object implements IRelationship
 		$param = $this->param;
 		$entity = $this->createEntity($entity);
 		if ($this->ignore($entity)) return NULL;
-		if (isset($entity->$param) AND $entity->$param !== NULL) throw new Exception(); // todo
+		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $this->parent)
+		{
+			$id = isset($entity->id) ? '#' . $entity->id : NULL;
+			throw new UnexpectedValueException('Entity '. get_class($entity) . "$id is already asociated with another entity.");
+		}
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
 		return $entity;
-	}
-
-	/**
-	 * @param array of IEntity|scalar|array
-	 * @return IRelationship $this
-	 */
-	final public function set(array $data)
-	{
-		foreach ($this->get() as $entity)
-		{
-			$this->remove($entity);
-		}
-		foreach ($data as $row)
-		{
-			if ($row === NULL) continue;
-			$this->add($row);
-		}
-		return $this;
 	}
 
 	/**
@@ -94,7 +75,11 @@ class OneToMany extends Object implements IRelationship
 	{
 		$param = $this->param;
 		$entity = $this->createEntity($entity);
-		if (!isset($entity->$param) AND $entity->$param !== $this->param) throw new Exception(); // todo
+		if (!isset($entity->$param) OR $entity->$param !== $this->parent)
+		{
+			$id = isset($entity->id) ? '#' . $entity->id : NULL;
+			throw new UnexpectedValueException('Entity '. get_class($entity) . "$id is not asociated with this entity.");
+		}
 		try {
 			$entity->$param = NULL;
 			$this->edit[spl_object_hash($entity)] = $entity;
@@ -110,9 +95,17 @@ class OneToMany extends Object implements IRelationship
 	{
 		if (!isset($this->get))
 		{
-			$repository = $this->getSecondRepository();
-			$method = 'findBy' . $this->param;
-			$all = method_exists($repository, $method) ? $repository->$method($this->parent) : $repository->mapper->$method($this->parent);
+			if ($this->parent->getModel(false))
+			{
+				$repository = $this->getChildRepository();
+				$method = 'findBy' . $this->param;
+				$all = method_exists($repository, $method) ? $repository->$method($this->parent) : $repository->mapper->$method($this->parent);
+			}
+			else
+			{
+				// parent entity is not handled by repository
+				$all = new ArrayCollection(array());
+			}
 			if ($this->add OR $this->del OR $this->edit)
 			{
 				$array = array();
@@ -145,7 +138,7 @@ class OneToMany extends Object implements IRelationship
 
 	public function persist()
 	{
-		$repository = $this->getSecondRepository();
+		$repository = $this->getChildRepository();
 
 		foreach ($this->del as $entity)
 		{
@@ -178,66 +171,10 @@ class OneToMany extends Object implements IRelationship
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
-	/** @return int */
-	public function count()
-	{
-		return $this->get()->count();
-	}
-
-	/** @return Traversable */
-	public function getIterator()
-	{
-		return $this->get()->getIterator();
-	}
-
 	/** @return Model */
 	public function getModel()
 	{
 		return $this->parent->getModel();
-	}
-
-	public function getInjectedValue()
-	{
-		return NULL;
-	}
-
-	public function setInjectedValue($value)
-	{
-		if ($value !== NULL) $this->set($value);
-	}
-
-	public static function create($className, IEntity $entity, $value = NULL, $name = NULL)
-	{
-		return new $className($entity, $name);
-	}
-
-	/**
-	 * Nazev entity s kterou na kterou se pripojuje.
-	 * @return string
-	 */
-	protected function getFirstEntityName()
-	{
-		return substr($this->name, 0, strpos($this->name, 'To'));
-	}
-
-	/**
-	 * Nazev parametru na pripojenych entitach.
-	 * @return string
-	 */
-	protected function getSecondParamName()
-	{
-		$param =  $this->getFirstEntityName();;
-		if ($param{0} != '_') $param{0} = $param{0} | "\x20";
-		return $param;
-	}
-
-	/**
-	 * Repository
-	 * @return Repository
-	 */
-	protected function getSecondRepository()
-	{
-		return $this->getModel()->getRepository(substr($this->name, strpos($this->name, 'To') + 2));
 	}
 
 	/**
@@ -246,46 +183,15 @@ class OneToMany extends Object implements IRelationship
 	 * @param IEntity|scalar|array
 	 * @return IEntity
 	 */
-	private function createEntity($entity)
+	final protected function createEntity($entity)
 	{
-		$repository = $this->getSecondRepository();
-		if (!($entity instanceof IEntity) AND (is_array($entity) OR $entity instanceof Traversable))
-		{
-			$array = $entity instanceof Traversable ? iterator_to_array($entity) : $entity;
-			$entity = NULL;
-			if (isset($array['id']))
-			{
-				$entity = $repository->getById($array['id']);
-			}
-			if (!$entity)
-			{
-				$entityName = $repository->getEntityClassName($array);
-				$entity = new $entityName; // todo construct pak nesmy mit povine parametry
-			}
-			$entity->setValues($array);
-		}
-		if (!($entity instanceof IEntity))
-		{
-			$entity = $repository->getById($entity);
-			if (!$entity) throw new Exception(); // todo
-		}
-		if (!$repository->isEntity($entity)) throw new UnexpectedValueException();
+		$entity = parent::createEntity($entity);
 		$hash = spl_object_hash($entity);
 		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
 		$this->get = NULL;
 		return $entity;
 	}
 
-	protected function ignore(IEntity $entity)
-	{
-		return false;
-	}
-
-	/** @deprecated */
-	final protected function compare(& $all, $row) {throw new DeprecatedException();}
-	/** @deprecated */
-	final protected function row($row) {throw new DeprecatedException();}
-	/** @deprecated */
-	final protected function prepareAllForSet() {throw new DeprecatedException();}
-
 }
+
+require_once dirname(__FILE__) . '/bc1m.php';
