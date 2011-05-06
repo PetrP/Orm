@@ -507,15 +507,8 @@ abstract class Repository extends Object implements IRepository
 	}
 
 
-	/** @ignore @deprecated @see self::getEntityClassName() */
-	final public function getEntityName(array $data = NULL)
-	{
-		throw new DeprecatedException();
-	}
-	/** @ignore @deprecated @see self::remove() */
-	final public function delete($entity)
-	{
-		return $this->remove($entity);
-	}
-
+	/** @deprecated */
+	final public function getEntityName(array $data = NULL){throw new DeprecatedException('Use Repository::getEntityClassName() instead');}
+	/** @deprecated */
+	final public function delete($entity){throw new DeprecatedException('Use Repository::remove() instead');}
 }

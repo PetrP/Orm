@@ -472,14 +472,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	}
 
 	/** @deprecated */
-	final public function toArrayDataSource()
-	{
-		return $this->toArrayCollection();
-	}
-
+	final public function toArrayDataSource(){throw new DeprecatedException('Use ArrayCollection::toArrayCollection() instead');}
 	/** @deprecated */
-	public function toDataSource()
-	{
-		return $this->toCollection();
-	}
+	final public function toDataSource(){throw new DeprecatedException('Use ArrayCollection::toCollection() instead');}
 }

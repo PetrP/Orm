@@ -122,30 +122,22 @@ abstract class _EntityBase extends _EntityValue
 
 
 
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const ENTITY_TO_ID = EntityToArray::AS_ID;
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY;
-
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const EXISTS = NULL;
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const READ = MetaData::READ;
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const WRITE = MetaData::WRITE;
-	/** @ignore @deprecated */
+	/** @deprecated */
 	const READWRITE = MetaData::READWRITE;
-	/** @ignore @deprecated */
-	final protected function check(){}
-	/** @ignore @deprecated */
-	final public function toPlainArray()
-	{
-		return $this->toArray(EntityToArray::AS_ID);
-	}
-	/** @ignore @deprecated */
-	final protected static function createEntityRules($entityClass)
-	{
-	 	return call_user_func(array($entityClass, 'createMetaData'));
-	}
-
+	/** @deprecated */
+	final protected function check(){throw new DeprecatedException('Use Entity::onBeforePersist() instead');}
+	/** @deprecated */
+	final public function toPlainArray(){throw new DeprecatedException('Use Entity::toArray(EntityToArray::AS_ID) instead');}
+	/** @deprecated */
+	final protected static function createEntityRules($entityClass){throw new DeprecatedException('Use Entity::createMetaData instead');}
 }

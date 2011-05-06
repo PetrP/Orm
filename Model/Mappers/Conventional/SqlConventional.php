@@ -156,33 +156,14 @@ class SqlConventional extends Object implements IConventional
 	}
 
 
-	/** @ignore @deprecated */
-	final public function format($data)
-	{
-		throw new DeprecatedException();
-		return $this->formatEntityToStorage($data);
-	}
-	/** @ignore @deprecated */
-	final public function unformat($data)
-	{
-		throw new DeprecatedException();
-		return $this->formatStorageToEntity($data);
-	}
-	/** @ignore @deprecated */
-	final protected function formatKey($key)
-	{
-		throw new DeprecatedException();
-		return $this->storageFormat($key);
-	}
-	/** @ignore @deprecated */
-	final protected function unformatKey($key)
-	{
-		throw new DeprecatedException();
-		return $this->entityFormat($key);
-	}
-	/** @ignore @deprecated */
-	final public function getManyToManyTableName(IRepository $first, IRepository $second)
-	{
-		return $this->getManyToManyTable($first, $second);
-	}
+	/** @deprecated */
+	final public function format($data){throw new DeprecatedException('Use SqlConventional::formatEntityToStorage() instead');}
+	/** @deprecated */
+	final public function unformat($data){throw new DeprecatedException('Use SqlConventional::formatStorageToEntity() instead');}
+	/** @deprecated */
+	final protected function formatKey($key){throw new DeprecatedException('Use SqlConventional::storageFormat() instead');}
+	/** @deprecated */
+	final protected function unformatKey($key){throw new DeprecatedException('Use SqlConventional::entityFormat() instead');}
+	/** @deprecated */
+	final public function getManyToManyTableName(IRepository $first, IRepository $second){throw new DeprecatedException('Use SqlConventional::getManyToManyTable() instead');}
 }

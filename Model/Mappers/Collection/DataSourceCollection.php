@@ -219,14 +219,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 	// todo final count totalCount a toString a dalsi
 
 	/** @deprecated */
-	final public function toArrayDataSource()
-	{
-		return $this->toArrayCollection();
-	}
-
+	final public function toArrayDataSource(){throw new DeprecatedException('Use DataSourceCollection::toArrayCollection() instead');}
 	/** @deprecated */
-	public function toDataSource()
-	{
-		return $this->toCollection();
-	}
+	final public function toDataSource(){throw new DeprecatedException('Use DataSourceCollection::toCollection() instead');}
 }

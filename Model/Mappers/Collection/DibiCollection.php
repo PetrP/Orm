@@ -385,21 +385,13 @@ class DibiCollection extends Object implements IEntityCollection
 		return $collection;
 	}
 
-	/** @deprecated */
-	final public function toArrayDataSource()
-	{
-		return $this->toArrayCollection();
-	}
-
-	/** @deprecated */
-	public function toDataSource()
-	{
-		return $this->toDataSourceCollection();
-	}
-
 	final protected function getConnventionalKey($key)
 	{
 		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
 	}
 
+	/** @deprecated */
+	final public function toArrayDataSource(){throw new DeprecatedException('Use DibiCollection::toArrayCollection() instead');}
+	/** @deprecated */
+	final public function toDataSource(){throw new DeprecatedException('Use DibiCollection::toDataSourceCollection() instead');}
 }

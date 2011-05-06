@@ -110,13 +110,8 @@ abstract class Mapper extends Object implements IMapper
 	}
 
 
-	/** @ignore @deprecated @see self::remove() */
-	final public function delete(IEntity $entity)
-	{
-		return $this->remove($entity);
-	}
-
-	/** @ignore @deprecated */
-	final public function createDefaultManyToManyMapper() {throw new DeprecatedException;}
-
+	/** @deprecated */
+	final public function delete(IEntity $entity){throw new DeprecatedException('Use Mapper::remove() instead');}
+	/** @deprecated */
+	final public function createDefaultManyToManyMapper(){throw new DeprecatedException('Use Mapper::createManyToManyMapper() instead');}
 }
