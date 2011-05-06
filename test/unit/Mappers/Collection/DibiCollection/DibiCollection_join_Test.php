@@ -91,7 +91,7 @@ class DibiCollection_join_Test extends TestCase
 			WHERE ([join2->join1].[name] = 'xyz')
 			GROUP BY [e].[id]
 			ORDER BY [join2].[name] ASC
-		", $this->c->orderBy('join2->name')->{'findByJoin2->join1->name'}('xyz'));
+		", $this->c->orderBy('join2->name')->findBy(array('join2->join1->name' => 'xyz')));
 	}
 
 	public function testUnexistFK()

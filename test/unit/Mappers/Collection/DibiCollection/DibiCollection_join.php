@@ -100,7 +100,10 @@ class DibiCollection_join4_Mapper extends DibiCollection_join_Mapper
 {
 	public function findAll()
 	{
-		return parent::findAll()->{'findByJoin1->join3->type'}('aaa')->{'findByJoin1->type'}('bbb');
+		return parent::findAll()
+			->findBy(array('join1->join3->type' => 'aaa'))
+			->findBy(array('join1->type' => 'bbb'))
+		;
 	}
 }
 
