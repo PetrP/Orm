@@ -26,6 +26,7 @@ class MetaData_Test_Entity extends Entity
 	const YYY = 'yyy';
 }
 
+
 class MetaData_Test2_Entity extends MetaData_Test_Entity {}
 
 class MetaData_Test2Repository extends Repository
