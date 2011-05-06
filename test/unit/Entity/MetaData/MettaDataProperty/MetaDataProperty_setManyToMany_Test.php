@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../../../boot.php';
  * @covers MetaDataProperty::setManyToMany
  * @covers MetaDataProperty::setToMany
  * @covers RelationshipLoader::__construct
+ * @covers RelationshipLoader::check
  */
 class MetaDataProperty_setManyToMany_Test extends TestCase
 {
