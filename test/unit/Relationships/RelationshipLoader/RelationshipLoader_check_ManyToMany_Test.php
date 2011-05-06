@@ -70,7 +70,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 
 /**
  * @property $manyAnotherParam {m:m RelationshipLoader_ManyToMany2_ manyAnotherParam}
- * @property $many {m:m RelationshipLoader_ManyToMany2_ many}
+ * @property $many {m:m RelationshipLoader_ManyToMany2_ many mapped}
  */
 class RelationshipLoader_ManyToMany1_Entity extends Entity
 {
@@ -90,8 +90,8 @@ class RelationshipLoader_ManyToMany1_Entity extends Entity
 
 /**
  * @property $manyEmptyParam {m:m RelationshipLoader_ManyToMany1_}
- * @property $manyAnotherParam {m:m RelationshipLoader_ManyToMany1_ manyAnotherParam}
- * @property $manyAnotherRepo {m:m RelationshipLoader_ManyToMany3_ many}
+ * @property $manyAnotherParam {m:m RelationshipLoader_ManyToMany1_ manyAnotherParam mapped}
+ * @property $manyAnotherRepo {m:m RelationshipLoader_ManyToMany3_ many mapped}
  * @property $many {m:m RelationshipLoader_ManyToMany1_ many}
  */
 class RelationshipLoader_ManyToMany2_Entity extends Entity

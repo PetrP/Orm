@@ -40,9 +40,9 @@ class EntityValue_injectionToEntityValue_injection extends OldManyToMany
 	}
 
 	public $create = 0;
-	public function __construct(IEntity $entity, $repository, $param, $value = NULL)
+	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mappedByParent, $value = NULL)
 	{
-		parent::__construct($entity, $repository, $param, $value);
+		parent::__construct($parent, $repository, $childParam, $parentParam, $mappedByParent, $value);
 		$this->create++;
 	}
 

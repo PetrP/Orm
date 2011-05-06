@@ -97,6 +97,52 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		;
 		$this->t($p, 'ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
 	}
+
+	public function testMapBoth()
+	{
+		MetaData::clean();
+		MetaData_Test3_Entity::$mapped = true;
+		MetaData_Test4_Entity::$mapped = true;
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
+		MetaData::getEntityRules('MetaData_Test3_Entity');
+	}
+
+	public function testMapNone1()
+	{
+		MetaData::clean();
+		MetaData_Test3_Entity::$mapped = false;
+		MetaData_Test4_Entity::$mapped = false;
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		MetaData::getEntityRules('MetaData_Test3_Entity');
+	}
+
+	public function testMapNone2()
+	{
+		MetaData::clean();
+		MetaData_Test3_Entity::$mapped = NULL;
+		MetaData_Test4_Entity::$mapped = NULL;
+		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		MetaData::getEntityRules('MetaData_Test3_Entity');
+	}
+
+	public function testMapOk1()
+	{
+		MetaData::clean();
+		MetaData_Test3_Entity::$mapped = true;
+		MetaData_Test4_Entity::$mapped = false;
+		MetaData::getEntityRules('MetaData_Test3_Entity');
+		$this->assertTrue(true);
+	}
+
+	public function testMapOk2()
+	{
+		MetaData::clean();
+		MetaData_Test3_Entity::$mapped = false;
+		MetaData_Test4_Entity::$mapped = true;
+		MetaData::getEntityRules('MetaData_Test3_Entity');
+		$this->assertTrue(true);
+	}
+
 }
 
 class MetaDataProperty_setManyToMany_ManyToMany extends OldManyToMany

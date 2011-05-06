@@ -196,7 +196,7 @@ class MetaDataProperty extends Object
 	 * @see self::setOneToMany()
 	 * @see self::setManyToMany()
 	 */
-	private function setToMany($relationship, $repositoryName, $param)
+	private function setToMany($relationship, $repositoryName, $param, $mappedByThis = NULL)
 	{
 		if (isset($this->data['relationship']))
 		{
@@ -215,7 +215,7 @@ class MetaDataProperty extends Object
 		}
 
 
-		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name);
+		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name, $mappedByThis);
 		$this->setInjection(callback($loader, 'create'));
 		$this->data['relationship'] = $relationship;
 		$this->data['relationshipParam'] = $loader;
@@ -257,10 +257,10 @@ class MetaDataProperty extends Object
 	 * @return array
 	 * @see self::setOneToMany()
 	 */
-	public function builtParamsOneToMany($string)
+	public function builtParamsOneToMany($string, $slice = 2)
 	{
 		$string = preg_replace('#\s+#', ' ', trim($string));
-		return array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, 2) + array(NULL, NULL);
+		return array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, $slice) + array(NULL, NULL);
 	}
 
 	/**
@@ -283,15 +283,17 @@ class MetaDataProperty extends Object
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */
-	public function setManyToMany($repositoryName = NULL, $param = NULL)
+	public function setManyToMany($repositoryName = NULL, $param = NULL, $mappedByThis = NULL)
 	{
-		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param);
+		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param, $mappedByThis);
 		return $this;
 	}
 
 	/**
 	 * <pre>
 	 * repositoryName paramName
+	 * repositoryName paramName mappedByThis
+	 * repositoryName paramName map
 	 * </pre>
 	 *
 	 * @param string
@@ -300,7 +302,16 @@ class MetaDataProperty extends Object
 	 */
 	public function builtParamsManyToMany($string)
 	{
-		return $this->builtParamsOneToMany($string);
+		$arr = $this->builtParamsOneToMany($string, 3);
+		if (isset($arr[2]) AND stripos($arr[2], 'map') !== false)
+		{
+			$arr[2] = true;
+		}
+		else
+		{
+			$arr[2] = NULL;
+		}
+		return $arr;
 	}
 
 	/**

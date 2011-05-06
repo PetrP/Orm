@@ -39,3 +39,39 @@ class MetaData_Test2Mapper extends ArrayMapper
 		return array();
 	}
 }
+
+class MetaData_Test3_Entity extends Entity
+{
+	public static $mapped;
+	public static function createMetaData($entityClass)
+	{
+		$meta = parent::createMetaData($entityClass);
+		$meta->addProperty('many', '')
+			->setManyToMany('MetaData_Test4', 'many', self::$mapped)
+		;
+		return $meta;
+	}
+}
+class MetaData_Test3Repository extends Repository
+{
+	protected $entityClassName = 'MetaData_Test3_Entity';
+}
+class MetaData_Test3Mapper extends TestsMapper {}
+
+class MetaData_Test4_Entity extends Entity
+{
+	public static $mapped;
+	public static function createMetaData($entityClass)
+	{
+		$meta = parent::createMetaData($entityClass);
+		$meta->addProperty('many', '')
+			->setManyToMany('MetaData_Test3', 'many', self::$mapped)
+		;
+		return $meta;
+	}
+}
+class MetaData_Test4Repository extends Repository
+{
+	protected $entityClassName = 'MetaData_Test4_Entity';
+}
+class MetaData_Test4Mapper extends TestsMapper {}

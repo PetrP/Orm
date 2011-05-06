@@ -47,19 +47,26 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 */
 	private $initialValue;
 
-	private $mappedByParent = true; // todo
-	private $parentParam = 'xyz'; // todo
+	/** @var bool */
+	private $mappedByParent;
+
+	/** @var string */
+	private $parentParam;
 
 	/**
 	 * @param IEntity
 	 * @param IRepository|string repositoryName for lazy load
-	 * @param string|NULL m:1 param on child entity
+	 * @param string m:1 param on child entity
+	 * @param string m:1 param on parent entity
+	 * @param bool
 	 * @param mixed
 	 */
-	public function __construct(IEntity $parent, $repository, $param = NULL, $value = NULL)
+	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mappedByParent, $value = NULL)
 	{
 		$this->parent = $parent;
-		$this->param = $param;
+		$this->parentParam = $parentParam;
+		$this->param = $childParam;
+		$this->mappedByParent = $mappedByParent;
 		$this->initialValue = $value;
 		parent::__construct($repository);
 	}

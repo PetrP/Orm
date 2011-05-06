@@ -13,6 +13,12 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	/** @var string */
 	private $param;
 
+	/** @var string */
+	private $parentParam;
+
+	/** @var bool */
+	private $mappedByThis;
+
 	/**
 	 * @see self::check()
 	 * @var array|NULL
@@ -32,8 +38,9 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	 * @param string
 	 * @param string
 	 * @param string
+	 * @param bool|NULL
 	 */
-	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam)
+	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam, $mappedByThis = NULL)
 	{
 		$mainClass = $relationship === MetaData::ManyToMany ? 'ManyToMany' : 'OneToMany';
 		if (!class_exists($class))
@@ -69,14 +76,23 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 				throw new InvalidStateException("$repositoryName isn't repository in {$entityName}::\${$parentParam}");
 			}
 		}
-		if ($relationship === MetaData::ManyToMany AND $param)
+		if ($relationship === MetaData::ManyToMany)
 		{
-			$this->checkParams = array($relationship, $entityName, $parentParam);
+			if ($param)
+			{
+				$this->checkParams = array($relationship, $entityName);
+			}
+			else
+			{
+				$mappedByThis = true;
+			}
 		}
 
 		$this->class = $class;
 		$this->repository = $repositoryName;
+		$this->parentParam = $parentParam;
 		$this->param = $param;
+		$this->mappedByThis = (bool) $mappedByThis;
 	}
 
 	/**
@@ -85,9 +101,10 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	public function check()
 	{
 		if (!$this->checkParams) return;
-		list($relationship, $entityName, $parentParam) = $this->checkParams;
+		list($relationship, $entityName) = $this->checkParams;
 		$this->checkParams = NULL;
 		$param = $this->param;
+		$parentParam = $this->parentParam;
 		if ($relationship === MetaData::ManyToMany AND $param)
 		{
 			$this->canConnectWith = array();
@@ -117,6 +134,14 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 						{
 							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny parametr ({$loader->param})");
 						}
+						if ($this->mappedByThis === true AND $loader->mappedByThis === true)
+						{
+							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
+						}
+						if ($this->mappedByThis === false AND $loader->mappedByThis === false)
+						{
+							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
+						}
 						continue;
 					} catch (Exception $e) {}
 				}
@@ -139,7 +164,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	public function create($className, IEntity $parent, $value = NULL)
 	{
 		if ($this->class !== $className) throw new InvalidStateException();
-		return new $className($parent, $this->repository, $this->param, $value);
+		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mappedByThis, $value);
 	}
 
 }
