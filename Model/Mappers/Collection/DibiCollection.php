@@ -282,7 +282,7 @@ class DibiCollection extends Object implements IEntityCollection
 		throw new NotImplementedException();
 	}
 
-	final protected function findBy(array $where)
+	final public function findBy(array $where)
 	{
 		$all = $this->toCollection();
 		$all->findBy[] = $where;
@@ -299,7 +299,7 @@ class DibiCollection extends Object implements IEntityCollection
 		);
 	}
 
-	final protected function getBy(array $where)
+	final public function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}

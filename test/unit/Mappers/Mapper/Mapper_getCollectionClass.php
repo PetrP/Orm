@@ -21,6 +21,8 @@ class Mapper_getCollectionClass_OtherCollection extends Mapper_getCollectionClas
 	public function toCollection(){}
 	public function count(){}
 	public function getIterator(){}
+	public function findBy(array $where){}
+	public function getBy(array $where){}
 }
 
 

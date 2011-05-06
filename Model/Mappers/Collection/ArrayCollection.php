@@ -403,7 +403,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return new $class($this->getResult());
 	}
 
-	final protected function findBy(array $where)
+	final public function findBy(array $where)
 	{
 		foreach ($where as $key => $value)
 		{
@@ -457,7 +457,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return new ArrayCollection($result);
 	}
 
-	final protected function getBy(array $where)
+	final public function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}

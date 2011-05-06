@@ -109,6 +109,15 @@ abstract class Mapper extends Object implements IMapper
 		return parent::__call($name, $args);
 	}
 
+	final public function findBy(array $where)
+	{
+		return $this->findAll()->findBy($where);
+	}
+
+	final public function getBy(array $where)
+	{
+		return $this->findAll()->getBy($where);
+	}
 
 	/** @deprecated */
 	final public function delete(IEntity $entity){throw new DeprecatedException('Use Mapper::remove() instead');}

@@ -150,7 +150,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 		return new $class($this->__toString(), $this->connection, $this->repository);
 	}
 
-	final protected function findBy(array $where)
+	final public function findBy(array $where)
 	{
 		$all = $this->toCollection();
 		/** @var SqlConventional */
@@ -192,7 +192,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 		return $all->toCollection();
 	}
 
-	final protected function getBy(array $where)
+	final public function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}

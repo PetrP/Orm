@@ -14,7 +14,6 @@ interface IEntityCollection extends Countable, IteratorAggregate, IModelDataSour
 	public function toArrayCollection();
 	public function toCollection();
 
-	// todo
-	//abstract protected function findBy(array $where);
-	//abstract protected function getBy(array $where);
+	public function findBy(array $where);
+	public function getBy(array $where);
 }
