@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../../boot.php';
 
 /**
  * @covers DibiCollection::join
+ * @covers DibiMapper::getJoinInfo
  */
 class DibiCollection_join_Test extends TestCase
 {

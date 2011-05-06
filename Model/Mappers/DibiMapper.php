@@ -169,12 +169,14 @@ class DibiMapper extends Mapper
 	 *  ->joins[] array(
 	 * 		alias => author
 	 * 	?	sourceKey => author
-	 * 		sourceConventionalKey => author_id
+	 * 		xConventionalKey => author_id
+	 * 		yConventionalKey => id
 	 * 		table => users
 	 * 		findBy => array
 	 * 	?	mapper => DibiMapper
 	 * 	?	conventional => IConventional
 	 * )
+	 * Work with association: OneToOne, ManyToOne, OneToMany
 	 */
 	public function getJoinInfo($key, stdClass $result = NULL)
 	{
@@ -202,10 +204,24 @@ class DibiMapper extends Mapper
 			{
 				foreach ((array) $this->repository->getEntityClassName() as $entityName)
 				{
+					static $allowed = array(MetaData::ManyToOne => true, MetaData::OneToOne => true, MetaData::OneToMany => true);
 					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 					{
-						if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
-						$this->joinInfoCache['fk'][$name] = $rule['relationshipParam'];
+						if (!isset($allowed[$rule['relationship']])) continue;
+						if ($rule['relationship'] === MetaData::OneToMany)
+						{
+							$loader = (array) $rule['relationshipParam']; // hack
+							$r = $loader["\0RelationshipLoader\0repository"];
+							$p = $loader["\0RelationshipLoader\0param"];
+							if ($r AND $p)
+							{
+								$this->joinInfoCache['fk'][$name] = array($r, 'id', $p);
+							}
+						}
+						else
+						{
+							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], NULL, 'id');
+						}
 					}
 				}
 			}
@@ -213,7 +229,7 @@ class DibiMapper extends Mapper
 			{
 				throw new InvalidStateException(get_class($this->repository) . ": neni zadna vazba na `$sourceKey`");
 			}
-			$joinRepository = $model->getRepository($this->joinInfoCache['fk'][$sourceKey]);
+			$joinRepository = $model->getRepository($this->joinInfoCache['fk'][$sourceKey][0]);
 			$tmp['mapper'] = $joinRepository->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
 			{
@@ -228,7 +244,8 @@ class DibiMapper extends Mapper
 				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
-			$tmp['sourceConventionalKey'] = key($conventional->formatEntityToStorage(array($sourceKey => NULL)));
+			$tmp['xConventionalKey'] = key($conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL)));
+			$tmp['yConventionalKey'] = key($tmp['conventional']->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][2] => NULL)));
 			$tmp['alias'] = $sourceKey;
 
 			$collection = $tmp['mapper']->findAll();

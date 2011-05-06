@@ -337,7 +337,7 @@ class DibiCollection extends Object implements IEntityCollection
 			{
 				$this->join[$join['alias']] = array(
 					"LEFT JOIN %n as %n ON %n = %n",
-					$join['table'], $join['alias'], $join['alias'] . '.id', $lastAlias . '.' . $join['sourceConventionalKey']
+					$join['table'], $join['alias'], $join['alias'] . '.' . $join['yConventionalKey'], $lastAlias . '.' . $join['xConventionalKey']
 				);
 				if ($join['findBy'])
 				{
