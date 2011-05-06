@@ -307,4 +307,25 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(new Html, true);
 	}
 
+	public function testScalar()
+	{
+		$this->type = 'scalar';
+		$this->t(NULL, false);
+		$this->t(false, true);
+		$this->t(true, true);
+		$this->t('', true);
+		$this->t(' ', true);
+		$this->t('xx', true);
+		$this->t("\0", true);
+		$this->t('0', true);
+		$this->t('1', true);
+		$this->t(1, true);
+		$this->t(0, true);
+		$this->t(5.69, true);
+		$this->t(array(), false);
+		$this->t(array('xx' => 'aa'), false);
+		$this->t((object) array(), false);
+		$this->t(new ArrayObject, false);
+	}
+
 }

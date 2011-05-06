@@ -93,7 +93,6 @@ class MetaDataProperty extends Object
 			'integer' => 'int',
 			'boolean' => 'bool',
 			'text' => 'string',
-			//'scalar' => '', todo
 		);
 
 		$tmp = array();
