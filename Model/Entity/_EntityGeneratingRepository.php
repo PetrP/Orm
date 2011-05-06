@@ -28,7 +28,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	/**
 	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
 	 * @param IRepository
-	 * @param int
+	 * @param scalar
 	 */
 	protected function onPersist(IRepository $repository, $id)
 	{

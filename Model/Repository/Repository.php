@@ -106,7 +106,7 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
-	 * @param int
+	 * @param scalar
 	 * @return IEntity|NULL
 	 */
 	final public function getById($id)
@@ -224,7 +224,7 @@ abstract class Repository extends Object implements IRepository
 	 * @see Entity::onBeforeRemove()
 	 * @see Entity::onAfterRemove()
 	 *
-	 * @param int|IEntity
+	 * @param scalar|IEntity
 	 * @return bool
 	 */
 	final public function remove($entity)

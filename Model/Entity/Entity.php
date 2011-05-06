@@ -20,7 +20,7 @@ require_once dirname(__FILE__) . '/_EntityBase.php';
 abstract class Entity extends _EntityBase implements IEntity
 {
 
-	/** @return int */
+	/** @return scalar */
 	final public function getId()
 	{
 		$id = $this->getValue('id');

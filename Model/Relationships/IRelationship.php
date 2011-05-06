@@ -6,19 +6,19 @@ interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 
 	/**
-	 * @param IEntity|int|array
+	 * @param IEntity|scalar|array
 	 * @return IEntity
 	 */
 	function add($entity);
 
 	/**
-	 * @param array of IEntity|int|array
+	 * @param array of IEntity|scalar|array
 	 * @return IRelationship $this
 	 */
 	function set(array $data);
 
 	/**
-	 * @param IEntity|int|array
+	 * @param IEntity|scalar|array
 	 * @return IEntity
 	 */
 	function remove($entity);

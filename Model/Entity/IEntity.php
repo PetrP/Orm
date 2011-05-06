@@ -40,7 +40,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * @param IEntity
 	 * @param string nazev udalosti
 	 * @param IRepository
-	 * @param array|int $data (onLoad) or $id (onPersist)
+	 * @param array|scalar $data (onLoad) or $id (onPersist)
 	 */
 	public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL);
 
@@ -98,7 +98,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	/**
 	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
 	 * @param IRepository
-	 * @param int
+	 * @param scalar
 	 */
 	//protected function onPersist(IRepository $repository, $id);
 

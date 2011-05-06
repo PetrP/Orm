@@ -60,7 +60,7 @@ interface IRepository
 {
 
 	/**
-	 * @param int
+	 * @param scalar
 	 * @return IEntity
 	 */
 	public function getById($id);
@@ -91,7 +91,7 @@ interface IRepository
 	 * @see Entity::onBeforeRemove()
 	 * @see Entity::onAfterRemove()
 	 *
-	 * @param int|IEntity
+	 * @param scalar|IEntity
 	 * @return bool
 	 */
 	public function remove($entity);

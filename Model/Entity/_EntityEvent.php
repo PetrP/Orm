@@ -55,7 +55,7 @@ abstract class _EntityEvent extends Object
 	/**
 	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
 	 * @param IRepository
-	 * @param int
+	 * @param scalar
 	 */
 	protected function onPersist(IRepository $repository, $id)
 	{
@@ -123,7 +123,7 @@ abstract class _EntityEvent extends Object
 	 * @param IEntity
 	 * @param string nazev udalosti
 	 * @param IRepository
-	 * @param array|int $data (onLoad) or $id (onPersist)
+	 * @param array|scalar $data (onLoad) or $id (onPersist)
 	 */
 	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
 	{

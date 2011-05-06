@@ -220,7 +220,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 
 			if ($this->conds)
 			{
-				if (count($this->conds) === 1 AND count($this->conds[0]) === 2 AND preg_match('#^\s*\[id\]\s*\=\s*\%i\s*$#',$this->conds[0][0]) AND is_numeric($this->conds[0][1]))
+				if (count($this->conds) === 1 AND count($this->conds[0]) === 2 AND preg_match('#^\s*\[id\]\s*\=\s*\%[i|s]\s*$#',$this->conds[0][0]) AND is_scalar($this->conds[0][1]))
 				{
 					$copySource = $source;
 					$source = array();

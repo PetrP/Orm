@@ -99,7 +99,7 @@ class DibiMapper extends Mapper
 	public function remove(IEntity $entity)
 	{
 		$this->begin();
-		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %i', $entity->id)->execute();
+		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %s', $entity->id)->execute();
 	}
 
 	public function flush()
@@ -147,7 +147,7 @@ class DibiMapper extends Mapper
 	public function getById($id)
 	{
 		if (!$id) return NULL;
-		return $this->findAll()->where('[id] = %i', $id)->applyLimit(1)->fetch();
+		return $this->findAll()->where('[id] = %s', $id)->applyLimit(1)->fetch();
 	}
 
 	protected function getTableName()
@@ -400,10 +400,10 @@ class DibiPersistenceHelper extends Object
 		// todo vytvorit moznost zkontrolovat db, kde se budou kontrolovat jestli nejaky radek nechybi, nebo naopak nepribyva, jestli nekte nechyby NULL (nebo naopak), mozna i zkontrolovat default hodnoy, a typy
 		$values = $tmp;
 
-		if (isset($entity->id) AND $this->connection->fetch('SELECT [id] FROM %n WHERE [id] = %i', $table, $entity->id))
+		if (isset($entity->id) AND $this->connection->fetch('SELECT [id] FROM %n WHERE [id] = %s', $table, $entity->id))
 		{
 			$id = $entity->id;
-			$this->connection->update($table, $values)->where('[id] = %i', $id)->execute();
+			$this->connection->update($table, $values)->where('[id] = %s', $id)->execute();
 		}
 		else
 		{

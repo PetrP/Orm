@@ -177,7 +177,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	/**
 	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
 	 * @param IRepository
-	 * @param int
+	 * @param scalar
 	 */
 	final protected function onPersist(IRepository $repository, $id)
 	{
