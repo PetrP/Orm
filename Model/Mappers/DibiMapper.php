@@ -180,7 +180,7 @@ class DibiMapper extends Mapper
 	 * 	?	mapper => DibiMapper
 	 * 	?	conventional => IConventional
 	 * )
-	 * Work with association: OneToOne, ManyToOne, OneToMany
+	 * Work with all propel defined association.
 	 */
 	public function getJoinInfo($key, stdClass $result = NULL)
 	{
@@ -208,10 +208,8 @@ class DibiMapper extends Mapper
 			{
 				foreach ((array) $this->repository->getEntityClassName() as $entityName)
 				{
-					static $allowed = array(MetaData::ManyToOne => true, MetaData::OneToOne => true, MetaData::OneToMany => true);
 					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 					{
-						if (!isset($allowed[$rule['relationship']])) continue;
 						if ($rule['relationship'] === MetaData::OneToMany)
 						{
 							$loader = (array) $rule['relationshipParam']; // hack
@@ -220,6 +218,32 @@ class DibiMapper extends Mapper
 							if ($r AND $p)
 							{
 								$this->joinInfoCache['fk'][$name] = array($r, 'id', $p);
+							}
+						}
+						else if ($rule['relationship'] === MetaData::ManyToMany)
+						{
+							$loader = (array) $rule['relationshipParam']; // hack
+							$r = $loader["\0RelationshipLoader\0repository"];
+							$p = $loader["\0RelationshipLoader\0param"];
+							if ($r AND $p)
+							{
+								$parentRepository = $this->getRepository();
+								$childRepository = $this->getModel()->getRepository($r);
+								$childParam = $loader["\0RelationshipLoader\0param"];
+								$parentParam = $loader["\0RelationshipLoader\0parentParam"];
+								if ($loader["\0RelationshipLoader\0mappedByThis"])
+								{
+									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
+									$parentParam = $manyToManyMapper->firstParam;
+									$childParam = $manyToManyMapper->secondParam;
+								}
+								else
+								{
+									$manyToManyMapper = $childRepository->getMapper()->createManyToManyMapper($childParam, $parentRepository, $parentParam);
+									$parentParam = $manyToManyMapper->secondParam;
+									$childParam = $manyToManyMapper->firstParam;
+								}
+								$this->joinInfoCache['fk'][$name] = array($r, $childParam, 'id', array($manyToManyMapper->table, 'id', $parentParam));
 							}
 						}
 						else
@@ -232,6 +256,18 @@ class DibiMapper extends Mapper
 			if (!isset($this->joinInfoCache['fk'][$sourceKey]))
 			{
 				throw new InvalidStateException(get_class($this->repository) . ": neni zadna vazba na `$sourceKey`");
+			}
+			$manyToManyJoin = NULL;
+			if (isset($this->joinInfoCache['fk'][$sourceKey][3]))
+			{
+				$manyToManyJoin = $this->joinInfoCache['fk'][$sourceKey][3];
+				$manyToManyJoin = array(
+					'alias' => 'm2m__' . $sourceKey,
+					'xConventionalKey' => $manyToManyJoin[1],
+					'yConventionalKey' => $manyToManyJoin[2],
+					'table' => $manyToManyJoin[0],
+					'findBy' => array(),
+				);
 			}
 			$joinRepository = $model->getRepository($this->joinInfoCache['fk'][$sourceKey][0]);
 			$tmp['mapper'] = $joinRepository->getMapper();
@@ -264,17 +300,18 @@ class DibiMapper extends Mapper
 			}
 			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
 
-			$this->joinInfoCache['cache'][$sourceKey] = $tmp;
+			$this->joinInfoCache['cache'][$sourceKey] = $manyToManyJoin ? array($manyToManyJoin, $tmp) : array($tmp);
 		}
 
-		$join = $this->joinInfoCache['cache'][$sourceKey];
-
-		if ($lastJoin)
+		foreach ($this->joinInfoCache['cache'][$sourceKey] as $join)
 		{
-			$join['alias'] = $lastJoin['alias'] . '->' . $join['alias'];
+			if ($lastJoin)
+			{
+				$join['alias'] = $lastJoin['alias'] . '->' . $join['alias'];
+			}
+			$result->joins[] = $join;
 		}
 
-		$result->joins[] = $join;
 		if ($next)
 		{
 			$result = $join['mapper']->getJoinInfo($targetKey . '->' . $next, $result);
