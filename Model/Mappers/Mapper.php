@@ -101,7 +101,7 @@ abstract class Mapper extends Object implements IMapper
 	{
 		if (!method_exists($this, $name))
 		{
-			if (substr($name, 0, 6) === 'findBy' OR substr($name, 0, 5) === 'getBy')
+			if (strncasecmp($name, 'findBy', 6) === 0 OR strncasecmp($name, 'getBy', 5) === 0)
 			{
 				return call_user_func_array(array($this->findAll(), $name), $args);
 			}

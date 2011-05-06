@@ -6,14 +6,14 @@ class FindByHelper
 	public static function parse(& $name, array & $args)
 	{
 		$mode = $by = NULL;
-		if (substr($name, 0, 6) === 'findBy')
+		if (strncasecmp($name, 'findBy', 6) === 0)
 		{
-			$mode = 'find';
+			$mode = 'findBy';
 			$by = substr($name, 6);
 		}
-		else if (substr($name, 0, 5) === 'getBy')
+		else if (strncasecmp($name, 'getBy', 5) === 0)
 		{
-			$mode = 'get';
+			$mode = 'getBy';
 			$by = substr($name, 5);
 		}
 
@@ -31,7 +31,7 @@ class FindByHelper
 			{
 				throw new InvalidArgumentException("There is extra value in '$name'.");
 			}
-			$name = $mode === 'get' ? 'getBy' : 'findBy';
+			$name = $mode;
 			$args = $where;
 			return true;
 		}

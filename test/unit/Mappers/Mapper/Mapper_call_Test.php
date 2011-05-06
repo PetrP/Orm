@@ -28,14 +28,12 @@ class Mapper_call_Test extends TestCase
 
 	public function testFindByCaseInsensitive()
 	{
-		$this->markTestSkipped();
 		$this->assertSame('xyz', $this->m->fIndbyName('abc'));
 		$this->assertSame(array('fIndbyName', array('abc')), Mapper_call_Collection::$last);
 	}
 
 	public function testGetByCaseInsensitive()
 	{
-		$this->markTestSkipped();
 		$this->assertSame('xyz', $this->m->gEtbyName('abc'));
 		$this->assertSame(array('gEtbyName', array('abc')), Mapper_call_Collection::$last);
 	}
