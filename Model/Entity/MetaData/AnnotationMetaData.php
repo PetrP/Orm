@@ -203,15 +203,164 @@ class AnnotationMetaData extends Object
 		}
 		$params = isset($match[2]) ? $match[2] : NULL;
 		$paramMethod = "builtParams{$name}";
-		if (method_exists($property, $paramMethod))
+		if (method_exists($this, $paramMethod))
 		{
-			$params = $property->$paramMethod($params);
+			$params = $this->$paramMethod($params);
 		}
 		else
 		{
 			$params = array($params);
 		}
 		call_user_func_array(array($property, $method), $params);
+	}
+
+	/**
+	 * <pre>
+	 * repositoryName paramName
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setOneToMany()
+	 */
+	public function builtParamsOneToMany($string, $slice = 2)
+	{
+		$string = preg_replace('#\s+#', ' ', trim($string));
+		return array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, $slice) + array(NULL, NULL);
+	}
+
+	/**
+	 * <pre>
+	 * repositoryName paramName
+	 * repositoryName paramName mappedByThis
+	 * repositoryName paramName map
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setManyToMany()
+	 */
+	public function builtParamsManyToMany($string)
+	{
+		$arr = $this->builtParamsOneToMany($string, 3);
+		if (isset($arr[2]) AND stripos($arr[2], 'map') !== false)
+		{
+			$arr[2] = true;
+		}
+		else
+		{
+			$arr[2] = NULL;
+		}
+		return $arr;
+	}
+
+	/**
+	 * Nahradi self:: za nazev entity
+	 * @param string
+	 * @return string
+	 * @see self::setEnum()
+	 * @see self::setDefault()
+	 */
+	private function builtSelf($string)
+	{
+		$string = trim($string);
+		if (substr($string, 0, 6) === 'self::')
+		{
+			$string = str_replace('self::', "{$this->class}::", $string);
+		}
+		return $string;
+	}
+
+	/**
+	 * Upravi vstupni parametry pro enum, kdyz jsou zadavany jako string (napr. v anotaci)
+	 * Vytvori pole z hodnot rozdelenych carkou, umoznuje zapis konstant.
+	 * Nebo umoznuje zavolat statickou tridu ktera vrati pole hodnot (pouzijou se klice)
+	 *
+	 * <pre>
+	 * 1, 2, 3
+	 * bla1, 'bla2', "bla3"
+	 * TRUE, false, NULL, self::CONSTANT, Foo::CONSTANT
+	 * self::tadyZiskejHodnoty()
+	 * </pre>
+	 *
+	 * @param string
+	 * @return array
+	 * @see self::setEnum()
+	 */
+	public function builtParamsEnum($string)
+	{
+		if (preg_match('#^([a-z0-9_-]+::[a-z0-9_-]+)\(\)$#si', trim($string), $tmp))
+		{
+			$enum = callback($this->builtSelf($tmp[1]))->invoke();
+			if (!is_array($enum)) throw new InvalidStateException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
+			$original = $enum = array_keys($enum);
+		}
+		else
+		{
+			$original = $enum = array();
+			foreach (explode(',', $string) as $d)
+			{
+				$d = $this->builtSelf($d);
+
+				if (is_numeric($d))
+				{
+					$value = (float) $d;
+				}
+				else if (defined($d))
+				{
+					$value = constant($d);
+				}
+				else if (strpos($d, '::') !== false)
+				{
+					throw new Exception();
+				}
+				else
+				{
+					$value = trim($d,'\'"'); // todo lepe?
+				}
+				$enum[] = $value;
+				$original[] = $d;
+			}
+		}
+		return array($enum, implode(', ', $original));
+	}
+
+	/**
+	 * Upravi vstupni parametry pro default, kdyz jsou zadavany jako string (napr. v anotaci)
+	 * Umoznuje zapsat konstantu.
+	 *
+	 * <pre>
+	 * 568
+	 * bla1
+	 * TRUE
+	 * self::CONSTANT
+	 * Foo::CONSTANT
+	 * </pre>
+	 *
+	 * @param mixed $string
+	 * @return mixed
+	 * @see self::setDefault()
+	 */
+	public function builtParamsDefault($string)
+	{
+		$string = $this->builtSelf($string);
+		if (is_numeric($string))
+		{
+			$string = (float) $string;
+		}
+		else if (defined($string))
+		{
+			$string = constant($string);
+		}
+		else if (strpos($string, '::') !== false)
+		{
+			throw new Exception();
+		}
+		else
+		{
+			$string = trim($string, '\'"'); // todo lepe?
+		}
+		return array($string);
 	}
 
 }

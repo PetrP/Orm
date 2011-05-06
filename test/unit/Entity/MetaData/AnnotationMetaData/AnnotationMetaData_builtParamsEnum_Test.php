@@ -3,17 +3,16 @@
 require_once __DIR__ . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::builtParamsEnum
- * @covers MetaDataProperty::builtSelf
+ * @covers AnnotationMetaData::builtParamsEnum
+ * @covers AnnotationMetaData::builtSelf
  */
-class MetaDataProperty_builtParamsEnum_Test extends TestCase
+class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 {
 	private $p;
 
 	protected function setUp()
 	{
-		$m = new MetaData('MetaData_Test_Entity');
-		$this->p = new MetaDataProperty($m, 'id', 'null');
+		$this->p = MockAnnotationMetaData::mockConstruct('MetaData_Test_Entity');
 	}
 
 	public function testInt()
@@ -55,7 +54,7 @@ class MetaDataProperty_builtParamsEnum_Test extends TestCase
 
 	public function testCallback()
 	{
-		$this->assertEquals(array(array('a', 'c'), 'a, c'), $this->p->builtParamsEnum('MetaDataProperty_builtParamsEnum_Test::callback()'));
+		$this->assertEquals(array(array('a', 'c'), 'a, c'), $this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::callback()'));
 	}
 
 	public function testSelfCallback()
@@ -71,14 +70,14 @@ class MetaDataProperty_builtParamsEnum_Test extends TestCase
 	public function testInvalidCallback()
 	{
 		try {
-			$this->p->builtParamsEnum('MetaDataProperty_builtParamsEnum_Test::xyz()');
+			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::xyz()');
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "Callback 'MetaDataProperty_builtParamsEnum_Test::xyz' is not callable.");
+		$this->assertException($e, 'InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_Test::xyz' is not callable.");
 
 		try {
-			$this->p->builtParamsEnum('MetaDataProperty_builtParamsEnum_Test::invalidCallback()');
+			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::invalidCallback()');
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "'MetaData_Test_Entity' '{enum MetaDataProperty_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
+		$this->assertException($e, 'InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
 	}
 
 

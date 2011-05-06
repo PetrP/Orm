@@ -3,17 +3,16 @@
 require_once __DIR__ . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::builtParamsDefault
- * @covers MetaDataProperty::builtSelf
+ * @covers AnnotationMetaData::builtParamsDefault
+ * @covers AnnotationMetaData::builtSelf
  */
-class MetaDataProperty_builtParamsDefault_Test extends TestCase
+class AnnotationMetaData_builtParamsDefault_Test extends TestCase
 {
 	private $p;
 
 	protected function setUp()
 	{
-		$m = new MetaData('MetaData_Test_Entity');
-		$this->p = new MetaDataProperty($m, 'id', 'null');
+		$this->p = MockAnnotationMetaData::mockConstruct('MetaData_Test_Entity');
 	}
 
 	public function test()
