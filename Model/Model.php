@@ -77,7 +77,7 @@ abstract class RepositoriesCollection extends Object
 	/**
 	 * Vraci posledni vytvoreny model, je pro zpetnou kompatibilitu.
 	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
-	 * Bohuzel zatim pouziva: Entity::getModel(), Entity::setValueHelper(), ManyToMany, MetaDataProperty::setOneToOne()
+	 * Bohuzel zatim pouziva: Entity::getModel(), RelationshipLoader, MetaDataProperty::setOneToOne()
 	 * @return Model
 	 * @todo di
 	 * @deprecated
