@@ -12,7 +12,12 @@ class ManyToMany_Repository extends Repository
 
 class ManyToMany_Mapper extends TestsMapper
 {
-
+	public $mmm;
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	{
+		if ($this->mmm) return $this->mmm;
+		return parent::createManyToManyMapper($firstParam, $repository, $secondParam);
+	}
 }
 
 abstract class ManyToMany_Test extends TestCase

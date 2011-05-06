@@ -24,8 +24,8 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testBad()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r);
-		$this->m2m->m = new Html;
-		$this->setExpectedException('InvalidStateException', "ManyToMany::createMapper() must return IManyToManyMapper, 'Html' given");
+		$this->e->generatingRepository->mapper->mmm = new Html;
+		$this->setExpectedException('InvalidStateException', "ManyToMany_Mapper::createManyToManyMapper() must return IManyToManyMapper, 'Html' given");
 		$this->m2m->gm();
 	}
 
@@ -60,13 +60,6 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 
 class ManyToMany_getMapper_ManyToMany extends ManyToMany
 {
-	public $m;
-	protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
-	{
-		if ($this->m) return $this->m;
-		return parent::createMapper($firstRepository, $secondRepository);
-	}
-
 	public function gm()
 	{
 		return $this->getMapper();

@@ -19,7 +19,7 @@ abstract class ArrayMapper extends Mapper
 		return 'ArrayCollection';
 	}
 
-	public function createDefaultManyToManyMapper()
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
 	{
 		return new ArrayManyToManyMapper;
 	}

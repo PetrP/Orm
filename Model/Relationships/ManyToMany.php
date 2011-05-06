@@ -36,7 +36,6 @@ class ManyToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * @see self::getMapper()
-	 * @see self::createMapper()
 	 * @var IManyToManyMapper
 	 */
 	private $mapper;
@@ -47,6 +46,9 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 * @var mixed
 	 */
 	private $initialValue;
+
+	private $mappedByParent = true; // todo
+	private $parentParam = 'xyz'; // todo
 
 	/**
 	 * @param IEntity
@@ -176,19 +178,6 @@ class ManyToMany extends BaseToMany implements IRelationship
 	}
 
 	/**
-	 * @see self::getMapper()
-	 * @param IRepository
-	 * @param IRepository
-	 * @return IManyToManyMapper
-	 */
-	protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
-	{
-		return $firstRepository->getMapper()->createDefaultManyToManyMapper();
-		// todo array jen kdyz mam na obou stranach arraymapper a mam protejsi property (protoze pole je potreba udrzovat na obou stranach)
-	}
-
-	/**
-	 * @see self::createMapper()
 	 * @return IManyToManyMapper
 	 */
 	protected function getMapper()
@@ -197,13 +186,22 @@ class ManyToMany extends BaseToMany implements IRelationship
 		{
 			if ($this->parent->getModel(false))
 			{
-				$repository = $this->getChildRepository();
-				$mapper = $this->createMapper($this->parent->getGeneratingRepository(), $repository);
+				$parentRepository = $this->parent->getGeneratingRepository();
+				$childRepository = $this->getChildRepository();
+				if ($this->mappedByParent)
+				{
+					$mapper = $parentRepository->getMapper()->createManyToManyMapper($this->parentParam, $childRepository, $this->param);
+				}
+				else
+				{
+					$mapper = $childRepository->getMapper()->createManyToManyMapper($this->param, $parentRepository, $this->parentParam);
+				}
 				if (!($mapper instanceof IManyToManyMapper))
 				{
-					throw new InvalidStateException(get_class($this) . "::createMapper() must return IManyToManyMapper, '" . (is_object($mapper) ? get_class($mapper) : gettype($mapper)) . "' given");
+					$tmp = $this->mappedByParent ? $parentRepository->getMapper() : $childRepository->getMapper();
+					throw new InvalidStateException(get_class($tmp) . "::createManyToManyMapper() must return IManyToManyMapper, '" . (is_object($mapper) ? get_class($mapper) : gettype($mapper)) . "' given");
 				}
-				$mapper->setParams(true /* todo */, $this->parent->getGeneratingRepository(), $repository); // todo
+				$mapper->setParams($this->mappedByParent);
 
 				if ($mapper instanceof ArrayManyToManyMapper)
 				{

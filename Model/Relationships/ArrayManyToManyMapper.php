@@ -17,7 +17,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 		return $this->value;
 	}
 
-	public function setParams($parentIsFirst, IRepository $firstRepository, IRepository $secondRepository)
+	public function setParams($parentIsFirst)
 	{
 
 	}

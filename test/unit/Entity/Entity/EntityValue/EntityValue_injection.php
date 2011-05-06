@@ -24,14 +24,15 @@ class EntityValue_injectionMapper extends ArrayMapper
 			'4' => array('id' => 4),
 		);
 	}
+
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	{
+		return new EntityValue_injection_ManyToManyMapper;
+	}
 }
 
 class EntityValue_injectionToEntityValue_injection extends OldManyToMany
 {
-	protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
-	{
-		return new EntityValue_injection_ManyToManyMapper;
-	}
 
 	public function getMapper()
 	{

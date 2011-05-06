@@ -4,89 +4,65 @@ require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
-	public $firstParamName;
-	public $secondParamName;
-	public $tableName;
+	/** @var string */
+	public $table;
 
-	private $firstRepository;
-	private $secondRepository;
+	/** @var string */
+	public $firstParam;
 
-	private $parentIsFirst;
+	/** @var string */
+	public $secondParam;
 
+	/** @var DibiConnection */
 	private $connection;
 
+	/** @var bool */
+	private $parentIsFirst;
+
+
+	/** @param DibiConnection */
 	public function __construct(DibiConnection $connection)
 	{
 		$this->connection = $connection;
 	}
 
-	protected function getFirstParamName()
+	final protected function getParentParam()
 	{
-		return 'first';
-		// todo
-		$conventional = $this->firstRepository->getMapper()->getConventional();
-		return $conventional->foreignKeyFormat('first');
+		return $this->parentIsFirst ? $this->firstParam : $this->secondParam;
 	}
 
-	protected function getSecondParamName()
+	final protected function getChildParam()
 	{
-		return 'second';
-		// todo
-		$conventional = $this->secondRepository->getMapper()->getConventional();
-		return $conventional->foreignKeyFormat('second');
+		return $this->parentIsFirst ? $this->secondParam : $this->firstParam;
 	}
 
-	final protected function getParentParamName()
-	{
-		return $this->parentIsFirst ? $this->firstParamName : $this->secondParamName;
-	}
-
-	final protected function getChildParamName()
-	{
-		return $this->parentIsFirst ? $this->secondParamName : $this->firstParamName;
-	}
-
-	public function setParams($parentIsFirst, IRepository $firstRepository, IRepository $secondRepository)
+	public function setParams($parentIsFirst)
 	{
 		$this->parentIsFirst = $parentIsFirst;
-		$this->firstRepository = $firstRepository;
-		$this->secondRepository = $secondRepository;
-		if (!$this->firstParamName) $this->firstParamName = $this->getFirstParamName();
-		if (!$this->secondParamName) $this->secondParamName = $this->getSecondParamName();
-	}
-
-	protected function getTableName()
-	{
-		if ($this->tableName) return $this->tableName;
-		$conventional = $this->firstRepository->getMapper()->getConventional();
-		return $conventional->getManyToManyTableName($this->firstRepository, $this->secondRepository);
+		if (!$this->firstParam OR !$this->secondParam OR !$this->table) throw new Exception();
 	}
 
 	public function add(IEntity $parent, array $ids)
 	{
-		$connection = $this->connection;
-		$table = $this->getTableName();
 		$parentId = $parent->id;
-		$parentParamName = $this->getParentParamName();
-		$childParamName = $this->getChildParamName();
+		$parentParam = $this->getParentParam();
+		$childParam = $this->getChildParam();
 		foreach ($ids as $childId)
 		{
 			// todo jeden dotaz
-			$connection->insert($table, array(
-				$parentParamName => $parentId,
-				$childParamName => $childId,
+			$this->connection->insert($this->table, array(
+				$parentParam => $parentId,
+				$childParam => $childId,
 			))->execute();
 		}
 	}
 
 	public function remove(IEntity $parent, array $ids)
 	{
-		$connection = $this->connection;
-		$parentId = $parent->id;
-		$connection->delete($this->getTableName())
+		$this->connection->delete($this->table)
 			->where('%n = %s AND %n IN %in',
-				$this->getParentParamName(), $parentId,
-				$this->getChildParamName(), $ids
+				$this->getParentParam(), $parent->id,
+				$this->getChildParam(), $ids
 			)->execute()
 		;
 	}
@@ -94,12 +70,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public function load(IEntity $parent)
 	{
 		if (!isset($parent->id)) return array();
-		$table = $this->getTableName();
-		$connection = $this->connection;
-		return $connection->select($this->getChildParamName())
-			->from($this->getTableName())
+		return $this->connection->select($this->getChildParam())
+			->from($this->table)
 			->where('%n = %s',
-				$this->getParentParamName(), $parent->id
+				$this->getParentParam(), $parent->id
 			)->fetchPairs()
 		;
 	}

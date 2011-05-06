@@ -104,9 +104,8 @@ class SqlConventional extends Object implements IConventional
 	 * fk
 	 * @param  string
 	 * @return string
-	 * @todo public?
 	 */
-	public function foreignKeyFormat($s)
+	protected function foreignKeyFormat($s)
 	{
 		return $s . '_id';
 	}
@@ -115,10 +114,22 @@ class SqlConventional extends Object implements IConventional
 	 * @todo
 	 * @param IRepository
 	 * @param IRepository
+	 * @return string
 	 */
-	public function getManyToManyTableName(IRepository $first, IRepository $second)
+	public function getManyToManyTable(IRepository $first, IRepository $second)
 	{
 		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
+	}
+
+	/**
+	 * @todo
+	 * @param string
+	 * @return string
+	 */
+	public function getManyToManyParam($param)
+	{
+		$param = key($this->formatEntityToStorage(array($param => NULL)));
+		return $this->foreignKeyFormat($param);
 	}
 
 	/**
@@ -169,5 +180,9 @@ class SqlConventional extends Object implements IConventional
 		throw new DeprecatedException();
 		return $this->entityFormat($key);
 	}
-
+	/** @ignore @deprecated */
+	final public function getManyToManyTableName(IRepository $first, IRepository $second)
+	{
+		return $this->getManyToManyTable($first, $second);
+	}
 }

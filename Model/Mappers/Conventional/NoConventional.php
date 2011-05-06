@@ -33,12 +33,22 @@ class NoConventional extends Object implements IConventional
 	 * @todo
 	 * @param IRepository
 	 * @param IRepository
+	 * @return string
 	 */
-	public function getManyToManyTableName(IRepository $first, IRepository $second)
+	public function getManyToManyTable(IRepository $first, IRepository $second)
 	{
 		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
 	}
 
+	/**
+	 * @todo
+	 * @param string
+	 * @return string
+	 */
+	public function getManyToManyParam($param)
+	{
+		return $param;
+	}
 
 	/** @ignore @deprecated */
 	final public function format($data)
@@ -51,5 +61,10 @@ class NoConventional extends Object implements IConventional
 	{
 		throw new DeprecatedException();
 		return $this->formatStorageToEntity($data);
+	}
+	/** @ignore @deprecated */
+	final public function getManyToManyTableName(IRepository $first, IRepository $second)
+	{
+		return $this->getManyToManyTable($first, $second);
 	}
 }

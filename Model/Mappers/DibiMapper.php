@@ -155,10 +155,14 @@ class DibiMapper extends Mapper
 		return $this->repository->getRepositoryName();
 	}
 
-	public function createDefaultManyToManyMapper()
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
 	{
-		$c = $this->getConnection();
-		return new DibiManyToManyMapper($c);
+		$mapper = new DibiManyToManyMapper($this->getConnection());
+		$c = $this->getConventional();
+		$mapper->table = $c->getManyToManyTable($this->getRepository(), $repository);
+		$mapper->firstParam = $c->getManyToManyParam($firstParam);
+		$mapper->secondParam = $c->getManyToManyParam($secondParam);;
+		return $mapper;
 	}
 
 	/**

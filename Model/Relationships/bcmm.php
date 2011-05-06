@@ -57,7 +57,15 @@ abstract class OldManyToMany extends ManyToMany
 		return $this->getModel()->getRepository(substr(get_class($this), strpos(get_class($this), 'To') + 2));
 	}
 
-
+	/**
+	 * @deprecated
+	 * @see Mapper::createManyToManyMapper()
+	 */
+	final protected function createMapper(IRepository $firstRepository, IRepository $secondRepository)
+	{
+		throw new DeprecatedException();
+		// todo array jen kdyz mam na obou stranach arraymapper a mam protejsi property (protoze pole je potreba udrzovat na obou stranach)
+	}
 
 	final protected function getFirstParamName() {throw new DeprecatedException();}
 	final protected function getSecondParamName() {throw new DeprecatedException();}
