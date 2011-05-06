@@ -122,18 +122,18 @@ abstract class _EntityBase extends _EntityValue
 
 
 
-	/** @deprecated */
-	const ENTITY_TO_ID = EntityToArray::AS_ID;
-	/** @deprecated */
-	const ENTITY_TO_ARRAY = EntityToArray::AS_ARRAY;
-	/** @deprecated */
-	const EXISTS = NULL;
-	/** @deprecated */
-	const READ = MetaData::READ;
-	/** @deprecated */
-	const WRITE = MetaData::WRITE;
-	/** @deprecated */
-	const READWRITE = MetaData::READWRITE;
+	/** @deprecated @see EntityToArray::AS_ID */
+	const ENTITY_TO_ID = 'deprecated';
+	/** @deprecated @see EntityToArray::AS_ARRAY */
+	const ENTITY_TO_ARRAY = 'deprecated';
+	/** @deprecated @see NULL */
+	const EXISTS = 'deprecated';
+	/** @deprecated @see MetaData::READ */
+	const READ = 'deprecated';
+	/** @deprecated @see MetaData::WRITE */
+	const WRITE = 'deprecated';
+	/** @deprecated @see MetaData::READWRITE */
+	const READWRITE = 'deprecated';
 	/** @deprecated */
 	final protected function check(){throw new DeprecatedException('Use Entity::onBeforePersist() instead');}
 	/** @deprecated */
