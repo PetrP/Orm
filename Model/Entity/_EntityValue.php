@@ -355,6 +355,10 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	{
 		if (isset($this->rules[$name]['get']))
 		{
+			if (isset($this->valid[$name]) AND $this->valid[$name])
+			{
+				return isset($this->values[$name]);
+			}
 			try {
 				return $this->__get($name) !== NULL;
 			} catch (Exception $e) {
