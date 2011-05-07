@@ -30,10 +30,20 @@ class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatE
 		$this->t('123', '123');
 		$this->t('1b_c', '1bC');
 		$this->t('same_thing_same_thing', 'sameThingSameThing');
-		$this->t('abč', "ab\xe4\x9d"); // neumi pracovat z neascii
 
 		$this->t('_a_b_c', 'ABC');
 		$this->t('__a_b_c', '_ABC');
+	}
+
+	public function testSpecialChar()
+	{
+		$oldLocale = setlocale(LC_ALL, 0);
+		if (!setlocale(LC_ALL, 'en_US.iso8859-1') AND !setlocale(LC_ALL, 'English_United States.1252'))
+		{
+			throw new Exception('setlocale');
+		}
+		$this->t('abč', "ab\xe4\x8d"); // strtolower
+		setlocale(LC_ALL, $oldLocale);
 	}
 
 	public function testArray()
