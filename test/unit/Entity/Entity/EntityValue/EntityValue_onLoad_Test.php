@@ -18,7 +18,7 @@ class EntityValue_onLoad_Test extends TestCase
 	public function test()
 	{
 		$e = $this->r->getById(1);
-		$this->assertSame(array(), $this->readAttribute($e, 'valid'));
+		$this->assertSame(array('id' => true), $this->readAttribute($e, 'valid'));
 		$this->assertInternalType('array', $this->readAttribute($e, 'values'));
 		$this->assertSame(false, $e->isChanged());
 		$this->assertInternalType('array', $this->readAttribute($e, 'rules'));
@@ -27,8 +27,15 @@ class EntityValue_onLoad_Test extends TestCase
 	public function test2()
 	{
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->r, array('xxx' => 'yyy'));
-		$this->assertSame(array('xxx' => 'yyy'), $this->readAttribute($e, 'values'));
+		$e->___event($e, 'load', $this->r, array('xxx' => 'yyy', 'id' => 1));
+		$this->assertSame(array('xxx' => 'yyy', 'id' => 1), $this->readAttribute($e, 'values'));
+	}
+
+	public function testBadId()
+	{
+		$e = new TestEntity;
+		$this->setExpectedException('UnexpectedValueException', "Param TestEntity::\$id must be 'id', 'integer' given");
+		$e->___event($e, 'load', $this->r, array('id' => 0));
 	}
 
 }

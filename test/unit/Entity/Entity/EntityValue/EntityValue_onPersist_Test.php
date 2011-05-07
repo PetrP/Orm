@@ -38,8 +38,15 @@ class EntityValue_onPersist_Test extends TestCase
 		$e = new TestEntity;
 		$e->___event($e, 'persist', $this->r, 123);
 		$this->assertSame(array('id' => 123), $this->readAttribute($e, 'values'));
-		$this->assertSame(array('id' => false), $this->readAttribute($e, 'valid'));
+		$this->assertSame(array('id' => true), $this->readAttribute($e, 'valid'));
 		$this->assertSame(false, $e->isChanged());
+	}
+
+	public function testBadId()
+	{
+		$e = new TestEntity;
+		$this->setExpectedException('UnexpectedValueException', "Param TestEntity::\$id must be 'id', 'integer' given");
+		$e->___event($e, 'persist', $this->r, -1);
 	}
 
 }

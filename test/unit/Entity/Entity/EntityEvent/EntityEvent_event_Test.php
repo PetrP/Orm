@@ -24,9 +24,9 @@ class EntityEvent_event_Test extends EntityEvent_event_Base
 
 	public function testMore()
 	{
-		$this->e->___event($this->e, 'load', $this->r, array('x'));
+		$this->e->___event($this->e, 'load', $this->r, array('x', 'id' => 1));
 		$this->assertSame('onLoad', $this->e->event);
-		$this->assertSame(array($this->r, array('x')), $this->e->eventParam);
+		$this->assertSame(array($this->r, array('x', 'id' => 1)), $this->e->eventParam);
 	}
 
 	public function testBadEvent()

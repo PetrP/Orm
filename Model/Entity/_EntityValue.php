@@ -172,6 +172,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		$this->rules = MetaData::getEntityRules(get_class($this));
 		$this->values = $data;
 		$this->valid = array();
+		$this->getValue('id'); // throw error if any
 	}
 
 	/**
@@ -182,9 +183,9 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	final protected function onPersist(IRepository $repository, $id)
 	{
 		parent::onPersist($repository, $id);
-		if (!$id) throw new UnexpectedValueException();
 		$this->values['id'] = $id;
 		$this->valid['id'] = false;
+		$this->getValue('id'); // throw error if any
 		$this->changed = false;
 	}
 

@@ -15,7 +15,7 @@ require_once dirname(__FILE__) . '/_EntityBase.php';
 
 
 /**
- * @property-read int $id
+ * @property-read id $id
  */
 abstract class Entity extends _EntityBase implements IEntity
 {
@@ -23,7 +23,7 @@ abstract class Entity extends _EntityBase implements IEntity
 	/** @return scalar */
 	final public function getId()
 	{
-		$id = $this->getValue('id');
+		$id = $this->getValue('id', false);
 		if (!$id) throw new InvalidStateException('You must persist entity first');
 		return $id;
 	}

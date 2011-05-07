@@ -50,6 +50,7 @@ class EntityValue_injection_Test extends TestCase
 	{
 		$this->e->___event($this->e, 'load', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
+			'id' => 1,
 		));
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
@@ -65,6 +66,7 @@ class EntityValue_injection_Test extends TestCase
 	{
 		$this->e->___event($this->e, 'load', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
+			'id' => 1,
 		));
 		$this->e->many = array(1,2,4);
 		$this->assertSame(1, $this->e->many->create);
@@ -80,6 +82,7 @@ class EntityValue_injection_Test extends TestCase
 	{
 		$this->e->___event($this->e, 'load', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
+			'id' => 1,
 		));
 		$this->e->many = array(1,2,4);
 		$this->e->many = array(4);
