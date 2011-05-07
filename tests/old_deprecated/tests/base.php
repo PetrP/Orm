@@ -35,7 +35,7 @@ dibi::connect(array(
 require_once 'c:/www/Projects/dump.php';
 
 require_once 'c:/www/Projects/DataSourceX/DataSourceX/extension.php';
-require_once APP_DIR . '/Model/loader.php';
+require_once APP_DIR . '/Orm/loader.php';
 
 class Model extends RepositoriesCollection
 {

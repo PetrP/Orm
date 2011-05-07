@@ -1,6 +1,6 @@
 <?php
 
-define('ORM_DIR', __DIR__ . '/../Model');
+define('ORM_DIR', __DIR__ . '/../Orm');
 define('LIBS_DIR', __DIR__ . '/libs');
 define('TMP_DIR', __DIR__ . '/tmp');
 
