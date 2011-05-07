@@ -3,7 +3,7 @@
 error_reporting(E_ALL|E_STRICT);
 set_time_limit(0);
 
-define('WWW_DIR', dirname(__FILE__).'/..');
+define('WWW_DIR', dirname(__FILE__).'/../../..');
 define('APP_DIR', WWW_DIR);
 define('LIBS_DIR',WWW_DIR.'/../../!libs');
 
@@ -32,10 +32,10 @@ dibi::connect(array(
 ));
 
 
-require_once dirname(__FILE__) . '/../../dump.php';
+require_once 'c:/www/Projects/dump.php';
 
-require_once dirname(__FILE__) . '/../../DataSourceX/DataSourceX/extension.php';
-require_once dirname(__FILE__) . '/../Model/loader.php';
+require_once 'c:/www/Projects/DataSourceX/DataSourceX/extension.php';
+require_once APP_DIR . '/Model/loader.php';
 
 class Model extends RepositoriesCollection
 {

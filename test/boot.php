@@ -18,7 +18,8 @@ Environment::setVariable('tempDir', TMP_DIR);
 
 $r = new RobotLoader;
 $r->setCacheStorage(Environment::getService('Nette\\Caching\\ICacheStorage'));
-$r->addDirectory(__DIR__);
+$r->addDirectory(LIBS_DIR);
+$r->addDirectory(__DIR__ . '/unit');
 $r->register();
 
 require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';
