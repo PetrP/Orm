@@ -328,4 +328,37 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(new ArrayObject, false);
 	}
 
+	public function testId()
+	{
+		$this->type = 'id';
+		$this->t(NULL, false);
+		$this->t(false, false);
+		$this->t(true, false);
+		$this->t('', false);
+		$this->t(' ', false);
+		$this->t('xx', false);
+		$this->t("\0", false);
+		$this->t(5.69, false);
+		$this->t(array(), false);
+		$this->t(array('xx' => 'aa'), false);
+		$this->t((object) array(), false);
+		$this->t(new ArrayObject, false);
+
+		$this->t(0, false);
+		$this->t('0', false);
+		$this->t(0.0, false);
+
+		$this->t(-1, false);
+		$this->t('-1', false);
+		$this->t(-1.0, false);
+
+		$this->t(1, true);
+		$this->t('1', true);
+		$this->t(1.0, true);
+		$this->t(PHP_INT_MAX, true);
+		$this->t(str_repeat('123', 100000), true);
+		$this->t((float) 100000000000000-1, true);
+		$this->t((float) 100000000000000, false); // 1.0E+14
+	}
+
 }

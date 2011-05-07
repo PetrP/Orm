@@ -26,6 +26,14 @@ class ValidationHelper
 				if ($value === NULL) return true;
 				continue;
 			}
+			else if ($type === 'id')
+			{
+				if ($value !== TRUE AND !empty($value) AND is_scalar($value) AND ctype_digit((string) $value))
+				{
+					return true;
+				}
+				continue;
+			}
 			else if (!in_array($type, array('string', 'float', 'int', 'bool', 'array', 'object', 'mixed', 'scalar')))
 			{
 				if ($value instanceof $type) return true;
