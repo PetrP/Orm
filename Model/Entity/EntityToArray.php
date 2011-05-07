@@ -41,7 +41,7 @@ class EntityToArray extends Object
 	{
 		if ($mode === NULL) $mode = self::AS_IS;
 		$result = array(
-			'id' => $entity->__isset('id') ? $entity->__get('id') : NULL,
+			'id' => isset($entity->id) ? $entity->id : NULL,
 		);
 
 		foreach ($rules as $name => $rule)
