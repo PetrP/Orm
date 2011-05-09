@@ -8,7 +8,8 @@ abstract class ValidationHelper_isValid_Base extends TestCase
 		$this->type = is_array($this->type) ? $this->type : explode('|', $this->type);
 		$_value = $value;
 		$this->assertEquals(ValidationHelper::isValid($this->type, $value), $result);
-		$this->assertEquals($value, $valueChangeTo = (($result AND func_num_args() >= 3) ? func_get_arg(2) : $_value));
+		$valueChangeTo = ($result AND func_num_args() >= 3) ? func_get_arg(2) : $_value;
+		$this->assertEquals($value, $valueChangeTo);
 		if ($value === NULL OR $value === false) $this->assertTrue($value === $valueChangeTo);
 	}
 }
