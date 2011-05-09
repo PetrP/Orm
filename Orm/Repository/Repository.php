@@ -133,7 +133,7 @@ abstract class Repository extends Object implements IRepository
 		// nactu vsechny ktere budu pravdepodobne potrebovat
 		if ($ids = $this->performanceHelper->get())
 		{
-			$this->mapper->findById($ids)->fetchAll();
+			$this->getMapper()->findById($ids)->fetchAll();
 			foreach ($ids as $tmp)
 			{
 				if (!isset($this->entities[$tmp])) $this->entities[$tmp] = false;
