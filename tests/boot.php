@@ -58,6 +58,4 @@ class Model extends RepositoriesCollection
 
 }
 
-PerformanceHelper::$keyCallback = function () {
-	return String::random(99);
-};
+PerformanceHelper::$keyCallback = create_function('', 'return String::random(99);');
