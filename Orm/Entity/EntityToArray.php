@@ -31,13 +31,17 @@ class EntityToArray extends Object
 
 	/**#@-*/
 
+	/** @var int AS_ARRAY se muze zaciklit, maximalni hloupka do ktere se pole vytvari */
+	public static $maxDeep = 3;
+
 	/**
 	 * @internal
 	 * @param IEntity
 	 * @param array
 	 * @param int
+	 * @param int
 	 */
-	public static function toArray(IEntity $entity, array $rules, $mode = self::AS_IS)
+	public static function toArray(IEntity $entity, array $rules, $mode = self::AS_IS, $deep = 0)
 	{
 		if ($mode === NULL) $mode = self::AS_IS;
 		$result = array(
@@ -53,20 +57,45 @@ class EntityToArray extends Object
 				$result[$name] = $entity->__get($name);
 				if ($result[$name] instanceof IEntity AND !($mode & self::ENTITY_AS_IS))
 				{
-					if ($mode & self::ENTITY_AS_ID) $result[$name] = $result[$name]->id;
-					else if ($mode & self::ENTITY_AS_ARRAY) $result[$name] = $result[$name]->toArray($mode); // todo co rekurze?
-					else throw new InvalidStateException('No mode for entity');
+					if ($mode & self::ENTITY_AS_ID)
+					{
+						$result[$name] = $result[$name]->id;
+					}
+					else if ($mode & self::ENTITY_AS_ARRAY)
+					{
+						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], MetaData::getEntityRules(get_class($result[$name])), $mode, $deep+1);
+					}
+					else
+					{
+						throw new InvalidStateException('No mode for entity');
+					}
 				}
 				else if ($result[$name] instanceof IRelationship AND !($mode & self::RELATIONSHIP_AS_IS))
 				{
-					$arr = array();
-					foreach ($result[$name] as $e)
+					if ($deep > self::$maxDeep)
 					{
-						if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ID) $arr[] = $e->id;
-						else if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ARRAY) $arr[] = $e->toArray($mode); // todo co rekurze?
-						else throw new InvalidStateException('No mode for relationship');
+						$result[$name] = NULL;
 					}
-					$result[$name] = $arr;
+					else
+					{
+						$arr = array();
+						foreach ($result[$name] as $e)
+						{
+							if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ID)
+							{
+								$arr[] = $e->id;
+							}
+							else if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ARRAY)
+							{
+								$arr[] = EntityToArray::toArray($e, MetaData::getEntityRules(get_class($e)), $mode, $deep+1);
+							}
+							else
+							{
+								throw new InvalidStateException('No mode for relationship');
+							}
+						}
+						$result[$name] = $arr;
+					}
 				}
 			}
 		}
