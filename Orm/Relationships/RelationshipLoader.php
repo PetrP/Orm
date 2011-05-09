@@ -102,6 +102,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	{
 		if (!$this->checkParams) return;
 		list($relationship, $entityName) = $this->checkParams;
+		$lowerEntityName = strtolower($entityName);
 		$this->checkParams = NULL;
 		$param = $this->param;
 		$parentParam = $this->parentParam;
@@ -110,7 +111,8 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 			$this->canConnectWith = array();
 			foreach ((array) RepositoriesCollection::get()->getRepository($this->repository)->getEntityClassName() as $en) // todo di
 			{
-				$this->canConnectWith[$en] = $en;
+				$lowerEn = strtolower($en);
+				$this->canConnectWith[$lowerEn] = $lowerEn;
 				$meta = MetaData::getEntityRules($en);
 				$e = NULL;
 				if (isset($meta[$param]))
@@ -126,7 +128,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 						{
 							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neni vyplnen param ktery by ukazoval zpet");
 						}
-						if (!isset($loader->canConnectWith[$entityName]))
+						if (!isset($loader->canConnectWith[$lowerEntityName]))
 						{
 							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny repository ({$loader->repository})");
 						}
@@ -145,7 +147,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 						continue;
 					} catch (Exception $e) {}
 				}
-				unset($this->canConnectWith[$en]);
+				unset($this->canConnectWith[$lowerEn]);
 				if ($e) throw $e;
 			}
 			if (!$this->canConnectWith)

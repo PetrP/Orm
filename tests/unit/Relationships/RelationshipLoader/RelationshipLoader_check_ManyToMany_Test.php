@@ -66,6 +66,16 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		}
 	}
 
+	public function testIgnoreCase()
+	{
+		$ecn = & RelationshipLoader_ManyToMany2_Repository::$ecn;
+		$old = $ecn;
+		$ecn = strtoupper($ecn);
+		$loader = $this->t('many');
+		$this->assertInstanceOf('RelationshipLoader', $loader);
+		$ecn = $old;
+	}
+
 }
 
 /**
@@ -108,7 +118,13 @@ class RelationshipLoader_ManyToMany1_Mapper extends TestsMapper
 }
 class RelationshipLoader_ManyToMany2_Repository extends Repository
 {
-	protected $entityClassName = 'RelationshipLoader_ManyToMany2_Entity';
+	public static $ecn = 'RelationshipLoader_ManyToMany2_Entity';
+
+	public function getEntityClassName(array $data = NULL)
+	{
+		return self::$ecn;
+	}
+
 }
 class RelationshipLoader_ManyToMany2_Mapper extends TestsMapper
 {
