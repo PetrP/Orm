@@ -26,7 +26,7 @@ class TestsMapper extends FileMapper
 {
 	protected function getFilePath()
 	{
-		return __DIR__ . '/' . $this->getRepository()->getRepositoryName() . '.data';
+		return dirname(__FILE__) . '/' . $this->getRepository()->getRepositoryName() . '.data';
 	}
 }
 

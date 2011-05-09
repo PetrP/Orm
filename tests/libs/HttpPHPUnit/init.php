@@ -12,7 +12,7 @@ class HttpPHPUnit
 
 	public function __construct($phpUnitDir = NULL)
 	{
-		if (!$phpUnitDir) $phpUnitDir = __DIR__ . '/../PHPUnit';
+		if (!$phpUnitDir) $phpUnitDir = dirname(__FILE__) . '/../PHPUnit';
 		if (!is_dir($phpUnitDir)) throw new InvalidStateException();
 
 		set_time_limit(0);
@@ -24,8 +24,8 @@ class HttpPHPUnit
 		set_include_path($phpUnitDir);
 
 		require_once 'PHPUnit/Autoload.php';
-		require_once __DIR__ . '/HttpPHPUnit_TextUI_Command.php';
-		require_once __DIR__ . '/HttpPHPUnit_Util_TestDox_ResultPrinter.php';
+		require_once dirname(__FILE__) . '/HttpPHPUnit_TextUI_Command.php';
+		require_once dirname(__FILE__) . '/HttpPHPUnit_Util_TestDox_ResultPrinter.php';
 
 		$this->testDir = isset($_GET['test']) ? $_GET['test'] : NULL;
 		if ($this->testDir AND $pos = strrpos($this->testDir, '::'))

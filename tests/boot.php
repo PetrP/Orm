@@ -1,8 +1,8 @@
 <?php
 
-define('ORM_DIR', __DIR__ . '/../Orm');
-define('LIBS_DIR', __DIR__ . '/libs');
-define('TMP_DIR', __DIR__ . '/tmp');
+define('ORM_DIR', dirname(__FILE__) . '/../Orm');
+define('LIBS_DIR', dirname(__FILE__) . '/libs');
+define('TMP_DIR', dirname(__FILE__) . '/tmp');
 
 require_once LIBS_DIR . '/Nette/loader.php';
 require_once LIBS_DIR . '/dump.php';
@@ -19,7 +19,7 @@ Environment::setVariable('tempDir', TMP_DIR);
 $r = new RobotLoader;
 $r->setCacheStorage(Environment::getService('Nette\\Caching\\ICacheStorage'));
 $r->addDirectory(LIBS_DIR);
-$r->addDirectory(__DIR__ . '/unit');
+$r->addDirectory(dirname(__FILE__) . '/unit');
 $r->register();
 
 require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';

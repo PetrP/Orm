@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../../boot.php';
+require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
  * @covers Repository::remove
