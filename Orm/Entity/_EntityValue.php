@@ -320,26 +320,41 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	 */
 	final public function __call($name, $args)
 	{
-		$m = substr($name, 0, 3);
-		if ($m === 'get' OR ($m === 'set' AND array_key_exists(0, $args)))
+		$m = $var = NULL;
+		if (strncmp($name, 'get', 3) === 0 OR (strncmp($name, 'set', 3) === 0 AND array_key_exists(0, $args)))
 		{
+			$m = substr($name, 0, 3);
 			$var = substr($name, 3);
-			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+		}
+		else if (strncmp($name, 'is', 2) === 0)
+		{
+			$m = 'is';
+			$var = substr($name, 2);
+		}
 
+		if ($m !== NULL)
+		{
+			if (PHP_VERSION_ID < 50300 AND !preg_match('#[A-Z]#', $var))
+			{
+				// php 5.2 spatne predava name pri magickem pretezovani, name je cely lowercase
+				foreach ($this->rules as $key => $foo)
+				{
+					if (strcasecmp($key, $var) === 0)
+					{
+						$var = $key;
+						break;
+					}
+				}
+			}
+			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 			if (isset($this->rules[$var]))
 			{
-				$this->overwriteMethodTemp[$m][$var] = true;
-				return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
-			}
-		}
-		else if (substr($name, 0, 2) === 'is')
-		{
-			$var = substr($name, 2);
-			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
-			if (isset($this->rules[$var]) AND $this->rules[$var]['types'] === array('bool' => 'bool'))
-			{
-				$this->overwriteMethodTemp['get'][$var] = true;
-				return $this->__get($var);
+				if ($m !== 'is' OR ($m === 'is' AND $this->rules[$var]['types'] === array('bool' => 'bool')))
+				{
+					if ($m === 'is') $m = 'get';
+					$this->overwriteMethodTemp[$m][$var] = true;
+					return $this->{'__' . $m}($var, $m === 'set' ? $args[0] : NULL);
+				}
 			}
 		}
 
