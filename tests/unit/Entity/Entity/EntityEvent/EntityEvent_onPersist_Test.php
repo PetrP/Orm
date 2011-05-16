@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
+ * @covers _EntityEvent::onAttach
  * @covers _EntityEvent::onBeforePersist
  * @covers _EntityEvent::onBeforeInsert
  * @covers _EntityEvent::onBeforeUpdate
@@ -19,6 +20,7 @@ class EntityEvent_onPersist_Test extends EntityEvent_event_Base
 		$this->assertSame(false, isset($this->e->id));
 		$this->r->persist($this->e);
 		$this->assertSame(array(
+			array('onAttach', array($this->r)),
 			array('onBeforePersist', array($this->r)),
 			array('onBeforeInsert', array($this->r)),
 			array('onAfterInsert', array($this->r)),

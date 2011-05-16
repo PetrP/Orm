@@ -96,6 +96,14 @@ class EntityEvent_Entity extends Entity
 		parent::onAfterInsert($repository);
 	}
 
+	protected function onAttach(IRepository $repository)
+	{
+		$this->event = __FUNCTION__;
+		$this->eventParam = func_get_args();
+		$this->all[] = array($this->event, $this->eventParam);
+		parent::onAttach($repository);
+	}
+
 }
 
 class EntityEvent2_Entity extends Entity

@@ -66,7 +66,18 @@ interface IRepository
 	public function getById($id);
 
 	/**
-	 * Ulozit entitu {@see IMapper::persist()} a zapoji ji do repository.
+	 * Zapoji entity do do repository.
+	 *
+	 * Vola udalosti:
+	 * @see Entity::onAttach()
+	 *
+	 * @param IEntity
+	 * @return IEntity
+	 */
+	public function attach(IEntity $entity);
+
+	/**
+	 * Ulozit entitu {@see IMapper::persist()} a zapoji ji do repository {@see self::attach()}
 	 * Jen kdyz se zmenila {@see Entity::isChanged()}
 	 *
 	 * Ulozi take vsechny relationship, tedy entity ktere tato entity obsahuje v ruznych vazbach.

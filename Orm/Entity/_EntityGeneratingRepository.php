@@ -26,14 +26,13 @@ class _EntityGeneratingRepository extends _EntityEvent
 	}
 
 	/**
-	 * Behem persistovani, vsechny subentity nemusi byt jeste persistovany
+	 * Pripojeno na repository
 	 * @param IRepository
-	 * @param scalar
 	 */
-	protected function onPersist(IRepository $repository, $id)
+	protected function onAttach(IRepository $repository)
 	{
-		parent::onPersist($repository, $id);
-		$this->repository = $repository; // todo jen kdyz neni isset?
+		parent::onAttach($repository);
+		$this->repository = $repository;
 	}
 
 	/**

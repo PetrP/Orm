@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../../../../boot.php';
 /**
  * @covers _EntityGeneratingRepository::onAttach
  */
-class EntityGeneratingRepository_onPersist_Test extends TestCase
+class EntityGeneratingRepository_onAttach_Test extends TestCase
 {
 	private $r;
 
@@ -15,12 +15,20 @@ class EntityGeneratingRepository_onPersist_Test extends TestCase
 		$this->r = $m->testentity;
 	}
 
-	public function test()
+	public function testNew()
 	{
 		$e = new TestEntity;
 		$this->assertSame(NULL, $e->getGeneratingRepository(false));
-		$this->r->persist($e);
+		$this->r->attach($e);
 		$this->assertSame($this->r, $e->getGeneratingRepository(false));
+	}
+
+	public function testAlreadyAttached()
+	{
+		$e = $this->r->getById(1);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->r->attach($e);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 }

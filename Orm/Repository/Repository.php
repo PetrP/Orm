@@ -154,7 +154,26 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
-	 * Ulozit entitu {@see IMapper::persist()} a zapoji ji do repository.
+	 * Zapoji entity do do repository.
+	 *
+	 * Vola udalosti:
+	 * @see Entity::onAttach()
+	 *
+	 * @param IEntity
+	 * @return IEntity
+	 */
+	public function attach(IEntity $entity)
+	{
+		$this->checkEntity(get_class($entity), $entity);
+		if (!$entity->getGeneratingRepository(false))
+		{
+			$entity->___event($entity, 'attach', $this);
+		}
+		return $entity;
+	}
+
+	/**
+	 * Ulozit entitu {@see IMapper::persist()} a zapoji ji do repository {@see self::attach()}
 	 * Jen kdyz se zmenila {@see Entity::isChanged()}
 	 *
 	 * Ulozi take vsechny relationship, tedy entity ktere tato entity obsahuje v ruznych vazbach.
@@ -171,7 +190,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function persist(IEntity $entity)
 	{
-		$this->checkEntity(get_class($entity), $entity);
+		$this->attach($entity);
 		$hasId = isset($entity->id);
 		if ($hasId AND !$entity->isChanged())
 		{

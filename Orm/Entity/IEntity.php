@@ -84,6 +84,12 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	//protected function onLoad(IRepository $repository, array $data);
 
 	/**
+	 * Pripojeno na repository
+	 * @param IRepository
+	 */
+	//protected function onAttach(IRepository $repository);
+
+	/**
 	 * Pred persistovanim (insert nebo update)
 	 * @param IRepository
 	 */

@@ -35,6 +35,15 @@ abstract class _EntityEvent extends Object
 	}
 
 	/**
+	 * Pripojeno na repository
+	 * @param IRepository
+	 */
+	protected function onAttach(IRepository $repository)
+	{
+		$this->checkEvent = 'onAttach';
+	}
+
+	/**
 	 * Pred persistovanim (insert nebo update)
 	 * @param IRepository
 	 */
