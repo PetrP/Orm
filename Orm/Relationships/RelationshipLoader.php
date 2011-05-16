@@ -108,11 +108,10 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		$parentParam = $this->parentParam;
 		if ($relationship === MetaData::ManyToMany AND $param)
 		{
-			$this->canConnectWith = array();
-			foreach ((array) RepositoriesCollection::get()->getRepository($this->repository)->getEntityClassName() as $en) // todo di
+			$classes = array_values((array) RepositoriesCollection::get()->getRepository($this->repository)->getEntityClassName()); // todo di
+			$this->canConnectWith = array_combine(array_map('strtolower', $classes), $classes);
+			foreach ($this->canConnectWith as $lowerEn => $en)
 			{
-				$lowerEn = strtolower($en);
-				$this->canConnectWith[$lowerEn] = $lowerEn;
 				$meta = MetaData::getEntityRules($en);
 				$e = NULL;
 				if (isset($meta[$param]))

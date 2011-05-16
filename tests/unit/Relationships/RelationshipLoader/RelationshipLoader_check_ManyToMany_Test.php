@@ -76,6 +76,14 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		$ecn = $old;
 	}
 
+	public function testMultiUse()
+	{
+		MetaData::clean();
+		new Model;
+		MetaData::getEntityRules('RelationshipLoader_ManyToMany4a_Entity');
+		$this->assertTrue(true);
+	}
+
 }
 
 /**
@@ -143,5 +151,66 @@ class RelationshipLoader_ManyToMany3_Repository extends Repository
 	protected $entityClassName = 'RelationshipLoader_ManyToMany3_Entity';
 }
 class RelationshipLoader_ManyToMany3_Mapper extends TestsMapper
+{
+}
+
+
+/**
+ * @property $many {m:m RelationshipLoader_ManyToMany5_ many mapped}
+ */
+class RelationshipLoader_ManyToMany4a_Entity extends Entity
+{
+
+}
+
+/**
+ * @property $many {m:m RelationshipLoader_ManyToMany5_ many mapped}
+ */
+class RelationshipLoader_ManyToMany4b_Entity extends Entity
+{
+
+}
+
+class RelationshipLoader_ManyToMany4_Repository extends Repository
+{
+	public function getEntityClassName(array $data = NULL)
+	{
+		return array(
+			'RelationshipLoader_ManyToMany4a_Entity',
+			'RelationshipLoader_ManyToMany4b_Entity',
+		);
+	}
+}
+class RelationshipLoader_ManyToMany4_Mapper extends TestsMapper
+{
+}
+
+/**
+ * @property $many {m:m RelationshipLoader_ManyToMany4_ many}
+ */
+class RelationshipLoader_ManyToMany5a_Entity extends Entity
+{
+
+}
+
+/**
+ * @property $many {m:m RelationshipLoader_ManyToMany4_ many}
+ */
+class RelationshipLoader_ManyToMany5b_Entity extends Entity
+{
+
+}
+
+class RelationshipLoader_ManyToMany5_Repository extends Repository
+{
+	public function getEntityClassName(array $data = NULL)
+	{
+		return array(
+			'RelationshipLoader_ManyToMany5a_Entity',
+			'RelationshipLoader_ManyToMany5b_Entity',
+		);
+	}
+}
+class RelationshipLoader_ManyToMany5_Mapper extends TestsMapper
 {
 }
