@@ -145,11 +145,16 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 
 	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
+	 * @param NULL|true
 	 * @return bool
 	 * @see self::$changed
 	 */
-	final public function isChanged()
+	final public function isChanged($set = NULL)
 	{
+		if ($set === true)
+		{
+			$this->changed = true;
+		}
 		return $this->__isset('id') ? $this->changed : true;
 	}
 

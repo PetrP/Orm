@@ -61,9 +61,10 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 
 	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
+	 * @param NULL|true
 	 * @return bool
 	 */
-	public function isChanged();
+	public function isChanged($set = NULL);
 
 	/**
 	 * Vytvori MetaData
