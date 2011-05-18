@@ -1,5 +1,13 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\ArrayMapper;
+use Orm\ManyToMany;
+use Orm\ArrayManyToManyMapper;
+use Orm\IRepository;
+use Orm\IEntity;
+
 /**
  * @property EntityValue_injectionEntity_ManyToMany $many {m:m EntityValue_injection}
  */

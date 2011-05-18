@@ -1,5 +1,7 @@
 <?php
 
+use Orm\ValidationHelper;
+
 abstract class ValidationHelper_isValid_Base extends TestCase
 {
 	protected $type;

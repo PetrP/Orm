@@ -1,5 +1,11 @@
 <?php
 
+use Nette\Reflection\AnnotationsParser;
+use Orm\AnnotationMetaData;
+use Orm\Entity;
+use Orm\OldManyToMany;
+use Orm\OldOneToMany;
+
 class MockAnnotationMetaData extends AnnotationMetaData
 {
 	public static $mock;

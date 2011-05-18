@@ -1,5 +1,9 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\ArrayMapper;
+
 /**
  * @property string $string
  * @property DateTime $date

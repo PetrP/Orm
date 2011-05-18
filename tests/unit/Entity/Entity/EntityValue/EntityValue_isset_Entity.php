@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Entity;
+
 /**
  * @property $test
  * @property $test2

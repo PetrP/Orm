@@ -1,5 +1,8 @@
 <?php
 
+use Nette\Utils\Html;
+use Orm\Repository;
+
 class Repository_getMapper_BadMapper_Repository extends Repository
 {
 	protected $entityClassName = 'TestEntity';

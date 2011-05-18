@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\DibiMapper;
+use Orm\ArrayMapper;
+
 /**
  * @property string $name
  * @property DibiCollection_join2_Entity $join2 {m:1 DibiCollection_join2_}

@@ -1,5 +1,8 @@
 <?php
 
+use Orm\MetaData;
+use Orm\MetaDataProperty;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**

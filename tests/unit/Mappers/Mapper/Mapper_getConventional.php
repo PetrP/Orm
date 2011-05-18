@@ -1,5 +1,7 @@
 <?php
 
+use Orm\ArrayMapper;
+
 class Mapper_getConventional_Mapper extends ArrayMapper
 {
 	public $c;

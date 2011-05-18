@@ -1,5 +1,8 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+
 /**
  * @property string $name
  * @property $joins {1:m DibiCollection_join_OneToMany2_ join}

@@ -65,4 +65,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
 }
 
+use Orm\PerformanceHelper;
+
 PerformanceHelper::$keyCallback = create_function('', 'return String::random(99);');

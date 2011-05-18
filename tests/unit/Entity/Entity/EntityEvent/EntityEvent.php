@@ -1,5 +1,11 @@
 <?php
 
+use Nette\InvalidStateException;
+use Orm\Entity;
+use Orm\Repository;
+use Orm\ArrayMapper;
+use Orm\IRepository;
+
 /**
  * @property $var
  */

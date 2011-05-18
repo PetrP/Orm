@@ -1,5 +1,9 @@
 <?php
 
+use Orm\Repository;
+use Orm\IRepository;
+use Orm\IEntity;
+
 class Repository_persist_Entity extends TestEntity
 {
 	protected function onAfterPersist(IRepository $repository)

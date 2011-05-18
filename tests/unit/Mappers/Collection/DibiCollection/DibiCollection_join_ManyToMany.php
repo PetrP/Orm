@@ -1,5 +1,9 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\IRepository;
+
 /**
  * @property string $name
  * @property $joins {m:m DibiCollection_join_ManyToMany2_ joins map}

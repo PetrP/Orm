@@ -1,5 +1,7 @@
 <?php
 
+use Orm\IEntity;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**

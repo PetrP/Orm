@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\ArrayMapper;
+use Orm\OldManyToMany;
+
 /**
  * @property TestEntity|NULL $e {m:1 TestEntity}
  */

@@ -1,5 +1,7 @@
 <?php
 
+use Orm\ArrayMapper;
+
 class Mapper_call_Collection extends Mapper_getCollectionClass_OtherCollection
 {
 	static $last;

@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Entity;
+
 /**
  * @property-read $read
  * @property $both

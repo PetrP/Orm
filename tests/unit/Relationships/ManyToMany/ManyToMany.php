@@ -1,6 +1,12 @@
 <?php
 
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\ManyToMany;
+use Orm\IRepository;
+use Orm\RepositoryContainer;
+
 class ManyToMany_Entity extends Entity
 {
 }

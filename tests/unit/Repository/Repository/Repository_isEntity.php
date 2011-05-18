@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Repository;
+
 class Repository_isEntity_Repository extends Repository
 {
 	public function getEntityClassName(array $data = NULL)

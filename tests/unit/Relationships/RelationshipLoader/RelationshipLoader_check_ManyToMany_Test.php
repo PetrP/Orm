@@ -1,5 +1,11 @@
 <?php
 
+use Nette\InvalidStateException;
+use Orm\MetaData;
+use Orm\Entity;
+use Orm\Repository;
+use Orm\RepositoryContainer;
+
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**

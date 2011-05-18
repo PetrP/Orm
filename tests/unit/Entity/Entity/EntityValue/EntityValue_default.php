@@ -1,5 +1,8 @@
 <?php
 
+use Nette\InvalidStateException;
+use Orm\Entity;
+
 /**
  * @property $meta {default meta}
  *

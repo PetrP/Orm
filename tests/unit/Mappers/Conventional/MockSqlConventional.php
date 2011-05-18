@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Repository;
+use Orm\Entity;
+use Orm\SqlConventional;
+use Orm\RepositoryContainer;
+
 class SqlConventional_TestRepository extends Repository
 {
 	protected $entityClassName = 'SqlConventional_TestEntity';

@@ -1,5 +1,8 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+
 /**
  * @property ManyToMany $r {m:m EntityToArray_toArray_recursiton_mm_}
  * @property string $string

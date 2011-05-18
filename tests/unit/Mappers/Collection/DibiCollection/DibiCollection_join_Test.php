@@ -1,5 +1,8 @@
 <?php
 
+use Orm\DibiCollection;
+use Orm\RepositoryContainer;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**

@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Entity;
+use Orm\MetaData;
+use Orm\Repository;
+use Orm\ArrayMapper;
+
 class MetaData_Test_Entity extends Entity
 {
 	public static $count = 0;

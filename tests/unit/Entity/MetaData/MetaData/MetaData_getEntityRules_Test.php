@@ -1,5 +1,8 @@
 <?php
 
+use Nette\Utils\Html;
+use Orm\MetaData;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**

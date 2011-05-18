@@ -1,5 +1,10 @@
 <?php
 
+use Orm\MetaData;
+use Orm\OldManyToMany;
+use Orm\MetaDataProperty;
+use Orm\RepositoryContainer;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**

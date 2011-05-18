@@ -1,5 +1,8 @@
 <?php
 
+use Orm\Repository;
+use Orm\ArrayMapper;
+
 class TestsRepository extends Repository
 {
 	protected $entityClassName = 'TestEntity';

@@ -1,5 +1,11 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\OneToMany;
+use Orm\IRepository;
+use Orm\RepositoryContainer;
+
 /**
  * @property TestEntity $param {m:1 tests}
  * @property string $string

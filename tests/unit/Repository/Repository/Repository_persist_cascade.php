@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Repository;
+use Orm\ArrayManyToManyMapper;
+use Orm\IEntity;
+use Orm\IRepository;
+
 /**
  * @property Repository_persist_cascade2_Entity $m1 {m:1 Repository_persist_cascade2_}
  */

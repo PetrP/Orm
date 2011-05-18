@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Entity;
+
 /**
  * @property $new
  * @property $newByPropertySet

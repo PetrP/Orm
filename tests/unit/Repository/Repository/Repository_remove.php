@@ -1,5 +1,9 @@
 <?php
 
+use Orm\Entity;
+use Orm\Repository;
+use Orm\IEntity;
+
 class Repository_remove_Entity extends Entity
 {
 

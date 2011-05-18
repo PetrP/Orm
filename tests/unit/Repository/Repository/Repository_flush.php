@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RepositoryContainer;
+
 class Repository_flush_Model extends RepositoryContainer
 {
 	public $count = 0;

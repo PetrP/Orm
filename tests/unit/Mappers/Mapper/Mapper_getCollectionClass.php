@@ -1,5 +1,12 @@
 <?php
 
+use Nette\Object;
+use Orm\IEntityCollection;
+use Orm\DibiCollection;
+use Orm\DataSourceCollection;
+use Orm\ArrayCollection;
+use Orm\ArrayMapper;
+
 abstract class Mapper_getCollectionClass_Collection extends Object implements IEntityCollection
 {
 

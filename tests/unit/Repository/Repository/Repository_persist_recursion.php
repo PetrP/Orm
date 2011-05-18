@@ -1,5 +1,10 @@
 <?php
 
+use Orm\Repository;
+use Orm\ArrayMapper;
+use Orm\IRepository;
+use Orm\IEntity;
+
 /**
  * @property Repository_persist_recursion1_Entity $m1 {m:1 Repository_persist_recursion1_}
  * @property OneToMany $1m {1:m Repository_persist_recursion1_ m1}

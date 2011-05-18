@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RepositoryContainer;
+
 class Repository_clean_Model extends RepositoryContainer
 {
 	public $count = 0;

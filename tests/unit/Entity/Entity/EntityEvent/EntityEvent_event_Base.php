@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RepositoryContainer;
+
 class EntityEvent_event_Base extends TestCase
 {
 	protected $e;
