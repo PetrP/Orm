@@ -9,9 +9,7 @@ use Nette\NotImplementedException;
 use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
-
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
-
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 class DibiCollection extends Object implements IEntityCollection

@@ -7,7 +7,6 @@ use Nette\Loaders\RobotLoader;
 use DibiConnection;
 
 require_once dirname(__FILE__) . '/GenerateDriver.php';
-
 require_once dirname(__FILE__) . '/GenerateDriverMysql.php';
 
 class GenerateTable extends Object

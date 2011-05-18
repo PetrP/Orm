@@ -5,11 +5,8 @@ namespace Orm;
 use Nette\InvalidStateException;
 
 require_once dirname(__FILE__) . '/IRelationship.php';
-
 require_once dirname(__FILE__) . '/BaseToMany.php';
-
 require_once dirname(__FILE__) . '/DibiManyToManyMapper.php';
-
 require_once dirname(__FILE__) . '/ArrayManyToManyMapper.php';
 
 // todo rict parent entity ze se zmenila

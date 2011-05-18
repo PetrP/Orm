@@ -9,7 +9,6 @@ use Nette\DeprecatedException;
 use Exception;
 
 require_once dirname(__FILE__) . '/IRepository.php';
-
 require_once dirname(__FILE__) . '/PerformanceHelper.php';
 
 /**

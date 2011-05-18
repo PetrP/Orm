@@ -9,11 +9,8 @@ use Nette\DeprecatedException;
 use DibiConnection;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
-
 require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
-
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
-
 
 class DataSourceCollection extends DibiDataSourceX implements IEntityCollection, DibiModelDataSource
 {

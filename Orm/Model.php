@@ -7,9 +7,7 @@ use Nette\InvalidStateException;
 use ReflectionClass;
 
 require_once dirname(__FILE__) . '/Entity/Entity.php';
-
 require_once dirname(__FILE__) . '/Repository/Repository.php';
-
 require_once dirname(__FILE__) . '/Mappers/Mapper.php';
 
 /**

@@ -8,7 +8,6 @@ use DateTime;
 use ArrayObject;
 
 require_once dirname(__FILE__) . '/Mapper.php';
-
 require_once dirname(__FILE__) . '/Collection/ArrayCollection.php';
 
 abstract class ArrayMapper extends Mapper

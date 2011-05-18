@@ -11,9 +11,7 @@ use ArrayIterator;
 use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
-
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
-
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 class ArrayCollection extends Object implements IEntityCollection, ArrayDataSource
