@@ -118,13 +118,13 @@ class AnnotationMetaData extends Object
 			}
 		}
 
-		if (preg_match('#^([a-z0-9_\|]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
+		if (preg_match('#^([a-z0-9_\|\\\\]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
 		{
 			$property = $match[2];
 			$type = $match[1];
 			$string = $match[3];
 		}
-		else if (preg_match('#^\$([a-z0-9_]+)\s+([a-z0-9_\|]+)($|\s(.*)$)#si', $string, $match))
+		else if (preg_match('#^\$([a-z0-9_]+)\s+([a-z0-9_\|\\\\]+)($|\s(.*)$)#si', $string, $match))
 		{
 			$property = $match[1];
 			$type = $match[2];
@@ -298,7 +298,7 @@ class AnnotationMetaData extends Object
 	 */
 	public function builtParamsEnum($string)
 	{
-		if (preg_match('#^([a-z0-9_-]+::[a-z0-9_-]+)\(\)$#si', trim($string), $tmp))
+		if (preg_match('#^([a-z0-9_\\\\]+::[a-z0-9_]+)\(\)$#si', trim($string), $tmp))
 		{
 			$enum = callback($this->builtSelf($tmp[1]))->invoke();
 			if (!is_array($enum)) throw new InvalidStateException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
