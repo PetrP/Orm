@@ -216,7 +216,7 @@ abstract class Repository extends Object implements IRepository
 			{
 				if (isset($fk[$key]) AND $value instanceof IEntity)
 				{
-					$this->getModel()->getRepository($fk[$key])->persist($value, false);
+					$this->getModel()->getRepository($fk[$key])->persist($value);
 				}
 				else if ($value instanceof IRelationship)
 				{
