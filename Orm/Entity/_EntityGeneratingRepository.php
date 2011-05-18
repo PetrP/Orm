@@ -3,7 +3,7 @@
 /**
  * Uchovava stav o repository kde je entita persistovana.
  * @see Entity
- * @property-read Model $model
+ * @property-read RepositoryContainer $model
  * @todo zvazit jestli to neni spatny navrh
  */
 class _EntityGeneratingRepository extends _EntityEvent
@@ -11,7 +11,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	/** @var IRepository|NULL null kdyz jeste nebylo ulozeno */
 	private $repository;
 
-	/** @var Model|NULL cache */
+	/** @var RepositoryContainer|NULL cache */
 	private $model;
 
 	/**
@@ -65,7 +65,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 
 	/**
 	 * @param bool
-	 * @return Model
+	 * @return RepositoryContainer
 	 */
 	final public function getModel($need = true)
 	{
@@ -73,7 +73,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 		{
 			if ($need === NULL AND !$this->getGeneratingRepository(false)) // bc
 			{
-				return RepositoriesCollection::get(); // todo di
+				return RepositoryContainer::get(); // todo di
 			}
 			if ($r = $this->getGeneratingRepository($need))
 			{

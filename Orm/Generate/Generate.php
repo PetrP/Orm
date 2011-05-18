@@ -9,8 +9,7 @@ class Generate extends Object
 			throw new Exception();
 		}
 
-		new Model; // todo di
-		$generate = new GenerateTable(RepositoriesCollection::get()); // todo di
+		$generate = new GenerateTable(RepositoryContainer::get()); // todo di
 
 		if (method_exists('Environment', 'getRobotLoader'))
 		{

@@ -1,6 +1,6 @@
 <?php
 
-class Repository_flush_Model extends RepositoriesCollection
+class Repository_flush_Model extends RepositoryContainer
 {
 	public $count = 0;
 	public function flush()

@@ -1,6 +1,6 @@
 <?php
 
-class RepositoriesCollection_getRepositoryClass extends AutoLoader
+class RepositoryContainer_getRepositoryClass extends AutoLoader
 {
 	public $last;
 	public function tryLoad($type)

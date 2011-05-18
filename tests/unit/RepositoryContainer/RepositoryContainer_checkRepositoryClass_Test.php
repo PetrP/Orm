@@ -3,9 +3,9 @@
 require_once dirname(__FILE__) . '/../../boot.php';
 
 /**
- * @covers RepositoriesCollection::checkRepositoryClass
+ * @covers RepositoryContainer::checkRepositoryClass
  */
-class RepositoriesCollection_checkRepositoryClass_Test extends TestCase
+class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 {
 	private $m;
 
@@ -27,14 +27,14 @@ class RepositoriesCollection_checkRepositoryClass_Test extends TestCase
 
 	public function testImplement()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'repositoriescollection_checkrepositoryclass_bad' must implement IRepository");
-		$this->t('RepositoriesCollection_checkRepositoryClass_Bad');
+		$this->setExpectedException('InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad' must implement IRepository");
+		$this->t('RepositoryContainer_checkRepositoryClass_Bad');
 	}
 
 	public function testAbstract()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'repositoriescollection_checkrepositoryclass_bad2' is abstract.");
-		$this->t('RepositoriesCollection_checkRepositoryClass_Bad2');
+		$this->setExpectedException('InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad2' is abstract.");
+		$this->t('RepositoryContainer_checkRepositoryClass_Bad2');
 	}
 
 	public function testEmpty()

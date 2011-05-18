@@ -17,10 +17,10 @@ require_once dirname(__FILE__) . '/PerformanceHelper.php';
  *  ...
  * </pre>
  *
- * Repository se zizkava pres model {@see Model}
+ * Repository se zizkava pres model {@see RepositoryContainer}
  * <pre>
  *
- * $model; // instanceof Model
+ * $model; // instanceof RepositoryContainer
  * // instanceof ArticlesRepository
  * $model->articles;
  * </pre>
@@ -63,7 +63,7 @@ require_once dirname(__FILE__) . '/PerformanceHelper.php';
 abstract class Repository extends Object implements IRepository
 {
 
-	/** @var Model */
+	/** @var RepositoryContainer */
 	private $model;
 
 	/** @var DibiMapper */
@@ -91,9 +91,9 @@ abstract class Repository extends Object implements IRepository
 	protected $entityClassName;
 
 	/**
-	 * @param Model
+	 * @param RepositoryContainer
 	 */
-	public function __construct(RepositoriesCollection $model)
+	public function __construct(RepositoryContainer $model)
 	{
 		$this->model = $model;
 		$repositoryName = strtolower(get_class($this));
@@ -289,7 +289,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::flush()
-	 * @see Model::flush()
+	 * @see RepositoryContainer::flush()
 	 */
 	final public function flush($onlyThis = false)
 	{
@@ -317,7 +317,7 @@ abstract class Repository extends Object implements IRepository
 	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::clean()
-	 * @see Model::clean()
+	 * @see RepositoryContainer::clean()
 	 */
 	final public function clean($onlyThis = false)
 	{
@@ -357,7 +357,7 @@ abstract class Repository extends Object implements IRepository
 		return $this->mapper;
 	}
 
-	/** @return Model */
+	/** @return RepositoryContainer */
 	final public function getModel()
 	{
 		return $this->model;

@@ -1,6 +1,6 @@
 <?php
 
-class Repository_clean_Model extends RepositoriesCollection
+class Repository_clean_Model extends RepositoryContainer
 {
 	public $count = 0;
 	public function clean()

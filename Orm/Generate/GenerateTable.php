@@ -8,7 +8,7 @@ class GenerateTable extends Object
 {
 	private $model;
 
-	public function __construct(RepositoriesCollection $model)
+	public function __construct(RepositoryContainer $model)
 	{
 		$this->model = $model;
 	}

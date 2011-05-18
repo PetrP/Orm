@@ -13,10 +13,10 @@
  *  ...
  * </pre>
  *
- * Repository se zizkava pres model {@see Model}
+ * Repository se zizkava pres model {@see RepositoryContainer}
  * <pre>
  *
- * $model; // instanceof Model
+ * $model; // instanceof RepositoryContainer
  * // instanceof ArticlesRepository
  * $model->articles;
  * </pre>
@@ -112,7 +112,7 @@ interface IRepository
 	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::flush()
-	 * @see Model::flush()
+	 * @see RepositoryContainer::flush()
 	 */
 	public function flush($onlyThis = false);
 
@@ -122,7 +122,7 @@ interface IRepository
 	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::clean()
-	 * @see Model::clean()
+	 * @see RepositoryContainer::clean()
 	 */
 	public function clean($onlyThis = false);
 
@@ -139,7 +139,7 @@ interface IRepository
 	 */
 	public function getMapper();
 
-	/** @return Model */
+	/** @return RepositoryContainer */
 	public function getModel();
 
 	/**

@@ -55,7 +55,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 
 	/**
 	 * @param bool
-	 * @return Model
+	 * @return RepositoryContainer
 	 */
 	public function getModel($need = true);
 

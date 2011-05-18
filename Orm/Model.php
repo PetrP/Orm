@@ -17,7 +17,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  *  * @property-read ArticlesRepository $articles
  *  * @property-read UsersRepository $users
  *  *⁄
- * class Model extends RepositoriesCollection
+ * class Model extends RepositoryContainer
  * {
  *
  * }
@@ -61,9 +61,9 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  * }
  * </pre>
  */
-abstract class RepositoriesCollection extends Object
+abstract class RepositoryContainer extends Object
 {
-	/** @var Model @deprecated @todo di @see self::get() */
+	/** @var RepositoryContainer @deprecated @todo di @see self::get() */
 	static private $instance;
 
 	/** @var array repositoryName => IRepository */
@@ -78,7 +78,7 @@ abstract class RepositoriesCollection extends Object
 	 * Vraci posledni vytvoreny model, je pro zpetnou kompatibilitu.
 	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
 	 * Bohuzel zatim pouziva: Entity::getModel(), RelationshipLoader, MetaDataProperty::setOneToOne()
-	 * @return Model
+	 * @return RepositoryContainer
 	 * @todo di
 	 * @deprecated
 	 */
@@ -214,5 +214,7 @@ abstract class RepositoriesCollection extends Object
 
 }
 
+/** @deprecated */
+abstract class RepositoriesCollection extends RepositoryContainer {}
 /** @deprecated */
 abstract class AbstractModel extends RepositoriesCollection {}

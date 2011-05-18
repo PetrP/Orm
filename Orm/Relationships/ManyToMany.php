@@ -168,7 +168,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
-	/** @return Model */
+	/** @return RepositoryContainer */
 	public function getModel()
 	{
 		return $this->parent->getModel();

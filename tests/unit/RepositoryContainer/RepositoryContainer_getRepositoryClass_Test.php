@@ -3,9 +3,9 @@
 require_once dirname(__FILE__) . '/../../boot.php';
 
 /**
- * @covers RepositoriesCollection::getRepositoryClass
+ * @covers RepositoryContainer::getRepositoryClass
  */
-class RepositoriesCollection_getRepositoryClass_Test extends TestCase
+class RepositoryContainer_getRepositoryClass_Test extends TestCase
 {
 	private $m;
 
@@ -16,7 +16,7 @@ class RepositoriesCollection_getRepositoryClass_Test extends TestCase
 
 	private function t($rn)
 	{
-		$l = new RepositoriesCollection_getRepositoryClass;
+		$l = new RepositoryContainer_getRepositoryClass;
 		$l->register();
 		try {
 			$r = $this->m->getRepository($rn);

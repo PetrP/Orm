@@ -71,7 +71,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 			{
 				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You must specify foreign repository {{$relationship} repositoryName param}");
 			}
-			else if (!RepositoriesCollection::get()->isRepository($repositoryName)) // todo di
+			else if (!RepositoryContainer::get()->isRepository($repositoryName)) // todo di
 			{
 				throw new InvalidStateException("$repositoryName isn't repository in {$entityName}::\${$parentParam}");
 			}
@@ -108,7 +108,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		$parentParam = $this->parentParam;
 		if ($relationship === MetaData::ManyToMany AND $param)
 		{
-			$classes = array_values((array) RepositoriesCollection::get()->getRepository($this->repository)->getEntityClassName()); // todo di
+			$classes = array_values((array) RepositoryContainer::get()->getRepository($this->repository)->getEntityClassName()); // todo di
 			$this->canConnectWith = array_combine(array_map('strtolower', $classes), $classes);
 			foreach ($this->canConnectWith as $lowerEn => $en)
 			{

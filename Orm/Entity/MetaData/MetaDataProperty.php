@@ -155,7 +155,7 @@ class MetaDataProperty extends Object
 		{
 			throw new InvalidStateException("You must specify foreign repository in {$this->class}::\${$this->name}");
 		}
-		else if (!RepositoriesCollection::get()->isRepository($repositoryName)) // todo di
+		else if (!RepositoryContainer::get()->isRepository($repositoryName)) // todo di
 		{
 			throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
 		}

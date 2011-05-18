@@ -3,10 +3,10 @@
 require_once dirname(__FILE__) . '/../../boot.php';
 
 /**
- * @covers RepositoriesCollection::getRepository
- * @covers RepositoriesCollection::__get
+ * @covers RepositoryContainer::getRepository
+ * @covers RepositoryContainer::__get
  */
-class RepositoriesCollection_getRepository_Test extends TestCase
+class RepositoryContainer_getRepository_Test extends TestCase
 {
 	private $m;
 
