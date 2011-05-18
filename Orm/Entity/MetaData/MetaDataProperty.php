@@ -39,6 +39,10 @@ class MetaDataProperty extends Object
 	public function __construct(MetaData $meta, $name, $types, $access = MetaData::READWRITE, $since = NULL)
 	{
 		$this->class = $meta->getEntityClass();
+		if (!preg_match('#^[a-zA-Z0-9_]+$#', $name))
+		{
+			throw new InvalidArgumentException("{$this->class} property name must be non-empty alphanumeric string, '$name' given");
+		}
 		$this->name = $name;
 		$this->data['since'] = $since;
 		$this->setTypes($types);
