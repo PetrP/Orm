@@ -18,13 +18,13 @@ class Generate extends Object
 
 		$generate = new GenerateTable(RepositoryContainer::get()); // todo di
 
-		if (method_exists('Environment', 'getRobotLoader'))
+		if (method_exists('Nette\Environment', 'getRobotLoader'))
 		{
 			$rl = Environment::getRobotLoader();
 		}
 		else
 		{
-			$rl = Environment::getService('Nette\Loaders\RobotLoader');
+			$rl = Environment::getService(str_replace('-', '\\', 'Nette-Loaders-RobotLoader'));
 		}
 		return $generate->getAllCreateTablesSql($rl);
 	}

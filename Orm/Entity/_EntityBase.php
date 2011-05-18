@@ -141,9 +141,9 @@ abstract class _EntityBase extends _EntityValue
 	/** @deprecated @see MetaData::READWRITE */
 	const READWRITE = 'deprecated';
 	/** @deprecated */
-	final protected function check(){throw new DeprecatedException('Use Entity::onBeforePersist() instead');}
+	final protected function check(){throw new DeprecatedException('Use Orm\Entity::onBeforePersist() instead');}
 	/** @deprecated */
-	final public function toPlainArray(){throw new DeprecatedException('Use Entity::toArray(EntityToArray::AS_ID) instead');}
+	final public function toPlainArray(){throw new DeprecatedException('Use Orm\Entity::toArray(Orm\EntityToArray::AS_ID) instead');}
 	/** @deprecated */
-	final protected static function createEntityRules($entityClass){throw new DeprecatedException('Use Entity::createMetaData instead');}
+	final protected static function createEntityRules($entityClass){throw new DeprecatedException('Use Orm\Entity::createMetaData instead');}
 }

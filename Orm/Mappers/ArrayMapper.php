@@ -23,7 +23,7 @@ abstract class ArrayMapper extends Mapper
 
 	protected function createCollectionClass()
 	{
-		return 'ArrayCollection';
+		return 'Orm\ArrayCollection';
 	}
 
 	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)

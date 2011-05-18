@@ -38,7 +38,7 @@ class PerformanceHelper extends Object
 			}
 
 			register_shutdown_function(create_function('$cache, $key', '
-				$cache[$key] = PerformanceHelper::$toSave;
+				$cache[$key] = \Orm\PerformanceHelper::$toSave;
 			'), $cache, $key);
 		}
 

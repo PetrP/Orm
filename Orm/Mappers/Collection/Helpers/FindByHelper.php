@@ -73,7 +73,7 @@ class FindByHelper
 			{
 				$value = array_unique(
 					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
+						create_function('$v', 'return $v instanceof Orm\IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
 						$value
 					)
 				);

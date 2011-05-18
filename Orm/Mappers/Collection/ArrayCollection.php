@@ -422,7 +422,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			{
 				$value = array_unique(
 					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? $v->id : $v;'),
+						create_function('$v', 'return $v instanceof Orm\IEntity ? $v->id : $v;'),
 						$value
 					)
 				);
@@ -483,7 +483,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	}
 
 	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use ArrayCollection::toArrayCollection() instead');}
+	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\ArrayCollection::toArrayCollection() instead');}
 	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use ArrayCollection::toCollection() instead');}
+	final public function toDataSource(){throw new DeprecatedException('Use Orm\ArrayCollection::toCollection() instead');}
 }

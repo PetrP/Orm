@@ -48,7 +48,8 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	 */
 	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam, $mappedByThis = NULL)
 	{
-		$mainClass = $relationship === MetaData::ManyToMany ? 'ManyToMany' : 'OneToMany';
+		$mainClass = $relationship === MetaData::ManyToMany ? 'Orm\ManyToMany' : 'Orm\OneToMany';
+		$oldMainClass = $relationship === MetaData::ManyToMany ? 'Orm\OldManyToMany' : 'Orm\OldOneToMany';
 		if (!class_exists($class))
 		{
 			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} excepts $mainClass class as type, class '$class' doesn't exists");
@@ -58,12 +59,11 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		{
 			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} Class '$class' isn't instanceof $mainClass");
 		}
-
-		if (isset($parents["Old$mainClass"]))
+		if (isset($parents[$oldMainClass]))
 		{
 			if ($repositoryName)
 			{
-				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You can't specify foreign repository for Old$mainClass");
+				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You can't specify foreign repository for $oldMainClass");
 			}
 		}
 		else

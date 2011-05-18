@@ -49,7 +49,7 @@ abstract class Mapper extends Object implements IMapper
 			$conventional = $this->createConventional();
 			if (!($conventional instanceof IConventional))
 			{
-				throw new InvalidStateException(get_class($this) . '::createConventional() must return IConventional');
+				throw new InvalidStateException(get_class($this) . '::createConventional() must return Orm\IConventional');
 			}
 			$this->conventional = $conventional;
 		}
@@ -71,9 +71,9 @@ abstract class Mapper extends Object implements IMapper
 				throw new InvalidStateException("Collection '{$class}' doesn't exists");
 			}
 			$reflection = new ClassReflection($class);
-			if (!$reflection->implementsInterface('IEntityCollection'))
+			if (!$reflection->implementsInterface('Orm\IEntityCollection'))
 			{
-				throw new InvalidStateException("Collection '{$class}' must implement IEntityCollection");
+				throw new InvalidStateException("Collection '{$class}' must implement Orm\\IEntityCollection");
 			}
 			else if ($reflection->isAbstract())
 			{
@@ -85,15 +85,15 @@ abstract class Mapper extends Object implements IMapper
 			}
 			$this->collectionClass = array($class, NULL);
 
-			if ($class === 'DibiCollection' OR is_subclass_of($class, 'DibiCollection'))
+			if ($class === 'Orm\DibiCollection' OR is_subclass_of($class, 'Orm\DibiCollection'))
 			{
 				$this->collectionClass[1] = 'dibi';
 			}
-			else if ($class === 'DataSourceCollection' OR is_subclass_of($class, 'DataSourceCollection'))
+			else if ($class === 'Orm\DataSourceCollection' OR is_subclass_of($class, 'Orm\DataSourceCollection'))
 			{
 				$this->collectionClass[1] = 'datasource';
 			}
-			else if ($class === 'ArrayCollection' OR is_subclass_of($class, 'ArrayCollection'))
+			else if ($class === 'Orm\ArrayCollection' OR is_subclass_of($class, 'Orm\ArrayCollection'))
 			{
 				$this->collectionClass[1] = 'array';
 			}
@@ -126,7 +126,7 @@ abstract class Mapper extends Object implements IMapper
 	}
 
 	/** @deprecated */
-	final public function delete(IEntity $entity){throw new DeprecatedException('Use Mapper::remove() instead');}
+	final public function delete(IEntity $entity){throw new DeprecatedException('Use Orm\Mapper::remove() instead');}
 	/** @deprecated */
-	final public function createDefaultManyToManyMapper(){throw new DeprecatedException('Use Mapper::createManyToManyMapper() instead');}
+	final public function createDefaultManyToManyMapper(){throw new DeprecatedException('Use Orm\Mapper::createManyToManyMapper() instead');}
 }

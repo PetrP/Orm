@@ -43,7 +43,7 @@ abstract class GenerateDriver extends Object implements IGenerateDriver
 			throw new InvalidStateException($driverName);
 		}
 		$implements = class_implements($driverName);
-		if (!isset($implements['IGenerateDriver']))
+		if (!isset($implements['Orm\IGenerateDriver']))
 		{
 			throw new InvalidStateException($driverName);
 		}

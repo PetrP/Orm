@@ -171,7 +171,7 @@ abstract class _EntityEvent extends Object
 
 
 	/** @deprecated */
-	final protected function onBeforeDelete(IRepository $repository){throw new DeprecatedException('Use Entity::onBeforeRemove() instead');}
+	final protected function onBeforeDelete(IRepository $repository){throw new DeprecatedException('Use Orm\Entity::onBeforeRemove() instead');}
 	/** @deprecated */
-	final protected function onAfterDelete(IRepository $repository){throw new DeprecatedException('Use Entity::onAfterRemove() instead');}
+	final protected function onAfterDelete(IRepository $repository){throw new DeprecatedException('Use Orm\Entity::onAfterRemove() instead');}
 }

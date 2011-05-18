@@ -214,7 +214,7 @@ class MetaDataProperty extends Object
 		{
 			throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
 		}
-		$mainClass = $relationship === MetaData::ManyToMany ? 'ManyToMany' : 'OneToMany';
+		$mainClass = $relationship === MetaData::ManyToMany ? 'Orm\ManyToMany' : 'Orm\OneToMany';
 		if (isset($this->data['types']['mixed']))
 		{
 			$this->setTypes($mainClass);
@@ -326,7 +326,7 @@ class MetaDataProperty extends Object
 		$reflection = new ClassReflection($class);
 		$class = $reflection->getName();
 
-		if (!$reflection->implementsInterface('IEntityInjection')) throw new Exception("$class not implements IEntityInjection");
+		if (!$reflection->implementsInterface('Orm\IEntityInjection')) throw new Exception("$class not implements Orm\\IEntityInjection");
 		if (!$reflection->isInstantiable()) throw new Exception("$class not instantiable");
 
 		if ($factory instanceof Callback OR $factory instanceof Closure)

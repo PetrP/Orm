@@ -51,7 +51,7 @@ class MetaData extends Object
 			$r = new ClassReflection($entityClass);
 			$r = new ReflectionClass($entityClass);
 			$entityClass = $r->getName();
-			if (!$r->implementsInterface('IEntity')) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
+			if (!$r->implementsInterface('Orm\IEntity')) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
 		}
 		$this->entityClass = $entityClass;
 	}
@@ -96,7 +96,7 @@ class MetaData extends Object
 	{
 		if (!isset($this->methods))
 		{
-			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('_EntityBase'));
+			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Orm\_EntityBase'));
 			// TODO neumoznuje pouzit vlastni IEntity
 			foreach ($methods as $method)
 			{
@@ -162,9 +162,9 @@ class MetaData extends Object
 				}
 				if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
 				$implements = class_implements($entityClass);
-				if (!isset($implements['IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
+				if (!isset($implements['Orm\IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
 				$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
-				if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
+				if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
 				self::$cache2[$lowerEntityClass] = $meta;
 				self::$cache[$lowerEntityClass] = $meta->toArray();
 				unset(self::$cache2[$lowerEntityClass]);

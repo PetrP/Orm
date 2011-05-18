@@ -130,10 +130,10 @@ class RepositoryContainer extends Object
 
 		$reflection = new ReflectionClass($class);
 
-		if (!$reflection->implementsInterface('IRepository'))
+		if (!$reflection->implementsInterface('Orm\IRepository'))
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$name}' must implement IRepository");
+			throw new InvalidStateException("Repository '{$name}' must implement Orm\\IRepository");
 		}
 		else if ($reflection->isAbstract())
 		{

@@ -56,9 +56,9 @@ class NoConventional extends Object implements IConventional
 	}
 
 	/** @deprecated */
-	final public function format($data){throw new DeprecatedException('Use NoConventional::formatEntityToStorage() instead');}
+	final public function format($data){throw new DeprecatedException('Use Orm\NoConventional::formatEntityToStorage() instead');}
 	/** @deprecated */
-	final public function unformat($data){throw new DeprecatedException('Use NoConventional::formatStorageToEntity() instead');}
+	final public function unformat($data){throw new DeprecatedException('Use Orm\NoConventional::formatStorageToEntity() instead');}
 	/** @deprecated */
-	final public function getManyToManyTableName(IRepository $first, IRepository $second){throw new DeprecatedException('Use NoConventional::getManyToManyTable() instead');}
+	final public function getManyToManyTableName(IRepository $first, IRepository $second){throw new DeprecatedException('Use Orm\NoConventional::getManyToManyTable() instead');}
 }

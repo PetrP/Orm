@@ -178,7 +178,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 			{
 				$value = array_unique(
 					array_map(
-						create_function('$v', 'return $v instanceof IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
+						create_function('$v', 'return $v instanceof Orm\IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
 						$value
 					)
 				);
@@ -227,7 +227,7 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 	// todo final count totalCount a toString a dalsi
 
 	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use DataSourceCollection::toArrayCollection() instead');}
+	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\DataSourceCollection::toArrayCollection() instead');}
 	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use DataSourceCollection::toCollection() instead');}
+	final public function toDataSource(){throw new DeprecatedException('Use Orm\DataSourceCollection::toCollection() instead');}
 }

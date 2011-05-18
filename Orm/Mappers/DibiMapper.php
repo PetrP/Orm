@@ -124,10 +124,10 @@ class DibiMapper extends Mapper
 	protected function dataSource()
 	{
 		list($class, $classInfo) = $this->getCollectionClass(true);
-		if ($class === 'DibiCollection')
+		if ($class === 'Orm\DibiCollection')
 		{
 			// bc, i kdyz se pouziva DibiCollection tak dataSource muze fungovat, kdyz se nepouziva custom collection
-			$class = 'DataSourceCollection';
+			$class = 'Orm\DataSourceCollection';
 		}
 		else if ($classInfo !== 'datasource')
 		{
@@ -155,7 +155,7 @@ class DibiMapper extends Mapper
 
 	protected function createCollectionClass()
 	{
-		return 'DibiCollection';
+		return 'Orm\DibiCollection';
 	}
 
 	public function getById($id)
@@ -227,8 +227,8 @@ class DibiMapper extends Mapper
 						if ($rule['relationship'] === MetaData::OneToMany)
 						{
 							$loader = (array) $rule['relationshipParam']; // hack
-							$r = $loader["\0RelationshipLoader\0repository"];
-							$p = $loader["\0RelationshipLoader\0param"];
+							$r = $loader["\0Orm\\RelationshipLoader\0repository"];
+							$p = $loader["\0Orm\\RelationshipLoader\0param"];
 							if ($r AND $p)
 							{
 								$this->joinInfoCache['fk'][$name] = array($r, 'id', $p);
@@ -237,15 +237,15 @@ class DibiMapper extends Mapper
 						else if ($rule['relationship'] === MetaData::ManyToMany)
 						{
 							$loader = (array) $rule['relationshipParam']; // hack
-							$r = $loader["\0RelationshipLoader\0repository"];
-							$p = $loader["\0RelationshipLoader\0param"];
+							$r = $loader["\0Orm\\RelationshipLoader\0repository"];
+							$p = $loader["\0Orm\\RelationshipLoader\0param"];
 							if ($r AND $p)
 							{
 								$parentRepository = $this->getRepository();
 								$childRepository = $this->getModel()->getRepository($r);
-								$childParam = $loader["\0RelationshipLoader\0param"];
-								$parentParam = $loader["\0RelationshipLoader\0parentParam"];
-								if ($loader["\0RelationshipLoader\0mappedByThis"])
+								$childParam = $loader["\0Orm\\RelationshipLoader\0param"];
+								$parentParam = $loader["\0Orm\\RelationshipLoader\0parentParam"];
+								if ($loader["\0Orm\\RelationshipLoader\0mappedByThis"])
 								{
 									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
 									$parentParam = $manyToManyMapper->firstParam;
@@ -287,7 +287,7 @@ class DibiMapper extends Mapper
 			$tmp['mapper'] = $joinRepository->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva DibiMapper, data nelze propojit.");
+				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
 			}
 			$tmp['conventional'] = $tmp['mapper']->getConventional();
 			$tmp['table'] = $tmp['mapper']->getTableName();
@@ -295,7 +295,7 @@ class DibiMapper extends Mapper
 			if ($tmp['mapper']->getConnection() !== $this->connection)
 			{
 				// todo porovnavat connection na collection?
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
+				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
 			$tmp['xConventionalKey'] = key($conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL)));
@@ -305,12 +305,12 @@ class DibiMapper extends Mapper
 			$collection = $tmp['mapper']->findAll();
 			if (!($collection instanceof DibiCollection))
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva DibiCollection, data nelze propojit.");
+				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiCollection, data nelze propojit.");
 			}
 			$collectionArray = (array) $collection; // hack
 			if ($collectionArray["\0*\0where"])
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) DibiCollection pouziva where(), data nelze propojit.");
+				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection pouziva where(), data nelze propojit.");
 			}
 			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
 

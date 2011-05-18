@@ -88,9 +88,9 @@ class AnnotationMetaData extends Object
 		$classes = array();
 		while (class_exists($class))
 		{
-			if ($class === 'Object') break;
+			if ($class === 'Nette\Object') break;
 			$classes[] = $class;
-			if ($class === 'Entity') break; // todo
+			if ($class === 'Orm\Entity') break; // todo
 			$class = get_parent_class($class);
 		}
 		return array_reverse($classes);

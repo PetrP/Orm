@@ -64,7 +64,7 @@ abstract class OldManyToMany extends ManyToMany
 	}
 
 	/** @deprecated*/
-	final protected function createMapper(IRepository $firstRepository, IRepository $secondRepository){throw new DeprecatedException('Use Mapper::createManyToManyMapper');/*// todo array jen kdyz mam na obou stranach arraymapper a mam protejsi property (protoze pole je potreba udrzovat na obou stranach)*/}
+	final protected function createMapper(IRepository $firstRepository, IRepository $secondRepository){throw new DeprecatedException('Use Orm\Mapper::createManyToManyMapper');/*// todo array jen kdyz mam na obou stranach arraymapper a mam protejsi property (protoze pole je potreba udrzovat na obou stranach)*/}
 	/** @deprecated*/
 	final protected function getFirstParamName() {throw new DeprecatedException();}
 	/** @deprecated*/

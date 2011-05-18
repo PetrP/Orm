@@ -399,7 +399,7 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use DibiCollection::toArrayCollection() instead');}
+	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\DibiCollection::toArrayCollection() instead');}
 	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use DibiCollection::toDataSourceCollection() instead');}
+	final public function toDataSource(){throw new DeprecatedException('Use Orm\DibiCollection::toDataSourceCollection() instead');}
 }

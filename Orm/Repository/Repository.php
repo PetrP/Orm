@@ -356,9 +356,9 @@ abstract class Repository extends Object implements IRepository
 			{
 				if (is_object($mapper))
 				{
-					throw new InvalidStateException('Mapper ' . get_class($mapper) . ' must implement IMapper');
+					throw new InvalidStateException('Mapper ' . get_class($mapper) . ' must implement Orm\IMapper');
 				}
-				throw new InvalidStateException(get_class($this) . "::createMapper() must return IMapper, '" . gettype($mapper) . "' given");
+				throw new InvalidStateException(get_class($this) . "::createMapper() must return Orm\\IMapper, '" . gettype($mapper) . "' given");
 			}
 			$this->mapper = $mapper;
 		}
@@ -552,7 +552,7 @@ abstract class Repository extends Object implements IRepository
 
 
 	/** @deprecated */
-	final public function getEntityName(array $data = NULL){throw new DeprecatedException('Use Repository::getEntityClassName() instead');}
+	final public function getEntityName(array $data = NULL){throw new DeprecatedException('Use Orm\Repository::getEntityClassName() instead');}
 	/** @deprecated */
-	final public function delete($entity){throw new DeprecatedException('Use Repository::remove() instead');}
+	final public function delete($entity){throw new DeprecatedException('Use Orm\Repository::remove() instead');}
 }
