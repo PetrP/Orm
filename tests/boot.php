@@ -9,6 +9,12 @@ require_once LIBS_DIR . '/dump.php';
 require_once LIBS_DIR . '/dibi/dibi.php';
 require_once ORM_DIR . '/loader.php';
 
+
+use Nette\Diagnostics\Debugger as Debug;
+use Nette\Environment;
+use Nette\Loaders\RobotLoader;
+use Nette\InvalidStateException;
+
 Debug::enable(false);
 Debug::$strictMode = true;
 
@@ -16,8 +22,14 @@ date_default_timezone_set('Europe/Prague');
 
 Environment::setVariable('tempDir', TMP_DIR);
 
+try {
+	$storage = Environment::getService(str_replace('-', '\\', 'Nette-Caching-ICacheStorage'));
+} catch (InvalidStateException $e) {
+	$storage = Environment::getContext()->cacheStorage;
+}
+
 $r = new RobotLoader;
-$r->setCacheStorage(Environment::getService('Nette\\Caching\\ICacheStorage'));
+$r->setCacheStorage($storage);
 $r->addDirectory(LIBS_DIR);
 $r->addDirectory(dirname(__FILE__) . '/unit');
 $r->register();
