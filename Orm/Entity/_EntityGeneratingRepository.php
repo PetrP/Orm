@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Uchovava stav o repository kde je entita persistovana.
  * @see Entity

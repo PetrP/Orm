@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Helper ktery pouziva entita pro validovani.
  */

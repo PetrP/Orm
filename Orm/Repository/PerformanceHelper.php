@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 class PerformanceHelper extends Object
 {
 	public static $keyCallback = array(__CLASS__, 'getDefaultKey');

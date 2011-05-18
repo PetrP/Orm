@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 interface IEntity extends ArrayAccess, IteratorAggregate
 {
 

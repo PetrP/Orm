@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/bc.php';
 
 interface IEntityCollection extends Countable, IteratorAggregate, IModelDataSource

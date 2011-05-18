@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 class GenerateEntityComment extends Object
 {
 	/** @var DibiMapper */

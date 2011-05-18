@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Udalosti
  * @see Entity

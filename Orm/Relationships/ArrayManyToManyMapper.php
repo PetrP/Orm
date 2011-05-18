@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper

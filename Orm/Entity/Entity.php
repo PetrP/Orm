@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/IEntity.php';
 
 require_once dirname(__FILE__) . '/MetaData/AnnotationMetaData.php';

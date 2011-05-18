@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 
 class DibiManyToManyMapper extends Object implements IManyToManyMapper

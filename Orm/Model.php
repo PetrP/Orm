@@ -1,5 +1,7 @@
 <?php
 
+namespace Orm;
+
 require_once dirname(__FILE__) . '/Entity/Entity.php';
 
 require_once dirname(__FILE__) . '/Repository/Repository.php';

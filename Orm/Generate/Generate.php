@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 class Generate extends Object
 {
 	public static function sql()

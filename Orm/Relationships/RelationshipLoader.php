@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/IRelationship.php';
 
 class RelationshipLoader extends Object implements IEntityInjectionLoader

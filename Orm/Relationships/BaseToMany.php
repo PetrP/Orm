@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 abstract class BaseToMany extends Object
 {
 

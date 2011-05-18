@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Obstarava cteni, kontrolu, plneni, nastavovani, validovani dat
  * @see Entity

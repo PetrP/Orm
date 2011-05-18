@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 class GenerateDriverMysql extends GenerateDriver
 {
 	private $footer = array();

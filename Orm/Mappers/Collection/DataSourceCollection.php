@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 
 require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';

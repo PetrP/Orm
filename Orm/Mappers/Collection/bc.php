@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /** @deprecated */
 interface IModelDataSource {}
 /** @deprecated */

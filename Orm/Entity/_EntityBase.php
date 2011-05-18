@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
  * moznost iterovat (IteratorAggregate) a pristupovat k parametrum jako k poli (ArrayAccess)

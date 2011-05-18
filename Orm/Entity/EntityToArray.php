@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 /**
  * Entity prevadi na array, je monze nastavit co udelat z asociacemi
  * @see Entity::toArray()

@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 require_once dirname(__FILE__) . '/GenerateDriver.php';
 
 require_once dirname(__FILE__) . '/GenerateDriverMysql.php';

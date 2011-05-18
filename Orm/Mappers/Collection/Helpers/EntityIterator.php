@@ -1,5 +1,8 @@
 <?php
 
+namespace Orm;
+
+
 class EntityIterator extends IteratorIterator implements Countable
 {
 	private $repository;
