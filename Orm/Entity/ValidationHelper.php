@@ -3,6 +3,7 @@
 namespace Orm;
 
 use ArrayObject;
+use Nette\NotImplementedException;
 
 /**
  * Helper ktery pouziva entita pro validovani.
@@ -43,7 +44,7 @@ class ValidationHelper
 				if ($value instanceof $type) return true;
 				else if ($type === 'datetime')
 				{
-					$_value = Tools::createDateTime($value);
+					$_value = self::createDateTime($value);
 				}
 				else if ($type === 'arrayobject' AND is_string($value) AND in_array(substr($value, 0, 1), array('O','C')) AND substr($value, 1, 18) === ':11:"ArrayObject":' AND ($tmp = @unserialize($value)) instanceof ArrayObject) // intentionally @
 				{
@@ -131,6 +132,24 @@ class ValidationHelper
 	public static function isUrl($value)
 	{
 		return (bool) preg_match('/^.+\.[a-z]{2,6}(?:\\/.*)?$/i', $value);
+	}
+
+	/**
+	 * DateTime object factory.
+	 * @param  string|int|DateTime
+	 * @return DateTime
+	 */
+	public static function createDateTime($time)
+	{
+		if (class_exists('Nette\Tools'))
+		{
+			return \Nette\Tools::createDateTime($time);
+		}
+		else if (class_exists('Nette\DateTime'))
+		{
+			return \Nette\DateTime::from($time);
+		}
+		throw new NotImplementedException;
 	}
 
 }

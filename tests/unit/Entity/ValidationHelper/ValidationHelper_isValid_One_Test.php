@@ -1,6 +1,7 @@
 <?php
 
 use Nette\Utils\Html;
+use Orm\ValidationHelper;
 
 require_once dirname(__FILE__) . '/../../../boot.php';
 
@@ -173,27 +174,27 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 	public function testDateTime()
 	{
 		$this->type = 'datetime';
-		$this->t('2010-11-11', true, Tools::createDateTime('2010-11-11'));
-		$this->t(NULL, true, Tools::createDateTime('now'));
-		$this->t(false, true, Tools::createDateTime('now')); // wtf
+		$this->t('2010-11-11', true, ValidationHelper::createDateTime('2010-11-11'));
+		$this->t(NULL, true, ValidationHelper::createDateTime('now'));
+		$this->t(false, true, ValidationHelper::createDateTime('now')); // wtf
 		try {
 			$this->t(true, false);
 		} catch (Exception $e) {
 			$this->assertEquals($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (1): Unexpected character');
 		}
-		$this->t('', true, Tools::createDateTime('now'));
-		$this->t(' ', true, Tools::createDateTime('now')); // wtf
+		$this->t('', true, ValidationHelper::createDateTime('now'));
+		$this->t(' ', true, ValidationHelper::createDateTime('now')); // wtf
 		try {
 			$this->t('xx', false);
 		} catch (Exception $e) {
 			$this->assertEquals($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (xx) at position 0 (x): The timezone could not be found in the database');
 		}
-		$this->t("\0", true, Tools::createDateTime('now'));
-		$this->t('0', true, Tools::createDateTime('now'));
-		$this->t('1', true, Tools::createDateTime('+1 second'));
-		$this->t(1, true, Tools::createDateTime('+1 second'));
-		$this->t(0, true, Tools::createDateTime('now'));
-		$this->t(5.69, true, Tools::createDateTime('+5 second'));
+		$this->t("\0", true, ValidationHelper::createDateTime('now'));
+		$this->t('0', true, ValidationHelper::createDateTime('now'));
+		$this->t('1', true, ValidationHelper::createDateTime('+1 second'));
+		$this->t(1, true, ValidationHelper::createDateTime('+1 second'));
+		$this->t(0, true, ValidationHelper::createDateTime('now'));
+		$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'));
 		try {
 			$this->t(array(), false);
 		} catch (Exception $e) {
@@ -216,7 +217,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		}
 
 		$this->t(new DateTime('2011-11-11'), true);
-		$this->t('-1 month', true, Tools::createDateTime('-1 month'));
+		$this->t('-1 month', true, ValidationHelper::createDateTime('-1 month'));
 	}
 
 	public function testArrayObject()

@@ -1,6 +1,7 @@
 <?php
 
 use Nette\Utils\Html;
+use Orm\ValidationHelper;
 
 require_once dirname(__FILE__) . '/../../../boot.php';
 
@@ -49,7 +50,7 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->type = 'datetime|null';
 		$this->t(NULL, true);
 		$this->t(new DateTime, true);
-		$this->t('now', true, Tools::createDateTime('now'));
+		$this->t('now', true, ValidationHelper::createDateTime('now'));
 
 		$this->type = 'arrayobject|null';
 		$this->t(NULL, true);
