@@ -196,43 +196,60 @@ abstract class Repository extends Object implements IRepository
 		{
 			return $entity;
 		}
-		$entity->___event($entity, 'beforePersist', $this);
-		$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
-
-		$relationshipValues = array();
-		$fk = $this->getFkForEntity(get_class($entity));
-		foreach ($entity->toArray() as $key => $value)
-		{
-			if (isset($fk[$key]) AND $value instanceof IEntity)
+		try {
+			$hash = spl_object_hash($entity);
+			static $recurcion = array();
+			if (isset($recurcion[$hash]) AND $recurcion[$hash] > 1)
 			{
-				$this->getModel()->getRepository($fk[$key])->persist($value, false);
+				$tmp = get_class($entity) . (isset($entity->id) ? '#' . $entity->id : NULL);
+				throw new InvalidStateException("There is an infinite recursion during persist  in $tmp");
 			}
-			else if ($value instanceof IRelationship)
+			if (!isset($recurcion[$hash])) $recurcion[$hash] = 0;
+			$recurcion[$hash]++;
+
+			$entity->___event($entity, 'beforePersist', $this);
+			$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
+
+			$relationshipValues = array();
+			$fk = $this->getFkForEntity(get_class($entity));
+			foreach ($entity->toArray() as $key => $value)
 			{
-				$relationshipValues[] = $value;;
+				if (isset($fk[$key]) AND $value instanceof IEntity)
+				{
+					$this->getModel()->getRepository($fk[$key])->persist($value, false);
+				}
+				else if ($value instanceof IRelationship)
+				{
+					$relationshipValues[] = $value;;
+				}
 			}
-		}
 
-		if ($id = $this->getMapper()->persist($entity))
-		{
-			$entity->___event($entity, 'persist', $this, $id);
-			$this->entities[$entity->id] = $entity;
-
-			foreach ($relationshipValues as $relationship)
+			if ($id = $this->getMapper()->persist($entity))
 			{
-				$relationship->persist();
-			}
-
-			$entity->___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
-			$entity->___event($entity, 'afterPersist', $this);
-			if ($entity->isChanged())
-			{
-				$this->getMapper()->persist($entity);
 				$entity->___event($entity, 'persist', $this, $id);
+				$this->entities[$entity->id] = $entity;
+
+				foreach ($relationshipValues as $relationship)
+				{
+					$relationship->persist();
+				}
+
+				$entity->___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
+				$entity->___event($entity, 'afterPersist', $this);
+				if ($entity->isChanged())
+				{
+					$this->getMapper()->persist($entity);
+					$entity->___event($entity, 'persist', $this, $id);
+				}
+				unset($recurcion[$hash]);
+				return $entity;
 			}
-			return $entity;
+			throw new InvalidStateException('Something wrong with mapper.');
+
+		} catch (Exception $e) {
+			unset($recurcion[$hash]);
+			throw $e;
 		}
-		throw new InvalidStateException('Something wrong with mapper.');
 	}
 
 	/**
