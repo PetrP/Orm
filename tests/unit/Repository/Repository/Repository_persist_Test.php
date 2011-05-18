@@ -47,16 +47,6 @@ class Repository_persist_Test extends TestCase
 		$this->r->persist(new Repository_persist_Entity);
 	}
 
-	public function testCascadeEntity()
-	{
-		$this->markTestSkipped();
-	}
-
-	public function testCascadeRelationship()
-	{
-		$this->markTestSkipped();
-	}
-
 	public function testMapperError()
 	{
 		$this->r->mapper->returnNull = true;
