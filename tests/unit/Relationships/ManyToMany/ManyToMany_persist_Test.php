@@ -3,9 +3,9 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::persist
- * @covers ArrayManyToManyMapper::add
- * @covers ArrayManyToManyMapper::remove
+ * @covers Orm\ManyToMany::persist
+ * @covers Orm\ArrayManyToManyMapper::add
+ * @covers Orm\ArrayManyToManyMapper::remove
  */
 class ManyToMany_persist_Test extends ManyToMany_Test
 {

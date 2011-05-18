@@ -6,7 +6,7 @@ use Orm\MetaDataProperty;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::setEnum
+ * @covers Orm\MetaDataProperty::setEnum
  */
 class MetaDataProperty_setEnum_Test extends TestCase
 {

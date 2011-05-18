@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::persist
+ * @covers Orm\Repository::persist
  */
 class Repository_persist_recursion_Test extends TestCase
 {

@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::getMapper
+ * @covers Orm\Repository::getMapper
  */
 class Repository_getMapper_Test extends TestCase
 {

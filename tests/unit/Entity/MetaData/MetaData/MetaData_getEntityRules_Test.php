@@ -6,7 +6,7 @@ use Orm\MetaData;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaData::getEntityRules
+ * @covers Orm\MetaData::getEntityRules
  */
 class MetaData_getEntityRules_Test extends TestCase
 {

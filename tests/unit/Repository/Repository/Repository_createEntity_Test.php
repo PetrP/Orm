@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::createEntity
+ * @covers Orm\Repository::createEntity
  */
 class Repository_createEntity_Test extends TestCase
 {

@@ -3,8 +3,8 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityEvent::onBeforeRemove
- * @covers _EntityEvent::onAfterRemove
+ * @covers Orm\_EntityEvent::onBeforeRemove
+ * @covers Orm\_EntityEvent::onAfterRemove
  */
 class EntityEvent_onRemove_Test extends EntityEvent_event_Base
 {

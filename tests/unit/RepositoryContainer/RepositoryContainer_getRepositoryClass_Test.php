@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../boot.php';
 
 /**
- * @covers RepositoryContainer::getRepositoryClass
+ * @covers Orm\RepositoryContainer::getRepositoryClass
  */
 class RepositoryContainer_getRepositoryClass_Test extends TestCase
 {

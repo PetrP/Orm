@@ -3,8 +3,8 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::createEntity
- * @covers BaseToMany::createEntity
+ * @covers Orm\ManyToMany::createEntity
+ * @covers Orm\BaseToMany::createEntity
  */
 class ManyToMany_createEntity_Test extends ManyToMany_Test
 {

@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::__clone
+ * @covers Orm\_EntityValue::__clone
  */
 class EntityValue_clone_Test extends TestCase
 {

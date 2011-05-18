@@ -5,7 +5,7 @@ use Nette\Utils\Html;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ValidationHelper::isValid
+ * @covers Orm\ValidationHelper::isValid
  */
 class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Base
 {

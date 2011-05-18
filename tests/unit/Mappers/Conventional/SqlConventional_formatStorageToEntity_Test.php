@@ -5,7 +5,7 @@ use Nette\Utils\Html;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers SqlConventional::formatStorageToEntity
+ * @covers Orm\SqlConventional::formatStorageToEntity
  */
 class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatEntityToStorage_Test
 {

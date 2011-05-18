@@ -7,7 +7,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::setTypes
+ * @covers Orm\MetaDataProperty::setTypes
  */
 class MetaDataProperty_setTypes_Test extends TestCase
 {

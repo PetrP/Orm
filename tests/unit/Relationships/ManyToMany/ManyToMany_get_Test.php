@@ -3,8 +3,8 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::get
- * @covers ArrayManyToManyMapper::load
+ * @covers Orm\ManyToMany::get
+ * @covers Orm\ArrayManyToManyMapper::load
  */
 class ManyToMany_get_Test extends ManyToMany_Test
 {

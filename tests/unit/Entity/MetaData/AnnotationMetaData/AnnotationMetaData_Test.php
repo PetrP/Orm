@@ -7,7 +7,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers AnnotationMetaData
+ * @covers Orm\AnnotationMetaData
  */
 class AnnotationMetaData_Test extends TestCase
 {

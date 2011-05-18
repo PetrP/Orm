@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::setInjectedValue
+ * @covers Orm\ManyToMany::setInjectedValue
  */
 class ManyToMany_setInjectedValue_Test extends ManyToMany_Test
 {

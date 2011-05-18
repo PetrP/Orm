@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::count
+ * @covers Orm\ManyToMany::count
  */
 class ManyToMany_count_Test extends ManyToMany_Test
 {

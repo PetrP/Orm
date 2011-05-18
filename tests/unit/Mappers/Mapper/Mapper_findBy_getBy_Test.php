@@ -5,8 +5,8 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Mapper::findBy
- * @covers Mapper::getBy
+ * @covers Orm\Mapper::findBy
+ * @covers Orm\Mapper::getBy
  */
 class Mapper_findBy_getBy_Test extends TestCase
 {

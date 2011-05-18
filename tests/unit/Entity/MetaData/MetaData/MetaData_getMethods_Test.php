@@ -5,8 +5,8 @@ use Orm\MetaData;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaData::getMethods
- * @covers MetaDataProperty::setAccess
+ * @covers Orm\MetaData::getMethods
+ * @covers Orm\MetaDataProperty::setAccess
  */
 class MetaData_getMethods_Test extends TestCase
 {

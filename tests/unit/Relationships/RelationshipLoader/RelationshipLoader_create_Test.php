@@ -6,7 +6,7 @@ use Orm\MetaData;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers RelationshipLoader::create
+ * @covers Orm\RelationshipLoader::create
  */
 class RelationshipLoader_create_Test extends OneToMany_Test
 {

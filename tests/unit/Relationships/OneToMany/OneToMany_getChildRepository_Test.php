@@ -5,7 +5,7 @@ use Orm\OneToMany;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::getChildRepository
+ * @covers Orm\OneToMany::getChildRepository
  */
 class OneToMany_getChildRepository_Test extends OneToMany_Test
 {

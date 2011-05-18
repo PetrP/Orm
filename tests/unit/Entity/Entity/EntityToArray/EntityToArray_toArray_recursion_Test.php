@@ -6,7 +6,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers EntityToArray::toArray
+ * @covers Orm\EntityToArray::toArray
  */
 class EntityToArray_toArray_recursion_Test extends TestCase
 {

@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::set
+ * @covers Orm\OneToMany::set
  */
 class OneToMany_set_Test extends OneToMany_Test
 {

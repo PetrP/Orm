@@ -5,7 +5,7 @@ use Orm\MetaData;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaData::addProperty
+ * @covers Orm\MetaData::addProperty
  */
 class MetaData_addProperty_Test extends TestCase
 {

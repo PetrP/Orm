@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::setInjectedValue
+ * @covers Orm\OneToMany::setInjectedValue
  */
 class OneToMany_setInjectedValue_Test extends OneToMany_Test
 {

@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityGeneratingRepository::onAfterRemove
+ * @covers Orm\_EntityGeneratingRepository::onAfterRemove
  */
 class EntityGeneratingRepository_onAfterRemove_Test extends TestCase
 {

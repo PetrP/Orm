@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::remove
+ * @covers Orm\ManyToMany::remove
  */
 class ManyToMany_remove_Test extends ManyToMany_Test
 {

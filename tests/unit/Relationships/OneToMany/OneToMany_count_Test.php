@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::count
+ * @covers Orm\OneToMany::count
  */
 class OneToMany_count_Test extends OneToMany_Test
 {

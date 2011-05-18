@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityEvent::onLoad
+ * @covers Orm\_EntityEvent::onLoad
  */
 class EntityEvent_onLoad_Test extends EntityEvent_event_Base
 {

@@ -3,8 +3,8 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::getInjectedValue
- * @covers ArrayManyToManyMapper::getValue
+ * @covers Orm\ManyToMany::getInjectedValue
+ * @covers Orm\ArrayManyToManyMapper::getValue
  */
 class ManyToMany_getInjectedValue_Test extends ManyToMany_Test
 {

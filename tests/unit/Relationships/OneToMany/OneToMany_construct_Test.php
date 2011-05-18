@@ -5,8 +5,8 @@ use Orm\OneToMany;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::__construct
- * @covers BaseToMany::__construct
+ * @covers Orm\OneToMany::__construct
+ * @covers Orm\BaseToMany::__construct
  */
 class OneToMany_construct_Test extends OneToMany_Test
 {

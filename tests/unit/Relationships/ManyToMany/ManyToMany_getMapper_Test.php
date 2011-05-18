@@ -6,8 +6,8 @@ use Orm\ManyToMany;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::getMapper
- * @covers ArrayManyToManyMapper::setValue
+ * @covers Orm\ManyToMany::getMapper
+ * @covers Orm\ArrayManyToManyMapper::setValue
  */
 class ManyToMany_getMapper_Test extends ManyToMany_Test
 {

@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::persistAndFlush
+ * @covers Orm\Repository::persistAndFlush
  */
 class Repository_persistAndFlush_Test extends TestCase
 {

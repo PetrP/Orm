@@ -6,8 +6,8 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers DibiCollection::join
- * @covers DibiMapper::getJoinInfo
+ * @covers Orm\DibiCollection::join
+ * @covers Orm\DibiMapper::getJoinInfo
  */
 class DibiCollection_join_ManyToMany_Test extends TestCase
 {

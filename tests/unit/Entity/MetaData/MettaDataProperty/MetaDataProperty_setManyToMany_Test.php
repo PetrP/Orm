@@ -8,10 +8,10 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::setManyToMany
- * @covers MetaDataProperty::setToMany
- * @covers RelationshipLoader::__construct
- * @covers RelationshipLoader::check
+ * @covers Orm\MetaDataProperty::setManyToMany
+ * @covers Orm\MetaDataProperty::setToMany
+ * @covers Orm\RelationshipLoader::__construct
+ * @covers Orm\RelationshipLoader::check
  */
 class MetaDataProperty_setManyToMany_Test extends TestCase
 {

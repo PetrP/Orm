@@ -3,10 +3,10 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityBase::offsetExists
- * @covers _EntityBase::offsetGet
- * @covers _EntityBase::offsetSet
- * @covers _EntityBase::offsetUnset
+ * @covers Orm\_EntityBase::offsetExists
+ * @covers Orm\_EntityBase::offsetGet
+ * @covers Orm\_EntityBase::offsetSet
+ * @covers Orm\_EntityBase::offsetUnset
  */
 class EntityBase_ArrayAccess_Test extends TestCase
 {

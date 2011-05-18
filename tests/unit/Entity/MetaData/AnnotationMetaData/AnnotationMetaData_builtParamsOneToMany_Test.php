@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers AnnotationMetaData::builtParamsOneToMany
+ * @covers Orm\AnnotationMetaData::builtParamsOneToMany
  */
 class AnnotationMetaData_builtParamsOneToMany_Test extends TestCase
 {

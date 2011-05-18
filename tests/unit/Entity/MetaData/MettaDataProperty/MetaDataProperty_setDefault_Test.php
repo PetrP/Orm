@@ -6,7 +6,7 @@ use Orm\MetaDataProperty;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers MetaDataProperty::setDefault
+ * @covers Orm\MetaDataProperty::setDefault
  */
 class MetaDataProperty_setDefault_Test extends TestCase
 {

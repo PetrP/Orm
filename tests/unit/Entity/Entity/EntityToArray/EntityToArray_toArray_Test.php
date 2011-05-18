@@ -6,8 +6,8 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers EntityToArray::toArray
- * @covers _EntityBase::toArray
+ * @covers Orm\EntityToArray::toArray
+ * @covers Orm\_EntityBase::toArray
  */
 class EntityToArray_toArray_Test extends TestCase
 {

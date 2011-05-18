@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::__call
+ * @covers Orm\_EntityValue::__call
  */
 class EntityValue_call_is_Test extends TestCase
 {

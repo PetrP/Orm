@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityBase::getIterator
+ * @covers Orm\_EntityBase::getIterator
  */
 class EntityBase_getIterator_Test extends TestCase
 {

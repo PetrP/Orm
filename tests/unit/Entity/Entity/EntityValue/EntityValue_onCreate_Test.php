@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::onCreate
+ * @covers Orm\_EntityValue::onCreate
  */
 class EntityValue_onCreate_Test extends TestCase
 {

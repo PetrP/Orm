@@ -5,7 +5,7 @@ use Orm\IEntity;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::getDefaultValueHelper
+ * @covers Orm\_EntityValue::getDefaultValueHelper
  */
 class EntityValue_default_Test extends TestCase
 {

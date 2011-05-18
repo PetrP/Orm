@@ -5,7 +5,7 @@ use Orm\MetaData;
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::hasParam
+ * @covers Orm\_EntityValue::hasParam
  */
 class EntityValue_hasParam_Test extends TestCase
 {

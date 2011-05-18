@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::clean
+ * @covers Orm\Repository::clean
  */
 class Repository_clean_Test extends TestCase
 {

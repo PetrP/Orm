@@ -3,9 +3,9 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityValue::__get
- * @covers _EntityValue::__call
- * @covers _EntityValue::getValue
+ * @covers Orm\_EntityValue::__get
+ * @covers Orm\_EntityValue::__call
+ * @covers Orm\_EntityValue::getValue
  */
 class EntityValue_getter_Test extends EntityValue_settergetter_Base
 {

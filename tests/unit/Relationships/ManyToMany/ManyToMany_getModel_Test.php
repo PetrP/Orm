@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers ManyToMany::getModel
+ * @covers Orm\ManyToMany::getModel
  */
 class ManyToMany_getModel_Test extends ManyToMany_Test
 {

@@ -9,9 +9,9 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers RelationshipLoader::check
- * @covers MetaDataProperty::toArray
- * @covers RelationshipLoader::__construct
+ * @covers Orm\RelationshipLoader::check
+ * @covers Orm\MetaDataProperty::toArray
+ * @covers Orm\RelationshipLoader::__construct
  */
 class RelationshipLoader_check_ManyToMany_Test extends TestCase
 {

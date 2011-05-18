@@ -3,14 +3,14 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers _EntityEvent::onAttach
- * @covers _EntityEvent::onBeforePersist
- * @covers _EntityEvent::onBeforeInsert
- * @covers _EntityEvent::onBeforeUpdate
- * @covers _EntityEvent::onPersist
- * @covers _EntityEvent::onAfterUpdate
- * @covers _EntityEvent::onAfterInsert
- * @covers _EntityEvent::onAfterPersist
+ * @covers Orm\_EntityEvent::onAttach
+ * @covers Orm\_EntityEvent::onBeforePersist
+ * @covers Orm\_EntityEvent::onBeforeInsert
+ * @covers Orm\_EntityEvent::onBeforeUpdate
+ * @covers Orm\_EntityEvent::onPersist
+ * @covers Orm\_EntityEvent::onAfterUpdate
+ * @covers Orm\_EntityEvent::onAfterInsert
+ * @covers Orm\_EntityEvent::onAfterPersist
  */
 class EntityEvent_onPersist_Test extends EntityEvent_event_Base
 {

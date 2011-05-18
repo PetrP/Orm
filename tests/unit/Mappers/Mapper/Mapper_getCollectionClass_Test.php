@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Mapper::getCollectionClass
+ * @covers Orm\Mapper::getCollectionClass
  */
 class Mapper_getCollectionClass_Test extends TestCase
 {

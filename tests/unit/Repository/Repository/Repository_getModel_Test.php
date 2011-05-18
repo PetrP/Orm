@@ -5,8 +5,8 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::getModel
- * @covers Repository::__construct
+ * @covers Orm\Repository::getModel
+ * @covers Orm\Repository::__construct
  */
 class Repository_getModel_Test extends TestCase
 {

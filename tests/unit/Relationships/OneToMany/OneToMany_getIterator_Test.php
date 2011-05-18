@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers OneToMany::getIterator
+ * @covers Orm\OneToMany::getIterator
  */
 class OneToMany_getIterator_Test extends OneToMany_Test
 {

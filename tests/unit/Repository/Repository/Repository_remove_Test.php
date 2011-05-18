@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
- * @covers Repository::remove
+ * @covers Orm\Repository::remove
  */
 class Repository_remove_Test extends TestCase
 {
