@@ -14,7 +14,7 @@ class Mapper_findBy_getBy_Test extends TestCase
 		Mapper_call_Collection::$last = NULL;
 		$this->m = new Mapper_call_Mapper(new TestsRepository(new Model));
 	}
-	
+
 	private function t(array $a, $m = 'findBy')
 	{
 		$this->assertSame($m == 'findBy' ? 'qwe' : 'zxc' , $this->m->$m($a));

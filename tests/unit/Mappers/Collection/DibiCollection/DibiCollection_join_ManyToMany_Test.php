@@ -25,7 +25,6 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 
 	protected function setUp()
 	{
-		//$this->markTestSkipped();
 		$model = new Model;
 		$this->r1 = $model->dibiCollection_join_ManyToMany1_;
 		$this->r2 = $model->dibiCollection_join_ManyToMany2_;
