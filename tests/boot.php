@@ -51,9 +51,10 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
 			if (is_object($classOrObject) AND $e->getMessage() == 'Failed asserting that object of class "'.get_class($classOrObject).'" has attribute "'.$attributeName.'".')
 			{
+				$needle = "\0$attributeName";
 				foreach ((array) $classOrObject as $key => $value)
 				{
-					if (String::endsWith($key, "\0$attributeName"))
+					if (substr($key, -strlen($needle)) === $needle)
 					{
 						return $value;
 					}
@@ -67,4 +68,4 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
 use Orm\PerformanceHelper;
 
-PerformanceHelper::$keyCallback = create_function('', 'return String::random(99);');
+PerformanceHelper::$keyCallback = create_function('', 'return md5(lcg_value()) . md5(lcg_value()) . md5(lcg_value());');

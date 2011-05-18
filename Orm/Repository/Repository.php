@@ -105,7 +105,7 @@ abstract class Repository extends Object implements IRepository
 	{
 		$this->model = $model;
 		$repositoryName = strtolower(get_class($this));
-		if (String::endsWith($repositoryName, 'repository'))
+		if (substr($repositoryName, -10) === 'repository')
 		{
 			$repositoryName = substr($repositoryName, 0, strlen($repositoryName) - 10);
 		}

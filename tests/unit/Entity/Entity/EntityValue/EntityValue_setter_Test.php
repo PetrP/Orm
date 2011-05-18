@@ -12,7 +12,7 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 {
 	protected function a(EntityValue_gettersetter_Test_Entity $e, $key, $count = NULL, $callmode = 1)
 	{
-		$string = String::random();
+		$string = md5(lcg_value());
 		if ($callmode === 0)
 		{
 			$string = NULL;

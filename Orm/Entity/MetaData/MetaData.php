@@ -106,7 +106,7 @@ class MetaData extends Object
 				{
 					$var = substr($method, 3);
 				}
-				else if (String::startsWith($method, 'is'))
+				else if (strncmp($method, 'is', 2) === 0)
 				{
 					$m = 'is';
 					$var = substr($method, 2);
