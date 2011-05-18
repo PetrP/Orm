@@ -7,6 +7,7 @@ use Nette\Reflection\AnnotationsParser;
 use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use Exception;
+use ReflectionClass;
 
 require_once dirname(__FILE__) . '/MetaData.php';
 
@@ -78,7 +79,7 @@ class AnnotationMetaData extends Object
 	 */
 	protected function getAnnotation($class)
 	{
-		return AnnotationsParser::getAll(new ClassReflection($class));
+		return AnnotationsParser::getAll(new ReflectionClass($class));
 	}
 
 	/** @param array */

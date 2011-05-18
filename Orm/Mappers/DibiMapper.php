@@ -12,6 +12,7 @@ use DibiTranslator;
 use DibiException;
 use ArrayObject;
 use DateTime;
+use ReflectionMethod;
 use stdClass;
 
 require_once dirname(__FILE__) . '/Mapper.php';
@@ -143,7 +144,7 @@ class DibiMapper extends Mapper
 		if ($dibiTranslatorVersion === NULL)
 		{
 			$dibiTranslatorVersion = 'driver';
-			$r = new MethodReflection('DibiTranslator', '__construct');
+			$r = new ReflectionMethod('DibiTranslator', '__construct');
 			if (current($r->getParameters())->name === 'connection')
 			{
 				$dibiTranslatorVersion = 'connection';

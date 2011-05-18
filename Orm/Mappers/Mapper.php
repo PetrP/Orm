@@ -5,6 +5,7 @@ namespace Orm;
 use Nette\Object;
 use Nette\InvalidStateException;
 use Nette\DeprecatedException;
+use ReflectionClass;
 
 require_once dirname(__FILE__) . '/IMapper.php';
 
@@ -70,7 +71,7 @@ abstract class Mapper extends Object implements IMapper
 			{
 				throw new InvalidStateException("Collection '{$class}' doesn't exists");
 			}
-			$reflection = new ClassReflection($class);
+			$reflection = new ReflectionClass($class);
 			if (!$reflection->implementsInterface('Orm\IEntityCollection'))
 			{
 				throw new InvalidStateException("Collection '{$class}' must implement Orm\\IEntityCollection");

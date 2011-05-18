@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Nette\MemberAccessException;
 use UnexpectedValueException;
 use Exception;
+use ReflectionMethod;
 
 /**
  * Obstarava cteni, kontrolu, plneni, nastavovani, validovani dat
@@ -415,7 +416,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$defaultMethod{10} = $defaultMethod{10} & "\xDF"; // ucfirst
 			if (method_exists($this, $defaultMethod))
 			{
-				$r = new MethodReflection($this, $defaultMethod);
+				$r = new ReflectionMethod($this, $defaultMethod);
 				// todo predelat aby se methody zjistovali jednou v MetaData
 				if (!$r->isPrivate())
 				{

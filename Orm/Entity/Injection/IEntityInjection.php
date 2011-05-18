@@ -5,6 +5,7 @@ namespace Orm;
 use Nette\Object;
 use Nette\Callback;
 use Exception;
+use ReflectionMethod;
 
 
 interface IEntityInjection
@@ -32,7 +33,7 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 	{
 		if (method_exists($className, '__construct'))
 		{
-			$construct = new MethodReflection($className, '__construct');
+			$construct = new ReflectionMethod($className, '__construct');
 			if ($construct->getNumberOfRequiredParameters())
 			{
 				throw new Exception("$className has required parameters in constructor, use custom factory");

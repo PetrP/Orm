@@ -19,7 +19,7 @@ class MockAnnotationMetaData extends AnnotationMetaData
 	protected function getAnnotation($class)
 	{
 		if ($class === 'AnnotationMetaData_MockEntity') return self::$mock;
-		return AnnotationsParser::getAll(new ClassReflection($class));
+		return AnnotationsParser::getAll(new ReflectionClass($class));
 	}
 
 	public static function mockConstruct($class)

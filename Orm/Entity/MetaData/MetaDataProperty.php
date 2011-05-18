@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Nette\Callback;
 use Exception;
 use Closure;
+use ReflectionClass;
 
 require_once dirname(__FILE__) . '/../../Relationships/RelationshipLoader.php';
 
@@ -323,7 +324,7 @@ class MetaDataProperty extends Object
 		if (count($types) != 1) throw new InvalidStateException(); // todo
 		$class = current($types);
 		if (!class_exists($class)) throw new Exception($class);
-		$reflection = new ClassReflection($class);
+		$reflection = new ReflectionClass($class);
 		$class = $reflection->getName();
 
 		if (!$reflection->implementsInterface('Orm\IEntityInjection')) throw new Exception("$class not implements Orm\\IEntityInjection");
