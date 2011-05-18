@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Database
  */
+
+namespace Nette\Database;
+
+use Nette;
 
 
 
@@ -23,7 +26,7 @@ class SqlLiteral
 	public $value = '';
 
 
-	function __construct($value)
+	public function __construct($value)
 	{
 		$this->value = (string) $value;
 	}

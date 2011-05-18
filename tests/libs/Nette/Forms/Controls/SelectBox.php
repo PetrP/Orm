@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Forms
  */
+
+namespace Nette\Forms\Controls;
+
+use Nette;
 
 
 
@@ -22,7 +25,7 @@
  * @property-read mixed $selectedItem
  * @property-read bool $firstSkipped
  */
-class SelectBox extends FormControl
+class SelectBox extends BaseControl
 {
 	/** @var array */
 	private $items = array();
@@ -156,13 +159,13 @@ class SelectBox extends FormControl
 			foreach ($value as $key2 => $value2) {
 				if (!$this->useKeys) {
 					if (!is_scalar($value2)) {
-						throw new InvalidArgumentException("All items must be scalar.");
+						throw new Nette\InvalidArgumentException("All items must be scalar.");
 					}
 					$key2 = $value2;
 				}
 
 				if (isset($this->allowed[$key2])) {
-					throw new InvalidArgumentException("Items contain duplication for key '$key2'.");
+					throw new Nette\InvalidArgumentException("Items contain duplication for key '$key2'.");
 				}
 
 				$this->allowed[$key2] = $value2;
@@ -203,7 +206,7 @@ class SelectBox extends FormControl
 
 	/**
 	 * Generates control's HTML element.
-	 * @return Html
+	 * @return Nette\Utils\Html
 	 */
 	public function getControl()
 	{
@@ -214,7 +217,7 @@ class SelectBox extends FormControl
 		}
 		$selected = $this->getValue();
 		$selected = is_array($selected) ? array_flip($selected) : array($selected => TRUE);
-		$option = Html::el('option');
+		$option = Nette\Utils\Html::el('option');
 
 		foreach ($this->items as $key => $value) {
 			if (!is_array($value)) {
@@ -226,7 +229,7 @@ class SelectBox extends FormControl
 			}
 
 			foreach ($value as $key2 => $value2) {
-				if ($value2 instanceof Html) {
+				if ($value2 instanceof Nette\Utils\Html) {
 					$dest->add((string) $value2->selected(isset($selected[$key2])));
 
 				} else {

@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Security
  */
+
+namespace Nette\Security;
+
+use Nette;
 
 
 
@@ -17,6 +20,6 @@
  *
  * @author     David Grudl
  */
-class AuthenticationException extends Exception
+class AuthenticationException extends \Exception
 {
 }

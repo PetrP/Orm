@@ -7,13 +7,16 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Application
  */
+
+namespace Nette\Application;
+
+use Nette;
 
 
 
 /**
- * Defines method that must be implemented to allow a component to act like a presenter.
+ * Presenter converts Request to IResponse.
  *
  * @author     David Grudl
  */
@@ -21,9 +24,9 @@ interface IPresenter
 {
 
 	/**
-	 * @param  PresenterRequest
-	 * @return IPresenterResponse
+	 * @param  Request
+	 * @return IResponse
 	 */
-	function run(PresenterRequest $request);
+	function run(Request $request);
 
 }

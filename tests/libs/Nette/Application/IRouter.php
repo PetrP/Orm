@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Application
  */
+
+namespace Nette\Application;
+
+use Nette;
 
 
 
@@ -26,18 +29,18 @@ interface IRouter
 	const SECURED = 2;
 
 	/**
-	 * Maps HTTP request to a PresenterRequest object.
-	 * @param  IHttpRequest
-	 * @return PresenterRequest|NULL
+	 * Maps HTTP request to a Request object.
+	 * @param  Nette\Http\IRequest
+	 * @return Request|NULL
 	 */
-	function match(IHttpRequest $httpRequest);
+	function match(Nette\Http\IRequest $httpRequest);
 
 	/**
-	 * Constructs absolute URL from PresenterRequest object.
-	 * @param  PresenterRequest
-	 * @param  Uri referential URI
+	 * Constructs absolute URL from Request object.
+	 * @param  Request
+	 * @param  Nette\Http\Url referential URI
 	 * @return string|NULL
 	 */
-	function constructUrl(PresenterRequest $appRequest, Uri $refUri);
+	function constructUrl(Request $appRequest, Nette\Http\Url $refUrl);
 
 }

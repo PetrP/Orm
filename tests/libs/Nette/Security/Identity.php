@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Security
  */
+
+namespace Nette\Security;
+
+use Nette;
 
 
 
@@ -22,7 +25,7 @@
  *
  * @serializationVersion 1.0
  */
-class Identity extends FreezableObject implements IIdentity
+class Identity extends Nette\FreezableObject implements IIdentity
 {
 	/** @var mixed */
 	private $id;
@@ -43,7 +46,7 @@ class Identity extends FreezableObject implements IIdentity
 	{
 		$this->setId($id);
 		$this->setRoles((array) $roles);
-		$this->data = $data instanceof Traversable ? iterator_to_array($data) : (array) $data;
+		$this->data = $data instanceof \Traversable ? iterator_to_array($data) : (array) $data;
 	}
 
 
@@ -161,11 +164,11 @@ class Identity extends FreezableObject implements IIdentity
 	 * Removes property.
 	 * @param  string  property name
 	 * @return void
-	 * @throws MemberAccessException
+	 * @throws Nette\MemberAccessException
 	 */
 	public function __unset($name)
 	{
-		throw new MemberAccessException("Cannot unset the property {$this->reflection->name}::\$$name.");
+		ObjectMixin::remove($this, $name);
 	}
 
 }

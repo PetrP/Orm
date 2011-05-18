@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Security
  */
+
+namespace Nette\Security;
+
+use Nette;
 
 
 
@@ -17,7 +20,7 @@
  *
  * @author     David Grudl
  */
-class SimpleAuthenticator extends Object implements IAuthenticator
+class SimpleAuthenticator extends Nette\Object implements IAuthenticator
 {
 	/** @var array */
 	private $userlist;

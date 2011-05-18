@@ -7,8 +7,13 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Database
  */
+
+namespace Nette\Database;
+
+use Nette,
+	PDO,
+	Nette\ObjectMixin;
 
 
 
@@ -17,7 +22,7 @@
  *
  * @author     David Grudl
  */
-class Statement extends PDOStatement
+class Statement extends \PDOStatement
 {
 	/** @var Connection */
 	private $connection;
@@ -33,7 +38,7 @@ class Statement extends PDOStatement
 	protected function __construct(Connection $connection)
 	{
 		$this->connection = $connection;
-		$this->setFetchMode(PDO::FETCH_CLASS, 'Row', array($this));
+		$this->setFetchMode(PDO::FETCH_CLASS, 'Nette\Database\Row', array($this));
 	}
 
 
@@ -66,7 +71,7 @@ class Statement extends PDOStatement
 		$time = microtime(TRUE);
 		try {
 			parent::execute();
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			$e->queryString = $this->queryString;
 			throw $e;
 		}
@@ -97,28 +102,28 @@ class Statement extends PDOStatement
 	public function normalizeRow($row)
 	{
 		if ($this->types === NULL) {
-			try {
-				$this->types = array();
+			$this->types = array();
+			if ($this->connection->getSupplementalDriver()->supports['meta']) { // workaround for PHP bugs #53782, #54695
 				foreach ($row as $key => $foo) {
 					$type = $this->getColumnMeta(count($this->types));
 					if (isset($type['native_type'])) {
-						$this->types[$key] = DatabaseReflection::detectType($type['native_type']);
+						$this->types[$key] = Reflection\DatabaseReflection::detectType($type['native_type']);
 					}
 				}
-			} catch (PDOException $e) {
 			}
 		}
+
 		foreach ($this->types as $key => $type) {
 			$value = $row[$key];
-			if ($value === NULL || $value === FALSE || $type === DatabaseReflection::FIELD_TEXT) {
+			if ($value === NULL || $value === FALSE || $type === Reflection\DatabaseReflection::FIELD_TEXT) {
 
-			} elseif ($type === DatabaseReflection::FIELD_INTEGER) {
+			} elseif ($type === Reflection\DatabaseReflection::FIELD_INTEGER) {
 				$row[$key] = is_float($tmp = $value * 1) ? $value : $tmp;
 
-			} elseif ($type === DatabaseReflection::FIELD_FLOAT) {
+			} elseif ($type === Reflection\DatabaseReflection::FIELD_FLOAT) {
 				$row[$key] = (string) ($tmp = (float) $value) === $value ? $tmp : $value;
 
-			} elseif ($type === DatabaseReflection::FIELD_BOOL) {
+			} elseif ($type === Reflection\DatabaseReflection::FIELD_BOOL) {
 				$row[$key] = ((bool) $value) && $value !== 'f' && $value !== 'F';
 			}
 		}
@@ -170,16 +175,16 @@ class Statement extends PDOStatement
 
 
 
-	/********************* Object behaviour ****************d*g**/
+	/********************* Nette\Object behaviour ****************d*g**/
 
 
 
 	/**
-	 * @return ClassReflection
+	 * @return Nette\Reflection\ClassType
 	 */
-	public function getReflection()
+	public static function getReflection()
 	{
-		return new ClassReflection($this);
+		return new Nette\Reflection\ClassType(get_called_class());
 	}
 
 
@@ -214,7 +219,7 @@ class Statement extends PDOStatement
 
 	public function __unset($name)
 	{
-		throw new MemberAccessException("Cannot unset the property {$this->reflection->name}::\$$name.");
+		ObjectMixin::remove($this, $name);
 	}
 
 }

@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Security
  */
+
+namespace Nette\Security;
+
+use Nette;
 
 
 
@@ -37,6 +40,6 @@ interface IAuthorizator
 	 * @param  string  privilege
 	 * @return bool
 	 */
-	function isAllowed($role= self::ALL, $resource= self::ALL, $privilege= self::ALL);
+	function isAllowed($role, $resource, $privilege);
 
 }

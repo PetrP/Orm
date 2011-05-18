@@ -7,8 +7,12 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Forms
  */
+
+namespace Nette\Forms\Controls;
+
+use Nette,
+	Nette\Utils\Html;
 
 
 
@@ -18,15 +22,15 @@
  * @author     David Grudl
  *
  * @property   array $items
- * @property-read Html $separatorPrototype
- * @property-read Html $containerPrototype
+ * @property-read Nette\Utils\Html $separatorPrototype
+ * @property-read Nette\Utils\Html $containerPrototype
  */
-class RadioList extends FormControl
+class RadioList extends BaseControl
 {
-	/** @var Html  separator element template */
+	/** @var Nette\Utils\Html  separator element template */
 	protected $separator;
 
-	/** @var Html  container element template */
+	/** @var Nette\Utils\Html  container element template */
 	protected $container;
 
 	/** @var array */
@@ -44,7 +48,9 @@ class RadioList extends FormControl
 		$this->control->type = 'radio';
 		$this->container = Html::el();
 		$this->separator = Html::el('br');
-		if ($items !== NULL) $this->setItems($items);
+		if ($items !== NULL) {
+			$this->setItems($items);
+		}
 	}
 
 
@@ -98,7 +104,7 @@ class RadioList extends FormControl
 
 	/**
 	 * Returns separator HTML element template.
-	 * @return Html
+	 * @return Nette\Utils\Html
 	 */
 	final public function getSeparatorPrototype()
 	{
@@ -109,7 +115,7 @@ class RadioList extends FormControl
 
 	/**
 	 * Returns container HTML element template.
-	 * @return Html
+	 * @return Nette\Utils\Html
 	 */
 	final public function getContainerPrototype()
 	{
@@ -121,7 +127,7 @@ class RadioList extends FormControl
 	/**
 	 * Generates control's HTML element.
 	 * @param  mixed
-	 * @return Html
+	 * @return Nette\Utils\Html
 	 */
 	public function getControl($key = NULL)
 	{
@@ -141,7 +147,9 @@ class RadioList extends FormControl
 
 		foreach ($this->items as $k => $val) {
 			$counter++;
-			if ($key !== NULL && $key != $k) continue; // intentionally ==
+			if ($key !== NULL && $key != $k) { // intentionally ==
+				continue;
+			}
 
 			$control->id = $label->for = $id . '-' . $counter;
 			$control->checked = (string) $k === $value;

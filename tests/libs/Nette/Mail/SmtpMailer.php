@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Mail
  */
+
+namespace Nette\Mail;
+
+use Nette;
 
 
 
@@ -17,7 +20,7 @@
  *
  * @author     David Grudl
  */
-class SmtpMailer extends Object implements IMailer
+class SmtpMailer extends Nette\Object implements IMailer
 {
 	/** @var resource */
 	private $connection;
@@ -64,10 +67,10 @@ class SmtpMailer extends Object implements IMailer
 
 	/**
 	 * Sends email.
-	 * @param	Mail
+	 * @param	Message
 	 * @return	void
 	 */
-	public function send(Mail $mail)
+	public function send(Message $mail)
 	{
 		$data = $mail->generateMessage();
 
@@ -105,7 +108,7 @@ class SmtpMailer extends Object implements IMailer
 	 */
 	private function connect()
 	{
-		$this->connection = @fsockopen(
+		$this->connection = @fsockopen( // intentionally @
 			($this->secure === 'ssl' ? 'ssl://' : '') . $this->host,
 			$this->port, $errno, $error, $this->timeout
 		);
@@ -158,7 +161,7 @@ class SmtpMailer extends Object implements IMailer
 	 */
 	private function write($line, $expectedCode = NULL, $message = NULL)
 	{
-		fwrite($this->connection, $line . Mail::EOL);
+		fwrite($this->connection, $line . Message::EOL);
 		if ($expectedCode && !in_array((int) $this->read(), (array) $expectedCode)) {
 			throw new SmtpException('SMTP server did not accept ' . ($message ? $message : $line));
 		}
@@ -182,4 +185,15 @@ class SmtpMailer extends Object implements IMailer
 		return $s;
 	}
 
+}
+
+
+
+/**
+ * SMTP mailer exception.
+ *
+ * @author     David Grudl
+ */
+class SmtpException extends \Exception
+{
 }

@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette
  */
+
+namespace Nette\ComponentModel;
+
+use Nette;
 
 
 
@@ -29,16 +32,16 @@ interface IComponent
 
 	/**
 	 * Returns the container if any.
-	 * @return IComponentContainer|NULL
+	 * @return IContainer|NULL
 	 */
 	function getParent();
 
 	/**
 	 * Sets the parent of this component.
-	 * @param  IComponentContainer
+	 * @param  IContainer
 	 * @param  string
 	 * @return void
 	 */
-	function setParent(IComponentContainer $parent = NULL, $name = NULL);
+	function setParent(IContainer $parent = NULL, $name = NULL);
 
 }

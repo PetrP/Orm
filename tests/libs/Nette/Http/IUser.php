@@ -7,8 +7,11 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette\Web
  */
+
+namespace Nette\Http;
+
+use Nette;
 
 
 
@@ -25,7 +28,7 @@ interface IUser
 	 * @param  mixed optional parameter (e.g. username)
 	 * @param  mixed optional parameter (e.g. password)
 	 * @return void
-	 * @throws AuthenticationException if authentication was not successful
+	 * @throws Nette\Security\AuthenticationException if authentication was not successful
 	 */
 	function login();
 
@@ -43,20 +46,20 @@ interface IUser
 
 	/**
 	 * Returns current user identity, if any.
-	 * @return IIdentity
+	 * @return Nette\Security\IIdentity
 	 */
 	function getIdentity();
 
 	/**
 	 * Sets authentication handler.
-	 * @param  IAuthenticator
+	 * @param  Nette\Security\IAuthenticator
 	 * @return void
 	 */
-	function setAuthenticationHandler(IAuthenticator $handler);
+	function setAuthenticationHandler(Nette\Security\IAuthenticator $handler);
 
 	/**
 	 * Returns authentication handler.
-	 * @return IAuthenticator
+	 * @return Nette\Security\IAuthenticator
 	 */
 	function getAuthenticationHandler();
 
@@ -94,14 +97,14 @@ interface IUser
 
 	/**
 	 * Sets authorization handler.
-	 * @param  IAuthorizator
+	 * @param  Nette\Security\IAuthorizator
 	 * @return void
 	 */
-	function setAuthorizationHandler(IAuthorizator $handler);
+	function setAuthorizationHandler(Nette\Security\IAuthorizator $handler);
 
 	/**
 	 * Returns current authorization handler.
-	 * @return IAuthorizator
+	 * @return Nette\Security\IAuthorizator
 	 */
 	function getAuthorizationHandler();
 

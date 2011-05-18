@@ -7,18 +7,21 @@
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- * @package Nette
  */
+
+namespace Nette\ComponentModel;
+
+use Nette;
 
 
 
 /**
- * Recursive component iterator. See ComponentContainer::getComponents().
+ * Recursive component iterator. See Container::getComponents().
  *
  * @author     David Grudl
  * @internal
  */
-class RecursiveComponentIterator extends RecursiveArrayIterator implements Countable
+class RecursiveComponentIterator extends \RecursiveArrayIterator implements \Countable
 {
 
 	/**
@@ -27,14 +30,14 @@ class RecursiveComponentIterator extends RecursiveArrayIterator implements Count
 	 */
 	public function hasChildren()
 	{
-		return $this->current() instanceof IComponentContainer;
+		return $this->current() instanceof IContainer;
 	}
 
 
 
 	/**
 	 * The sub-iterator for the current element.
-	 * @return RecursiveIterator
+	 * @return \RecursiveIterator
 	 */
 	public function getChildren()
 	{
