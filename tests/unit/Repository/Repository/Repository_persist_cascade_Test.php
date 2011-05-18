@@ -14,7 +14,7 @@ class Repository_persist_cascade_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r1 = $m->Repository_persist_cascade1_;
 		$this->r2 = $m->Repository_persist_cascade2_;
 		$this->r3 = $m->Repository_persist_cascade3_;

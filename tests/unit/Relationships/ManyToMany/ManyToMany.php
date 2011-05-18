@@ -27,7 +27,7 @@ abstract class ManyToMany_Test extends TestCase
 	protected $r;
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$r = $m->ManyToMany_;
 		$this->e = $e = $r->getById(1);
 		$this->m2m = new ManyToMany($e, 'OneToMany_', 'param', 'param', true, array(10,11,12,13));

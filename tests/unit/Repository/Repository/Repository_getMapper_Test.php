@@ -11,7 +11,7 @@ class Repository_getMapper_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->m = new Model;
+		$this->m = new RepositoryContainer;
 	}
 
 	public function testBadMapper()

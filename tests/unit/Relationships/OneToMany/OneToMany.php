@@ -71,7 +71,7 @@ abstract class OneToMany_Test extends TestCase
 	protected $r;
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$r = $m->tests;
 		$this->e = $e = $r->getById(1);
 		$this->o2m = new OneToMany($e, 'OneToMany_', 'param');

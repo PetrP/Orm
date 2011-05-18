@@ -11,7 +11,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 
 	protected function setUp()
 	{
-		new Model;
+		new RepositoryContainer;
 		$this->m = new MetaData('MetaData_Test_Entity');
 	}
 

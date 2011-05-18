@@ -11,7 +11,7 @@ class EntityToArray_toArray_recursion_Test extends TestCase
 	private $mm;
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->om = $m->EntityToArray_toArray_recursiton_1m_;
 		$this->mm = $m->EntityToArray_toArray_recursiton_mm_;
 	}

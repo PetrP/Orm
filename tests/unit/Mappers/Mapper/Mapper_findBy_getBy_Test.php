@@ -12,7 +12,7 @@ class Mapper_findBy_getBy_Test extends TestCase
 	protected function setUp()
 	{
 		Mapper_call_Collection::$last = NULL;
-		$this->m = new Mapper_call_Mapper(new TestsRepository(new Model));
+		$this->m = new Mapper_call_Mapper(new TestsRepository(new RepositoryContainer));
 	}
 
 	private function t(array $a, $m = 'findBy')

@@ -14,7 +14,7 @@ class EntityValue_setValueHelper_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->e = new EntityValue_getset_Entity;
 		$this->r = $m->TestEntity;
 	}

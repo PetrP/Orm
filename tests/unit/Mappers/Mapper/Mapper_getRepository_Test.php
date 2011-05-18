@@ -11,7 +11,7 @@ class Mapper_getRepository_Test extends TestCase
 
 	public function test()
 	{
-		$r = new TestsRepository(new Model);
+		$r = new TestsRepository(new RepositoryContainer);
 		$m = new TestsMapper($r);
 		$this->assertSame($r, $m->getRepository());
 	}

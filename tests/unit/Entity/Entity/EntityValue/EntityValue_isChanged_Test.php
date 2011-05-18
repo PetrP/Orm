@@ -10,7 +10,7 @@ class EntityValue_isChanged_Test extends TestCase
 	private $r;
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->TestEntity;
 		$this->e = new TestEntity;
 	}

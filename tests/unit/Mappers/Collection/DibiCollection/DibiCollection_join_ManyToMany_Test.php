@@ -25,7 +25,7 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 
 	protected function setUp()
 	{
-		$model = new Model;
+		$model = new RepositoryContainer;
 		$this->r1 = $model->dibiCollection_join_ManyToMany1_;
 		$this->r2 = $model->dibiCollection_join_ManyToMany2_;
 		$this->c = $this->r1->mapper->findAll();

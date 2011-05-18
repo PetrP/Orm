@@ -12,7 +12,7 @@ class Repository_persist_recursion_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r1 = $m->Repository_persist_recursion1_;
 		$this->r2 = $m->Repository_persist_recursion2_;
 	}

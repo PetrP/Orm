@@ -11,7 +11,7 @@ class Repository_attach_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->tests;
 	}
 
@@ -31,7 +31,7 @@ class Repository_attach_Test extends TestCase
 
 	public function testBad2()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
 		$this->r->attach($m->tests->getById(1));
 	}

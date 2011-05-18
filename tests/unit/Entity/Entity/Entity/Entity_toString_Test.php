@@ -11,7 +11,7 @@ class Entity_toString_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->testentity;
 	}
 

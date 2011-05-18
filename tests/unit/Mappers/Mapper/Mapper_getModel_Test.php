@@ -10,7 +10,7 @@ class Mapper_getModel_Test extends TestCase
 
 	public function test()
 	{
-		$model = new Model;
+		$model = new RepositoryContainer;
 		$m = new TestsMapper(new TestsRepository($model));
 		$this->assertSame($model, $m->getModel());
 	}

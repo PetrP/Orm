@@ -11,7 +11,7 @@ class EntityGeneratingRepository_onLoad_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->testentity;
 	}
 

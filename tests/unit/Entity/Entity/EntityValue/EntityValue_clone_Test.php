@@ -11,7 +11,7 @@ class EntityValue_clone_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->e = $m->testentity->getById(1);
 	}
 

@@ -11,7 +11,7 @@ class Repository_persist_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->Repository_persist_;
 	}
 

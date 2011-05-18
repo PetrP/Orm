@@ -132,7 +132,7 @@ class AnnotationMetaData_Test extends TestCase
 
 	public function testAliases()
 	{
-		new Model;
+		new RepositoryContainer;
 		$this->assertSame(MetaData::OneToOne, $this->x('@property $bla {1:1 TestEntity}')->relationship);
 		$this->assertSame(MetaData::ManyToOne, $this->x('@property $bla {m:1 TestEntity}')->relationship);
 		$this->assertSame(MetaData::ManyToOne, $this->x('@property $bla {n:1 TestEntity}')->relationship);

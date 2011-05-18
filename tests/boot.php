@@ -53,9 +53,4 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
 }
 
-class Model extends RepositoryContainer
-{
-
-}
-
 PerformanceHelper::$keyCallback = create_function('', 'return String::random(99);');

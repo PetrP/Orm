@@ -87,7 +87,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 	/** Asociace se pta jestli je null, a mixed muze byt null */
 	public function testMixedContainsNull_ManyToOne()
 	{
-		new Model;
+		new RepositoryContainer;
 		$m = new MetaData('MetaData_Test2_Entity');
 		$m->addProperty('fk', 'mixed')
 			->setManyToOne('MetaData_Test2')

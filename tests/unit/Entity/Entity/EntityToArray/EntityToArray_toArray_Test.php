@@ -11,7 +11,7 @@ class EntityToArray_toArray_Test extends TestCase
 	private $r;
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->TestEntity;
 	}
 

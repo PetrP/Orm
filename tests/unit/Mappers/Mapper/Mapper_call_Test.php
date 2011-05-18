@@ -11,7 +11,7 @@ class Mapper_call_Test extends TestCase
 	protected function setUp()
 	{
 		Mapper_call_Collection::$last = NULL;
-		$this->m = new Mapper_call_Mapper(new TestsRepository(new Model));
+		$this->m = new Mapper_call_Mapper(new TestsRepository(new RepositoryContainer));
 	}
 
 	public function testFindBy()

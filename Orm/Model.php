@@ -10,58 +10,45 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  * Kolekce Repository.
  * Stara se o jejich vytvareni.
  * Je to vstupni bod do modelu z jinych casti aplikace.
- *
- * V kazdem projektu si vytvorte tridu model:
- * <pre>
- * /**
- *  * @property-read ArticlesRepository $articles
- *  * @property-read UsersRepository $users
- *  *⁄
- * class Model extends RepositoryContainer
- * {
- *
- * }
- * </pre>
- * Psat anotace neni nutne, ale pomaha ide napovidat.
- *
+
  * Na repository se pristupuje jako k property:
  * <pre>
  *
- * $model; // instanceof Model
+ * $orm = new RepositoryContainer;
  *
- * $model->articles; // instanceof ArticlesRepository
+ * $orm->articles; // instanceof ArticlesRepository
  *
- * $article = $model->articles->getById(1); // instanceof Article
+ * $article = $orm->articles->getById(1); // instanceof Article
  *
  * </pre>
  *
- * Do aplikace model vsunete napriklad takto:
+ * Do aplikace orm vsunete napriklad takto:
  * <pre>
  * // config.ini
- * service.Model = Model
+ * service.orm = RepositoryContainer
  *
  * // BasePresenter.php
  * /**
- *  * @property-read Model $model
+ *  * @property-read RepositoryContainer $orm
  *  *⁄
  * abstract class BasePresenter extends Presenter
  * {
- * 	/** @var Model *⁄
- * 	private $model;
+ * 	/** @var RepositoryContainer *⁄
+ * 	private $orm;
  *
- *  /** @return Model *⁄
- * 	public function getModel()
+ *  /** @return RepositoryContainer *⁄
+ * 	public function getOrm()
  * 	{
- * 		if (!isset($this->model))
+ * 		if (!isset($this->orm))
  * 		{
- * 			$this->model = $this->context->getService('Model');
+ * 			$this->orm = $this->context->getService('orm');
  * 		}
- * 		return $this->model;
+ * 		return $this->orm;
  * 	}
  * }
  * </pre>
  */
-abstract class RepositoryContainer extends Object
+class RepositoryContainer extends Object
 {
 	/** @var RepositoryContainer @deprecated @todo di @see self::get() */
 	static private $instance;
@@ -75,7 +62,7 @@ abstract class RepositoryContainer extends Object
 	}
 
 	/**
-	 * Vraci posledni vytvoreny model, je pro zpetnou kompatibilitu.
+	 * Vraci posledni vytvoreny container, je pro zpetnou kompatibilitu.
 	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
 	 * Bohuzel zatim pouziva: Entity::getModel(), RelationshipLoader, MetaDataProperty::setOneToOne()
 	 * @return RepositoryContainer
@@ -171,7 +158,7 @@ abstract class RepositoryContainer extends Object
 
 	/**
 	 * <pre>
-	 * $model->articles;
+	 * $orm->articles;
 	 * </pre>
 	 * Do not call directly.
 	 * @param string repositoryName

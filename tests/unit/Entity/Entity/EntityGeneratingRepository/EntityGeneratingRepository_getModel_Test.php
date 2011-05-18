@@ -12,7 +12,7 @@ class EntityGeneratingRepository_getModel_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->m = new Model;
+		$this->m = new RepositoryContainer;
 		$this->r = $this->m->testentity;
 	}
 

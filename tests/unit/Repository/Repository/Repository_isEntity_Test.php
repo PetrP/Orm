@@ -12,7 +12,7 @@ class Repository_isEntity_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->r = new Repository_getEntityClassNamesRepository(new Model);
+		$this->r = new Repository_getEntityClassNamesRepository(new RepositoryContainer);
 	}
 
 	public function test()
@@ -36,22 +36,22 @@ class Repository_isEntity_Test extends TestCase
 
 	public function testException2()
 	{
-		$this->r = new Repository_isEntity_Repository(new Model);
+		$this->r = new Repository_isEntity_Repository(new RepositoryContainer);
 		$this->setExpectedException('UnexpectedValueException', "Repository_isEntity_Repository can't work with entity 'TestEntity', only with 'TestEntity1', 'TestEntity2' or 'TestEntity3");
 		$this->r->persist(new TestEntity);
 	}
 
 	public function testRightEntityFromAnotherRepository()
 	{
-		$r1 = new TestsRepository(new Model);
-		$r2 = new TestsRepository(new Model);
+		$r1 = new TestsRepository(new RepositoryContainer);
+		$r2 = new TestsRepository(new RepositoryContainer);
 		$this->assertFalse($r1->isEntity($r2->getById(1)));
 	}
 
 	public function testRightEntityFromAnotherRepositoryException()
 	{
-		$r1 = new TestsRepository(new Model);
-		$r2 = new TestsRepository(new Model);
+		$r1 = new TestsRepository(new RepositoryContainer);
+		$r2 = new TestsRepository(new RepositoryContainer);
 		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
 		$r1->persist($r2->getById(1));
 	}

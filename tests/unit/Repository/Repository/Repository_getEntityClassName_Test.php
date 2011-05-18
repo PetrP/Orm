@@ -11,7 +11,7 @@ class Repository_getEntityClassName_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->r = new Repository_getEntityClassNamesRepository(new Model);
+		$this->r = new Repository_getEntityClassNamesRepository(new RepositoryContainer);
 	}
 
 	public function testByProperty()

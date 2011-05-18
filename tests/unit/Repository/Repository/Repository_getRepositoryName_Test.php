@@ -11,7 +11,7 @@ class Repository_getRepositoryName_Test extends TestCase
 
 	public function test()
 	{
-		$r = new TestsRepository(new Model);
+		$r = new TestsRepository(new RepositoryContainer);
 		$this->assertSame('tests', $r->getRepositoryName());
 	}
 

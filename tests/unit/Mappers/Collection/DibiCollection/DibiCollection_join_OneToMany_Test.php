@@ -25,7 +25,7 @@ class DibiCollection_join_OneToMany_Test extends TestCase
 
 	protected function setUp()
 	{
-		$model = new Model;
+		$model = new RepositoryContainer;
 		$this->r1 = $model->dibiCollection_join_OneToMany1_;
 		$this->r2 = $model->dibiCollection_join_OneToMany2_;
 		$this->c = $this->r1->mapper->findAll();

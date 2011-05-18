@@ -12,7 +12,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 	private function t($param)
 	{
 		MetaData::clean();
-		new Model;
+		new RepositoryContainer;
 		RelationshipLoader_ManyToMany1_Entity::$param = $param;
 		$many = MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity');
 		if (isset($many['manyX'])) return $many['manyX']['relationshipParam'];
@@ -79,7 +79,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 	public function testMultiUse()
 	{
 		MetaData::clean();
-		new Model;
+		new RepositoryContainer;
 		MetaData::getEntityRules('RelationshipLoader_ManyToMany4a_Entity');
 		$this->assertTrue(true);
 	}

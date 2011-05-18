@@ -10,7 +10,7 @@ class Mapper_getConventional_Test extends TestCase
 	private $m;
 	protected function setUp()
 	{
-		$this->m = new Mapper_getConventional_Mapper(new TestsRepository(new Model));
+		$this->m = new Mapper_getConventional_Mapper(new TestsRepository(new RepositoryContainer));
 	}
 
 	public function test()

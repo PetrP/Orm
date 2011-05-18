@@ -11,7 +11,7 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->m = new Model;
+		$this->m = new RepositoryContainer;
 	}
 
 	private function t($rn)

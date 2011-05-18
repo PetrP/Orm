@@ -11,7 +11,7 @@ class Repository_createEntity_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->r = $m->tests;
 	}
 

@@ -15,7 +15,7 @@ class EntityValue_injection_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new Model;
+		$m = new RepositoryContainer;
 		$this->e = new EntityValue_injectionEntity;
 		$this->r = $m->entityValue_injection;
 	}
