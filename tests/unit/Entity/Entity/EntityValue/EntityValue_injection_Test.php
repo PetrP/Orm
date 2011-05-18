@@ -22,22 +22,45 @@ class EntityValue_injection_Test extends TestCase
 
 	public function testNewRead()
 	{
-		$this->markTestSkipped('di');
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
-		$this->assertSame(1, $this->e->many->mapper->setValue);
+		$this->assertSame('ArrayManyToManyMapper', get_class($this->e->many->mapper));
+		$this->assertNotInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);
-		$this->assertSame(array(), $this->e->many->getInjectedValue());
+		$this->assertSame(NULL, $this->e->many->getInjectedValue());
+		$this->setExpectedException('InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
 		$this->e->many->persist();
-		$this->assertSame(array(), $this->e->many->getInjectedValue());
 	}
 
 	public function testNewWrite()
 	{
-		$this->markTestSkipped('di');
+		$this->setExpectedException('InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
+		$this->e->many = array(1,2,3);
+	}
+
+	public function testNewReadAttach()
+	{
+		$this->e->many;
+		$this->assertSame(1, $this->e->many->create);
+		$this->assertSame('ArrayManyToManyMapper', get_class($this->e->many->mapper));
+		$this->assertNotInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
+		$this->assertSame(0, $this->e->many->setInjectedValue);
+		$this->assertSame(0, $this->e->many->getInjectedValue);
+		$this->assertSame(NULL, $this->e->many->getInjectedValue());
+		$this->r->attach($this->e);
+		$this->e->many->persist();
+		$this->assertInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
+		$this->assertSame(1, $this->e->many->mapper->setValue);
+		$this->assertSame(array(), $this->e->many->getInjectedValue());
+	}
+
+	public function testNewWriteAttach()
+	{
+		$this->r->attach($this->e);
 		$this->e->many = array(1,2,3);
 		$this->assertSame(1, $this->e->many->create);
+		$this->assertInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
 		$this->assertSame(1, $this->e->many->mapper->setValue);
 		$this->assertSame(1, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);

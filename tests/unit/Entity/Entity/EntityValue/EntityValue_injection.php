@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @property EntityValue_injectionToEntityValue_injection $many {m:m}
+ * @property EntityValue_injectionEntity_ManyToMany $many {m:m EntityValue_injection}
  */
 class EntityValue_injectionEntity extends Entity
 {
@@ -31,7 +31,7 @@ class EntityValue_injectionMapper extends ArrayMapper
 	}
 }
 
-class EntityValue_injectionToEntityValue_injection extends OldManyToMany
+class EntityValue_injectionEntity_ManyToMany extends ManyToMany
 {
 
 	public function getMapper()
