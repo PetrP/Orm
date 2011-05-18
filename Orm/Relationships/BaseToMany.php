@@ -88,6 +88,7 @@ abstract class BaseToMany extends Object
 			{
 				$entityName = $repository->getEntityClassName($array);
 				$entity = new $entityName; // todo construct pak nesmy mit povine parametry
+				$repository->attach($entity);
 			}
 			$entity->setValues($array);
 		}
@@ -100,11 +101,7 @@ abstract class BaseToMany extends Object
 				throw new UnexpectedValueException("Entity '$id' not found in `" . get_class($repository) . "`");
 			}
 		}
-		if (!$repository->isEntity($entity))
-		{
-			$id = isset($entity->id) ? '#' . $entity->id : NULL;
-			throw new UnexpectedValueException(get_class($repository) . " can't work with entity '" . get_class($entity) . $id . "'");
-		}
+		$repository->attach($entity);
 		return $entity;
 	}
 

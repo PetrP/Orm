@@ -19,6 +19,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 	{
 		$e = new OneToMany_Entity;
 		$this->assertSame($e, $this->tt($e));
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testBad()
@@ -31,6 +32,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 	{
 		$e = $this->r->getById(11);
 		$this->assertSame($e, $this->tt(11));
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testIdNotFound()
@@ -45,6 +47,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testArrayWithId()
@@ -53,6 +56,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$ee = $this->tt(array('id' => 11, 'string' => 'xyz'));
 		$this->assertSame($e, $ee);
 		$this->assertSame('xyz', $e->string);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testArrayWithIdNotFound()
@@ -61,6 +65,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testTraversable()
@@ -69,6 +74,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
+		$this->assertSame($this->r, $e->getGeneratingRepository());
 	}
 
 	public function testWipeGet()
