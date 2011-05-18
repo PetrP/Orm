@@ -15,6 +15,8 @@ abstract class ArrayMapper extends Mapper
 {
 	private $data;
 
+	private static $lock;
+
 	public function findAll()
 	{
 		$class = $this->getCollectionClass();
@@ -70,14 +72,12 @@ abstract class ArrayMapper extends Mapper
 		}
 		else
 		{
-			if (method_exists('Tools', 'enterCriticalSection')) Tools::enterCriticalSection();
-			else Environment::enterCriticalSection(get_class($this));
+			$this->lock();
 			$originData = $this->loadData();
 			$id = $originData ? max(array_keys($originData)) + 1 : 1;
 			$originData[$id] = NULL;
 			$this->saveData($originData);
-			if (method_exists('Tools', 'leaveCriticalSection')) Tools::leaveCriticalSection();
-			else Environment::leaveCriticalSection(get_class($this));
+			$this->unlock();
 		}
 		$this->data[$id] = $entity;
 
@@ -107,8 +107,7 @@ abstract class ArrayMapper extends Mapper
 	{
 		if (!$this->data) return;
 
-		if (method_exists('Tools', 'enterCriticalSection')) Tools::enterCriticalSection();
-		else Environment::enterCriticalSection(get_class($this));
+		$this->lock();
 		$originData = $this->loadData();
 
 		foreach ($this->data as $id => $entity)
@@ -154,7 +153,44 @@ abstract class ArrayMapper extends Mapper
 		}
 
 		$this->saveData($originData);
-		if (method_exists('Tools', 'leaveCriticalSection')) Tools::leaveCriticalSection();
-		else Environment::leaveCriticalSection(get_class($this));
+		$this->unlock();
 	}
+
+	/**
+	 * Enters the critical section, other threads are locked out.
+	 * @author David Grudl
+	 */
+	protected function lock()
+	{
+		if (self::$lock)
+		{
+			throw new InvalidStateException('Critical section has already been entered.');
+		}
+		// locking on Windows causes that a file seems to be empty
+		$handle = substr(PHP_OS, 0, 3) === 'WIN'
+			? @fopen(dirname(__FILE__) . '/ArrayMapper.lockfile', 'w')
+			: @fopen(__FILE__, 'r'); // @ - file may not already exist
+
+		if (!$handle)
+		{
+			throw new InvalidStateException("Unable initialize critical section.");
+		}
+		flock(self::$lock = $handle, LOCK_EX);
+	}
+
+	/**
+	 * Leaves the critical section, other threads can now enter it.
+	 * @author David Grudl
+	 */
+	protected function unlock()
+	{
+		if (!self::$lock)
+		{
+			throw new InvalidStateException('Critical section has not been initialized.');
+		}
+		flock(self::$lock, LOCK_UN);
+		fclose(self::$lock);
+		self::$lock = NULL;
+	}
+
 }
