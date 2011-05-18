@@ -148,7 +148,7 @@ class RepositoryContainer extends Object
 	 * @param string repositoryName
 	 * @return string repositoryClass
 	 */
-	final private function getRepositoryClass($name)
+	protected function getRepositoryClass($name)
 	{
 		if (!$name) return NULL;
 		$class = $name . 'Repository';

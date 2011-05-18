@@ -1,10 +1,9 @@
 <?php
 
-class RepositoryContainer_getRepositoryClass extends AutoLoader
+class RepositoryContainer_getRepositoryClass extends RepositoryContainer
 {
-	public $last;
-	public function tryLoad($type)
+	public function getRepositoryClass($name)
 	{
-		$this->last = $type;
+		return parent::getRepositoryClass($name);
 	}
 }

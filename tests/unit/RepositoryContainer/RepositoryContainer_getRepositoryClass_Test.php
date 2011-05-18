@@ -7,28 +7,10 @@ require_once dirname(__FILE__) . '/../../boot.php';
  */
 class RepositoryContainer_getRepositoryClass_Test extends TestCase
 {
-	private $m;
-
-	protected function setUp()
-	{
-		$this->m = new RepositoryContainer;
-	}
-
 	private function t($rn)
 	{
-		$l = new RepositoryContainer_getRepositoryClass;
-		$l->register();
-		try {
-			$r = $this->m->getRepository($rn);
-			$l->unregister();
-			return get_class($r);
-		} catch (InvalidStateException $e) {
-			$l->unregister();
-			if ($l->last) return $l->last;
-			throw $e;
-		}
-		$l->unregister();
-		throw new InvalidStateException;
+		$m = new RepositoryContainer_getRepositoryClass;
+		return $m->getRepositoryClass($rn);
 	}
 
 	public function test()
@@ -39,7 +21,9 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 
 	public function testEmpty()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository '' doesn't exists");
+		$this->assertSame(NULL, $this->t(''));
+		$this->assertSame(NULL, $this->t(NULL));
+		$this->assertSame(NULL, $this->t(0));
 		$this->t('');
 	}
 }
