@@ -11,7 +11,7 @@ class ManyToMany_get_Test extends ManyToMany_Test
 
 	public function test()
 	{
-		$this->assertInstanceOf('IEntityCollection', $this->m2m->get());
+		$this->assertInstanceOf('Orm\IEntityCollection', $this->m2m->get());
 	}
 
 	public function testCache()
@@ -22,7 +22,7 @@ class ManyToMany_get_Test extends ManyToMany_Test
 	public function testNotHandledParent()
 	{
 		$this->e->generatingRepository->remove($this->e);
-		$this->assertInstanceOf('ArrayCollection', $this->m2m->get());
+		$this->assertInstanceOf('Orm\ArrayCollection', $this->m2m->get());
 		$this->assertSame(array(), $this->m2m->get()->fetchAll());
 	}
 

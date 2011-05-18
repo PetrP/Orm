@@ -61,7 +61,7 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->t(NULL, true);
 		$this->t('xxx', true);
 
-		$this->type = 'html|null';
+		$this->type = 'nette\utils\html|null';
 		$this->t(NULL, true);
 		$this->t(new Html, true);
 		$this->t('', false);

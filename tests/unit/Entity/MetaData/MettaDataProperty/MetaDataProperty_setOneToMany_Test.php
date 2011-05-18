@@ -33,14 +33,14 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$this->assertSame(MetaData::OneToMany, $this->get($p));
 
 		$i = $this->get($p, 'injection');
-		$this->assertInstanceOf('Callback', $i);
+		$this->assertInstanceOf('Nette\Callback', $i);
 
 		$ii = $i->getNative();
-		$this->assertInstanceOf('InjectionFactory', $ii[0]);
+		$this->assertInstanceOf('Orm\InjectionFactory', $ii[0]);
 		$this->assertAttributeSame($class, 'className', $ii[0]);
 
 		$ii = $this->readAttribute($ii[0], 'callback');
-		$this->assertInstanceOf('RelationshipLoader', $ii[0]);
+		$this->assertInstanceOf('Orm\RelationshipLoader', $ii[0]);
 		$this->assertSame('create', $ii[1]);
 
 		$this->assertAttributeSame($class, 'class', $ii[0]);
@@ -56,7 +56,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testTwice()
 	{
-		$this->setExpectedException('InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Nette\InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaDataProperty_setOneToMany_OneToMany')
 			->setOneToMany()
 			->setOneToMany()
@@ -65,7 +65,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testMultipleType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts OneToMany class as type, \'string|int\' given');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts Orm\OneToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
 			->setOneToMany()
 		;
@@ -73,7 +73,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testBadType_unexist()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts OneToMany class as type, class \'BadClass\' doesn\'t exists');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {1:m} excepts Orm\OneToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
 			->setOneToMany()
 		;
@@ -81,18 +81,18 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testBadType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {1:m} Class \'Html\' isn\'t instanceof OneToMany');
-		$this->m->addProperty('id', 'Html')
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {1:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\OneToMany');
+		$this->m->addProperty('id', 'Nette\Utils\Html')
 			->setOneToMany()
 		;
 	}
 
 	public function testFunctionalWithoutClass()
 	{
-		$p = $this->m->addProperty('id', 'OneToMany')
+		$p = $this->m->addProperty('id', 'Orm\OneToMany')
 			->setOneToMany('MetaData_Test2', 'param')
 		;
-		$this->t($p, 'OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'Orm\OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
 	}
 
 	public function testFunctionalWithoutClass2()
@@ -100,7 +100,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', '')
 			->setOneToMany('MetaData_Test2', 'param')
 		;
-		$this->t($p, 'OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'Orm\OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
 	}
 }
 

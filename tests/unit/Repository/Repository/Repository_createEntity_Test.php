@@ -28,13 +28,13 @@ class Repository_createEntity_Test extends TestCase
 
 	public function testNoId()
 	{
-		$this->setExpectedException('InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
+		$this->setExpectedException('Nette\InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
 		$this->r->createEntity(array());
 	}
 
 	public function testEmptyId()
 	{
-		$this->setExpectedException('InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
+		$this->setExpectedException('Nette\InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
 		$this->r->createEntity(array('id' => ''));
 	}
 

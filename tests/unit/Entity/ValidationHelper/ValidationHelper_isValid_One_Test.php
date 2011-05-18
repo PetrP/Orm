@@ -288,7 +288,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 
 	public function testInstanceof()
 	{
-		$this->type = 'html';
+		$this->type = 'nette\utils\html';
 		$this->t(NULL, false);
 		$this->t(false, false);
 		$this->t(true, false);

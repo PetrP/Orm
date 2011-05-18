@@ -17,7 +17,7 @@ class EntityValue_get_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('MemberAccessException', 'Cannot read an undeclared property EntityValue_getset_Entity::$unexists.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property EntityValue_getset_Entity::$unexists.');
 		$this->e->unexists;
 	}
 

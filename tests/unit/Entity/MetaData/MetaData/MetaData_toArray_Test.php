@@ -12,7 +12,7 @@ class MetaData_toArray_Test extends TestCase
 	public function test()
 	{
 		$m = new MetaData('MetaData_Test_Entity');
-		$m->addProperty('id', 'int', MetaData::READ, 'Entity');
+		$m->addProperty('id', 'int', MetaData::READ, 'Orm\Entity');
 		$m->addProperty('id2', 'string')->setDefault(false);
 		$this->assertSame(
 			array(
@@ -20,7 +20,7 @@ class MetaData_toArray_Test extends TestCase
 					'types' => array('int' => 'int'),
 					'get' => array('method' => 'getId'),
 					'set' => NULL,
-					'since' => 'Entity',
+					'since' => 'Orm\Entity',
 					'relationship' => NULL,
 					'relationshipParam' => NULL,
 					'default' => NULL,

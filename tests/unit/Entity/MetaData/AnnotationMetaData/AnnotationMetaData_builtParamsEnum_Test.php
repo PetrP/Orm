@@ -72,12 +72,12 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 		try {
 			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::xyz()');
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_Test::xyz' is not callable.");
+		$this->assertException($e, 'Nette\InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_Test::xyz' is not callable.");
 
 		try {
 			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::invalidCallback()');
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
+		$this->assertException($e, 'Nette\InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
 	}
 
 

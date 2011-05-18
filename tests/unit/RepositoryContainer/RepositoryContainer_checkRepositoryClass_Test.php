@@ -23,25 +23,25 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 
 	public function testUnexist()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'unexists' doesn't exists");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'unexists' doesn't exists");
 		$this->t('unexists');
 	}
 
 	public function testImplement()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad' must implement IRepository");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad' must implement Orm\\IRepository");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad');
 	}
 
 	public function testAbstract()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad2' is abstract.");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad2' is abstract.");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad2');
 	}
 
 	public function testEmpty()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository '' doesn't exists");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository '' doesn't exists");
 		$this->t('');
 	}
 
@@ -52,7 +52,7 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 
 	public function testIntefrace()
 	{
-		$this->setExpectedException('InvalidStateException', "Repository 'i' doesn't exists");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'i' doesn't exists");
 		$this->t('i');
 	}
 }

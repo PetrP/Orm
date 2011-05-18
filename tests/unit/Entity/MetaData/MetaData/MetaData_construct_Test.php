@@ -26,15 +26,13 @@ class MetaData_construct_Test extends TestCase
 		try {
 			new MetaData('Xxxasdsad');
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		$this->assertException($e, 'Nette\InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
 	}
 
 	public function testNotEntity()
 	{
-		try {
-			new MetaData('Html');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "'Html' isn`t instance of IEntity");
+		$this->setExpectedException('Nette\InvalidStateException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
+		new MetaData('Nette\Utils\Html');
 	}
 
 }

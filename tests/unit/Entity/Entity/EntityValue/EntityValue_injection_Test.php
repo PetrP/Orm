@@ -26,18 +26,18 @@ class EntityValue_injection_Test extends TestCase
 	{
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
-		$this->assertSame('ArrayManyToManyMapper', get_class($this->e->many->mapper));
+		$this->assertSame('Orm\ArrayManyToManyMapper', get_class($this->e->many->mapper));
 		$this->assertNotInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);
 		$this->assertSame(NULL, $this->e->many->getInjectedValue());
-		$this->setExpectedException('InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
+		$this->setExpectedException('Nette\InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
 		$this->e->many->persist();
 	}
 
 	public function testNewWrite()
 	{
-		$this->setExpectedException('InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
+		$this->setExpectedException('Nette\InvalidStateException', 'EntityValue_injectionEntity is not attached to repository.');
 		$this->e->many = array(1,2,3);
 	}
 
@@ -45,7 +45,7 @@ class EntityValue_injection_Test extends TestCase
 	{
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
-		$this->assertSame('ArrayManyToManyMapper', get_class($this->e->many->mapper));
+		$this->assertSame('Orm\ArrayManyToManyMapper', get_class($this->e->many->mapper));
 		$this->assertNotInstanceOf('EntityValue_injection_ManyToManyMapper', $this->e->many->mapper);
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);

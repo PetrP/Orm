@@ -29,7 +29,7 @@ class Repository_persist_cascade1_Mapper extends TestsMapper
 }
 
 /**
- * @property OneToMany $1m {1:m Repository_persist_cascade1_ m1}
+ * @property Orm\OneToMany $1m {1:m Repository_persist_cascade1_ m1}
  */
 class Repository_persist_cascade2_Entity extends TestEntity
 {
@@ -45,7 +45,7 @@ class Repository_persist_cascade2_Mapper extends TestsMapper
 }
 
 /**
- * @property ManyToMany $mm {m:m Repository_persist_cascade4_ mm mapped}
+ * @property Orm\ManyToMany $mm {m:m Repository_persist_cascade4_ mm mapped}
  */
 class Repository_persist_cascade3_Entity extends TestEntity
 {
@@ -93,7 +93,7 @@ class Repository_persist_cascade_ArrayManyToManyMapper extends ArrayManyToManyMa
 }
 
 /**
- * @property ManyToMany $mm {m:m Repository_persist_cascade3_ mm}
+ * @property Orm\ManyToMany $mm {m:m Repository_persist_cascade3_ mm}
  */
 class Repository_persist_cascade4_Entity extends TestEntity
 {

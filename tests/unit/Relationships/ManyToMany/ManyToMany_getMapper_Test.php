@@ -15,7 +15,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function test()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true);
-		$this->assertInstanceOf('ArrayManyToManyMapper', $this->m2m->gm());
+		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
 
 	public function testCache()
@@ -28,7 +28,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true);
 		$this->e->generatingRepository->mapper->mmm = new Html;
-		$this->setExpectedException('InvalidStateException', "ManyToMany_Mapper::createManyToManyMapper() must return IManyToManyMapper, 'Html' given");
+		$this->setExpectedException('Nette\InvalidStateException', "ManyToMany_Mapper::createManyToManyMapper() must return Orm\\IManyToManyMapper, 'Nette\\Utils\\Html' given");
 		$this->m2m->gm();
 	}
 
@@ -55,7 +55,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testNotHandled()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany(new TestEntity, $this->r, 'param', 'param', true, array(10,11));
-		$this->assertInstanceOf('ArrayManyToManyMapper', $this->m2m->gm());
+		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 		$this->assertSame(NULL, $this->m2m->gm()->getValue());
 	}
 

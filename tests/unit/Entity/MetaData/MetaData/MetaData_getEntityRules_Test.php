@@ -27,19 +27,19 @@ class MetaData_getEntityRules_Test extends TestCase
 
 	public function testNotExists()
 	{
-		$this->setExpectedException('InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		$this->setExpectedException('Nette\InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
 		MetaData::getEntityRules('Xxxasdsad');
 	}
 
 	public function testNotEntity()
 	{
-		$this->setExpectedException('InvalidStateException', "'Html' isn`t instance of IEntity");
-		MetaData::getEntityRules('Html');
+		$this->setExpectedException('Nette\InvalidStateException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
+		MetaData::getEntityRules('Nette\Utils\Html');
 	}
 
 	public function testBadReturn()
 	{
-		$this->setExpectedException('InvalidStateException', "It`s expected that 'IEntity::createMetaData' will return 'MetaData'.");
+		$this->setExpectedException('Nette\InvalidStateException', "It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
 		MetaData_Test_Entity::$metaData = new Html;
 		MetaData::getEntityRules('MetaData_Test_Entity');
 	}

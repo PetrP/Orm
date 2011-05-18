@@ -19,7 +19,7 @@ class OneToMany_persist_Test extends OneToMany_Test
 	public function testNotPersistedParent()
 	{
 		$this->e->getGeneratingRepository()->remove($this->e);
-		$this->setExpectedException('InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
 		$this->o2m->persist();
 	}
 

@@ -18,7 +18,7 @@ class Mapper_getConventional_Test extends TestCase
 
 	public function test()
 	{
-		$this->assertInstanceOf('IConventional', $this->m->getConventional());
+		$this->assertInstanceOf('Orm\IConventional', $this->m->getConventional());
 	}
 
 	public function test2()
@@ -29,7 +29,7 @@ class Mapper_getConventional_Test extends TestCase
 	public function testBad()
 	{
 		$this->m->c = new Html;
-		$this->setExpectedException('InvalidStateException', 'Mapper_getConventional_Mapper::createConventional() must return IConventional');
+		$this->setExpectedException('Nette\InvalidStateException', 'Mapper_getConventional_Mapper::createConventional() must return Orm\IConventional');
 		$this->m->getConventional();
 	}
 

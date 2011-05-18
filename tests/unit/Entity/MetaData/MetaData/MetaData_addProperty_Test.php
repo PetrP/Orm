@@ -15,7 +15,7 @@ class MetaData_addProperty_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 
 		$m->addProperty('id', 'int1', MetaData::READ);
-		$m->addProperty('id', 'int2', MetaData::READ, 'Entity');
+		$m->addProperty('id', 'int2', MetaData::READ, 'Orm\Entity');
 		$m->addProperty('id', 'int3', MetaData::READ, 'MetaData_Test_Entity');
 
 		try {
@@ -44,7 +44,7 @@ class MetaData_addProperty_Test extends TestCase
 	{
 		$m = new MetaData('MetaData_Test_Entity');
 		$property = $m->addProperty('id', 'int1', MetaData::READ);
-		$this->assertInstanceof('MetaDataProperty', $property);
+		$this->assertInstanceof('Orm\MetaDataProperty', $property);
 		$this->assertAttributeEquals('id', 'name', $property);
 		$this->assertAttributeEquals($m->getEntityClass(), 'class', $property);
 		$this->assertAttributeEquals(array('id' => $property), 'properties', $m);

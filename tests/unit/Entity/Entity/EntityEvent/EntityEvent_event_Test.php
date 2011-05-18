@@ -46,14 +46,14 @@ class EntityEvent_event_Test extends EntityEvent_event_Base
 	public function testNoParent()
 	{
 		$e = new EntityEvent2_Entity;
-		$this->setExpectedException('InvalidStateException', 'Method EntityEvent2_Entity::onBeforePersist() or its descendant doesn\'t call parent::onBeforePersist().');
+		$this->setExpectedException('Nette\InvalidStateException', 'Method EntityEvent2_Entity::onBeforePersist() or its descendant doesn\'t call parent::onBeforePersist().');
 		$e->___event($e, 'beforePersist', $this->r);
 	}
 
 	public function testBadParent()
 	{
 		$e = new EntityEvent2_Entity;
-		$this->setExpectedException('InvalidStateException', 'Method EntityEvent2_Entity::onAfterPersist() or its descendant doesn\'t call parent::onAfterPersist().');
+		$this->setExpectedException('Nette\InvalidStateException', 'Method EntityEvent2_Entity::onAfterPersist() or its descendant doesn\'t call parent::onAfterPersist().');
 		$e->___event($e, 'afterPersist', $this->r);
 	}
 }

@@ -12,7 +12,7 @@ class OneToMany_get_Test extends OneToMany_Test
 
 	public function test()
 	{
-		$this->assertInstanceOf('IEntityCollection', $this->o2m->get());
+		$this->assertInstanceOf('Orm\IEntityCollection', $this->o2m->get());
 	}
 
 	public function testCache()
@@ -38,7 +38,7 @@ class OneToMany_get_Test extends OneToMany_Test
 	public function testNotHandledParent()
 	{
 		$this->e->generatingRepository->remove($this->e);
-		$this->assertInstanceOf('ArrayCollection', $this->o2m->get());
+		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->get());
 		$this->assertSame(array(), $this->o2m->get()->fetchAll());
 	}
 

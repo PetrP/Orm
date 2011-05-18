@@ -50,7 +50,7 @@ class Repository_remove_Test extends TestCase
 	public function testMapperError()
 	{
 		$this->r->mapper->returnNull = true;
-		$this->setExpectedException('InvalidStateException', "Something wrong with mapper.");
+		$this->setExpectedException('Nette\InvalidStateException', "Something wrong with mapper.");
 		$this->r->remove($this->r->remove(2));
 	}
 

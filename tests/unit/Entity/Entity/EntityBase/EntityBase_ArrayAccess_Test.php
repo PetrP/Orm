@@ -47,7 +47,7 @@ class EntityBase_ArrayAccess_Test extends TestCase
 
 	public function testOffsetGet_unexists()
 	{
-		$this->setExpectedException('MemberAccessException', 'Cannot read an undeclared property EntityBase_ArrayAccess_Entity::$unexists.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property EntityBase_ArrayAccess_Entity::$unexists.');
 		$this->e['unexists'];
 	}
 
@@ -65,13 +65,13 @@ class EntityBase_ArrayAccess_Test extends TestCase
 
 	public function testOffsetSet_unexists()
 	{
-		$this->setExpectedException('MemberAccessException', 'Cannot write to an undeclared property EntityBase_ArrayAccess_Entity::$unexists.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property EntityBase_ArrayAccess_Entity::$unexists.');
 		$this->e['unexists'] = 'xyz';
 	}
 
 	public function testOffsetUnset()
 	{
-		$this->setExpectedException('NotSupportedException');
+		$this->setExpectedException('Nette\NotSupportedException');
 		unset($this->e['string']);
 	}
 }

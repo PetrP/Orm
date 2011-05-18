@@ -80,7 +80,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 	public function testWipeGet()
 	{
 		$this->o2m->get();
-		$this->assertAttributeInstanceOf('IEntityCollection', 'get', $this->o2m);
+		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->o2m);
 		$this->tt(11);
 		$this->assertAttributeSame(NULL, 'get', $this->o2m);
 	}

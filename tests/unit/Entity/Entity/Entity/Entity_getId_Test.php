@@ -26,14 +26,14 @@ class Entity_getId_Test extends TestCase
 	public function testUnpersisted()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('InvalidStateException', 'You must persist entity first');
+		$this->setExpectedException('Nette\InvalidStateException', 'You must persist entity first');
 		$e->id;
 	}
 
 	public function testReadOnly()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('MemberAccessException', 'Cannot write to a read-only property TestEntity::$id.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to a read-only property TestEntity::$id.');
 		$e->id = 2;
 	}
 

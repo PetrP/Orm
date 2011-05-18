@@ -17,7 +17,7 @@ class EntityValue_set_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('MemberAccessException', 'Cannot write to an undeclared property EntityValue_getset_Entity::$unexists.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property EntityValue_getset_Entity::$unexists.');
 		$this->e->unexists = 3;
 	}
 
@@ -31,7 +31,7 @@ class EntityValue_set_Test extends TestCase
 
 	public function testReadOnly()
 	{
-		$this->setExpectedException('MemberAccessException', 'Cannot write to a read-only property EntityValue_getset_Entity::$readOnly.');
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to a read-only property EntityValue_getset_Entity::$readOnly.');
 		$this->e->readOnly = 'xyz';
 	}
 }

@@ -27,38 +27,38 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_::$unexist neni asociace ktera by ukazovala zpet');
+		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_::$unexist neni asociace ktera by ukazovala zpet');
 		$this->t('unexist');
 	}
 
 	public function testNotRelationship()
 	{
-		$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$id neni asociace ktera by ukazovala zpet');
+		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$id neni asociace ktera by ukazovala zpet');
 		$this->t('id');
 	}
 
 	public function testParamEmpty()
 	{
-		$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyEmptyParam neni vyplnen param ktery by ukazoval zpet');
+		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyEmptyParam neni vyplnen param ktery by ukazoval zpet');
 		$this->t('manyEmptyParam');
 	}
 
 	public function testAnotherParam()
 	{
-		$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherParam neukazuje zpet; ukazuje na jiny parametr (manyAnotherParam)');
+		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherParam neukazuje zpet; ukazuje na jiny parametr (manyAnotherParam)');
 		$this->t('manyAnotherParam');
 	}
 
 	public function testAnotherRepo()
 	{
-		$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
+		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
 		$this->t('manyAnotherRepo');
 	}
 
 	public function testOk()
 	{
 		$loader = $this->t('many');
-		$this->assertInstanceOf('RelationshipLoader', $loader);
+		$this->assertInstanceOf('Orm\RelationshipLoader', $loader);
 	}
 
 	public function testClearCache()
@@ -67,7 +67,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 			$this->t('manyAnotherRepo');
 			throw new Exception;
 		} catch (InvalidStateException $e) {
-			$this->setExpectedException('InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
+			$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
 			$this->t('manyAnotherRepo');
 		}
 	}
@@ -78,7 +78,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		$old = $ecn;
 		$ecn = strtoupper($ecn);
 		$loader = $this->t('many');
-		$this->assertInstanceOf('RelationshipLoader', $loader);
+		$this->assertInstanceOf('Orm\RelationshipLoader', $loader);
 		$ecn = $old;
 	}
 

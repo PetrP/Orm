@@ -42,7 +42,7 @@ class Mapper_call_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('MemberAccessException', 'Call to undefined method Mapper_call_Mapper::getXyz()');
+		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Mapper_call_Mapper::getXyz()');
 		$this->m->getXyz('abc');
 	}
 
@@ -58,7 +58,7 @@ class Mapper_call_Test extends TestCase
 		{
 			$this->markTestIncomplete('php 52: pri protected misto volani __call vyhazuje fatal error');
 		}
-		$this->setExpectedException('MemberAccessException', 'Call to undefined method Mapper_call_Mapper::getByProtected()');
+		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Mapper_call_Mapper::getByProtected()');
 		$this->m->getByProtected('abc');
 	}
 

@@ -37,7 +37,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 
 	public function testTwice()
 	{
-		$this->setExpectedException('InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Nette\InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('MetaData_Test2')
 			->setOneToOne('MetaData_Test2')
@@ -46,7 +46,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 
 	public function testNoRepo()
 	{
-		$this->setExpectedException('InvalidStateException', 'You must specify foreign repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Nette\InvalidStateException', 'You must specify foreign repository in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('')
 		;
@@ -54,7 +54,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 
 	public function testBadRepo()
 	{
-		$this->setExpectedException('InvalidStateException', 'BlaBlaBla isn\'t repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Nette\InvalidStateException', 'BlaBlaBla isn\'t repository in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('BlaBlaBla')
 		;

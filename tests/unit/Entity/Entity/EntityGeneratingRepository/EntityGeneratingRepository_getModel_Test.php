@@ -36,7 +36,7 @@ class EntityGeneratingRepository_getModel_Test extends TestCase
 	public function testNeed2()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
 		$e->getModel();
 	}
 

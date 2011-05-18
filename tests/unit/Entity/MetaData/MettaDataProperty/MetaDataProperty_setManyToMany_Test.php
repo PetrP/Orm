@@ -34,14 +34,14 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$this->assertSame(MetaData::ManyToMany, $this->get($p));
 
 		$i = $this->get($p, 'injection');
-		$this->assertInstanceOf('Callback', $i);
+		$this->assertInstanceOf('Nette\Callback', $i);
 
 		$ii = $i->getNative();
-		$this->assertInstanceOf('InjectionFactory', $ii[0]);
+		$this->assertInstanceOf('Orm\InjectionFactory', $ii[0]);
 		$this->assertAttributeSame($class, 'className', $ii[0]);
 
 		$ii = $this->readAttribute($ii[0], 'callback');
-		$this->assertInstanceOf('RelationshipLoader', $ii[0]);
+		$this->assertInstanceOf('Orm\RelationshipLoader', $ii[0]);
 		$this->assertSame('create', $ii[1]);
 
 		$this->assertAttributeSame($class, 'class', $ii[0]);
@@ -57,7 +57,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testTwice()
 	{
-		$this->setExpectedException('InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Nette\InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
 			->setManyToMany()
 			->setManyToMany()
@@ -66,7 +66,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testMultipleType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts ManyToMany class as type, \'string|int\' given');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
 			->setManyToMany()
 		;
@@ -74,7 +74,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testBadType_unexist()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts ManyToMany class as type, class \'BadClass\' doesn\'t exists');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
 			->setManyToMany()
 		;
@@ -82,18 +82,18 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testBadType()
 	{
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test_Entity::$id {m:m} Class \'Html\' isn\'t instanceof ManyToMany');
-		$this->m->addProperty('id', 'Html')
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\ManyToMany');
+		$this->m->addProperty('id', 'Nette\Utils\Html')
 			->setManyToMany()
 		;
 	}
 
 	public function testFunctionalWithoutClass()
 	{
-		$p = $this->m->addProperty('id', 'ManyToMany')
+		$p = $this->m->addProperty('id', 'Orm\ManyToMany')
 			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
+		$this->t($p, 'Orm\ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
 	}
 
 	public function testFunctionalWithoutClass2()
@@ -101,7 +101,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', '')
 			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
+		$this->t($p, 'Orm\ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
 	}
 
 	public function testMapBoth()
@@ -109,7 +109,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = true;
 		MetaData_Test4_Entity::$mapped = true;
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
 		MetaData::getEntityRules('MetaData_Test3_Entity');
 	}
 
@@ -118,7 +118,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = false;
 		MetaData_Test4_Entity::$mapped = false;
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
 		MetaData::getEntityRules('MetaData_Test3_Entity');
 	}
 
@@ -127,7 +127,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = NULL;
 		MetaData_Test4_Entity::$mapped = NULL;
-		$this->setExpectedException('InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
 		MetaData::getEntityRules('MetaData_Test3_Entity');
 	}
 

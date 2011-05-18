@@ -38,7 +38,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 		try {
 			$this->setAccess(MetaData::WRITE);
 		} catch (Exception $e) {}
-		$this->assertException($e, 'InvalidStateException', "Neni mozne vytvaret write-only polozky: MetaData_Test_Entity::\$id");
+		$this->assertException($e, 'Nette\InvalidStateException', "Neni mozne vytvaret write-only polozky: MetaData_Test_Entity::\$id");
 	}
 
 	public function testRead()

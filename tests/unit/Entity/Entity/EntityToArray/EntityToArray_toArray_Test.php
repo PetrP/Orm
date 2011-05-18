@@ -64,7 +64,7 @@ class EntityToArray_toArray_Test extends TestCase
 		$e->e = $this->r->getById(1);
 		$a = $e->toArray(EntityToArray::ENTITY_AS_IS);
 
-		$this->assertInstanceOf('IEntity', $a['e']);
+		$this->assertInstanceOf('Orm\IEntity', $a['e']);
 		$this->assertSame($e->e, $a['e']);
 	}
 
@@ -103,7 +103,7 @@ class EntityToArray_toArray_Test extends TestCase
 		$e = new EntityToArray_toArray_m1_Entity;
 		$e->e = $this->r->getById(1);
 
-		$this->setExpectedException('InvalidStateException', 'No mode for entity');
+		$this->setExpectedException('Nette\InvalidStateException', 'No mode for entity');
 		$e->toArray(EntityToArray::RELATIONSHIP_AS_ARRAY_OF_ID);
 	}
 
@@ -112,7 +112,7 @@ class EntityToArray_toArray_Test extends TestCase
 		$e = new EntityToArray_toArray_1m_Entity;
 		$a = $e->toArray(EntityToArray::RELATIONSHIP_AS_IS);
 
-		$this->assertInstanceOf('IRelationship', $a['r']);
+		$this->assertInstanceOf('Orm\IRelationship', $a['r']);
 		$this->assertSame($e->r, $a['r']);
 	}
 
@@ -167,7 +167,7 @@ class EntityToArray_toArray_Test extends TestCase
 		$e = new EntityToArray_toArray_1m_Entity;
 		$e->r->add($ee = $this->r->getById(1));
 
-		$this->setExpectedException('InvalidStateException', 'No mode for relationship');
+		$this->setExpectedException('Nette\InvalidStateException', 'No mode for relationship');
 		$e->toArray(EntityToArray::ENTITY_AS_IS);
 	}
 

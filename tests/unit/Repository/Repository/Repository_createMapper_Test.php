@@ -25,7 +25,7 @@ class Repository_createMapper_Test extends TestCase
 	public function testDefault()
 	{
 		$r = new Repository_DefaultMapper_Repository($this->m);
-		$this->assertInstanceOf('DibiMapper', $r->getMapper());
+		$this->assertInstanceOf('Orm\DibiMapper', $r->getMapper());
 	}
 
 }

@@ -7,7 +7,7 @@ use Orm\IEntity;
 
 /**
  * @property Repository_persist_recursion1_Entity $m1 {m:1 Repository_persist_recursion1_}
- * @property OneToMany $1m {1:m Repository_persist_recursion1_ m1}
+ * @property Orm\OneToMany $1m {1:m Repository_persist_recursion1_ m1}
  */
 class Repository_persist_recursion1_Entity extends TestEntity
 {
@@ -23,8 +23,8 @@ class Repository_persist_recursion1_Mapper extends Repository_persist_cascade1_M
 }
 
 /**
- * @property ManyToMany $mma {m:m Repository_persist_recursion2_ mmb mapped}
- * @property ManyToMany $mmb {m:m Repository_persist_recursion2_ mma}
+ * @property Orm\ManyToMany $mma {m:m Repository_persist_recursion2_ mmb mapped}
+ * @property Orm\ManyToMany $mmb {m:m Repository_persist_recursion2_ mma}
  */
 class Repository_persist_recursion2_Entity extends TestEntity
 {

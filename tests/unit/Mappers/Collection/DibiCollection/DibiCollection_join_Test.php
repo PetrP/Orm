@@ -99,25 +99,25 @@ class DibiCollection_join_Test extends TestCase
 
 	public function testUnexistFK()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_join1_Repository: neni zadna vazba na `neexistuje`');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_join1_Repository: neni zadna vazba na `neexistuje`');
 		$this->c->orderBy('neexistuje->name');
 	}
 
 	public function testUnexistFK2()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_join2_Repository: neni zadna vazba na `neexistuje`');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_join2_Repository: neni zadna vazba na `neexistuje`');
 		$this->c->orderBy('join2->neexistuje->name');
 	}
 
 	public function testBadMapper()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinBadMapper_Repository (joinBadMapper) nepouziva DibiMapper, data nelze propojit.');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_joinBadMapper_Repository (joinBadMapper) nepouziva Orm\DibiMapper, data nelze propojit.');
 		$this->c->orderBy('join2->joinBadMapper->name');
 	}
 
 	public function testDifferentConnection()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinDifferentConnection_Repository (joinDifferentConnection) pouziva jiny DibiConnection nez DibiCollection_join2_Repository, data nelze propojit.');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_joinDifferentConnection_Repository (joinDifferentConnection) pouziva jiny Orm\DibiConnection nez DibiCollection_join2_Repository, data nelze propojit.');
 		$this->c->orderBy('join2->joinDifferentConnection->name');
 	}
 
@@ -158,13 +158,13 @@ class DibiCollection_join_Test extends TestCase
 
 	public function testFindAllBadCollection()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinBadCollection_Repository (joinBadCollection) nepouziva DibiCollection, data nelze propojit.');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_joinBadCollection_Repository (joinBadCollection) nepouziva Orm\DibiCollection, data nelze propojit.');
 		$this->c->orderBy('join2->joinBadCollection->name');
 	}
 
 	public function testFindAllHasWhere()
 	{
-		$this->setExpectedException('InvalidStateException', 'DibiCollection_joinHasWhere_Repository (joinHasWhere) DibiCollection pouziva where(), data nelze propojit.');
+		$this->setExpectedException('Nette\InvalidStateException', 'DibiCollection_joinHasWhere_Repository (joinHasWhere) Orm\DibiCollection pouziva where(), data nelze propojit.');
 		$this->c->orderBy('join2->joinHasWhere->name');
 	}
 
