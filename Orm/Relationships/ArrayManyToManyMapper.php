@@ -24,11 +24,13 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 
 	public function add(IEntity $parent, array $ids)
 	{
+		$parent->isChanged(true);
 		$this->value = $this->value + $ids;
 	}
 
 	public function remove(IEntity $parent, array $ids)
 	{
+		$parent->isChanged(true);
 		$this->value = array_diff_key($this->value, $ids);
 	}
 
