@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use ArrayAccess;
+use IteratorAggregate;
 
 interface IEntity extends ArrayAccess, IteratorAggregate
 {

@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use Exception;
+use UnexpectedValueException;
+use Nette\DeprecatedException;
 
 /**
  * @deprecated

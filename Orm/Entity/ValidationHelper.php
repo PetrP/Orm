@@ -2,6 +2,7 @@
 
 namespace Orm;
 
+use ArrayObject;
 
 /**
  * Helper ktery pouziva entita pro validovani.

@@ -2,7 +2,6 @@
 
 namespace Orm;
 
-
 /** @deprecated */
 interface IModelDataSource {}
 /** @deprecated */

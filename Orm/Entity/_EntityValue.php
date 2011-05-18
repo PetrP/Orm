@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use InvalidArgumentException;
+use Nette\MemberAccessException;
+use UnexpectedValueException;
+use Exception;
 
 /**
  * Obstarava cteni, kontrolu, plneni, nastavovani, validovani dat

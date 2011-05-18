@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\Callback;
+use Exception;
+
 
 interface IEntityInjection
 {

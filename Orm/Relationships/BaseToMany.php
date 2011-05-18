@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use Nette\Object;
+use UnexpectedValueException;
+use Traversable;
 
 abstract class BaseToMany extends Object
 {

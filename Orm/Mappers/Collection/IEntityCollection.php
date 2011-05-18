@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use Countable;
+use IteratorAggregate;
+use Dibi;
 
 require_once dirname(__FILE__) . '/bc.php';
 

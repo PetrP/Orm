@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use Nette\Object;
+use InvalidArgumentException;
 
 class FetchAssoc extends Object
 {

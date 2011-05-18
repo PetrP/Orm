@@ -2,6 +2,7 @@
 
 namespace Orm;
 
+use Nette\InvalidStateException;
 
 require_once dirname(__FILE__) . '/IRelationship.php';
 

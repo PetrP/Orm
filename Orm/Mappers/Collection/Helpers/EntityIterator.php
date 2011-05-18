@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use IteratorIterator;
+use Countable;
+use DibiResultIterator;
 
 class EntityIterator extends IteratorIterator implements Countable
 {

@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use Nette\NotImplementedException;
+use Nette\InvalidStateException;
+use DateTime;
+use ArrayObject;
 
 require_once dirname(__FILE__) . '/Mapper.php';
 

@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\Environment;
+use Exception;
+use DibiConnection;
 
 class Generate extends Object
 {

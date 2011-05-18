@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Exception;
+use DibiConnection;
 
 require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 

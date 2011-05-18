@@ -2,6 +2,11 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Dibi;
+use DibiConnection;
+use Nette\NotImplementedException;
+use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 

@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IConventional.php';
 

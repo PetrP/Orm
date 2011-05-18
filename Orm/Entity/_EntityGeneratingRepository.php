@@ -2,6 +2,7 @@
 
 namespace Orm;
 
+use Nette\InvalidStateException;
 
 /**
  * Uchovava stav o repository kde je entita persistovana.

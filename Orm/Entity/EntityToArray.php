@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\InvalidStateException;
 
 /**
  * Entity prevadi na array, je monze nastavit co udelat z asociacemi

@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use InvalidArgumentException;
+use DateTime;
 
 class FindByHelper
 {

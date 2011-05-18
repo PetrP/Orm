@@ -2,7 +2,6 @@
 
 namespace Orm;
 
-
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.
  * Ukladani, mazani, nacitani entit.

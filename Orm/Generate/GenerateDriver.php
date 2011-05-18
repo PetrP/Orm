@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\InvalidStateException;
+use Exception;
+use DibiConnection;
 
 interface IGenerateDriver
 {

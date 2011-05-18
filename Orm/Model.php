@@ -2,6 +2,10 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\InvalidStateException;
+use ReflectionClass;
+
 require_once dirname(__FILE__) . '/Entity/Entity.php';
 
 require_once dirname(__FILE__) . '/Repository/Repository.php';
@@ -124,7 +128,7 @@ class RepositoryContainer extends Object
 			throw new InvalidStateException("Repository '{$name}' doesn't exists");
 		}
 
-		$reflection = new ClassReflection($class);
+		$reflection = new ReflectionClass($class);
 
 		if (!$reflection->implementsInterface('IRepository'))
 		{

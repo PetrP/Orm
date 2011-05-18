@@ -2,6 +2,7 @@
 
 namespace Orm;
 
+use Nette\Object;
 
 require_once dirname(__FILE__) . '/IManyToManyMapper.php';
 

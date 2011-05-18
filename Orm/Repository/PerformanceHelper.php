@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\Environment;
 
 class PerformanceHelper extends Object
 {

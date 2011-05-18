@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\InvalidStateException;
+use Exception;
 
 require_once dirname(__FILE__) . '/MetaDataProperty.php';
 
@@ -46,6 +49,7 @@ class MetaData extends Object
 		{
 			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
 			$r = new ClassReflection($entityClass);
+			$r = new ReflectionClass($entityClass);
 			$entityClass = $r->getName();
 			if (!$r->implementsInterface('IEntity')) throw new InvalidStateException("'$entityClass' isn`t instance of IEntity");
 		}

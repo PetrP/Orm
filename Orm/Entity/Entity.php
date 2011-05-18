@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use Nette\InvalidStateException;
+use Exception;
 
 require_once dirname(__FILE__) . '/IEntity.php';
 

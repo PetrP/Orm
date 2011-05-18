@@ -2,6 +2,12 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\InvalidStateException;
+use InvalidArgumentException;
+use Nette\Callback;
+use Exception;
+use Closure;
 
 require_once dirname(__FILE__) . '/../../Relationships/RelationshipLoader.php';
 

@@ -2,7 +2,6 @@
 
 namespace Orm;
 
-
 /** Rozdily nazvu klicu v entite a v ulozisti. */
 interface IConventional
 {

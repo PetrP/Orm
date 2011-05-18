@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use UnexpectedValueException;
+use Exception;
 
 require_once dirname(__FILE__) . '/IRelationship.php';
 

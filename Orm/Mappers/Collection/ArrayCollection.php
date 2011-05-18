@@ -2,6 +2,13 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\NotImplementedException;
+use Dibi;
+use InvalidArgumentException;
+use DateTime;
+use ArrayIterator;
+use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 

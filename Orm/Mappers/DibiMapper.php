@@ -2,6 +2,17 @@
 
 namespace Orm;
 
+use Nette\NotImplementedException;
+use Nette\NotSupportedException;
+use Nette\InvalidStateException;
+use Nette\Object;
+use Dibi;
+use DibiConnection;
+use DibiTranslator;
+use DibiException;
+use ArrayObject;
+use DateTime;
+use stdClass;
 
 require_once dirname(__FILE__) . '/Mapper.php';
 

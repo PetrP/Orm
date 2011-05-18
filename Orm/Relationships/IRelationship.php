@@ -2,6 +2,8 @@
 
 namespace Orm;
 
+use IteratorAggregate;
+use Countable;
 
 require_once dirname(__FILE__) . '/../Entity/Injection/IEntityInjection.php';
 

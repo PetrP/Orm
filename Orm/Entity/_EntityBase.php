@@ -2,6 +2,9 @@
 
 namespace Orm;
 
+use ArrayIterator;
+use Nette\NotSupportedException;
+use Nette\DeprecatedException;
 
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),

@@ -2,6 +2,11 @@
 
 namespace Orm;
 
+use DibiDataSourceX;
+use DibiRow;
+use DateTime;
+use Nette\DeprecatedException;
+use DibiConnection;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 

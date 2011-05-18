@@ -2,6 +2,7 @@
 
 namespace Orm;
 
+use Nette\Object;
 
 class GenerateEntityComment extends Object
 {

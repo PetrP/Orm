@@ -2,6 +2,11 @@
 
 namespace Orm;
 
+use Nette\Object;
+use Nette\Reflection\AnnotationsParser;
+use Nette\InvalidStateException;
+use Nette\DeprecatedException;
+use Exception;
 
 require_once dirname(__FILE__) . '/MetaData.php';
 
