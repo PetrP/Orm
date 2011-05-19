@@ -57,8 +57,11 @@ class RepositoryContainer extends Object
 	/** @var RepositoryContainer @deprecated @todo di @see self::get() */
 	static private $instance;
 
-	/** @var array repositoryName => IRepository */
+	/** @var array repositoryClass => IRepository */
 	private $repositories = array();
+
+	/** @var array repositoryAlias => repositoryClass */
+	private $aliases = array();
 
 	public function __construct()
 	{
@@ -90,13 +93,38 @@ class RepositoryContainer extends Object
 	public function getRepository($name)
 	{
 		$name = strtolower($name);
-		if (!isset($this->repositories[$name]))
+		if (isset($this->aliases[$name]))
 		{
-			$class = $this->getRepositoryClass($name);
-			$this->checkRepositoryClass($class, $name);
-			$this->repositories[$name] = new $class($this);
+			$class = $this->aliases[$name];
 		}
-		return $this->repositories[$name];
+		else
+		{
+			$this->checkRepositoryClass($this->getRepositoryClass($name), $name, true, $originalClass);
+			$class = $this->aliases[$name] = $originalClass;
+		}
+		if (!isset($this->repositories[$class]))
+		{
+			$this->repositories[$class] = new $class($this);
+		}
+		return $this->repositories[$class];
+	}
+
+	/**
+	 * Registruje repository pod jednodusim nazvem
+	 * @param string
+	 * @param string
+	 * @return RepositoryContainer
+	 */
+	public function register($alias, $repositoryClass)
+	{
+		$this->checkRepositoryClass($repositoryClass, $repositoryClass, true, $originClass);
+		$alias = strtolower($alias);
+		if ($this->isRepository($alias))
+		{
+			throw new InvalidStateException("Repository alias '{$alias}' is already registered");
+		}
+		$this->aliases[$alias] = $originClass;
+		return $this;
 	}
 
 	/**
@@ -107,7 +135,7 @@ class RepositoryContainer extends Object
 	final public function isRepository($name)
 	{
 		$name = strtolower($name);
-		if (isset($this->repositories[$name])) return true;
+		if (isset($this->aliases[$name])) return true;
 		return $this->checkRepositoryClass($this->getRepositoryClass($name), $name, false);
 	}
 
@@ -115,10 +143,12 @@ class RepositoryContainer extends Object
 	 * Je tato trida repository?
 	 * @param string repositoryClass
 	 * @param string repositoryName
+	 * @param bool
+	 * @param string origin class name
 	 * @return true or throw exception
 	 * @throws InvalidStateException
 	 */
-	final private function checkRepositoryClass($class, $name, $throw = true)
+	final private function checkRepositoryClass($class, $name, $throw = true, & $originClass = NULL)
 	{
 		if (!class_exists($class))
 		{
@@ -127,6 +157,7 @@ class RepositoryContainer extends Object
 		}
 
 		$reflection = new ReflectionClass($class);
+		$originClass = $reflection->getName();
 
 		if (!$reflection->implementsInterface('Orm\IRepository'))
 		{
