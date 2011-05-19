@@ -30,4 +30,11 @@ class Repository_getEntityClassName_Test extends TestCase
 		$this->assertSame('repository_getentityclassname', $this->r->getEntityClassName(array()));
 	}
 
+	public function testNamespace()
+	{
+		$r = new Repository_createMapper\Repository_createMapperRepository(new RepositoryContainer);
+		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName());
+		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName(array()));
+	}
+
 }

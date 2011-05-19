@@ -28,4 +28,10 @@ class Repository_createMapper_Test extends TestCase
 		$this->assertInstanceOf('Orm\DibiMapper', $r->getMapper());
 	}
 
+	public function testNamespace()
+	{
+		$r = new Repository_createMapper\Repository_createMapperRepository($this->m);
+		$this->assertInstanceOf('Repository_createMapper\Repository_createMapperMapper', $r->getMapper());
+	}
+
 }

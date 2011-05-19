@@ -17,4 +17,10 @@ class Repository_getRepositoryName_Test extends TestCase
 		$this->assertSame('tests', $r->getRepositoryName());
 	}
 
+	public function testNamespace()
+	{
+		$r = new Repository_createMapper\Repository_createMapperRepository(new RepositoryContainer);
+		$this->assertSame('repository_createmapper\repository_createmapper', $r->getRepositoryName());
+	}
+
 }
