@@ -136,7 +136,12 @@ class RepositoryContainer extends Object
 	{
 		$name = strtolower($name);
 		if (isset($this->aliases[$name])) return true;
-		return $this->checkRepositoryClass($this->getRepositoryClass($name), $name, false);
+		if ($this->checkRepositoryClass($this->getRepositoryClass($name), $name, false, $originClass))
+		{
+			$this->aliases[$name] = $originClass;
+			return true;
+		}
+		return false;
 	}
 
 	/**
