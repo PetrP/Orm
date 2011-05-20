@@ -244,7 +244,7 @@ class DibiMapper extends Mapper
 	 */
 	protected function getTableName()
 	{
-		return $this->getRepository()->getRepositoryName();
+		return str_replace('\\', '_', $this->getRepository()->getRepositoryName());
 	}
 
 	/**
