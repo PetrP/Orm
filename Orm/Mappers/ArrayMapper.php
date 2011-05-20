@@ -28,7 +28,7 @@ abstract class ArrayMapper extends Mapper
 	public function findAll()
 	{
 		$class = $this->getCollectionClass();
-		return new $class(array_values($this->getData()));
+		return new $class($this->getData());
 	}
 
 	/**
