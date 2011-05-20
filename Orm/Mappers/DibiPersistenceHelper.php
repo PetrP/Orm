@@ -8,17 +8,34 @@ use DateTime;
 use Nette\InvalidStateException;
 use DibiException;
 
-// todo refactor
+// todo refactor constructor
 class DibiPersistenceHelper extends Object
 {
+
+	/** @var string */
 	public $table;
+
+	/** @var DibiConnection */
 	public $connection;
+
+	/** @var IConventional */
 	public $conventional;
+
+	/** @var DibiMapper */
 	public $mapper;
 
+	/** @var array|NULL */
 	public $witchParams = NULL;
+
+	/** @var array|NULL */
 	public $witchParamsNot = NULL;
 
+	/**
+	 * @param IEntity
+	 * @param scalar|NULL id
+	 * @return scalar id
+	 * @todo refactor
+	 */
 	public function persist(IEntity $entity, $id = NULL)
 	{
 		$values = $entity->toArray();
