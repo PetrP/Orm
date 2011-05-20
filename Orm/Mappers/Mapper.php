@@ -29,7 +29,7 @@ abstract class Mapper extends Object implements IMapper
 		$this->repository = $repository;
 	}
 
-	public function getRepository()
+	final public function getRepository()
 	{
 		return $this->repository;
 	}
@@ -40,7 +40,7 @@ abstract class Mapper extends Object implements IMapper
 	}
 
 	/** @return IConventional */
-	public function getConventional()
+	final public function getConventional()
 	{
 		if (!isset($this->conventional))
 		{
