@@ -6,6 +6,7 @@ use Nette\Object;
 use Dibi;
 use DibiConnection;
 use Nette\NotImplementedException;
+use Nette\InvalidArgumentException;
 use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
@@ -84,9 +85,8 @@ class DibiCollection extends Object implements IEntityCollection
 			$direction = strtoupper($direction);
 			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
 			{
-				if ($direction === false OR $direction === NULL) $direction = Dibi::ASC;
-				else if ($direction === true) $direction = Dibi::DESC;
-				else $direction = Dibi::ASC;
+				$direction = func_get_arg(1);
+				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, '$direction' given");
 			}
 
 			if ($join = $this->repository->getMapper()->getJoinInfo($key))
