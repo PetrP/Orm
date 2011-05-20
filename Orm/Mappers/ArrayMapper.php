@@ -6,6 +6,7 @@ use Nette\NotImplementedException;
 use Nette\InvalidStateException;
 use DateTime;
 use ArrayObject;
+use Exception;
 
 require_once dirname(__FILE__) . '/Mapper.php';
 require_once dirname(__FILE__) . '/Collection/ArrayCollection.php';
@@ -59,11 +60,15 @@ abstract class ArrayMapper extends Mapper
 		else
 		{
 			$this->lock();
-			$originData = $this->loadData();
-			$id = $originData ? max(array_keys($originData)) + 1 : 1;
-			$originData[$id] = NULL;
-			$this->saveData($originData);
+			$e = NULL;
+			try {
+				$originData = $this->loadData();
+				$id = $originData ? max(array_keys($originData)) + 1 : 1;
+				$originData[$id] = NULL;
+				$this->saveData($originData);
+			} catch (Exception $e) {}
 			$this->unlock();
+			if ($e) throw $e;
 		}
 		$this->data[$id] = $entity;
 
@@ -92,52 +97,57 @@ abstract class ArrayMapper extends Mapper
 		if (!$this->data) return;
 
 		$this->lock();
-		$originData = $this->loadData();
+		$e = NULL;
+		try {
+			$originData = $this->loadData();
 
-		foreach ($this->data as $id => $entity)
-		{
-			if ($entity)
+			foreach ($this->data as $id => $entity)
 			{
-				$values = $entity->toArray();
-				foreach ($values as $key => $value)
+				if ($entity)
 				{
-					if ($value instanceof IEntityInjection)
+					$values = $entity->toArray();
+					foreach ($values as $key => $value)
 					{
-						$values[$key] = $value = $value->getInjectedValue();
+						if ($value instanceof IEntityInjection)
+						{
+							$values[$key] = $value = $value->getInjectedValue();
+						}
+
+						if ($value instanceof IEntity)
+						{
+							$values[$key] = $value->id;
+						}
+						else if ($value instanceof IRelationship)
+						{
+							unset($values[$key]);
+						}
+						else if ($value instanceof DateTime)
+						{
+							$values[$key] = $value->format('c');
+						}
+						else if (is_object($value) AND method_exists($value, '__toString'))
+						{
+							$values[$key] = $value->__toString();
+						}
+						else if ($value !== NULL AND !is_scalar($value) AND !is_array($value) AND !($value instanceof ArrayObject AND get_class($value) == 'ArrayObject'))
+						{
+							throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
+						}
 					}
 
-					if ($value instanceof IEntity)
-					{
-						$values[$key] = $value->id;
-					}
-					else if ($value instanceof IRelationship)
-					{
-						unset($values[$key]);
-					}
-					else if ($value instanceof DateTime)
-					{
-						$values[$key] = $value->format('c');
-					}
-					else if (is_object($value) AND method_exists($value, '__toString'))
-					{
-						$values[$key] = $value->__toString();
-					}
-					else if ($value !== NULL AND !is_scalar($value) AND !is_array($value) AND !($value instanceof ArrayObject AND get_class($value) == 'ArrayObject'))
-					{
-						throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
-					}
+					$originData[$id] = $values;
 				}
-
-				$originData[$id] = $values;
+				else
+				{
+					$originData[$id] = NULL;
+				}
 			}
-			else
-			{
-				$originData[$id] = NULL;
-			}
-		}
 
-		$this->saveData($originData);
+			$this->saveData($originData);
+
+		} catch (Exception $e) {}
 		$this->unlock();
+		if ($e) throw $e;
 	}
 
 	/**
