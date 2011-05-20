@@ -91,7 +91,7 @@ abstract class ArrayMapper extends Mapper
 		return true;
 	}
 
-	public function begin()
+	protected function begin()
 	{
 		$this->getData();
 	}

@@ -15,7 +15,6 @@ abstract class Mapper extends Object implements IMapper
 	abstract public function findAll();
 	abstract public function persist(IEntity $entity);
 	abstract public function remove(IEntity $entity);
-	abstract public function begin(); // todo rename?
 	abstract public function flush();
 	abstract public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam);
 
@@ -102,6 +101,7 @@ abstract class Mapper extends Object implements IMapper
 
 	abstract protected function createCollectionClass();
 
+	abstract protected function begin(); // todo rename
 	public function __call($name, $args)
 	{
 		if (!method_exists($this, $name))

@@ -78,7 +78,7 @@ class DibiMapper extends Mapper
 
 	private static $transactions = array();
 
-	final public function begin()
+	final protected function begin()
 	{
 		$connection = $this->getConnection();
 		$hash = spl_object_hash($connection);
