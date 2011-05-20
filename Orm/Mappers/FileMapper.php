@@ -8,8 +8,11 @@ require_once dirname(__FILE__) . '/ArrayMapper.php';
 
 abstract class FileMapper extends ArrayMapper
 {
+
+	/** @var bool */
 	private static $isStreamRegistered = false;
 
+	/** @param IRepository */
 	public function __construct(IRepository $repository)
 	{
 		parent::__construct($repository);
@@ -20,9 +23,10 @@ abstract class FileMapper extends ArrayMapper
 		}
 	}
 
-
-	abstract protected function getFilePath();
-
+	/**
+	 * Load data from storage
+	 * @return array id => array
+	 */
 	final protected function loadData()
 	{
 		$path = $this->getFilePath();
@@ -32,9 +36,21 @@ abstract class FileMapper extends ArrayMapper
 		}
 		return unserialize(file_get_contents('safe://' . $path));
 	}
+
+	/**
+	 * Save data to storage
+	 * @return array id => array
+	 * @return void
+	 */
 	final protected function saveData(array $data)
 	{
 		file_put_contents('safe://' . $this->getFilePath(), serialize($data));
 	}
+
+	/**
+	 * Cesta k souboru do ktereho se budou data serializovat
+	 * @return string
+	 */
+	abstract protected function getFilePath();
 
 }
