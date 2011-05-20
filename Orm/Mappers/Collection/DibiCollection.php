@@ -185,11 +185,15 @@ class DibiCollection extends Object implements IEntityCollection
 	/**
 	 * Use DibiConnection::translate() or DibiConnection::sql()
 	 */
-	protected function connectionTranslate( $args)
+	protected function connectionTranslate($args)
 	{
+		static $translate;
+		if ($translate === NULL)
+		{
+			$translate = method_exists($this->connection, 'translate') ? 'translate' : 'sql';
+		}
 		$args = func_get_args();
-		$connection = $this->connection;
-		return call_user_func_array(array($connection, method_exists($connection, 'translate') ? 'translate' : 'sql'), $args);
+		return $this->connection->$translate($args);
 	}
 
 	/**
