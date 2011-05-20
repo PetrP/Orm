@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
  * @covers Orm\SqlConventional::formatStorageToEntity
+ * @covers Orm\SqlConventional::entityFormat
  */
 class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatEntityToStorage_Test
 {
@@ -87,6 +88,11 @@ class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatE
 		));
 	}
 
+	/**
+	 * @covers Orm\SqlConventional::foreignKeyFormat
+	 * @covers Orm\SqlConventional::loadFk
+	 * @covers Orm\SqlConventional::__construct
+	 */
 	public function testFk()
 	{
 		$this->t('aaa_id', 'aaa');
