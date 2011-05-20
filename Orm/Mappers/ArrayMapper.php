@@ -194,7 +194,7 @@ abstract class ArrayMapper extends Mapper
 	 * @return array id => IEntity
 	 * @todo $id brat az z vytvorene entity?
 	 */
-	protected function getData()
+	final protected function getData()
 	{
 		if (!isset($this->data))
 		{
