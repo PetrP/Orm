@@ -21,31 +21,22 @@ require_once dirname(__FILE__) . '/Collection/DibiCollection.php';
  */
 class DibiMapper extends Mapper
 {
+
+	/** @var DibiConnection @see self::getConnection() */
 	private $connection;
 
 	/** @var array @see self::getJoinInfo() */
 	private $joinInfoCache = array('cache' => array(), 'fk' => NULL);
 
-	final public function getConnection()
-	{
-		if (!($this->connection instanceof DibiConnection))
-		{
-			$this->connection = $this->createConnection();
-		}
-		return $this->connection;
-	}
+	/** @var array @see self::begin() */
+	private static $transactions = array();
 
-	protected function createConnection()
-	{
-		return dibi::getConnection();
-	}
-
-	protected function createConventional()
-	{
-		return new SqlConventional($this);
-	}
-
-
+	/**
+	 * Vsechny entity.
+	 * Musi vratit skutecne vsechny entity.
+	 * Zadna jina metoda nesmi vratit nejakou entitu kterou by nevratila tato.
+	 * @return IEntityCollection
+	 */
 	public function findAll()
 	{
 		list($class, $classInfo) = $this->getCollectionClass(true);
@@ -63,29 +54,52 @@ class DibiMapper extends Mapper
 		}
 	}
 
-	protected function getPersistenceHelper()
+	/**
+	 * @param scalar
+	 * @return IEntity|NULL
+	 * @todo vynocovat na IMapper?
+	 */
+	public function getById($id)
 	{
-		$h = new DibiPersistenceHelper;
-		$h->connection = $this->getConnection();
-		$h->conventional = $this->getConventional();
-		$h->table = $this->getTableName();
-		$h->mapper = $this;
-		return $h;
+		if (!$id) return NULL;
+		return $this->findAll()->where('[id] = %s', $id)->applyLimit(1)->fetch();
 	}
 
-	private static $transactions = array();
-
-	final protected function begin()
+	/**
+	 * @see IRepository::persist()
+	 * @param IEntity
+	 * @return scalar id
+	 */
+	public function persist(IEntity $entity)
 	{
-		$connection = $this->getConnection();
-		$hash = spl_object_hash($connection);
-		if (!isset(self::$transactions[$hash]))
-		{
-			$connection->begin();
-			self::$transactions[$hash] = true;
-		}
+		$this->begin();
+		return $this->getPersistenceHelper()->persist($entity);
 	}
 
+	/**
+	 * @see IRepository::remove()
+	 * @param IEntity
+	 * @return bool
+	 */
+	public function remove(IEntity $entity)
+	{
+		$this->begin();
+		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %s', $entity->id)->execute();
+	}
+
+	/**
+	 * @see IRepository::flush()
+	 * @return void
+	 */
+	public function flush()
+	{
+		$this->getConnection()->commit();
+	}
+
+	/**
+	 * @see IRepository::clean()
+	 * @return void
+	 */
 	final public function rollback()
 	{
 		$connection = $this->getConnection();
@@ -98,24 +112,90 @@ class DibiMapper extends Mapper
 		}
 	}
 
-	public function persist(IEntity $entity)
+	/**
+	 * @see ManyToMany::getMapper()
+	 * @param string
+	 * @param IRepository
+	 * @param string
+	 * @return IManyToManyMapper
+	 */
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
 	{
-		$this->begin();
-		return $this->getPersistenceHelper()->persist($entity);
+		$mapper = new DibiManyToManyMapper($this->getConnection());
+		$c = $this->getConventional();
+		$mapper->table = $c->getManyToManyTable($this->getRepository(), $repository);
+		$mapper->firstParam = $c->getManyToManyParam($firstParam);
+		$mapper->secondParam = $c->getManyToManyParam($secondParam);;
+		return $mapper;
 	}
 
-
-	public function remove(IEntity $entity)
+	/**
+	 * @see self::createConnection()
+	 * @return DibiConnection
+	 * @todo vyhazovat chybu
+	 */
+	final public function getConnection()
 	{
-		$this->begin();
-		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %s', $entity->id)->execute();
+		if (!($this->connection instanceof DibiConnection))
+		{
+			$this->connection = $this->createConnection();
+		}
+		return $this->connection;
 	}
 
-	public function flush()
+	/**
+	 * @see self::getConnection()
+	 * @return DibiConnection
+	 */
+	protected function createConnection()
 	{
-		$this->getConnection()->commit();
+		return dibi::getConnection();
 	}
 
+	/**
+	 * @see self::getConventional()
+	 * @return IConventional
+	 */
+	protected function createConventional()
+	{
+		return new SqlConventional($this);
+	}
+
+	/**
+	 * @see self::persist()
+	 * @return DibiPersistenceHelper
+	 */
+	protected function getPersistenceHelper()
+	{
+		$h = new DibiPersistenceHelper;
+		$h->connection = $this->getConnection();
+		$h->conventional = $this->getConventional();
+		$h->table = $this->getTableName();
+		$h->mapper = $this;
+		return $h;
+	}
+
+	/**
+	 * Zahaji transakci.
+	 * Vola se pri kazde operaci. Jen pri prvnim zavolani se transakce otevira.
+	 * @see self::persist()
+	 * @see self::remove()
+	 */
+	final protected function begin()
+	{
+		$connection = $this->getConnection();
+		$hash = spl_object_hash($connection);
+		if (!isset(self::$transactions[$hash]))
+		{
+			$connection->begin();
+			self::$transactions[$hash] = true;
+		}
+	}
+
+	/**
+	 * @param string
+	 * @return DataSourceCollection
+	 */
 	protected function dataSource()
 	{
 		list($class, $classInfo) = $this->getCollectionClass(true);
@@ -148,30 +228,23 @@ class DibiMapper extends Mapper
 		return new $class($translator->translate($args), $connection, $this->getRepository());
 	}
 
+	/**
+	 * Vraci nazev tridy kterou tento mapper pouziva jako IEntityCollection
+	 * @see self::getCollectionClass()
+	 * @return string
+	 */
 	protected function createCollectionClass()
 	{
 		return 'Orm\DibiCollection';
 	}
 
-	public function getById($id)
-	{
-		if (!$id) return NULL;
-		return $this->findAll()->where('[id] = %s', $id)->applyLimit(1)->fetch();
-	}
-
+	/**
+	 * Nazev tabulky
+	 * @return string
+	 */
 	protected function getTableName()
 	{
 		return $this->getRepository()->getRepositoryName();
-	}
-
-	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
-	{
-		$mapper = new DibiManyToManyMapper($this->getConnection());
-		$c = $this->getConventional();
-		$mapper->table = $c->getManyToManyTable($this->getRepository(), $repository);
-		$mapper->firstParam = $c->getManyToManyParam($firstParam);
-		$mapper->secondParam = $c->getManyToManyParam($secondParam);;
-		return $mapper;
 	}
 
 	/**
@@ -190,6 +263,7 @@ class DibiMapper extends Mapper
 	 * 	?	conventional => IConventional
 	 * )
 	 * Work with all propel defined association.
+	 * @todo refactor
 	 */
 	public function getJoinInfo($key, stdClass $result = NULL)
 	{
