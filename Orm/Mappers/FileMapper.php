@@ -23,7 +23,7 @@ abstract class FileMapper extends ArrayMapper
 
 	abstract protected function getFilePath();
 
-	protected function loadData()
+	final protected function loadData()
 	{
 		$path = $this->getFilePath();
 		if (!file_exists($path))
@@ -32,7 +32,7 @@ abstract class FileMapper extends ArrayMapper
 		}
 		return unserialize(file_get_contents('safe://' . $path));
 	}
-	protected function saveData(array $data)
+	final protected function saveData(array $data)
 	{
 		file_put_contents('safe://' . $this->getFilePath(), serialize($data));
 	}
