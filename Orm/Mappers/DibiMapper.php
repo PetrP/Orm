@@ -193,6 +193,9 @@ class DibiMapper extends Mapper
 	}
 
 	/**
+	 * <pre>
+	 * 	$mapper->dataSource('SELECT foo, bar FROM table WHERE [bar] = %i', 3);
+	 * </pre>
 	 * @param string
 	 * @return DataSourceCollection
 	 */
@@ -209,12 +212,7 @@ class DibiMapper extends Mapper
 			throw new NotSupportedException();
 		}
 
-		$connection = $this->getConnection();
-		$args = func_get_args();
-		$connection->driver;
-		if (!$connection->isConnected())
-			$connection->sql(''); // protoze nema public metodu DibiConnection::connect()
-		static $dibiTranslatorVersion;
+		static $dibiTranslatorVersion; // pro bc se starsi dibi
 		if ($dibiTranslatorVersion === NULL)
 		{
 			$dibiTranslatorVersion = 'driver';
@@ -224,7 +222,15 @@ class DibiMapper extends Mapper
 				$dibiTranslatorVersion = 'connection';
 			}
 		}
+
+		$connection = $this->getConnection();
+		$connection->getDriver(); // v novem dibi se tady connectne
+		if (!$connection->isConnected())
+		{
+			$connection->sql(''); // protoze nema public metodu DibiConnection::connect()
+		}
 		$translator = new DibiTranslator($dibiTranslatorVersion === 'connection' ? $connection : $connection->getDriver());
+		$args = func_get_args();
 		return new $class($translator->translate($args), $connection, $this->getRepository());
 	}
 
