@@ -138,32 +138,16 @@ class DibiCollection extends Object implements IEntityCollection
 
 	final protected function process()
 	{
-		$limit = $offset = NULL;
-
-		if ($this->_offset !== NULL AND $this->offset !== NULL)
+		$limit = $this->limit;
+		$offset = $this->_offset + $this->offset;
+		if ($this->_limit !== NULL)
 		{
-			$offset = $this->offset+$this->_offset;
-		}
-		else if ($this->offset !== NULL)
-		{
-			$offset = $this->offset;
-		}
-		else if ($this->_offset !== NULL)
-		{
-			$offset = $this->_offset;
-		}
-
-		if ($this->_limit !== NULL AND $this->limit !== NULL)
-		{
-			$limit = min($this->limit, $this->_limit-$this->offset);
-		}
-		else if ($this->limit !== NULL)
-		{
-			$limit = $this->limit;
-		}
-		else if ($this->_limit !== NULL)
-		{
-			$limit = $this->_limit;
+			$limit = max(0, $this->_limit - $this->offset);
+			if ($this->limit !== NULL)
+			{
+				$limit = min($this->limit, $limit);
+			}
+			$offset = min($offset, $this->_offset + $this->_limit);
 		}
 
 		$sorting = array_merge($this->sorting, $this->_sorting);
