@@ -12,48 +12,30 @@ require_once dirname(__FILE__) . '/Collection/ArrayCollection.php';
 
 abstract class ArrayMapper extends Mapper
 {
+
+	/** @var array id => IEntity @see self::getData() */
 	private $data;
 
+	/** @var bool @see self::lock() @see self::unlock() */
 	private static $lock;
 
+	/**
+	 * Vsechny entity.
+	 * Musi vratit skutecne vsechny entity.
+	 * Zadna jina metoda nesmi vratit nejakou entitu kterou by nevratila tato.
+	 * @return IEntityCollection
+	 */
 	public function findAll()
 	{
 		$class = $this->getCollectionClass();
 		return new $class(array_values($this->getData()));
 	}
 
-	protected function createCollectionClass()
-	{
-		return 'Orm\ArrayCollection';
-	}
-
-	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
-	{
-		return new ArrayManyToManyMapper;
-	}
-
-	protected function getData()
-	{
-		if (!isset($this->data))
-		{
-			$this->data = array();
-			$repository = $this->getRepository();
-			foreach ($this->loadData() as $id => $row)
-			{
-				$this->data[$id] = $row ? $repository->createEntity($row) : NULL;
-			}
-		}
-		return array_filter($this->data);
-	}
-	protected function loadData()
-	{
-		throw new NotImplementedException();
-	}
-	protected function saveData(array $data)
-	{
-		throw new NotImplementedException();
-	}
-
+	/**
+	 * @param scalar
+	 * @return IEntity|NULL
+	 * @todo vynocovat na IMapper?
+	 */
 	public function getById($id)
 	{
 		if (!$id) return NULL;
@@ -61,6 +43,11 @@ abstract class ArrayMapper extends Mapper
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}
 
+	/**
+	 * @see IRepository::persist()
+	 * @param IEntity
+	 * @return scalar id
+	 */
 	public function persist(IEntity $entity)
 	{
 		$this->begin();
@@ -83,6 +70,11 @@ abstract class ArrayMapper extends Mapper
 		return $id;
 	}
 
+	/**
+	 * @see IRepository::remove()
+	 * @param IEntity
+	 * @return bool
+	 */
 	public function remove(IEntity $entity)
 	{
 		// todo pri vymazavani odstanit i vazby v IRelationship
@@ -91,17 +83,10 @@ abstract class ArrayMapper extends Mapper
 		return true;
 	}
 
-	protected function begin()
-	{
-		$this->getData();
-	}
-
-	public function rollback()
-	{
-		$this->data = NULL;
-		// todo zmeny zustanou v Repository::$entities
-	}
-
+	/**
+	 * @see IRepository::flush()
+	 * @return void
+	 */
 	public function flush()
 	{
 		if (!$this->data) return;
@@ -153,6 +138,95 @@ abstract class ArrayMapper extends Mapper
 
 		$this->saveData($originData);
 		$this->unlock();
+	}
+
+	/**
+	 * @see IRepository::clean()
+	 * @return void
+	 */
+	public function rollback()
+	{
+		$this->data = NULL;
+		// todo zmeny zustanou v Repository::$entities
+	}
+
+	/**
+	 * @see ManyToMany::getMapper()
+	 * @param string
+	 * @param IRepository
+	 * @param string
+	 * @return IManyToManyMapper
+	 */
+	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	{
+		return new ArrayManyToManyMapper;
+	}
+
+	/**
+	 * Load data from storage
+	 * <pre>
+	 * 	return array(
+	 * 		1 => array('id' => 1),
+	 * 		2 => array('id' => 2),
+	 * 	);
+	 * </pre>
+	 * @return array id => array
+	 * @todo exception text
+	 */
+	protected function loadData()
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Save data to storage
+	 * @return array id => array
+	 * @return void
+	 * @todo exception text
+	 */
+	protected function saveData(array $data)
+	{
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * Vrati / nacte vsechny entity
+	 * @return array id => IEntity
+	 * @todo $id brat az z vytvorene entity?
+	 */
+	protected function getData()
+	{
+		if (!isset($this->data))
+		{
+			$this->data = array();
+			$repository = $this->getRepository();
+			foreach ($this->loadData() as $id => $row)
+			{
+				$this->data[$id] = $row ? $repository->createEntity($row) : NULL;
+			}
+		}
+		return array_filter($this->data);
+	}
+
+	/**
+	 * Zahaji transakci.
+	 * Vola se pri kazde operaci. Jen pri prvnim zavolani se transakce otevira.
+	 * @see self::persist()
+	 * @see self::remove()
+	 */
+	protected function begin()
+	{
+		$this->getData();
+	}
+
+	/**
+	 * Vraci nazev tridy kterou tento mapper pouziva jako IEntityCollection
+	 * @see self::getCollectionClass()
+	 * @return string
+	 */
+	protected function createCollectionClass()
+	{
+		return 'Orm\ArrayCollection';
 	}
 
 	/**
