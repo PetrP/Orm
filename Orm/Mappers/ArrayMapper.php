@@ -171,22 +171,20 @@ abstract class ArrayMapper extends Mapper
 	 * 	);
 	 * </pre>
 	 * @return array id => array
-	 * @todo exception text
 	 */
 	protected function loadData()
 	{
-		throw new NotImplementedException();
+		throw new NotImplementedException(get_class($this) . '::loadData() is not implement, you must override and implement that method');
 	}
 
 	/**
 	 * Save data to storage
 	 * @return array id => array
 	 * @return void
-	 * @todo exception text
 	 */
 	protected function saveData(array $data)
 	{
-		throw new NotImplementedException();
+		throw new NotImplementedException(get_class($this) . '::saveData() is not implement, you must override and implement that method');
 	}
 
 	/**
