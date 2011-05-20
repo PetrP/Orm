@@ -37,7 +37,7 @@ abstract class ArrayMapper extends Mapper
 		if (!isset($this->data))
 		{
 			$this->data = array();
-			$repository = $this->repository;
+			$repository = $this->getRepository();
 			foreach ($this->loadData() as $id => $row)
 			{
 				$this->data[$id] = $row ? $repository->createEntity($row) : NULL;

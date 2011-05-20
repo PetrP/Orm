@@ -54,7 +54,7 @@ class DibiMapper extends Mapper
 		list($class, $classInfo) = $this->getCollectionClass(true);
 		if ($classInfo === 'dibi')
 		{
-			return new $class($this->getTableName(), $this->getConnection(), $this->repository);
+			return new $class($this->getTableName(), $this->getConnection(), $this->getRepository());
 		}
 		else if ($classInfo === 'datasource')
 		{
@@ -148,7 +148,7 @@ class DibiMapper extends Mapper
 			}
 		}
 		$translator = new DibiTranslator($dibiTranslatorVersion === 'connection' ? $connection : $connection->getDriver());
-		return new $class($translator->translate($args), $connection, $this->repository);
+		return new $class($translator->translate($args), $connection, $this->getRepository());
 	}
 
 	protected function createCollectionClass()
@@ -164,7 +164,7 @@ class DibiMapper extends Mapper
 
 	protected function getTableName()
 	{
-		return $this->repository->getRepositoryName();
+		return $this->getRepository()->getRepositoryName();
 	}
 
 	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
@@ -218,7 +218,7 @@ class DibiMapper extends Mapper
 			$model = $this->getModel();
 			if ($this->joinInfoCache['fk'] === NULL)
 			{
-				foreach ((array) $this->repository->getEntityClassName() as $entityName)
+				foreach ((array) $this->getRepository()->getEntityClassName() as $entityName)
 				{
 					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
 					{
@@ -267,7 +267,7 @@ class DibiMapper extends Mapper
 			}
 			if (!isset($this->joinInfoCache['fk'][$sourceKey]))
 			{
-				throw new InvalidStateException(get_class($this->repository) . ": neni zadna vazba na `$sourceKey`");
+				throw new InvalidStateException(get_class($this->getRepository()) . ": neni zadna vazba na `$sourceKey`");
 			}
 			$manyToManyJoin = NULL;
 			if (isset($this->joinInfoCache['fk'][$sourceKey][3]))
@@ -293,7 +293,7 @@ class DibiMapper extends Mapper
 			if ($tmp['mapper']->getConnection() !== $this->connection)
 			{
 				// todo porovnavat connection na collection?
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->repository) . ", data nelze propojit.");
+				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
 			$tmp['xConventionalKey'] = key($conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL)));

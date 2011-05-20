@@ -19,7 +19,7 @@ abstract class Mapper extends Object implements IMapper
 	abstract public function flush();
 	abstract public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam);
 
-	protected $repository;
+	private $repository;
 
 	private $conventional;
 
