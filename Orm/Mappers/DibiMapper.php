@@ -132,13 +132,17 @@ class DibiMapper extends Mapper
 	/**
 	 * @see self::createConnection()
 	 * @return DibiConnection
-	 * @todo vyhazovat chybu
 	 */
 	final public function getConnection()
 	{
-		if (!($this->connection instanceof DibiConnection))
+		if (!isset($this->connection))
 		{
-			$this->connection = $this->createConnection();
+			$connection = $this->createConnection();
+			if (!($connection instanceof DibiConnection))
+			{
+				throw new InvalidStateException(get_class($this) . "::createConnection() must return DibiConnection, '" . (is_object($connection) ? get_class($connection) : gettype($connection)) . "' given");
+			}
+			$this->connection = $connection;
 		}
 		return $this->connection;
 	}
