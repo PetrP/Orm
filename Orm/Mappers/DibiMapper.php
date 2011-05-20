@@ -26,7 +26,7 @@ class DibiMapper extends Mapper
 	/** @var array @see self::getJoinInfo() */
 	private $joinInfoCache = array('cache' => array(), 'fk' => NULL);
 
-	public function getConnection()
+	final public function getConnection()
 	{
 		if (!($this->connection instanceof DibiConnection))
 		{
