@@ -10,36 +10,63 @@ use ReflectionClass;
 require_once dirname(__FILE__) . '/IMapper.php';
 require_once dirname(__FILE__) . '/Conventional/NoConventional.php';
 
+/**
+ * @property-read IRepository $repository
+ * @property-read IConventional $conventional
+ */
 abstract class Mapper extends Object implements IMapper
 {
-	abstract public function findAll();
-	abstract public function persist(IEntity $entity);
-	abstract public function remove(IEntity $entity);
-	abstract public function flush();
-	abstract public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam);
-
+	/** @var IRepository @see self::getRepository() */
 	private $repository;
 
+	/** @var IConventional @see self::getConventional() */
 	private $conventional;
 
+	/** @var string @see self::getCollectionClass() */
 	private $collectionClass;
 
+	/** @param IRepository */
 	public function __construct(IRepository $repository)
 	{
 		$this->repository = $repository;
 	}
 
+	/**
+	 * Vraci kolekci entit dle kriterii.
+	 * @see IEntityCollection::findBy()
+	 * @return IEntityCollection
+	 */
+	final public function findBy(array $where)
+	{
+		return $this->findAll()->findBy($where);
+	}
+
+	/**
+	 * Vraci jednu entitu dle kriterii.
+	 * @see IEntityCollection::getBy()
+	 * @return IEntity|NULL
+	 */
+	final public function getBy(array $where)
+	{
+		return $this->findAll()->getBy($where);
+	}
+
+	/** @return IRepository */
 	final public function getRepository()
 	{
 		return $this->repository;
 	}
 
+	/** @return RepositoryContainer */
 	final public function getModel()
 	{
 		return $this->repository->getModel();
 	}
 
-	/** @return IConventional */
+	/**
+	 * @see self::createConventional()
+	 * @return IConventional
+	 */
 	final public function getConventional()
 	{
 		if (!isset($this->conventional))
@@ -54,11 +81,62 @@ abstract class Mapper extends Object implements IMapper
 		return $this->conventional;
 	}
 
+	/**
+	 * Vola automaticky findBy* a getBy*
+	 * <pre>
+	 * 	$mapper->findByAuthor(3);
+	 * 	// stejne jako
+	 * 	$mapper->findBy(array('author' => 3));
+	 *
+	 * 	$mapper->findByAuthorAndCategory(3, 'foo');
+	 * 	// stejne jako
+	 * 	$mapper->findBy(array('author' => 3, 'category' => 'foo'));
+	 * </pre>
+	 * @see self::findBy();
+	 * @see self::getBy();
+	 * @param string
+	 * @param array
+	 * @throws MemberAccessException
+	 * @return IEntityCollection|IEntity|NULL
+	 */
+	public function __call($name, $args)
+	{
+		if (!method_exists($this, $name))
+		{
+			if (strncasecmp($name, 'findBy', 6) === 0 OR strncasecmp($name, 'getBy', 5) === 0)
+			{
+				return call_user_func_array(array($this->findAll(), $name), $args);
+			}
+		}
+		return parent::__call($name, $args);
+	}
+
+	/**
+	 * @see self::getConventional()
+	 * @return IConventional
+	 */
 	protected function createConventional()
 	{
 		return new NoConventional($this);
 	}
 
+	/**
+	 * Vraci nazev tridy kterou tento mapper pouziva jako IEntityCollection
+	 * @see self::getCollectionClass()
+	 * @return string
+	 */
+	abstract protected function createCollectionClass();
+
+	/**
+	 * Vraci informace o collection kterou pouziva tento mapper.
+	 * @see self::createCollectionClass()
+	 * @see ArrayMapper::findAll()
+	 * @see DibiMapper::findAll()
+	 * @see DibiMapper::dataSource()
+	 * @param bool true mean more info (array), false mean just classname
+	 * @return array|string array('ClassName', 'dibi|datasource|array') | 'ClassName'
+	 * @throws InvalidStateException
+	 */
 	final protected function getCollectionClass($info = false)
 	{
 		if (!isset($this->collectionClass))
@@ -99,30 +177,15 @@ abstract class Mapper extends Object implements IMapper
 		return $info ? $this->collectionClass : $this->collectionClass[0];
 	}
 
-	abstract protected function createCollectionClass();
-
-	abstract protected function begin(); // todo rename
-	public function __call($name, $args)
-	{
-		if (!method_exists($this, $name))
-		{
-			if (strncasecmp($name, 'findBy', 6) === 0 OR strncasecmp($name, 'getBy', 5) === 0)
-			{
-				return call_user_func_array(array($this->findAll(), $name), $args);
-			}
-		}
-		return parent::__call($name, $args);
-	}
-
-	final public function findBy(array $where)
-	{
-		return $this->findAll()->findBy($where);
-	}
-
-	final public function getBy(array $where)
-	{
-		return $this->findAll()->getBy($where);
-	}
+	/**
+	 * Zahaji transakci.
+	 * Vola se pri kazde operaci. Jen pri prvnim zavolani se transakce otevira.
+	 * @see self::persist()
+	 * @see self::remove()
+	 * @todo rename
+	 * @todo zrusi a nechat na implementaci kazdeho mapperu?
+	 */
+	abstract protected function begin();
 
 	/** @deprecated */
 	final public function delete(IEntity $entity){throw new DeprecatedException('Use Orm\Mapper::remove() instead');}
