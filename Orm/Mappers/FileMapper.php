@@ -18,7 +18,11 @@ abstract class FileMapper extends ArrayMapper
 		parent::__construct($repository);
 		if (!self::$isStreamRegistered)
 		{
-			SafeStream::register();
+			$wrapers = stream_get_wrappers();
+			if (!in_array(SafeStream::PROTOCOL, $wrapers, true))
+			{
+				SafeStream::register();
+			}
 			self::$isStreamRegistered = true;
 		}
 	}
