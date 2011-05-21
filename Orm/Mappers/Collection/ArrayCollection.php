@@ -4,8 +4,8 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\NotImplementedException;
+use Nette\InvalidArgumentException;
 use Dibi;
-use InvalidArgumentException;
 use DateTime;
 use ArrayIterator;
 use Nette\DeprecatedException;
