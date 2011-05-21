@@ -57,6 +57,9 @@ class DibiCollection extends Object implements IEntityCollection
 	/** @var array @see self::join() */
 	private $join = array();
 
+	/** @var IConventional @see self::getConnventionalKey() */
+	private $conventional;
+
 	/**
 	 * @param string
 	 * @param DibiConnection
@@ -67,6 +70,7 @@ class DibiCollection extends Object implements IEntityCollection
 		$this->tableName = $tableName;
 		$this->repository = $repository;
 		$this->connection = $connection;
+		$this->conventional = $repository->getMapper()->getConventional();
 	}
 
 	/**
@@ -101,8 +105,7 @@ class DibiCollection extends Object implements IEntityCollection
 			}
 			else
 			{
-				$conventional = $this->repository->getMapper()->getConventional();
-				$key = 'e.' . key($conventional->formatEntityToStorage(array($key => NULL)));
+				$key = 'e.' . $this->getConnventionalKey($key);
 			}
 
 			$this->sorting[] = array($key, $direction);
@@ -165,19 +168,10 @@ class DibiCollection extends Object implements IEntityCollection
 	 */
 	final public function fetchPairs($key = NULL, $value = NULL)
 	{
-		/** @var SqlConventional */
-		$conventional = $this->repository->getMapper()->getConventional();
-
-		if ($key !== NULL)
-		{
-			$key = key($conventional->formatEntityToStorage(array($key => NULL)));
-		}
-		if ($value !== NULL)
-		{
-			$value = key($conventional->formatEntityToStorage(array($value => NULL)));
-		}
-
-		return $this->getResult()->fetchPairs($key, $value);
+		return $this->getResult()->fetchPairs(
+			$key !== NULL ? $this->getConnventionalKey($key) : NULL,
+			$value !== NULL ? $this->getConnventionalKey($value) : NULL
+		);
 	}
 
 	/** @return EntityIterator */
@@ -213,6 +207,7 @@ class DibiCollection extends Object implements IEntityCollection
 		FindByHelper::dibiProcess(
 			$this,
 			$this->repository->getMapper(),
+			$this->conventional,
 			$this->where,
 			$this->findBy
 		);
@@ -271,6 +266,7 @@ class DibiCollection extends Object implements IEntityCollection
 					FindByHelper::dibiProcess(
 						$this,
 						$this->repository->getMapper(),
+						$this->conventional,
 						$where,
 						$findBy,
 						$join['alias']
@@ -432,7 +428,7 @@ class DibiCollection extends Object implements IEntityCollection
 	 */
 	final protected function getConnventionalKey($key)
 	{
-		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
+		return key($this->conventional->formatEntityToStorage(array($key => NULL)));
 	}
 
 	/**

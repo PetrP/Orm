@@ -47,9 +47,8 @@ class FindByHelper
 		return false;
 	}
 
-	public static function dibiProcess(DibiCollection $collection, DibiMapper $mapper, array & $where, array & $findBy, $prefix = NULL)
+	public static function dibiProcess(DibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $prefix = NULL)
 	{
-		$conventional = $mapper->getConventional();
 		foreach ($findBy as $tmp)
 		foreach ($tmp as $key => $value)
 		{
