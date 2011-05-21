@@ -202,17 +202,6 @@ class DibiCollection extends Object implements IEntityCollection
 		return $all;
 	}
 
-	final private function processFindBy()
-	{
-		FindByHelper::dibiProcess(
-			$this,
-			$this->repository->getMapper(),
-			$this->conventional,
-			$this->where,
-			$this->findBy
-		);
-	}
-
 	/**
 	 * Vraci jednu entitu dle kriterii.
 	 * @param array
@@ -361,7 +350,13 @@ class DibiCollection extends Object implements IEntityCollection
 			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
 			$orderBy[] = array($key => $direction);
 		}
-		$this->processFindBy();
+		FindByHelper::dibiProcess(
+			$this,
+			$this->repository->getMapper(),
+			$this->conventional,
+			$this->where,
+			$this->findBy
+		);
 
 		$join = array();
 		foreach ($this->join as $tmp) $join = array_merge($join, $tmp);
