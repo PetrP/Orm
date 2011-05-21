@@ -11,12 +11,9 @@ class ArrayCollection_orderBy_Test extends ArrayCollection_Base_Test
 	public function testResetResult()
 	{
 		ArrayCollection_ArrayCollection::set($this->c, 'result', array());
-		ArrayCollection_ArrayCollection::set($this->c, 'count', 666);
 		$this->assertAttributeSame(array(), 'result', $this->c);
-		$this->assertAttributeSame(666, 'count', $this->c);
 		$this->c->orderBy('xxx');
 		$this->assertAttributeSame(NULL, 'result', $this->c);
-		$this->assertAttributeSame(666, 'count', $this->c);
 	}
 
 	public function testBase()

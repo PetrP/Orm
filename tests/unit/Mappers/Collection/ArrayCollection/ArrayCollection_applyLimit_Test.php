@@ -18,12 +18,9 @@ class ArrayCollection_applyLimit_Test extends ArrayCollection_Base_Test
 	public function testWipe()
 	{
 		ArrayCollection_ArrayCollection::set($this->c, 'result', array());
-		ArrayCollection_ArrayCollection::set($this->c, 'count', 666);
 		$this->assertAttributeSame(array(), 'result', $this->c);
-		$this->assertAttributeSame(666, 'count', $this->c);
 		$this->c->applyLimit(10, 20);
 		$this->assertAttributeSame(NULL, 'result', $this->c);
-		$this->assertAttributeSame(NULL, 'count', $this->c);
 	}
 
 	public function testReturns()

@@ -21,15 +21,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	/** @var array */
 	protected $result;
 
-	/** @var int */
-	protected $count;
-
-	/** @var int */
-	protected $totalCount;
-
-	/** @var array */
-	protected $cols = array();
-
 	/** @var array */
 	protected $sorting = array();
 
@@ -50,27 +41,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		foreach ($source as $entity) $tmp[spl_object_hash($entity)] = $entity;
 		$this->source = array_values($tmp);
 	}
-
-
-
-	/**
-	 * Selects columns to query.
-	 * @param  string|array  column name or array of column names
-	 * @param  string  		 column alias
-	 * @return ArrayCollection  provides a fluent interface
-	 */
-	final public function select($col, $as = NULL)
-	{
-		throw new NotImplementedException();
-		if (is_array($col)) {
-			$this->cols = $col;
-		} else {
-			$this->cols[$col] = $as;
-		}
-		$this->result = NULL;
-		return $this;
-	}
-
 
 
 	/**
@@ -135,7 +105,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	{
 		$this->limit = $limit;
 		$this->offset = $offset;
-		$this->result = $this->count = NULL;
+		$this->result = NULL;
 		return $this;
 	}
 
@@ -284,20 +254,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		$row = current($this->getResult());
 		return $row === false ? NULL : $row;
 	}
-
-
-
-	/**
-	 * Like fetch(), but returns only first field.
-	 * @return mixed  value on success, FALSE if no next record
-	 */
-	final public function fetchSingle()
-	{
-		throw new NotImplementedException();
-		return $this->getResult()->fetchSingle();
-	}
-
-
 
 	/**
 	 * Fetches all records from table.
@@ -457,6 +413,10 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return parent::__call($name, $args);
 	}
 
+	/** @deprecated */
+	final public function fetchSingle() {throw new DeprecatedException;}
+	/** @deprecated */
+	final public function select($col, $as = NULL) {throw new DeprecatedException;}
 	/** @deprecated */
 	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\ArrayCollection::toArrayCollection() instead');}
 	/** @deprecated */
