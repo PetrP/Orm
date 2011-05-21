@@ -26,7 +26,7 @@ class FileMapper_FileMapper extends FileMapper
 	}
 }
 
-class FileMapper_Base_Test extends TestCase
+abstract class FileMapper_Base_Test extends TestCase
 {
 	protected $m;
 	protected function setUp()

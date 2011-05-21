@@ -28,7 +28,10 @@ class FindByHelper
 			foreach (explode('And', $by) as $n => $key)
 			{
 				if ($key{0} != "_") $key{0} = $key{0} | "\x20"; // lcfirst
-				if (!array_key_exists($n, $args)) throw new InvalidArgumentException("There is no value for '$key' in '$name'.");
+				if (!array_key_exists($n, $args))
+				{
+					throw new InvalidArgumentException("There is no value for '$key' in '$name'.");
+				}
 				$where[$key] = $args[$n];
 				unset($args[$n]);
 			}
