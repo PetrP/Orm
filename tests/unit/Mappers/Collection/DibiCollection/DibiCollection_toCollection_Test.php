@@ -24,7 +24,6 @@ class DibiCollection_toCollection_Test extends DibiCollection_Base_Test
 		$this->assertAttributeSame($this->readAttribute($this->c, 'tableName'), 'tableName', $c);
 		$this->assertAttributeSame($this->readAttribute($this->c, 'result'), 'result', $c);
 		$this->assertAttributeSame($this->readAttribute($this->c, 'count'), 'count', $c);
-		$this->assertAttributeSame($this->readAttribute($this->c, 'totalCount'), 'totalCount', $c);
 	}
 
 	public function test3()
@@ -37,9 +36,9 @@ class DibiCollection_toCollection_Test extends DibiCollection_Base_Test
 		$this->assertAttributeSame(NULL, 'limit', $c);
 		$this->assertAttributeSame(array(), 'sorting', $c);
 
-		$this->assertAttributeSame(11, '_offset', $c);
-		$this->assertAttributeSame(10, '_limit', $c);
-		$this->assertAttributeSame(array(array('e.xxx', Dibi::ASC)), '_sorting', $c);
+		$this->assertAttributeSame(11, 'sourceOffset', $c);
+		$this->assertAttributeSame(10, 'sourceLimit', $c);
+		$this->assertAttributeSame(array(array('e.xxx', Dibi::ASC)), 'sourceSorting', $c);
 	}
 
 	public function test4()

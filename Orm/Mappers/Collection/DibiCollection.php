@@ -25,13 +25,10 @@ class DibiCollection extends Object implements IEntityCollection
 	protected $tableName;
 
 	/** @var array */
-	protected $result;
+	private $result;
 
 	/** @var int */
-	protected $count;
-
-	/** @var int */
-	protected $totalCount;
+	private $count;
 
 	/** @var array @todo private */
 	protected $where = array();
@@ -40,25 +37,25 @@ class DibiCollection extends Object implements IEntityCollection
 	protected $findBy = array();
 
 	/** @var array */
-	protected $sorting = array();
+	private $sorting = array();
 
 	/** @var array */
-	protected $_sorting = array();
+	private $sourceSorting = array();
 
 	/** @var int */
-	protected $limit;
+	private $limit;
 
 	/** @var int */
-	protected $_limit;
+	private $sourceLimit;
 
 	/** @var int */
-	protected $_offset;
+	private $offset;
 
 	/** @var int */
-	protected $offset;
+	private $sourceOffset;
 
 	/** @var array @see self::join() */
-	protected $join = array();
+	private $join = array();
 
 	/**
 	 * @param string
@@ -304,9 +301,9 @@ class DibiCollection extends Object implements IEntityCollection
 	{
 		list($sorting, $limit, $offset) = $this->process();
 		$collection = clone $this;
-		$collection->_sorting = $sorting;
-		$collection->_limit = $limit;
-		$collection->_offset = $offset;
+		$collection->sourceSorting = $sorting;
+		$collection->sourceLimit = $limit;
+		$collection->sourceOffset = $offset;
 		$collection->sorting = array();
 		$collection->limit = NULL;
 		$collection->offset = NULL;
