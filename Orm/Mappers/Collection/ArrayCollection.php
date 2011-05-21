@@ -250,7 +250,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			{
 				$this->_sort = $this->sorting;
 				$this->_sort[] = array('id', Dibi::ASC);
-				uasort($source, array($this, '_sort'));
+				usort($source, array($this, '_sort'));
 				$this->_sort = NULL;
 			}
 
