@@ -33,10 +33,10 @@ class DibiCollection extends Object implements IEntityCollection
 	/** @var int */
 	protected $totalCount;
 
-	/** @var array */
+	/** @var array @todo private */
 	protected $where = array();
 
-	/** @var array */
+	/** @var array @todo private */
 	protected $findBy = array();
 
 	/** @var array */
@@ -57,6 +57,14 @@ class DibiCollection extends Object implements IEntityCollection
 	/** @var int */
 	protected $offset;
 
+	/** @var array @see self::join() */
+	protected $join = array();
+
+	/**
+	 * @param string
+	 * @param DibiConnection
+	 * @param IRepository
+	 */
 	final public function __construct($tableName, DibiConnection $connection, IRepository $repository)
 	{
 		$this->tableName = $tableName;
@@ -66,9 +74,9 @@ class DibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Selects columns to order by.
-	 * @param  string|array  column name or array of column names
-	 * @param  string  		 sorting direction
-	 * @return DibiCollection  provides a fluent interface
+	 * @param string|array column name or array of column names
+	 * @param string sorting direction Dibi::ASC or Dibi::DESC
+	 * @return DibiCollection $this
 	 */
 	final public function orderBy($key, $direction = Dibi::ASC)
 	{
@@ -110,9 +118,9 @@ class DibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Limits number of rows.
-	 * @param  int limit
-	 * @param  int offset
-	 * @return DibiCollection  provides a fluent interface
+	 * @param int
+	 * @param int
+	 * @return DibiCollection $this
 	 */
 	final public function applyLimit($limit, $offset = NULL)
 	{
@@ -123,90 +131,8 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Returns (and queries) DibiResult.
-	 * @return DibiResult
-	 */
-	final public function getResult()
-	{
-		if ($this->result === NULL)
-		{
-			$this->result = $this->connection->nativeQuery($this->__toString());
-		}
-		return $this->result;
-	}
-
-
-	final protected function process()
-	{
-		$limit = $this->limit;
-		$offset = $this->_offset + $this->offset;
-		if ($this->_limit !== NULL)
-		{
-			$limit = max(0, $this->_limit - $this->offset);
-			if ($this->limit !== NULL)
-			{
-				$limit = min($this->limit, $limit);
-			}
-			$offset = min($offset, $this->_offset + $this->_limit);
-		}
-
-		$sorting = array_merge($this->sorting, $this->_sorting);
-
-		return array($sorting, $limit, $offset);
-	}
-
-	final public function __toString()
-	{
-		list($sorting, $limit, $offset) = $this->process();
-		$orderBy = array();
-		end($sorting); $end = key($sorting);
-		foreach ($sorting as $i => $tmp)
-		{
-			list($key, $direction) = $tmp;
-			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
-			$orderBy[] = array($key => $direction);
-		}
-		$this->processFindBy();
-
-		$join = array();
-		foreach ($this->join as $tmp) $join = array_merge($join, $tmp);
-
-		return $this->connectionTranslate('
-			SELECT [e.*]
-			FROM %n', $this->tableName, ' as e
-			%ex', $join,'
-			%ex', $this->where ? array('WHERE %and', $this->where) : NULL, '
-			' . ($join ? 'GROUP BY [e.id]' : '') . '
-			%ex', $orderBy ? array('ORDER BY %sql', $orderBy) : NULL, '
-			%ofs %lmt', $offset, $limit
-		);
-	}
-
-	/**
-	 * Use DibiConnection::translate() or DibiConnection::sql()
-	 */
-	protected function connectionTranslate($args)
-	{
-		static $translate;
-		if ($translate === NULL)
-		{
-			$translate = method_exists($this->connection, 'translate') ? 'translate' : 'sql';
-		}
-		$args = func_get_args();
-		return $this->connection->$translate($args);
-	}
-
-	/**
-	 * @return DibiResultIterator
-	 */
-	final public function getIterator()
-	{
-		return new EntityIterator($this->repository, $this->getResult()->getIterator());
-	}
-
-	/**
 	 * Generates, executes SQL query and fetches the single row.
-	 * @return DibiRow|FALSE  array on success, FALSE if no next record
+	 * @return IEntity|NULL
 	 */
 	final public function fetch()
 	{
@@ -217,7 +143,7 @@ class DibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Fetches all records from table.
-	 * @return array
+	 * @return array of IEntity
 	 */
 	final public function fetchAll()
 	{
@@ -226,7 +152,7 @@ class DibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Fetches all records from table and returns associative tree.
-	 * @param  string  associative descriptor
+	 * @param string associative descriptor
 	 * @return array
 	 */
 	final public function fetchAssoc($assoc)
@@ -236,8 +162,8 @@ class DibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Fetches all records from table like $key => $value pairs.
-	 * @param  string  associative key
-	 * @param  string  value
+	 * @param string associative key
+	 * @param string value
 	 * @return array
 	 */
 	final public function fetchPairs($key = NULL, $value = NULL)
@@ -257,25 +183,27 @@ class DibiCollection extends Object implements IEntityCollection
 		return $this->getResult()->fetchPairs($key, $value);
 	}
 
+	/** @return EntityIterator */
+	final public function getIterator()
+	{
+		return new EntityIterator($this->repository, $this->getResult()->getIterator());
+	}
+
 	/**
 	 * Returns the number of rows in a given data source.
 	 * @return int
+	 * @todo optimalozovat
 	 */
 	final public function count()
 	{
-		// todo
 		return count($this->getResult());
 	}
 
 	/**
-	 * Returns the number of rows in a given data source.
-	 * @return int
+	 * Vraci kolekci entit dle kriterii.
+	 * @param array
+	 * @return DibiCollection
 	 */
-	final public function getTotalCount()
-	{
-		throw new NotImplementedException();
-	}
-
 	final public function findBy(array $where)
 	{
 		$all = $this->toCollection();
@@ -293,20 +221,21 @@ class DibiCollection extends Object implements IEntityCollection
 		);
 	}
 
+	/**
+	 * Vraci jednu entitu dle kriterii.
+	 * @param array
+	 * @return IEntity|NULL
+	 */
 	final public function getBy(array $where)
 	{
 		return $this->findBy($where)->applyLimit(1)->fetch();
 	}
 
-	final public function __call($name, $args)
-	{
-		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
-		{
-			return $this->$name($args);
-		}
-		return parent::__call($name, $args);
-	}
-
+	/**
+	 * @param mixed
+	 * @return DibiCollection $this
+	 * @todo nepridava e.
+	 */
 	final public function where($cond)
 	{
 		// todo nepridava e.
@@ -320,8 +249,13 @@ class DibiCollection extends Object implements IEntityCollection
 		return $this;
 	}
 
-	protected $join = array();
-
+	/**
+	 * Pripoji asociaci.
+	 * @see DibiMapper::getJoinInfo()
+	 * @param string
+	 * @return DibiCollection $this
+	 * @todo public?
+	 */
 	final public function join($key)
 	{
 		$lastAlias = 'e';
@@ -365,7 +299,7 @@ class DibiCollection extends Object implements IEntityCollection
 		return new DataSourceCollection($this->__toString(), $this->connection, $this->repository);
 	}
 
-	/** @return ArrayCollection */
+	/** @return DibiCollection */
 	final public function toCollection()
 	{
 		list($sorting, $limit, $offset) = $this->process();
@@ -379,9 +313,138 @@ class DibiCollection extends Object implements IEntityCollection
 		return $collection;
 	}
 
+	/**
+	 * Vola automaticky findBy* a getBy*
+	 * <pre>
+	 * 	$collection->findByAuthor(3);
+	 * 	// stejne jako
+	 * 	$collection->findBy(array('author' => 3));
+	 *
+	 * 	$collection->findByAuthorAndCategory(3, 'foo');
+	 * 	// stejne jako
+	 * 	$collection->findBy(array('author' => 3, 'category' => 'foo'));
+	 * </pre>
+	 * @see self::findBy();
+	 * @see self::getBy();
+	 * @param string
+	 * @param array
+	 * @throws MemberAccessException
+	 * @return DibiCollection|IEntity|NULL
+	 */
+	final public function __call($name, $args)
+	{
+		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
+		{
+			return $this->$name($args);
+		}
+		return parent::__call($name, $args);
+	}
+
+	/**
+	 * Returns (and queries) DibiResult.
+	 * @return DibiResult
+	 */
+	final public function getResult()
+	{
+		if ($this->result === NULL)
+		{
+			$this->result = $this->connection->nativeQuery($this->__toString());
+		}
+		return $this->result;
+	}
+
+	/**
+	 * Returns sql query
+	 * @return string
+	 */
+	final public function __toString()
+	{
+		list($sorting, $limit, $offset) = $this->process();
+		$orderBy = array();
+		end($sorting); $end = key($sorting);
+		foreach ($sorting as $i => $tmp)
+		{
+			list($key, $direction) = $tmp;
+			$orderBy[] = '%by' . ($end === $i ? '' : ', ');
+			$orderBy[] = array($key => $direction);
+		}
+		$this->processFindBy();
+
+		$join = array();
+		foreach ($this->join as $tmp) $join = array_merge($join, $tmp);
+
+		return $this->connectionTranslate('
+			SELECT [e.*]
+			FROM %n', $this->tableName, ' as e
+			%ex', $join,'
+			%ex', $this->where ? array('WHERE %and', $this->where) : NULL, '
+			' . ($join ? 'GROUP BY [e.id]' : '') . '
+			%ex', $orderBy ? array('ORDER BY %sql', $orderBy) : NULL, '
+			%ofs %lmt', $offset, $limit
+		);
+	}
+
+	/**
+	 * Use DibiConnection::translate() or DibiConnection::sql()
+	 * @return string sql
+	 */
+	final private function connectionTranslate($args)
+	{
+		static $translate;
+		if ($translate === NULL)
+		{
+			$translate = method_exists($this->connection, 'translate') ? 'translate' : 'sql';
+		}
+		$args = func_get_args();
+		return $this->connection->$translate($args);
+	}
+
+	/**
+	 * Merge source and this sorting, $limit and $offset
+	 * @see self::$sorting
+	 * @see self::$sourceSorting
+	 * @see self::$limit
+	 * @see self::$sourceLimit
+	 * @see self::$offset
+	 * @see self::$sourceOffset
+	 * @return array $sorting, $limit, $offset
+	 * @todo private
+	 */
+	final protected function process()
+	{
+		$limit = $this->limit;
+		$offset = $this->sourceOffset + $this->offset;
+		if ($this->sourceLimit !== NULL)
+		{
+			$limit = max(0, $this->sourceLimit - $this->offset);
+			if ($this->limit !== NULL)
+			{
+				$limit = min($this->limit, $limit);
+			}
+			$offset = min($offset, $this->sourceOffset + $this->sourceLimit);
+		}
+
+		$sorting = array_merge($this->sorting, $this->sourceSorting);
+
+		return array($sorting, $limit, $offset);
+	}
+
+	/**
+	 * @param string
+	 * @return string
+	 */
 	final protected function getConnventionalKey($key)
 	{
 		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
+	}
+
+	/**
+	 * Returns the number of rows in a given data source.
+	 * @return int
+	 */
+	final public function getTotalCount()
+	{
+		throw new NotImplementedException();
 	}
 
 	/** @deprecated */
