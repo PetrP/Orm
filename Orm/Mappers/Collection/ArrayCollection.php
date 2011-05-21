@@ -24,9 +24,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	/** @var array */
 	protected $sorting = array();
 
-	/** @var array */
-	protected $conds = array();
-
 	/** @var int */
 	protected $offset;
 
@@ -41,26 +38,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		foreach ($source as $entity) $tmp[spl_object_hash($entity)] = $entity;
 		$this->source = array_values($tmp);
 	}
-
-
-	/**
-	 * Adds conditions to query.
-	 * @param  mixed  conditions
-	 * @return ArrayCollection  provides a fluent interface
-	 */
-	final public function where($cond)
-	{
-		if (is_array($cond)) {
-			// TODO: not consistent with select and orderBy
-			$this->conds[] = $cond;
-		} else {
-			$this->conds[] = func_get_args();
-		}
-		$this->result = $this->count = NULL;
-		return $this;
-	}
-
-
 
 	/**
 	 * Selects columns to order by.
@@ -193,28 +170,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		if ($this->result === NULL)
 		{
 			$source = $this->source;
-
-			if ($this->conds)
-			{
-				// todo
-				if (count($this->conds) === 1 AND count($this->conds[0]) === 2 AND preg_match('#^\s*\[id\]\s*\=\s*\%[i|s]\s*$#',$this->conds[0][0]) AND is_scalar($this->conds[0][1]))
-				{
-					$copySource = $source;
-					$source = array();
-					foreach ($copySource as $row)
-					{
-						if ($row['id'] == $this->conds[0][1])
-						{
-							$source[] = $row;
-						}
-					}
-				}
-				else
-				{
-					throw new NotImplementedException();
-				}
-			}
-
 			if ($this->sorting)
 			{
 				$this->_sort = $this->sorting;
@@ -413,6 +368,9 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return parent::__call($name, $args);
 	}
 
+
+	/** @deprecated */
+	final public function where($cond) {throw new DeprecatedException('Use Orm\ArrayCollection::findBy() and getBy() instead');;}
 	/** @deprecated */
 	final public function fetchSingle() {throw new DeprecatedException;}
 	/** @deprecated */
