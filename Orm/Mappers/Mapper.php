@@ -34,6 +34,7 @@ abstract class Mapper extends Object implements IMapper
 	/**
 	 * Vraci kolekci entit dle kriterii.
 	 * @see IEntityCollection::findBy()
+	 * @param array
 	 * @return IEntityCollection
 	 */
 	final public function findBy(array $where)
@@ -44,6 +45,7 @@ abstract class Mapper extends Object implements IMapper
 	/**
 	 * Vraci jednu entitu dle kriterii.
 	 * @see IEntityCollection::getBy()
+	 * @param array
 	 * @return IEntity|NULL
 	 */
 	final public function getBy(array $where)

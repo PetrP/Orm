@@ -5,10 +5,10 @@ namespace Orm;
 use Nette\Object;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
+use Nette\DeprecatedException;
 use Dibi;
 use DateTime;
 use ArrayIterator;
-use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
