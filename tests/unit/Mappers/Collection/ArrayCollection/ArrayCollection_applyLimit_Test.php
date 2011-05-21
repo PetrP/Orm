@@ -1,0 +1,34 @@
+<?php
+
+require_once dirname(__FILE__) . '/../../../../boot.php';
+
+/**
+ * @covers Orm\ArrayCollection::applyLimit
+ */
+class ArrayCollection_applyLimit_Test extends ArrayCollection_Base_Test
+{
+
+	public function test()
+	{
+		$this->c->applyLimit(10, 20);
+		$this->assertAttributeSame(10, 'limit', $this->c);
+		$this->assertAttributeSame(20, 'offset', $this->c);
+	}
+
+	public function testWipe()
+	{
+		ArrayCollection_ArrayCollection::set($this->c, 'result', array());
+		ArrayCollection_ArrayCollection::set($this->c, 'count', 666);
+		$this->assertAttributeSame(array(), 'result', $this->c);
+		$this->assertAttributeSame(666, 'count', $this->c);
+		$this->c->applyLimit(10, 20);
+		$this->assertAttributeSame(NULL, 'result', $this->c);
+		$this->assertAttributeSame(NULL, 'count', $this->c);
+	}
+
+	public function testReturns()
+	{
+		$this->assertSame($this->c, $this->c->applyLimit(10, 20));
+	}
+
+}
