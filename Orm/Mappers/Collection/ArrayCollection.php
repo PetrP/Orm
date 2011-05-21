@@ -98,12 +98,12 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	 * @param  string  		 sorting direction
 	 * @return ArrayCollection  provides a fluent interface
 	 */
-	final public function orderBy($row, $direction = Dibi::ASC)
+	final public function orderBy($key, $direction = Dibi::ASC)
 	{
-		if (is_array($row))
+		if (is_array($key))
 		{
 			$this->sorting = array();
-			foreach ($row as $name => $direction)
+			foreach ($key as $name => $direction)
 			{
 				$this->orderBy((string) $name, $direction);
 			}
@@ -117,7 +117,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, '$direction' given");
 			}
 
-			$this->sorting[] = array($row, $direction);
+			$this->sorting[] = array($key, $direction);
 		}
 		$this->result = NULL;
 		return $this;
