@@ -113,9 +113,8 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			$direction = strtoupper($direction);
 			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
 			{
-				if ($direction === false OR $direction === NULL) $direction = Dibi::ASC;
-				else if ($direction === true) $direction = Dibi::DESC;
-				else $direction = Dibi::ASC;
+				$direction = func_get_arg(1);
+				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, '$direction' given");
 			}
 
 			$this->sorting[] = array($row, $direction);
