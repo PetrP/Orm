@@ -219,13 +219,7 @@ class DibiCollection extends Object implements IEntityCollection
 	 */
 	final public function where($cond)
 	{
-		// todo nepridava e.
-		if (is_array($cond)) {
-			// TODO: not consistent with select and orderBy
-			$this->where[] = $cond;
-		} else {
-			$this->where[] = func_get_args();
-		}
+		$this->where[] = is_array($cond) ? $cond : func_get_args();
 		$this->result = $this->count = NULL;
 		return $this;
 	}
