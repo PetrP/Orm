@@ -331,51 +331,30 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	final public function fetchPairs($key = NULL, $value = NULL)
 	{
 		$row = $this->fetch();
-		if (!$row) return array();  // empty result set
+		if (!$row) return array();
+
+		if ($value === NULL)
+		{
+			throw new InvalidArgumentException("Value or both columns must be specified.");
+		}
+		else if (!$row->hasParam($value))
+		{
+			throw new InvalidArgumentException("Unknown value column '$value'.");
+		}
+		else if ($key !== NULL AND !$row->hasParam($key))
+		{
+			throw new InvalidArgumentException("Unknown key column '$key'.");
+		}
 
 		$data = array();
-
-		if ($value === NULL) {
-			if ($key !== NULL) {
-				throw new InvalidArgumentException("Either none or both columns must be specified.");
-			}
-
-			// autodetect
-			$tmp = array_keys($row->toArray());
-			$key = $tmp[0];
-			if (count($row) < 2) { // indexed-array
-				foreach ($this->getResult() as $row)
-				{
-					$data[] = $row[$key];
-				}
-				return $data;
-			}
-
-			$value = $tmp[1];
-
-		} else {
-			if (!$row->hasParam($value)) {
-				throw new InvalidArgumentException("Unknown value column '$value'.");
-			}
-
-			if ($key === NULL) { // indexed-array
-				foreach ($this->getResult() as $row)
-				{
-					$data[] = $row[$value];
-				}
-				return $data;
-			}
-
-			if (!$row->hasParam($key)) {
-				throw new InvalidArgumentException("Unknown key column '$key'.");
-			}
-		}
-
-		foreach ($this->getResult() as $row)
+		foreach ($this->getResult() as $k => $row)
 		{
-			$data[ $row[$key] ] = $row[$value];
+			if ($key !== NULL)
+			{
+				$k = $row[$key];
+			}
+			$data[$k] = $row[$value];
 		}
-
 		return $data;
 	}
 
