@@ -13,6 +13,7 @@ class DibiCollection_toCollection_Test extends DibiCollection_Base_Test
 	{
 		$c = $this->c->toCollection();
 		$this->assertInstanceOf('Orm\DibiCollection', $c);
+		$this->assertSame('Orm\DibiCollection', get_class($c));
 		$this->assertNotSame($this->c, $c);
 	}
 
@@ -49,6 +50,15 @@ class DibiCollection_toCollection_Test extends DibiCollection_Base_Test
 
 		$this->assertAttributeSame(array(array('1=1')), 'where', $c);
 		$this->assertAttributeSame(array(array('xxx' => 'aaa')), 'findBy', $c);
+	}
+
+	public function testSubClass()
+	{
+		$cOrigin = new DibiCollection_DibiCollection('table', $this->m->connection, $this->r);
+		$c = $cOrigin->toCollection();
+		$this->assertInstanceOf('Orm\DibiCollection', $c);
+		$this->assertSame('DibiCollection_DibiCollection', get_class($c));
+		$this->assertNotSame($cOrigin, $c);
 	}
 
 }
