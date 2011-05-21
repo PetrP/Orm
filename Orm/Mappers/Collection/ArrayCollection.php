@@ -16,6 +16,8 @@ require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
 class ArrayCollection extends Object implements IEntityCollection, ArrayDataSource
 {
+
+	/** @var array */
 	protected $source;
 
 	/** @var array */
@@ -30,8 +32,10 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	/** @var int */
 	protected $limit;
 
+	/** @var array temp from sorting @see self::_sort() */
+	private $_sort;
 
-
+	/** @param array */
 	final public function __construct(array $source)
 	{
 		$tmp = array();
@@ -41,9 +45,9 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 
 	/**
 	 * Selects columns to order by.
-	 * @param  string|array  column name or array of column names
-	 * @param  string  		 sorting direction
-	 * @return ArrayCollection  provides a fluent interface
+	 * @param string|array column name or array of column names
+	 * @param string sorting direction Dibi::ASC or Dibi::DESC
+	 * @return ArrayCollection $this
 	 */
 	final public function orderBy($key, $direction = Dibi::ASC)
 	{
@@ -70,13 +74,11 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return $this;
 	}
 
-
-
 	/**
 	 * Limits number of rows.
-	 * @param  int limit
-	 * @param  int offset
-	 * @return ArrayCollection  provides a fluent interface
+	 * @param int
+	 * @param int
+	 * @return ArrayCollection $this
 	 */
 	final public function applyLimit($limit, $offset = NULL)
 	{
@@ -86,10 +88,237 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return $this;
 	}
 
+	/**
+	 * Fetches the single row.
+	 * @return IEntity|NULL
+	 */
+	final public function fetch()
+	{
+		$row = current($this->getResult());
+		return $row === false ? NULL : $row;
+	}
 
-	/********************* executing ****************d*g**/
+	/**
+	 * Fetches all records.
+	 * @return array of IEntity
+	 */
+	final public function fetchAll()
+	{
+		return $this->getResult();
+	}
 
-	private $_sort;
+	/**
+	 * Fetches all records and returns associative tree.
+	 * @param string associative descriptor
+	 * @return array
+	 */
+	final public function fetchAssoc($assoc)
+	{
+		return FetchAssoc::apply($this->fetchAll(), $assoc);
+	}
+
+	/**
+	 * Fetches all records like $key => $value pairs.
+	 * @param string associative key
+	 * @param string value
+	 * @return array
+	 */
+	final public function fetchPairs($key = NULL, $value = NULL)
+	{
+		$row = $this->fetch();
+		if (!$row) return array();
+
+		if ($value === NULL)
+		{
+			throw new InvalidArgumentException("Value or both columns must be specified.");
+		}
+		else if (!$row->hasParam($value))
+		{
+			throw new InvalidArgumentException("Unknown value column '$value'.");
+		}
+		else if ($key !== NULL AND !$row->hasParam($key))
+		{
+			throw new InvalidArgumentException("Unknown key column '$key'.");
+		}
+
+		$data = array();
+		foreach ($this->getResult() as $k => $row)
+		{
+			if ($key !== NULL)
+			{
+				$k = $row[$key];
+			}
+			$data[$k] = $row[$value];
+		}
+		return $data;
+	}
+
+	/** @return ArrayIterator */
+	final public function getIterator()
+	{
+		return new ArrayIterator($this->getResult());
+	}
+
+	/**
+	 * Returns the number of rows in a given data source.
+	 * @return int
+	 */
+	final public function count()
+	{
+		return count($this->getResult());
+	}
+
+	/**
+	 * Returns the number of rows in a given data source.
+	 * @return int
+	 * @todo deprecated?
+	 */
+	final public function getTotalCount()
+	{
+		return count($this->source);
+	}
+
+	/**
+	 * Vraci kolekci entit dle kriterii.
+	 * @param array
+	 * @return ArrayCollection
+	 */
+	final public function findBy(array $where)
+	{
+		foreach ($where as $key => $value)
+		{
+			if (is_array($value))
+			{
+				$value = array_unique(
+					array_map(
+						create_function('$v', 'return $v instanceof Orm\IEntity ? $v->id : $v;'),
+						$value
+					)
+				);
+				$where[$key] = $value;
+			}
+			else if ($value instanceof IEntityCollection)
+			{
+				$where[$key] = $value->fetchPairs(NULL, 'id');
+			}
+			else if ($value instanceof IEntity)
+			{
+				$value = isset($value->id) ? $value->id : NULL;
+				$where[$key] = $value;
+			}
+		}
+
+		$all = $this->getResult();
+		$result = array();
+		foreach ($all as $entity)
+		{
+			$equal = false;
+			foreach ($where as $key => $value)
+			{
+				$eValue = $entity[$key];
+				$eValue = $eValue instanceof IEntity ? (isset($eValue->id) ? $eValue->id : NULL) : $eValue;
+
+				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
+				{
+					$equal = true;
+				}
+				else
+				{
+					$equal = false;
+					break;
+				}
+			}
+			if ($equal)
+			{
+				$result[] = $entity;
+			}
+		}
+
+		return new ArrayCollection($result);
+	}
+
+	/**
+	 * Vraci jednu entitu dle kriterii.
+	 * @param array
+	 * @return IEntity|NULL
+	 */
+	final public function getBy(array $where)
+	{
+		return $this->findBy($where)->applyLimit(1)->fetch();
+	}
+
+	/** @return ArrayCollection */
+	final public function toArrayCollection()
+	{
+		return new ArrayCollection($this->getResult());
+	}
+
+	/** @return ArrayCollection */
+	final public function toCollection()
+	{
+		$class = get_class($this);
+		return new $class($this->getResult());
+	}
+
+	/**
+	 * Vola automaticky findBy* a getBy*
+	 * <pre>
+	 * 	$collection->findByAuthor(3);
+	 * 	// stejne jako
+	 * 	$collection->findBy(array('author' => 3));
+	 *
+	 * 	$collection->findByAuthorAndCategory(3, 'foo');
+	 * 	// stejne jako
+	 * 	$collection->findBy(array('author' => 3, 'category' => 'foo'));
+	 * </pre>
+	 * @see self::findBy();
+	 * @see self::getBy();
+	 * @param string
+	 * @param array
+	 * @throws MemberAccessException
+	 * @return ArrayCollection|IEntity|NULL
+	 */
+	final public function __call($name, $args)
+	{
+		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
+		{
+			return $this->$name($args);
+		}
+		return parent::__call($name, $args);
+	}
+
+	/** @return array */
+	final public function getResult()
+	{
+		if ($this->result === NULL)
+		{
+			$source = $this->source;
+			if ($this->sorting)
+			{
+				$this->_sort = $this->sorting;
+				$this->_sort[] = array('id', Dibi::ASC);
+				usort($source, array($this, '_sort'));
+				$this->_sort = NULL;
+			}
+
+			if ($this->offset !== NULL OR $this->limit !== NULL)
+			{
+				$source = array_slice($source, (int) $this->offset, $this->limit);
+			}
+
+			$this->result = $source;
+		}
+		return $this->result;
+	}
+
+	/**
+	 * usort comparison function
+	 * @see self::getResult()
+	 * @see self::$_sort
+	 * @param string
+	 * @param string
+	 * @return int -1 or 1
+	 */
 	private function _sort($aRow, $bRow)
 	{
 		foreach ($this->_sort as $tmp)
@@ -160,212 +389,6 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 
 		if ($direction === Dibi::DESC) return -$r;
 		return $r;
-	}
-	/**
-	 * Returns (and queries) DibiResult.
-	 * @return DibiResult
-	 */
-	final public function getResult()
-	{
-		if ($this->result === NULL)
-		{
-			$source = $this->source;
-			if ($this->sorting)
-			{
-				$this->_sort = $this->sorting;
-				$this->_sort[] = array('id', Dibi::ASC);
-				usort($source, array($this, '_sort'));
-				$this->_sort = NULL;
-			}
-
-			if ($this->offset !== NULL OR $this->limit !== NULL)
-			{
-				$source = array_slice($source, (int) $this->offset, $this->limit);
-			}
-
-			$this->result = $source;
-		}
-		return $this->result;
-	}
-
-
-
-	/**
-	 * @return DibiResultIterator
-	 */
-	final public function getIterator()
-	{
-		return new ArrayIterator($this->getResult());
-	}
-
-
-
-	/**
-	 * Generates, executes SQL query and fetches the single row.
-	 * @return DibiRow|FALSE  array on success, FALSE if no next record
-	 */
-	final public function fetch()
-	{
-		$row = current($this->getResult());
-		return $row === false ? NULL : $row;
-	}
-
-	/**
-	 * Fetches all records from table.
-	 * @return array
-	 */
-	final public function fetchAll()
-	{
-		return $this->getResult();
-	}
-
-
-
-	/**
-	 * Fetches all records from table and returns associative tree.
-	 * @param  string  associative descriptor
-	 * @return array
-	 */
-	final public function fetchAssoc($assoc)
-	{
-		return FetchAssoc::apply($this->fetchAll(), $assoc);
-	}
-
-
-
-	/**
-	 * Fetches all records from table like $key => $value pairs.
-	 * @param  string  associative key
-	 * @param  string  value
-	 * @return array
-	 */
-	final public function fetchPairs($key = NULL, $value = NULL)
-	{
-		$row = $this->fetch();
-		if (!$row) return array();
-
-		if ($value === NULL)
-		{
-			throw new InvalidArgumentException("Value or both columns must be specified.");
-		}
-		else if (!$row->hasParam($value))
-		{
-			throw new InvalidArgumentException("Unknown value column '$value'.");
-		}
-		else if ($key !== NULL AND !$row->hasParam($key))
-		{
-			throw new InvalidArgumentException("Unknown key column '$key'.");
-		}
-
-		$data = array();
-		foreach ($this->getResult() as $k => $row)
-		{
-			if ($key !== NULL)
-			{
-				$k = $row[$key];
-			}
-			$data[$k] = $row[$value];
-		}
-		return $data;
-	}
-
-	/**
-	 * Returns the number of rows in a given data source.
-	 * @return int
-	 */
-	final public function count()
-	{
-		return count($this->getResult());
-	}
-
-	/**
-	 * Returns the number of rows in a given data source.
-	 * @return int
-	 */
-	final public function getTotalCount()
-	{
-		return count($this->source);
-	}
-
-	/** @return ArrayCollection */
-	final public function toArrayCollection()
-	{
-		return new ArrayCollection($this->getResult());
-	}
-
-	/** @return ArrayCollection */
-	final public function toCollection()
-	{
-		$class = get_class($this);
-		return new $class($this->getResult());
-	}
-
-	final public function findBy(array $where)
-	{
-		foreach ($where as $key => $value)
-		{
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof Orm\IEntity ? $v->id : $v;'),
-						$value
-					)
-				);
-				$where[$key] = $value;
-			}
-			else if ($value instanceof IEntityCollection)
-			{
-				$where[$key] = $value->fetchPairs(NULL, 'id');
-			}
-			else if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-				$where[$key] = $value;
-			}
-		}
-
-		$all = $this->getResult();
-		$result = array();
-		foreach ($all as $entity)
-		{
-			$equal = false;
-			foreach ($where as $key => $value)
-			{
-				$eValue = $entity[$key];
-				$eValue = $eValue instanceof IEntity ? (isset($eValue->id) ? $eValue->id : NULL) : $eValue;
-
-				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
-				{
-					$equal = true;
-				}
-				else
-				{
-					$equal = false;
-					break;
-				}
-			}
-			if ($equal)
-			{
-				$result[] = $entity;
-			}
-		}
-
-		return new ArrayCollection($result);
-	}
-
-	final public function getBy(array $where)
-	{
-		return $this->findBy($where)->applyLimit(1)->fetch();
-	}
-
-	final public function __call($name, $args)
-	{
-		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
-		{
-			return $this->$name($args);
-		}
-		return parent::__call($name, $args);
 	}
 
 
