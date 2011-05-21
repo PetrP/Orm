@@ -174,11 +174,10 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			{
 				if (!$aRow->hasParam($key) OR !$bRow->hasParam($key))
 				{
-					throw new InvalidArgumentException("'$key' is not key");
-				}
-				if (!isset($aRow->{$key}) OR !isset($bRow->{$key}))
-				{
-					throw new InvalidArgumentException("'$key' is not key");
+					if (!isset($aRow->{$key}) OR !isset($bRow->{$key}))
+					{
+						throw new InvalidArgumentException("'$key' is not key");
+					}
 				}
 
 				$a = $aRow->{$key};

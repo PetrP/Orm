@@ -35,7 +35,9 @@ abstract class ArrayCollection_Base_Test extends TestCase
 }
 
 /**
- * @property int $int
+ * @property string|NULL $string
+ * @property int|NULL $int
+ * @property DateTime|NULL $date
  */
 class ArrayCollection_Entity extends TestEntity
 {
