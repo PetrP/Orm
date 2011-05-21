@@ -396,7 +396,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	 */
 	final public function getTotalCount()
 	{
-		return count($this->data);
+		return count($this->source);
 	}
 
 	/** @return ArrayCollection */
