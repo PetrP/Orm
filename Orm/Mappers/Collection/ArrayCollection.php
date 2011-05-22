@@ -233,10 +233,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 				}
 				continue 2;
 			}
-			if ($where)
-			{
-				$result[] = $entity;
-			}
+			$result[] = $entity;
 		}
 
 		return new ArrayCollection($result);
