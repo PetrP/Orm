@@ -236,7 +236,8 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			$result[] = $entity;
 		}
 
-		return new ArrayCollection($result);
+		$class = get_class($this);
+		return new $class($result);
 	}
 
 	/**
