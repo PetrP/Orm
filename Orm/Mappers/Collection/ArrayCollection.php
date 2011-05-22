@@ -18,19 +18,19 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 {
 
 	/** @var array */
-	protected $source;
+	private $source;
 
 	/** @var array */
-	protected $result;
+	private $result;
 
 	/** @var array */
-	protected $sorting = array();
+	private $sorting = array();
 
 	/** @var int */
-	protected $offset;
+	private $offset;
 
 	/** @var int */
-	protected $limit;
+	private $limit;
 
 	/** @var array temp from sorting @see self::_sort() */
 	private $_sort;

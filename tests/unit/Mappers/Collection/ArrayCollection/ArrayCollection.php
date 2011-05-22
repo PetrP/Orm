@@ -6,7 +6,9 @@ class ArrayCollection_ArrayCollection extends ArrayCollection
 {
 	public static function set(ArrayCollection $c, $property, $value)
 	{
-		$c->$property = $value;
+		$p = $c->getReflection()->getProperty($property);
+		$p->setAccessible(true);
+		$p->setValue($c, $value);
 	}
 
 	public static function call(ArrayCollection $c, $method, array $params = array())

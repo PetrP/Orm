@@ -25,8 +25,8 @@ class ArrayCollection_toCollection_Test extends ArrayCollection_Base_Test
 		$this->assertInstanceOf('Orm\ArrayCollection', $c);
 		$this->assertSame('ArrayCollection_ArrayCollection', get_class($c));
 		$this->assertNotSame($cOrigin, $c);
-		$this->assertAttributeSame($cOrigin->getResult(), 'source', $c);
-		$this->assertAttributeSame(NULL, 'result', $c);
+		$this->assertSame($cOrigin->getResult(), $this->readAttribute($c, 'source'));
+		$this->assertSame(NULL, $this->readAttribute($c, 'result'));
 	}
 
 }
