@@ -42,7 +42,7 @@ class NoConventional extends Object implements IConventional
 	 */
 	public function getManyToManyTable(IRepository $first, IRepository $second)
 	{
-		return $first->getRepositoryName() . '_x_' . $second->getRepositoryName();
+		return str_replace('\\', '_', $first->getRepositoryName() . '_x_' . $second->getRepositoryName());
 	}
 
 	/**
