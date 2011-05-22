@@ -319,7 +319,7 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	 * @param string
 	 * @return int -1 or 1
 	 */
-	private function _sort($aRow, $bRow)
+	final private function _sort($aRow, $bRow)
 	{
 		foreach ($this->_sort as $tmp)
 		{

@@ -114,8 +114,6 @@ class DibiCollection extends Object implements IEntityCollection
 		return $this;
 	}
 
-
-
 	/**
 	 * Limits number of rows.
 	 * @param int
@@ -131,8 +129,9 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Generates, executes SQL query and fetches the single row.
+	 * Fetches the single row.
 	 * @return IEntity|NULL
+	 * @todo posouva cursor
 	 */
 	final public function fetch()
 	{
@@ -142,7 +141,7 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Fetches all records from table.
+	 * Fetches all records.
 	 * @return array of IEntity
 	 */
 	final public function fetchAll()
@@ -151,7 +150,7 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Fetches all records from table and returns associative tree.
+	 * Fetches all records and returns associative tree.
 	 * @param string associative descriptor
 	 * @return array
 	 */
@@ -161,7 +160,7 @@ class DibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Fetches all records from table like $key => $value pairs.
+	 * Fetches all records like $key => $value pairs.
 	 * @param string associative key
 	 * @param string value
 	 * @return array
