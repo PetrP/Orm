@@ -3,7 +3,8 @@
 namespace Orm;
 
 use Nette\Object;
-use InvalidArgumentException;
+use Nette\InvalidArgumentException;
+use Nette\NotSupportedException;
 
 class FetchAssoc extends Object
 {
@@ -40,10 +41,6 @@ class FetchAssoc extends Object
 			}
 		}
 
-		if ($as === '->') { // must not be last
-			array_pop($assoc);
-		}
-
 		if (empty($assoc)) {
 			$assoc[] = '[]';
 		}
@@ -62,14 +59,7 @@ class FetchAssoc extends Object
 					continue 2;
 
 				} elseif ($as === '->') { // "object" node
-					if ($x === NULL) {
-						$x = clone $row;
-						$x = & $x->{$assoc[$i+1]};
-						$x = NULL; // prepare child node
-					} else {
-						$x = & $x->{$assoc[$i+1]};
-					}
-
+					throw new NotSupportedException('FetchAssoc "object" node (->) is not supported');
 				} elseif ($as !== '|') { // associative-array node
 					$x = & $x[$row->$as];
 				}
@@ -99,20 +89,6 @@ class FetchAssoc extends Object
 		$data = NULL;
 		$assoc = explode(',', $assoc);
 
-		// strip leading = and @
-		$leaf = '@';  // gap
-		$last = count($assoc) - 1;
-		while ($assoc[$last] === '=' || $assoc[$last] === '@') {
-			$leaf = $assoc[$last];
-			unset($assoc[$last]);
-			$last--;
-
-			if ($last < 0) {
-				$assoc[] = '#';
-				break;
-			}
-		}
-
 		do {
 			$x = & $data;
 
@@ -121,35 +97,16 @@ class FetchAssoc extends Object
 					$x = & $x[];
 
 				} elseif ($as === '=') { // "record" node
-					if ($x === NULL) {
-						$x = $row->toArray();
-						$x = & $x[ $assoc[$i+1] ];
-						$x = NULL; // prepare child node
-					} else {
-						$x = & $x[ $assoc[$i+1] ];
-					}
-
+					throw new NotSupportedException('FetchAssoc "record" node (=) is not supported');
 				} elseif ($as === '@') { // "object" node
-					if ($x === NULL) {
-						$x = clone $row;
-						$x = & $x->{$assoc[$i+1]};
-						$x = NULL; // prepare child node
-					} else {
-						$x = & $x->{$assoc[$i+1]};
-					}
-
-
+					throw new NotSupportedException('FetchAssoc "object" node (@) is not supported');
 				} else { // associative-array node
 					$x = & $x[$row->$as];
 				}
 			}
 
 			if ($x === NULL) { // build leaf
-				if ($leaf === '=') {
-					$x = $row->toArray();
-				} else {
-					$x = $row;
-				}
+				$x = $row;
 			}
 
 		} while ($row = next($rows));
