@@ -2,7 +2,7 @@
 
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
+require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
  * @covers Orm\SqlConventional::getManyToManyTable

@@ -2,40 +2,42 @@
 
 use Nette\Utils\Html;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
+require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers Orm\SqlConventional::formatStorageToEntity
- * @covers Orm\SqlConventional::entityFormat
+ * @covers Orm\SqlConventional::formatEntityToStorage
+ * @covers Orm\SqlConventional::storageFormat
  */
-class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatEntityToStorage_Test
+class SqlConventional_formatEntityToStorage_Test extends TestCase
 {
+	protected $c;
+	protected function setUp()
+	{
+		$this->c = new MockSqlConventional;
+	}
 
 	protected function t($entry, $expected)
 	{
-		$tmp = (string) key($this->c->formatStorageToEntity(array($entry => NULL)));
+		$tmp = (string) key($this->c->formatEntityToStorage(array($entry => NULL)));
 		$this->assertSame($expected, $tmp);
 		return $tmp;
 	}
 
 	protected function tt(array $entry, array $expected)
 	{
-		$this->assertSame($expected, $this->c->formatStorageToEntity($entry));
+		$this->assertSame($expected, $this->c->formatEntityToStorage($entry));
 	}
 
 	public function test()
 	{
 		$this->t('id', 'id');
-		$this->t('same_thing', 'sameThing');
-		$this->t('sameThing', 'samething');
-		$this->t('same1_thing', 'same1Thing');
-		$this->t('a_b_c', 'aBC');
+		$this->t('sameThing', 'same_thing');
+		$this->t('same_thing', 'same_thing');
+		$this->t('same1Thing', 'same1_thing');
+		$this->t('ABC', 'a_b_c');
 		$this->t('123', '123');
-		$this->t('1b_c', '1bC');
-		$this->t('same_thing_same_thing', 'sameThingSameThing');
-
-		$this->t('_a_b_c', 'ABC');
-		$this->t('__a_b_c', '_ABC');
+		$this->t('1bC', '1b_c');
+		$this->t('sameThingSameThing', 'same_thing_same_thing');
 	}
 
 	public function testSpecialChar()
@@ -54,14 +56,14 @@ class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatE
 		$this->tt(array(
 			'id' => 123,
 			'text' => 'string',
-			'bla_bla' => $object = new Html,
-			'xx_x' => NULL,
-			'true' => false,
+			'blaBla' => $object = new Html,
+			'XxX' => NULL,
+			'True' => false,
 		), array(
 			'id' => 123,
 			'text' => 'string',
-			'blaBla' => $object,
-			'xxX' => NULL,
+			'bla_bla' => $object,
+			'xx_x' => NULL,
 			'true' => false,
 		));
 	}
@@ -95,27 +97,7 @@ class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatE
 	 */
 	public function testFk()
 	{
-		$this->t('aaa_id', 'aaa');
-		$this->t('b_b_b_id', 'bBB');
-	}
-
-	/** bug s cache */
-	public function testCacheBug()
-	{
-		parent::t('aaa_bbb', 'aaa_bbb');
-		$this->t('aaa_bbb', 'aaaBbb');
-
-		parent::t('aaa', 'aaa_id');
-		$this->t('aaa', 'aaa');
-
-
-		$this->t('aaa_id', 'aaa');
-		parent::t('aaa_id', 'aaa_id');
-	}
-
-	public function testNotSame()
-	{
-		$this->t(parent::t('AAA', 'a_a_a'), 'aAA');
-		parent::t($this->t('_abc', 'Abc'), 'abc');
+		$this->t('aaa', 'aaa_id');
+		$this->t('bBB', 'b_b_b_id');
 	}
 }
