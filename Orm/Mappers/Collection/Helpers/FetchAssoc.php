@@ -2,46 +2,52 @@
 
 namespace Orm;
 
-use Nette\Object;
 use Nette\InvalidArgumentException;
 use Nette\NotSupportedException;
 
-class FetchAssoc extends Object
+class FetchAssoc
 {
 
 	/**
-	 * Fetches all records from table and returns associative tree.
+	 * Returns associative tree.
 	 * Examples:
-	 * - associative descriptor: col1[]col2->col3
-	 *   builds a tree:          $tree[$val1][$index][$val2]->col3[$val3] = {record}
-	 * - associative descriptor: col1|col2->col3=col4
-	 *   builds a tree:          $tree[$val1][$val2]->col3[$val3] = val4
-	 * @param  string  associative descriptor
-	 * @return DibiRow
+	 * - associative descriptor: col1[]col2|col3
+	 *   builds a tree:          $tree[$val1][$index][$val2][$val3] = {record}
+	 * - associative descriptor: col1|col2|col3=col4
+	 *   builds a tree:          $tree[$val1][$val2][$val3] = val4
+	 * @param array of IEntity
+	 * @param string associative descriptor
+	 * @return array
 	 * @throws InvalidArgumentException
+	 * @throws NotSupportedException for modifer '->'
+	 * Based on DibiResult::fetchAssoc()
 	 */
 	final public static function apply(array $rows, $assoc)
 	{
-		if (strpos($assoc, ',') !== FALSE) {
-			return self::oldFetchAssoc($rows, $assoc);
-		}
-
 		reset($rows);
 		$row = current($rows);
 		if (!$row) return array();  // empty result set
+
+		if (strpos($assoc, ',') !== FALSE)
+		{
+			return self::oldFetchAssoc($rows, $assoc, $row);
+		}
 
 		$data = NULL;
 		$assoc = preg_split('#(\[\]|->|=|\|)#', $assoc, NULL, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
 		// check columns
-		foreach ($assoc as $as) {
+		foreach ($assoc as $as)
+		{
 			// offsetExists ignores NULL in PHP 5.2.1, isset() surprisingly NULL accepts
-			if ($as !== '[]' && $as !== '=' && $as !== '->' && $as !== '|' && !$row->hasParam($as)) {
+			if ($as !== '[]' AND $as !== '=' AND $as !== '->' AND $as !== '|' AND !$row->hasParam($as))
+			{
 				throw new InvalidArgumentException("Unknown column '$as' in associative descriptor.");
 			}
 		}
 
-		if (empty($assoc)) {
+		if (empty($assoc))
+		{
 			$assoc[] = '[]';
 		}
 
@@ -50,22 +56,30 @@ class FetchAssoc extends Object
 			$x = & $data;
 
 			// iterative deepening
-			foreach ($assoc as $i => $as) {
-				if ($as === '[]') { // indexed-array node
+			foreach ($assoc as $i => $as)
+			{
+				if ($as === '[]') // indexed-array node
+				{
 					$x = & $x[];
 
-				} elseif ($as === '=') { // "value" node
+				}
+				else if ($as === '=') // "value" node
+				{
 					$x = $row->{$assoc[$i+1]};
 					continue 2;
-
-				} elseif ($as === '->') { // "object" node
+				}
+				else if ($as === '->') // "object" node
+				{
 					throw new NotSupportedException('FetchAssoc "object" node (->) is not supported');
-				} elseif ($as !== '|') { // associative-array node
+				}
+				else if ($as !== '|') // associative-array node
+				{
 					$x = & $x[$row->$as];
 				}
 			}
 
-			if ($x === NULL) { // build leaf
+			if ($x === NULL) // build leaf
+			{
 				$x = $row;
 			}
 
@@ -75,37 +89,49 @@ class FetchAssoc extends Object
 		return $data;
 	}
 
-
-
 	/**
 	 * @deprecated
+	 * Returns associative tree.
+	 * Examples:
+	 * - associative descriptor: col1,#,col2,col3
+	 *   builds a tree:          $tree[$val1][$index][$val2][$val3] = {record}
+	 * @param array of IEntity
+	 * @param string associative descriptor
+	 * @param IEntity first one
+	 * @return array
+	 * @throws NotSupportedException for modifer '=' and '@'
+	 * Based on DibiResult::oldFetchAssoc()
 	 */
-	private static function oldFetchAssoc(array $rows, $assoc)
+	private static function oldFetchAssoc(array $rows, $assoc, IEntity $row)
 	{
-		reset($rows);
-		$row = current($rows);
-		if (!$row) return array();  // empty result set
-
 		$data = NULL;
 		$assoc = explode(',', $assoc);
 
 		do {
 			$x = & $data;
 
-			foreach ($assoc as $i => $as) {
-				if ($as === '#') { // indexed-array node
+			foreach ($assoc as $i => $as)
+			{
+				if ($as === '#') // indexed-array node
+				{
 					$x = & $x[];
-
-				} elseif ($as === '=') { // "record" node
+				}
+				else if ($as === '=') // "record" node
+				{
 					throw new NotSupportedException('FetchAssoc "record" node (=) is not supported');
-				} elseif ($as === '@') { // "object" node
+				}
+				else if ($as === '@') // "object" node
+				{
 					throw new NotSupportedException('FetchAssoc "object" node (@) is not supported');
-				} else { // associative-array node
+				}
+				else // associative-array node
+				{
 					$x = & $x[$row->$as];
 				}
 			}
 
-			if ($x === NULL) { // build leaf
+			if ($x === NULL) // build leaf
+			{
 				$x = $row;
 			}
 
