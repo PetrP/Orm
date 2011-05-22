@@ -187,24 +187,9 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	{
 		foreach ($where as $key => $value)
 		{
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof Orm\IEntity ? $v->id : $v;'),
-						$value
-					)
-				);
-				$where[$key] = $value;
-			}
-			else if ($value instanceof IEntityCollection)
+			if ($value instanceof IEntityCollection)
 			{
 				$where[$key] = $value->fetchPairs(NULL, 'id');
-			}
-			else if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-				$where[$key] = $value;
 			}
 		}
 
@@ -212,23 +197,43 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		$result = array();
 		foreach ($all as $entity)
 		{
-			$equal = false;
 			foreach ($where as $key => $value)
 			{
 				$eValue = $entity[$key];
-				$eValue = $eValue instanceof IEntity ? (isset($eValue->id) ? $eValue->id : NULL) : $eValue;
-
-				if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
+				if ($eValue instanceof IEntity)
 				{
-					$equal = true;
+					if ($value instanceof IEntity AND $eValue === $value)
+					{
+						continue;
+					}
+					else if (is_scalar($value) AND isset($eValue->id) AND $eValue->id == $value)
+					{
+						continue;
+					}
+					else if (is_array($value))
+					{
+						if (in_array($eValue, $value, true))
+						{
+							continue;
+						}
+						else if (isset($eValue->id) AND in_array($eValue->id, $value))
+						{
+							continue;
+						}
+					}
+					continue 2;
 				}
-				else
+				else if ($value instanceof IEntity)
 				{
-					$equal = false;
-					break;
+					continue 2;
 				}
+				else if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
+				{
+					continue;
+				}
+				continue 2;
 			}
-			if ($equal)
+			if ($where)
 			{
 				$result[] = $entity;
 			}

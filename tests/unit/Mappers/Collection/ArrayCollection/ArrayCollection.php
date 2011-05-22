@@ -40,6 +40,7 @@ abstract class ArrayCollection_Base_Test extends TestCase
  * @property string|NULL $string
  * @property int|NULL $int
  * @property DateTime|NULL $date
+ * @property TestEntity|NULL $e
  */
 class ArrayCollection_Entity extends TestEntity
 {
