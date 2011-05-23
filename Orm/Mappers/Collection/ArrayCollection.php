@@ -94,7 +94,8 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	 */
 	final public function fetch()
 	{
-		$row = current($this->getResult());
+		$result = $this->getResult();
+		$row = current($result); 
 		return $row === false ? NULL : $row;
 	}
 

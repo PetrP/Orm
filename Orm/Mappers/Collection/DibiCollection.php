@@ -416,7 +416,8 @@ class DibiCollection extends Object implements IEntityCollection
 	 */
 	final protected function getConnventionalKey($key)
 	{
-		return key($this->conventional->formatEntityToStorage(array($key => NULL)));
+		$tmp = $this->conventional->formatEntityToStorage(array($key => NULL));
+		return key($tmp);
 	}
 
 	/**

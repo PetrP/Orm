@@ -118,11 +118,13 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 
 		if ($key !== NULL)
 		{
-			$key = key($conventional->formatEntityToStorage(array($key => NULL)));
+			$key = $conventional->formatEntityToStorage(array($key => NULL));
+			$key = key($key);
 		}
 		if ($value !== NULL)
 		{
-			$value = key($conventional->formatEntityToStorage(array($value => NULL)));
+			$value = $conventional->formatEntityToStorage(array($value => NULL));
+			$value = key($value);
 		}
 
 		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
@@ -218,7 +220,8 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 
 	final protected function getConnventionalKey($key)
 	{
-		return key($this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL)));
+		$tmp = $this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL));
+		return key($tmp);
 	}
 
 	// todo final count totalCount a toString a dalsi

@@ -221,7 +221,8 @@ class DibiMapper extends Mapper
 		{
 			$dibiTranslatorVersion = 'driver';
 			$r = new ReflectionMethod('DibiTranslator', '__construct');
-			if (current($r->getParameters())->name === 'connection')
+			$p = $r->getParameters();
+			if (current($p)->name === 'connection')
 			{
 				$dibiTranslatorVersion = 'connection';
 			}
@@ -377,8 +378,10 @@ class DibiMapper extends Mapper
 				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
-			$tmp['xConventionalKey'] = key($conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL)));
-			$tmp['yConventionalKey'] = key($tmp['conventional']->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][2] => NULL)));
+			$cTmp = $conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL));
+			$tmp['xConventionalKey'] = key($cTmp);
+			$cTmp = $tmp['conventional']->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][2] => NULL));
+			$tmp['yConventionalKey'] = key($cTmp);
 			$tmp['alias'] = $sourceKey;
 
 			$collection = $tmp['mapper']->findAll();
@@ -411,7 +414,8 @@ class DibiMapper extends Mapper
 		}
 		else
 		{
-			$targetConventionalKey = key($join['conventional']->formatEntityToStorage(array($targetKey => NULL)));
+			$tmp = $join['conventional']->formatEntityToStorage(array($targetKey => NULL));
+			$targetConventionalKey = key($tmp);
 			$result->key = $join['alias'] . '.' . $targetConventionalKey;
 		}
 		return $result;

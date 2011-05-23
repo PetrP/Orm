@@ -60,8 +60,8 @@ class FindByHelper
 			}
 			else
 			{
-				$key = key($conventional->formatEntityToStorage(array($key => NULL)));
-				$key =  'e.' . $key;
+				$key = $conventional->formatEntityToStorage(array($key => NULL));
+				$key =  'e.' . key($key);
 			}
 			if ($value instanceof IEntityCollection)
 			{

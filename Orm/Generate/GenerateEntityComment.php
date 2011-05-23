@@ -50,7 +50,8 @@ class GenerateEntityComment extends Object
 		foreach ($this->mapper->connection->getDriver()->getColumns($this->getTableName($this->mapper)) as $meta)
 		{
 			$meta = (object) $meta;
-			$name = key($conventional->formatStorageToEntity(array($meta->name => NULL)));
+			$tmp = $conventional->formatStorageToEntity(array($meta->name => NULL));
+			$name = key($tmp);
 			if ($name === 'id') continue;
 			$comment = array();
 

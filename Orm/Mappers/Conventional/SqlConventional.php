@@ -133,8 +133,8 @@ class SqlConventional extends Object implements IConventional
 	 */
 	public function getManyToManyParam($param)
 	{
-		$param = key($this->formatEntityToStorage(array($param => NULL)));
-		return $this->foreignKeyFormat($param);
+		$param = $this->formatEntityToStorage(array($param => NULL));
+		return $this->foreignKeyFormat(key($param));
 	}
 
 	/**
