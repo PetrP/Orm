@@ -35,12 +35,20 @@ class RepositoryContainer_getRepository_Test extends TestCase
 
 	public function testNamespace()
 	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
 		$this->assertInstanceOf('RepositoryContainer_namespace\RepositoryContainer_namespaceRepository', $this->m->{'RepositoryContainer_namespace\RepositoryContainer_namespace'});
 		$this->assertSame($this->m->getRepository('RepositoryContainer_namespace\RepositoryContainer_namespace'), $this->m->{'RepositoryContainer_namespace\RepositoryContainer_namespace'});
 	}
 
 	public function testNamespaceRegister()
 	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
 		$this->m->register('rcn', 'RepositoryContainer_namespace\RepositoryContainer_namespaceRepository');
 		$this->assertInstanceOf('RepositoryContainer_namespace\RepositoryContainer_namespaceRepository', $this->m->rcn);
 		$this->assertSame($this->m->getRepository('rcn'), $this->m->rcn);

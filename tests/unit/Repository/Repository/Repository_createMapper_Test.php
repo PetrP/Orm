@@ -30,7 +30,12 @@ class Repository_createMapper_Test extends TestCase
 
 	public function testNamespace()
 	{
-		$r = new Repository_createMapper\Repository_createMapperRepository($this->m);
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
+		$c = 'Repository_createMapper\Repository_createMapperRepository'; // aby nebyl parse error v php52
+		$r = new $c($this->m);
 		$this->assertInstanceOf('Repository_createMapper\Repository_createMapperMapper', $r->getMapper());
 	}
 

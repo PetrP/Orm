@@ -56,7 +56,7 @@ class Mapper_call_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 52: pri protected misto volani __call vyhazuje fatal error');
+			$this->markTestIncomplete('php 5.2: pri protected misto volani __call vyhazuje fatal error');
 		}
 		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Mapper_call_Mapper::getByProtected()');
 		$this->m->getByProtected('abc');
