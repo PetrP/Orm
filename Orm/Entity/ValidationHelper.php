@@ -4,6 +4,8 @@ namespace Orm;
 
 use ArrayObject;
 use Nette\NotImplementedException;
+use Nette\Tools;
+use Nette\DateTime;
 
 /**
  * Helper ktery pouziva entita pro validovani.
@@ -143,11 +145,11 @@ class ValidationHelper
 	{
 		if (class_exists('Nette\Tools'))
 		{
-			return \Nette\Tools::createDateTime($time);
+			return Tools::createDateTime($time);
 		}
 		else if (class_exists('Nette\DateTime'))
 		{
-			return \Nette\DateTime::from($time);
+			return DateTime::from($time);
 		}
 		throw new NotImplementedException;
 	}
