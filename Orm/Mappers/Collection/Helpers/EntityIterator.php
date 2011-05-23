@@ -18,8 +18,7 @@ class EntityIterator extends IteratorIterator implements Countable
 
 	public function current()
 	{
-		$row = parent::current();
-		return $this->repository->createEntity($row === false ? NULL : $row);
+		return $this->repository->createEntity(parent::current());
 	}
 
 	public function count()
