@@ -5,5 +5,9 @@ require_once dirname(__FILE__) . '/libs/HttpPHPUnit/init.php';
 
 $http = new HttpPHPUnit;
 $http->structure();
-$http->coverage(dirname(__FILE__) . '/../Orm', dirname(__FILE__) . '/report');
+
+$c = $http->coverage(dirname(__FILE__) . '/../Orm', dirname(__FILE__) . '/report');
+$c->filter()->removeFileFromWhitelist(dirname(__FILE__) . '/../Orm/Relationships/bc1m.php');
+$c->filter()->removeFileFromWhitelist(dirname(__FILE__) . '/../Orm/Relationships/bcmm.php');
+
 $http->run(dirname(__FILE__) . '/unit');
