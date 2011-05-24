@@ -1,6 +1,7 @@
 <?php
 
 use Orm\RepositoryContainer;
+use Orm\ArrayCollection;
 
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
@@ -151,4 +152,14 @@ class ArrayCollection_findBy_Test extends ArrayCollection_Base_Test
 		$this->assertSame(array($this->e[2], $this->e[3]), $c->fetchAll());
 	}
 
+	public function testEntityInByCollection()
+	{
+		$model = new RepositoryContainer;
+		$e1 = $model->tests->getById(1);
+		$e2 = $model->tests->getById(2);
+		$this->e[1]->e = $e1;
+		$this->e[0]->e = $e2;
+		$c = $this->c->findBy(array('e' => new ArrayCollection(array($e1, $e2))));
+		$this->assertSame(array($this->e[0], $this->e[1]), $c->fetchAll());
+	}
 }

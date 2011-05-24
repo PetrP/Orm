@@ -85,4 +85,11 @@ class Mapper_getCollectionClass_Test extends TestCase
 		$this->m->mockGetCollectionClass();
 	}
 
+	public function testNotInstantiable()
+	{
+		$this->m->cc = 'Mapper_getCollectionClass_BadCollection';
+		$this->setExpectedException('Nette\InvalidStateException', "Collection 'Mapper_getCollectionClass_BadCollection' isn't instantiable");
+		$this->m->mockGetCollectionClass();
+	}
+
 }

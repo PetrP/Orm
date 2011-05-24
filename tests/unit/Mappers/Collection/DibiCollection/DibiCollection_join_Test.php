@@ -8,6 +8,8 @@ require_once dirname(__FILE__) . '/../../../../boot.php';
 /**
  * @covers Orm\DibiCollection::join
  * @covers Orm\DibiMapper::getJoinInfo
+ * @covers Orm\DibiCollection::orderBy
+ * @covers Orm\FindByHelper::dibiProcess
  */
 class DibiCollection_join_Test extends TestCase
 {

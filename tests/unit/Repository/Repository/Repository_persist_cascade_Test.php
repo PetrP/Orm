@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
  * @covers Orm\Repository::persist
+ * @covers Orm\Repository::getFkForEntity
  */
 class Repository_persist_cascade_Test extends TestCase
 {

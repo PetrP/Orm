@@ -6,6 +6,7 @@ use Orm\Repository;
 use Orm\ManyToMany;
 use Orm\IRepository;
 use Orm\RepositoryContainer;
+use Orm\IEntity;
 
 class ManyToMany_Entity extends Entity
 {
@@ -56,4 +57,17 @@ abstract class ManyToMany_Test extends TestCase
 		$this->t(10,11,12,13);
 	}
 
+}
+
+class IgnoreManyToMany extends ManyToMany
+{
+	public $ignore;
+	protected function ignore(IEntity $entity)
+	{
+		if ($this->ignore)
+		{
+			return true;
+		}
+		return parent::ignore($entity);
+	}
 }

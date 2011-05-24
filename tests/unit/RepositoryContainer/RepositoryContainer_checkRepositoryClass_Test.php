@@ -39,6 +39,12 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad2');
 	}
 
+	public function testNotInstantiable()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad3' isn't instantiable");
+		$this->t('RepositoryContainer_checkRepositoryClass_Bad3');
+	}
+
 	public function testEmpty()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "Repository '' doesn't exists");

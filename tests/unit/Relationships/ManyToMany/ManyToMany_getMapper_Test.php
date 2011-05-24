@@ -8,6 +8,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 /**
  * @covers Orm\ManyToMany::getMapper
  * @covers Orm\ArrayManyToManyMapper::setValue
+ * @covers Orm\ArrayManyToManyMapper::setParams
  */
 class ManyToMany_getMapper_Test extends ManyToMany_Test
 {
@@ -57,6 +58,12 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 		$this->m2m = new ManyToMany_getMapper_ManyToMany(new TestEntity, $this->r, 'param', 'param', true, array(10,11));
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 		$this->assertSame(NULL, $this->m2m->gm()->getValue());
+	}
+
+	public function testNotMappedByParent()
+	{
+		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', false);
+		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
 
 }

@@ -51,3 +51,11 @@ class Mapper_getCollectionClass_Mapper extends ArrayMapper
 		return parent::createCollectionClass();
 	}
 }
+
+class Mapper_getCollectionClass_BadCollection extends Mapper_getCollectionClass_OtherCollection
+{
+	protected function __construct()
+	{
+
+	}
+}

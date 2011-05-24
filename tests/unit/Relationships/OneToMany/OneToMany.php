@@ -5,6 +5,7 @@ use Orm\Repository;
 use Orm\OneToMany;
 use Orm\IRepository;
 use Orm\RepositoryContainer;
+use Orm\IEntity;
 
 /**
  * @property TestEntity $param {m:1 tests}
@@ -100,4 +101,17 @@ abstract class OneToMany_Test extends TestCase
 		$this->t(10,11,12,13);
 	}
 
+}
+
+class IgnoreOneToMany extends OneToMany
+{
+	public $ignore;
+	protected function ignore(IEntity $entity)
+	{
+		if ($this->ignore)
+		{
+			return true;
+		}
+		return parent::ignore($entity);
+	}
 }

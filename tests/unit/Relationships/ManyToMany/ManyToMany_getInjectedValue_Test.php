@@ -1,5 +1,7 @@
 <?php
 
+use Orm\DibiManyToManyMapper;
+
 require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
@@ -12,6 +14,16 @@ class ManyToMany_getInjectedValue_Test extends ManyToMany_Test
 	public function test()
 	{
 		$this->assertSame(array(10=>10,11=>11,12=>12,13=>13), $this->m2m->getInjectedValue());
+	}
+
+	public function testNotArray()
+	{
+		$m = new DibiManyToManyMapper(new DibiConnection(array('lazy' => true)));
+		$m->firstParam = 'foo';
+		$m->secondParam = 'bar';
+		$m->table = 'foobar';
+		$this->e->generatingRepository->mapper->mmm = $m;
+		$this->assertNull($this->m2m->getInjectedValue());
 	}
 
 }
