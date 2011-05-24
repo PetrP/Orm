@@ -66,8 +66,7 @@ class EntityValue_clone_Test extends TestCase
 		try {
 			$this->assertSame('2011-11-11', $e->date->format('Y-m-d'));
 		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
-			// bug, udrzuje se reference
-			$this->markTestSkipped();
+			$this->markTestSkipped('bug, udrzuje se reference');
 		}
 	}
 
