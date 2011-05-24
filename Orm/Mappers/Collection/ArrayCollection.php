@@ -94,7 +94,7 @@ class ArrayCollection extends Object implements IEntityCollection
 	final public function fetch()
 	{
 		$result = $this->getResult();
-		$row = current($result); 
+		$row = current($result);
 		return $row === false ? NULL : $row;
 	}
 
