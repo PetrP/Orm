@@ -319,11 +319,11 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 	 * usort comparison function
 	 * @see self::getResult()
 	 * @see self::$_sort
-	 * @param string
-	 * @param string
+	 * @param IEntity
+	 * @param IEntity
 	 * @return int -1 or 1
 	 */
-	final private function _sort($aRow, $bRow)
+	final private function _sort(IEntity $aRow, IEntity $bRow)
 	{
 		foreach ($this->_sort as $tmp)
 		{
