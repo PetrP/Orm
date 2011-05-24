@@ -5,6 +5,7 @@ namespace Orm;
 use Nette\Object;
 use Nette\Reflection\AnnotationsParser;
 use Nette\InvalidStateException;
+use Nette\InvalidArgumentException;
 use Exception;
 use ReflectionClass;
 
@@ -316,7 +317,7 @@ class AnnotationMetaData extends Object
 				}
 				else if (strpos($d, '::') !== false)
 				{
-					throw new Exception();
+					throw new InvalidArgumentException("'{$this->class}' '{enum {$string}}': Constant $d not exists");
 				}
 				else
 				{
@@ -358,7 +359,7 @@ class AnnotationMetaData extends Object
 		}
 		else if (strpos($string, '::') !== false)
 		{
-			throw new Exception();
+			throw new InvalidArgumentException("'{$this->class}' '{default {$string}}': Constant $string not exists");
 		}
 		else
 		{

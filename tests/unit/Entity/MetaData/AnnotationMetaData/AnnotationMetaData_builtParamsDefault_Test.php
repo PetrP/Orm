@@ -30,4 +30,10 @@ class AnnotationMetaData_builtParamsDefault_Test extends TestCase
 		$this->assertEquals(array('yyy'), $this->p->builtParamsDefault("self::YYY"));
 	}
 
+	public function testUnexistsConstant()
+	{
+		$this->setExpectedException('Nette\InvalidArgumentException', "'MetaData_Test_Entity' '{default SameClass::UNEXISTS_CONSTANT}': Constant SameClass::UNEXISTS_CONSTANT not exists");
+		$this->p->builtParamsDefault('SameClass::UNEXISTS_CONSTANT');
+	}
+
 }
