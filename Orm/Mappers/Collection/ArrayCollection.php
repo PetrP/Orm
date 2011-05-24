@@ -5,7 +5,6 @@ namespace Orm;
 use Nette\Object;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
-use Nette\DeprecatedException;
 use Dibi;
 use DateTime;
 use ArrayIterator;
@@ -14,7 +13,7 @@ require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
-class ArrayCollection extends Object implements IEntityCollection, ArrayDataSource
+class ArrayCollection extends Object implements IEntityCollection
 {
 
 	/** @var array */
@@ -404,15 +403,4 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 		return $r;
 	}
 
-
-	/** @deprecated */
-	final public function where($cond) {throw new DeprecatedException('Use Orm\ArrayCollection::findBy() and getBy() instead');;}
-	/** @deprecated */
-	final public function fetchSingle() {throw new DeprecatedException;}
-	/** @deprecated */
-	final public function select($col, $as = NULL) {throw new DeprecatedException;}
-	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\ArrayCollection::toArrayCollection() instead');}
-	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use Orm\ArrayCollection::toCollection() instead');}
 }

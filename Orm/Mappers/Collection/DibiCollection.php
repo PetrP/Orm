@@ -7,7 +7,6 @@ use Dibi;
 use DibiConnection;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
-use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
@@ -429,8 +428,4 @@ class DibiCollection extends Object implements IEntityCollection
 		throw new NotImplementedException();
 	}
 
-	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\DibiCollection::toArrayCollection() instead');}
-	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use Orm\DibiCollection::toDataSourceCollection() instead');}
 }

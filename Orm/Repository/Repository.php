@@ -5,7 +5,6 @@ namespace Orm;
 use Nette\Object;
 use UnexpectedValueException;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 use Exception;
 
 require_once dirname(__FILE__) . '/IRepository.php';
@@ -549,9 +548,4 @@ abstract class Repository extends Object implements IRepository
 		return $fks[$entityName];
 	}
 
-
-	/** @deprecated */
-	final public function getEntityName(array $data = NULL){throw new DeprecatedException('Use Orm\Repository::getEntityClassName() instead');}
-	/** @deprecated */
-	final public function delete($entity){throw new DeprecatedException('Use Orm\Repository::remove() instead');}
 }

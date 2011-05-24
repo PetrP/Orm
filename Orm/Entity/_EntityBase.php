@@ -4,7 +4,6 @@ namespace Orm;
 
 use ArrayIterator;
 use Nette\NotSupportedException;
-use Nette\DeprecatedException;
 
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
@@ -126,24 +125,4 @@ abstract class _EntityBase extends _EntityValue
 		throw new NotSupportedException();
 	}
 
-
-
-	/** @deprecated @see EntityToArray::AS_ID */
-	const ENTITY_TO_ID = 'deprecated';
-	/** @deprecated @see EntityToArray::AS_ARRAY */
-	const ENTITY_TO_ARRAY = 'deprecated';
-	/** @deprecated @see NULL */
-	const EXISTS = 'deprecated';
-	/** @deprecated @see MetaData::READ */
-	const READ = 'deprecated';
-	/** @deprecated @see MetaData::WRITE */
-	const WRITE = 'deprecated';
-	/** @deprecated @see MetaData::READWRITE */
-	const READWRITE = 'deprecated';
-	/** @deprecated */
-	final protected function check(){throw new DeprecatedException('Use Orm\Entity::onBeforePersist() instead');}
-	/** @deprecated */
-	final public function toPlainArray(){throw new DeprecatedException('Use Orm\Entity::toArray(Orm\EntityToArray::AS_ID) instead');}
-	/** @deprecated */
-	final protected static function createEntityRules($entityClass){throw new DeprecatedException('Use Orm\Entity::createMetaData instead');}
 }

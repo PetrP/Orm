@@ -5,7 +5,6 @@ namespace Orm;
 use Nette\Object;
 use Nette\Reflection\AnnotationsParser;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 use Exception;
 use ReflectionClass;
 
@@ -181,11 +180,6 @@ class AnnotationMetaData extends Object
 				{
 					$string = current($tmp);
 					throw new InvalidStateException("Invalid annotation format '@$annotation $string' in $class");
-				}
-
-				if ($annotation === 'fk' OR $annotation === 'foreignKey')
-				{
-					throw new DeprecatedException("Annotation @fk and @foreignKey is deprecated use {1:1 repo} instead; in {$class}.");
 				}
 			}
 		}

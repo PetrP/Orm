@@ -5,7 +5,6 @@ namespace Orm;
 use Nette\Object;
 use InvalidArgumentException;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 
 /**
  * Udalosti
@@ -168,10 +167,4 @@ abstract class _EntityEvent extends Object
 		$entity->checkEvent = NULL;
 	}
 
-
-
-	/** @deprecated */
-	final protected function onBeforeDelete(IRepository $repository){throw new DeprecatedException('Use Orm\Entity::onBeforeRemove() instead');}
-	/** @deprecated */
-	final protected function onAfterDelete(IRepository $repository){throw new DeprecatedException('Use Orm\Entity::onAfterRemove() instead');}
 }

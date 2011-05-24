@@ -3,7 +3,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\DeprecatedException;
 
 require_once dirname(__FILE__) . '/IConventional.php';
 
@@ -55,10 +54,4 @@ class NoConventional extends Object implements IConventional
 		return $param;
 	}
 
-	/** @deprecated */
-	final public function format($data){throw new DeprecatedException('Use Orm\NoConventional::formatEntityToStorage() instead');}
-	/** @deprecated */
-	final public function unformat($data){throw new DeprecatedException('Use Orm\NoConventional::formatStorageToEntity() instead');}
-	/** @deprecated */
-	final public function getManyToManyTableName(IRepository $first, IRepository $second){throw new DeprecatedException('Use Orm\NoConventional::getManyToManyTable() instead');}
 }

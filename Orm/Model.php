@@ -240,8 +240,3 @@ class RepositoryContainer extends Object
 	}
 
 }
-
-/** @deprecated */
-abstract class RepositoriesCollection extends RepositoryContainer {}
-/** @deprecated */
-abstract class AbstractModel extends RepositoriesCollection {}

@@ -5,14 +5,13 @@ namespace Orm;
 use DibiDataSourceX;
 use DibiRow;
 use DateTime;
-use Nette\DeprecatedException;
 use DibiConnection;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
-class DataSourceCollection extends DibiDataSourceX implements IEntityCollection, DibiModelDataSource
+class DataSourceCollection extends DibiDataSourceX implements IEntityCollection
 {
 	/** @var Repository */
 	private $repository;
@@ -225,9 +224,4 @@ class DataSourceCollection extends DibiDataSourceX implements IEntityCollection,
 	}
 
 	// todo final count totalCount a toString a dalsi
-
-	/** @deprecated */
-	final public function toArrayDataSource(){throw new DeprecatedException('Use Orm\DataSourceCollection::toArrayCollection() instead');}
-	/** @deprecated */
-	final public function toDataSource(){throw new DeprecatedException('Use Orm\DataSourceCollection::toCollection() instead');}
 }

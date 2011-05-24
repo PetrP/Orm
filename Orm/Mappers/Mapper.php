@@ -4,7 +4,6 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 use ReflectionClass;
 
 require_once dirname(__FILE__) . '/IMapper.php';
@@ -189,8 +188,4 @@ abstract class Mapper extends Object implements IMapper
 	 */
 	abstract protected function begin();
 
-	/** @deprecated */
-	final public function delete(IEntity $entity){throw new DeprecatedException('Use Orm\Mapper::remove() instead');}
-	/** @deprecated */
-	final public function createDefaultManyToManyMapper(){throw new DeprecatedException('Use Orm\Mapper::createManyToManyMapper() instead');}
 }

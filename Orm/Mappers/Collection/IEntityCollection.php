@@ -6,9 +6,7 @@ use Countable;
 use IteratorAggregate;
 use Dibi;
 
-require_once dirname(__FILE__) . '/bc.php';
-
-interface IEntityCollection extends Countable, IteratorAggregate, IModelDataSource
+interface IEntityCollection extends Countable, IteratorAggregate
 {
 	public function orderBy($row, $direction = Dibi::ASC);
 	public function applyLimit($limit, $offset = NULL);
