@@ -336,7 +336,7 @@ class MetaDataProperty extends Object
 		}
 		else if (strpos($factory, '::'))
 		{
-			$factory = callback($this->builtSelf($factory));
+			$factory = callback($factory);
 		}
 		else if (!$factory)
 		{

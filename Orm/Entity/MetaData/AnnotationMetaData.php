@@ -367,4 +367,15 @@ class AnnotationMetaData extends Object
 		return array($string);
 	}
 
+	/**
+	 * Umoznuje zapis self::method
+	 * @param mixed
+	 * @return mixed
+	 * @see MetaDataProperty::setInjection()
+	 */
+	public function builtParamsInjection($string)
+	{
+		return array($this->builtSelf($string));
+	}
+
 }
