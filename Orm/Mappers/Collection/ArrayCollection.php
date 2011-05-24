@@ -382,7 +382,16 @@ class ArrayCollection extends Object implements IEntityCollection, ArrayDataSour
 			}
 			else
 			{
-				throw new InvalidArgumentException("'$key' is not sortable key");
+				$tmp = 'unknown';
+				foreach (array($a, $b) as $ab)
+				{
+					if (!is_scalar($ab) AND !($ab instanceof DateTime) AND $ab !== NULL)
+					{
+						$tmp = is_object($ab) ? get_class($ab) : gettype($ab);
+						break;
+					}
+				}
+				throw new InvalidArgumentException(get_class($aRow) . "::\$$key contains non-sortable value, $tmp");
 			}
 
 			if ($r !== 0)

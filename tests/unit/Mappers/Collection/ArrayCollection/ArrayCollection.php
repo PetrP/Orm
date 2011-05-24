@@ -45,6 +45,7 @@ abstract class ArrayCollection_Base_Test extends TestCase
  * @property int|NULL $int
  * @property DateTime|NULL $date
  * @property TestEntity|NULL $e
+ * @property mixed $mixed
  */
 class ArrayCollection_Entity extends TestEntity
 {
@@ -53,5 +54,10 @@ class ArrayCollection_Entity extends TestEntity
 		parent::__construct();
 		$this->int = $int;
 		$this->string = $string;
+	}
+
+	public function getGetter()
+	{
+		return $this->int;
 	}
 }

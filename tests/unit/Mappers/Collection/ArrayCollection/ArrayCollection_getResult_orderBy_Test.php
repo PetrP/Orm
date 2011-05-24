@@ -1,5 +1,7 @@
 <?php
 
+use Orm\ArrayCollection;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
@@ -143,4 +145,54 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$this->c->getResult();
 	}
 
+	public function testBadValue()
+	{
+		$this->e[0]->mixed = new ArrayIterator(array());
+		$this->e[1]->mixed = new ArrayIterator(array());
+		$this->c->orderBy('mixed');
+		$this->setExpectedException('Nette\InvalidArgumentException', "ArrayCollection_Entity::\$mixed contains non-sortable value, ArrayIterator");
+		$this->c->getResult();
+	}
+
+	public function testGetter()
+	{
+		$this->c->orderBy('getter');
+		$this->assertSame(array(
+			$this->e[1],
+			$this->e[0],
+			$this->e[2],
+			$this->e[3],
+		), $this->c->getResult());
+	}
+
+	public function testSubEntity()
+	{
+		$this->e[0]->mixed = $this->e[2];
+		$this->e[1]->mixed = $this->e[3];
+		$this->c->orderBy('mixed->string');
+		$this->assertSame(array(
+			$this->e[2], // NULL
+			$this->e[3], // NULL
+			$this->e[0], // a
+			$this->e[1], // b
+		), $this->c->getResult());
+	}
+
+	public function testSubEntityBadKeyA()
+	{
+		$this->e[0]->mixed = $this->e[2];
+		$this->e[1]->mixed = $this->e[3];
+		$this->c->orderBy('mixed->bad');
+		$this->setExpectedException('Nette\InvalidArgumentException', "'bad' is not key in 'mixed->bad'");
+		$this->c->getResult();
+	}
+
+	public function testSubEntityBadKeyB()
+	{
+		$this->e[0]->mixed = $this->e[2];
+		$c = new ArrayCollection(array(new TestEntity, $this->e[0]));
+		$c->orderBy('mixed->string');
+		$this->setExpectedException('Nette\InvalidArgumentException', "'mixed' is not key in 'mixed->string'");
+		$c->getResult();
+	}
 }
