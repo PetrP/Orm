@@ -48,4 +48,94 @@ class EntityValue_setValueHelper_Test extends TestCase
 		$this->assertSame(NULL, $this->e->fk2);
 	}
 
+	public function testEnumString()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$e->enumString = 'a';
+		$this->assertSame('a', $e->enumString);
+		$e->enumString = 'b';
+		$this->assertSame('b', $e->enumString);
+	}
+
+	public function testEnumStringBad1()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_setValueHelper_Entity::\$enumString must be ''a', 'b'', 'c' given");
+		$e->enumString = 'c';
+	}
+
+	public function testEnumStringBad2()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_setValueHelper_Entity::\$enumString must be ''a', 'b'', 'NULL' given");
+		$e->enumString = NULL;
+	}
+
+	public function testEnumInt()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$e->enumInt = 1;
+		$this->assertSame(1, $e->enumInt);
+		$e->enumInt = 2;
+		$this->assertSame(2, $e->enumInt);
+		$e->enumInt = '1';
+		$this->assertSame(1, $e->enumInt);
+		$e->enumInt = '2';
+		$this->assertSame(2, $e->enumInt);
+	}
+
+	public function testEnumIntBad1()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_setValueHelper_Entity::\$enumInt must be '1, 2', '3' given");
+		$e->enumInt = 3;
+	}
+
+	public function testEnumIntBad2()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_setValueHelper_Entity::\$enumInt must be '1, 2', 'c' given");
+		$e->enumInt = 'c';
+	}
+
+	public function testEnumIntBad3()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_setValueHelper_Entity::\$enumInt must be '1, 2', 'NULL' given");
+		$e->enumInt = NULL;
+	}
+
+	public function testEnumIntZero()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$e->enumIntZero = 0;
+		$this->assertSame(0, $e->enumIntZero);
+		$e->enumIntZero = 'c';
+		$this->assertSame(0, $e->enumIntZero); // bug?
+		$e->enumIntZero = NULL;
+		$this->assertSame(0, $e->enumIntZero); // bug?
+	}
+
+	public function testEnumBool()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$e->enumBool = true;
+		$this->assertSame(true, $e->enumBool);
+		$e->enumBool = false;
+		$this->assertSame(false, $e->enumBool);
+		$e->enumBool = 123;
+		$this->assertSame(true, $e->enumBool);
+		$e->enumBool = NULL;
+		$this->assertSame(false, $e->enumBool);
+		$e->enumBool = 'asdasd';
+		$this->assertSame(true, $e->enumBool);
+	}
+
+	public function testEnumNull()
+	{
+		$e = new EntityValue_setValueHelper_Entity;
+		$e->enumNull = NULL;
+		$this->assertSame(NULL, $e->enumNull);
+	}
+
 }

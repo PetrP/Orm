@@ -48,4 +48,12 @@ class MetaData_getEntityRules_Test extends TestCase
 	{
 		$this->assertInternalType('array', MetaData::getEntityRules('MetaData_Test_Entity'));
 	}
+
+	public function testRecursionCache()
+	{
+		$this->assertAttributeEmpty('cache2', 'Orm\MetaData');
+		MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity');
+		$this->assertAttributeEmpty('cache2', 'Orm\MetaData');
+	}
+
 }

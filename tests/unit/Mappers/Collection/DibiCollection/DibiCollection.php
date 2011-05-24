@@ -48,6 +48,7 @@ class DibiCollection_DibiCollection extends DibiCollection
 
 abstract class DibiCollection_Base_Test extends TestCase
 {
+	protected $model;
 	protected $r;
 	protected $m;
 	/** @var DibiCollection */
@@ -55,7 +56,8 @@ abstract class DibiCollection_Base_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->r = new DibiCollectionRepository(new RepositoryContainer);
+		$this->model = new RepositoryContainer;
+		$this->r = new DibiCollectionRepository($this->model);
 		$this->m = new DibiCollectionMapper($this->r);
 		$this->c = $this->m->findAll();
 	}
