@@ -4,7 +4,7 @@ namespace Orm;
 
 use InvalidArgumentException;
 use Nette\MemberAccessException;
-use UnexpectedValueException;
+use Nette\UnexpectedValueException;
 use Exception;
 use ReflectionMethod;
 
@@ -463,7 +463,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				$tmp = $rule['injection']->invoke($this, $xValues);
 				if (!($tmp instanceof IEntityInjection))
 				{
-					throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be 'Orm\\IEntityInjection', '" . (is_object($value) ? 'object ' . get_class($value) : (is_scalar($value) ? $value : gettype($value))) . "' given");
+					throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be 'Orm\\IEntityInjection', '" . (is_object($tmp) ? 'object ' . get_class($tmp) : (is_scalar($tmp) ? $tmp : gettype($tmp))) . "' given");
 				}
 				if ($xValues !== $value) $tmp->setInjectedValue($value);
 			}

@@ -7,6 +7,7 @@ use Orm\ManyToMany;
 use Orm\ArrayManyToManyMapper;
 use Orm\IRepository;
 use Orm\IEntity;
+use Nette\Utils\Html;
 
 /**
  * @property EntityValue_injectionEntity_ManyToMany $many {m:m EntityValue_injection}
@@ -76,5 +77,16 @@ class EntityValue_injection_ManyToManyMapper extends ArrayManyToManyMapper
 	{
 		$this->{__FUNCTION__}++;
 		return parent::setValue($value);
+	}
+}
+
+/**
+ * @property Orm\ManyToMany $i {injection self::createInjection()}
+ */
+class EntityValue_injectionBadEntity extends Entity
+{
+	public static function createInjection()
+	{
+		return new Nette\Utils\Html;
 	}
 }

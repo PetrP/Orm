@@ -120,4 +120,11 @@ class EntityValue_injection_Test extends TestCase
 		$this->e->many->persist();
 		$this->assertSame(array(3=>3), $this->e->many->getInjectedValue());
 	}
+
+	public function testBad()
+	{
+		$e = new EntityValue_injectionBadEntity;
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_injectionBadEntity::\$i must be 'Orm\\IEntityInjection', 'object Nette\\Utils\\Html' given");
+		$e->i;
+	}
 }
