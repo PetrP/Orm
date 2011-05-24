@@ -19,6 +19,8 @@ class AnnotationMetaData_builtParamsInjection_Test extends TestCase
 	{
 		$this->assertEquals(array('MetaData_Test_Entity::method'), $this->p->builtParamsInjection("MetaData_Test_Entity::method"));
 		$this->assertEquals(array('MetaData_Test_Entity::method'), $this->p->builtParamsInjection("self::method"));
+		$this->assertEquals(array('MetaData_Test_Entity::method'), $this->p->builtParamsInjection("MetaData_Test_Entity::method()"));
+		$this->assertEquals(array('MetaData_Test_Entity::method'), $this->p->builtParamsInjection("self::method()"));
 	}
 
 }
