@@ -117,10 +117,6 @@ abstract class ArrayMapper extends Mapper
 						{
 							$values[$key] = $value->id;
 						}
-						else if ($value instanceof IRelationship)
-						{
-							unset($values[$key]);
-						}
 						else if ($value instanceof DateTime)
 						{
 							$values[$key] = $value->format('c');
