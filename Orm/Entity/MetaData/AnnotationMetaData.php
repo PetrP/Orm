@@ -190,7 +190,7 @@ class AnnotationMetaData extends Object
 	 * Vola metodu na property. To je cokoli v kudrnatych zavorkach.
 	 * @internal
 	 * @param array
-	 * @see self::$property
+	 * @see MetaDataProperty::$property
 	 */
 	private function callOnProperty($match)
 	{
@@ -224,7 +224,7 @@ class AnnotationMetaData extends Object
 	 *
 	 * @param string
 	 * @return array
-	 * @see self::setOneToMany()
+	 * @see MetaDataProperty::setOneToMany()
 	 */
 	public function builtParamsOneToMany($string, $slice = 2)
 	{
@@ -241,7 +241,7 @@ class AnnotationMetaData extends Object
 	 *
 	 * @param string
 	 * @return array
-	 * @see self::setManyToMany()
+	 * @see MetaDataProperty::setManyToMany()
 	 */
 	public function builtParamsManyToMany($string)
 	{
@@ -261,8 +261,9 @@ class AnnotationMetaData extends Object
 	 * Nahradi self:: za nazev entity
 	 * @param string
 	 * @return string
-	 * @see self::setEnum()
-	 * @see self::setDefault()
+	 * @see self::builtParamsEnum()
+	 * @see self::builtParamsDefault()
+	 * @see self::builtParamsInjection()
 	 */
 	private function builtSelf($string)
 	{
@@ -288,7 +289,7 @@ class AnnotationMetaData extends Object
 	 *
 	 * @param string
 	 * @return array
-	 * @see self::setEnum()
+	 * @see MetaDataProperty::setEnum()
 	 */
 	public function builtParamsEnum($string)
 	{
@@ -340,9 +341,9 @@ class AnnotationMetaData extends Object
 	 * Foo::CONSTANT
 	 * </pre>
 	 *
-	 * @param mixed $string
-	 * @return mixed
-	 * @see self::setDefault()
+	 * @param string
+	 * @return array
+	 * @see MetaDataProperty::setDefault()
 	 */
 	public function builtParamsDefault($string)
 	{
