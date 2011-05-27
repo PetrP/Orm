@@ -54,7 +54,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  */
 class RepositoryContainer extends Object
 {
-	/** @var RepositoryContainer @deprecated @todo di @see self::get() */
+	/** @var RepositoryContainer @deprecated @see self::get() */
 	static private $instance;
 
 	/** @var array repositoryClass => IRepository */
@@ -69,18 +69,20 @@ class RepositoryContainer extends Object
 	}
 
 	/**
-	 * Vraci posledni vytvoreny container, je pro zpetnou kompatibilitu.
-	 * A zatim jeste neni uplne vymysleno jak se bez toho obejit.
-	 * Bohuzel zatim pouziva: Entity::getModel(NULL)
-	 * @return RepositoryContainer
-	 * @todo di
 	 * @deprecated
+	 * Vraci posledni vytvoreny container, je pro zpetnou kompatibilitu.
+	 * Entity::getModel(NULL)
+	 * @return RepositoryContainer
 	 */
 	public static function get()
 	{
 		if (!isset(self::$instance))
 		{
-			throw new InvalidStateException();
+			throw new InvalidStateException('RepositoryContainer hasn\'t been instanced yet.');
+		}
+		if (func_num_args() === 0)
+		{
+			trigger_error('RepositoryContainer::get() is deprecated do not use it.', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
 		}
 		return self::$instance;
 	}

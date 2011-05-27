@@ -76,7 +76,8 @@ class _EntityGeneratingRepository extends _EntityEvent
 		{
 			if ($need === NULL AND !$this->getGeneratingRepository(false)) // bc
 			{
-				return RepositoryContainer::get(); // todo di
+				// trigger_error('Entity::getModel(NULL) is deprecated do not use it.', E_USER_DEPRECATED);
+				return RepositoryContainer::get(NULL); // todo di
 			}
 			if ($r = $this->getGeneratingRepository($need))
 			{
