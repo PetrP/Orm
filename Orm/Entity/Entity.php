@@ -13,6 +13,7 @@ require_once dirname(__FILE__) . '/_EntityEvent.php';
 require_once dirname(__FILE__) . '/_EntityGeneratingRepository.php';
 require_once dirname(__FILE__) . '/_EntityValue.php';
 require_once dirname(__FILE__) . '/_EntityBase.php';
+require_once dirname(__FILE__) . '/EntityHelper.php';
 
 /**
  * @property-read id $id

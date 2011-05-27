@@ -61,8 +61,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	{
 		if (!$this->repository AND $need)
 		{
-			$tmp = get_class($this) . (isset($this->id) ? '#' . $this->id : NULL);
-			throw new InvalidStateException("{$tmp} is not attached to repository.");
+			throw new InvalidStateException(EntityHelper::toString($this) . ' is not attached to repository.');
 		}
 		return $this->repository;
 	}

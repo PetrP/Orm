@@ -9,6 +9,7 @@ use Exception;
 
 require_once dirname(__FILE__) . '/IRepository.php';
 require_once dirname(__FILE__) . '/PerformanceHelper.php';
+require_once dirname(__FILE__) . '/../Entity/EntityHelper.php';
 
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.
@@ -207,8 +208,7 @@ abstract class Repository extends Object implements IRepository
 			static $recurcion = array();
 			if (isset($recurcion[$hash]) AND $recurcion[$hash] > 1)
 			{
-				$tmp = get_class($entity) . (isset($entity->id) ? '#' . $entity->id : NULL);
-				throw new InvalidStateException("There is an infinite recursion during persist  in $tmp");
+				throw new InvalidStateException("There is an infinite recursion during persist in " . EntityHelper::toString($entity));
 			}
 			if (!isset($recurcion[$hash])) $recurcion[$hash] = 0;
 			$recurcion[$hash]++;
@@ -519,8 +519,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			if ($throw)
 			{
-				$id = isset($entity) ? '#' . $entity->id : NULL;
-				throw new UnexpectedValueException("{$entityName}{$id} is attached to another repository.");
+				throw new UnexpectedValueException(EntityHelper::toString($entity) . ' is attached to another repository.');
 			}
 			return false;
 		}

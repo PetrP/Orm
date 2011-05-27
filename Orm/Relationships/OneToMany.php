@@ -7,6 +7,7 @@ use Exception;
 
 require_once dirname(__FILE__) . '/IRelationship.php';
 require_once dirname(__FILE__) . '/BaseToMany.php';
+require_once dirname(__FILE__) . '/../Entity/EntityHelper.php';
 
 class OneToMany extends BaseToMany implements IRelationship
 {
@@ -63,8 +64,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		if ($this->ignore($entity)) return NULL;
 		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $this->parent)
 		{
-			$id = isset($entity->id) ? '#' . $entity->id : NULL;
-			throw new UnexpectedValueException('Entity '. get_class($entity) . "$id is already asociated with another entity.");
+			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
 		}
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
@@ -81,8 +81,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		$entity = $this->createEntity($entity);
 		if (!isset($entity->$param) OR $entity->$param !== $this->parent)
 		{
-			$id = isset($entity->id) ? '#' . $entity->id : NULL;
-			throw new UnexpectedValueException('Entity '. get_class($entity) . "$id is not asociated with this entity.");
+			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
 		try {
 			$entity->$param = NULL;
