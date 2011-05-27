@@ -68,7 +68,7 @@ class EntityToArray extends Object
 					}
 					else if ($mode & self::ENTITY_AS_ARRAY)
 					{
-						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], MetaData::getEntityRules(get_class($result[$name])), $mode, $deep+1);
+						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], MetaData::getEntityRules(get_class($result[$name]), $entity->getModel(false)), $mode, $deep+1);
 					}
 					else
 					{
@@ -92,7 +92,7 @@ class EntityToArray extends Object
 							}
 							else if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ARRAY)
 							{
-								$arr[] = EntityToArray::toArray($e, MetaData::getEntityRules(get_class($e)), $mode, $deep+1);
+								$arr[] = EntityToArray::toArray($e, MetaData::getEntityRules(get_class($e), $entity->getModel(false)), $mode, $deep+1);
 							}
 							else
 							{

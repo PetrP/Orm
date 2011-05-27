@@ -18,9 +18,8 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 	private function t($param)
 	{
 		MetaData::clean();
-		new RepositoryContainer;
 		RelationshipLoader_ManyToMany1_Entity::$param = $param;
-		$many = MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity');
+		$many = MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity', new RepositoryContainer);
 		if (isset($many['manyX'])) return $many['manyX']['relationshipParam'];
 		return $many['many']['relationshipParam'];
 	}

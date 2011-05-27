@@ -175,6 +175,16 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	}
 
 	/**
+	 * Pripojeno na repository
+	 * @param IRepository
+	 */
+	protected function onAttach(IRepository $repository)
+	{
+		parent::onAttach($repository);
+		$this->rules = MetaData::getEntityRules(get_class($this), $repository->getModel());
+	}
+
+	/**
 	 * Vytazena z mapperu
 	 * @param IRepository
 	 * @param array
@@ -182,7 +192,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	protected function onLoad(IRepository $repository, array $data)
 	{
 		parent::onLoad($repository, $data);
-		$this->rules = MetaData::getEntityRules(get_class($this));
+		$this->rules = MetaData::getEntityRules(get_class($this), $repository->getModel());
 		$this->values = $data;
 		$this->valid = array();
 		$this->getValue('id'); // throw error if any

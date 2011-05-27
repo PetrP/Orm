@@ -538,7 +538,7 @@ abstract class Repository extends Object implements IRepository
 		if (!isset($fks[$entityName]))
 		{
 			$fk = array();
-			foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+			foreach (MetaData::getEntityRules($entityName, $this->model) as $name => $rule)
 			{
 				if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
 				$fk[$name] = $rule['relationshipParam'];

@@ -77,21 +77,11 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 			{
 				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You must specify foreign repository {{$relationship} repositoryName param}");
 			}
-			else if (!RepositoryContainer::get()->isRepository($repositoryName)) // todo di
-			{
-				throw new InvalidStateException("$repositoryName isn't repository in {$entityName}::\${$parentParam}");
-			}
+			$this->checkParams = array($relationship, $entityName);
 		}
-		if ($relationship === MetaData::ManyToMany)
+		if ($relationship === MetaData::ManyToMany AND !$param)
 		{
-			if ($param)
-			{
-				$this->checkParams = array($relationship, $entityName);
-			}
-			else
-			{
-				$mappedByThis = true;
-			}
+			$mappedByThis = true;
 		}
 
 		$this->class = $class;
@@ -104,21 +94,27 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	/**
 	 * Kontroluje asociace z druhe strany
 	 */
-	public function check()
+	public function check(RepositoryContainer $model)
 	{
 		if (!$this->checkParams) return;
 		list($relationship, $entityName) = $this->checkParams;
-		$lowerEntityName = strtolower($entityName);
 		$this->checkParams = NULL;
 		$param = $this->param;
 		$parentParam = $this->parentParam;
+
+		if (!$model->isRepository($this->repository))
+		{
+			throw new InvalidStateException("{$this->repository} isn't repository in {$entityName}::\${$parentParam}");
+		}
+
 		if ($relationship === MetaData::ManyToMany AND $param)
 		{
-			$classes = array_values((array) RepositoryContainer::get()->getRepository($this->repository)->getEntityClassName()); // todo di
+			$lowerEntityName = strtolower($entityName);
+			$classes = array_values((array) $model->getRepository($this->repository)->getEntityClassName());
 			$this->canConnectWith = array_combine(array_map('strtolower', $classes), $classes);
 			foreach ($this->canConnectWith as $lowerEn => $en)
 			{
-				$meta = MetaData::getEntityRules($en);
+				$meta = MetaData::getEntityRules($en, $model);
 				$e = NULL;
 				if (isset($meta[$param]))
 				{

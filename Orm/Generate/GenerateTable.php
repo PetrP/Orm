@@ -24,7 +24,7 @@ class GenerateTable extends Object
 		$properties = array();
 		foreach ($entities as $entityName)
 		{
-			$properties = array_merge($properties, MetaData::getEntityRules($entityName));
+			$properties = array_merge($properties, MetaData::getEntityRules($entityName, $repository->getModel()));
 		}
 		return $properties;
 	}

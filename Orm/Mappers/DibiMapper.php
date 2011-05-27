@@ -302,7 +302,7 @@ class DibiMapper extends Mapper
 			{
 				foreach ((array) $this->getRepository()->getEntityClassName() as $entityName)
 				{
-					foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+					foreach (MetaData::getEntityRules($entityName, $this->getModel()) as $name => $rule)
 					{
 						if ($rule['relationship'] === MetaData::OneToMany)
 						{

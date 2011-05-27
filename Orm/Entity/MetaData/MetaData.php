@@ -135,6 +135,15 @@ class MetaData extends Object
 		return $properties;
 	}
 
+	/** @param RepositoryContainer */
+	public function check(RepositoryContainer $model)
+	{
+		foreach ($this->properties as $name => $property)
+		{
+			$property->check($model);
+		}
+	}
+
 	/** @var array runtime cache */
 	static private $cache = array();
 
@@ -147,33 +156,72 @@ class MetaData extends Object
 	 * Vysledek se cachuje.
 	 * @internal
 	 * @param string class name
+	 * @param RepositoryContainer
 	 * @return array internal format
 	 */
-	public static function getEntityRules($entityClass)
+	public static function getEntityRules($entityClass, RepositoryContainer $model = NULL)
 	{
-		if (!isset(self::$cache[$entityClass]))
+		$lowerEntityClass = strtolower($entityClass);
+		if ($model)
 		{
-			$lowerEntityClass = strtolower($entityClass);
-			if (!isset(self::$cache[$lowerEntityClass]))
+			$hash = spl_object_hash($model);
+			$cache = & self::$cache[$hash][$lowerEntityClass];
+			if (!isset($cache))
 			{
-				if (isset(self::$cache2[$lowerEntityClass]))
+				$cache2 = & self::$cache2[$hash][$lowerEntityClass];
+				if (isset($cache2))
 				{
-					return self::$cache2[$lowerEntityClass]->toArray();
+					$cache2[0]->check($model);
+					return $cache2[1];
 				}
-				if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
-				$implements = class_implements($entityClass);
-				if (!isset($implements['Orm\IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
-				$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
-				if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
-				self::$cache2[$lowerEntityClass] = $meta;
-				self::$cache[$lowerEntityClass] = $meta->toArray();
-				unset(self::$cache2[$lowerEntityClass]);
+				if (isset(self::$cache[NULL][$lowerEntityClass][0]))
+				{
+					$cache2 = self::$cache[NULL][$lowerEntityClass];
+					unset(self::$cache[NULL][$lowerEntityClass][0]); // muzu pouzit jen jednou protoze RelationshipLoader::check
+				}
+				else
+				{
+					$meta = self::createEntityRules($entityClass);
+					$cache2 = array($meta, $meta->toArray());
+				}
+				try {
+					$e = NULL;
+					$cache2[0]->check($model);
+					$cache = $cache2[1];
+				} catch (Exception $e) {}
+				unset(self::$cache2[$hash][$lowerEntityClass]);
+				if (!self::$cache2[$hash]) unset(self::$cache2[$hash]);
+				if ($e) throw $e;
 			}
-			self::$cache[$entityClass] = & self::$cache[$lowerEntityClass];
+			return $cache;
 		}
-		return self::$cache[$entityClass];
+		else
+		{
+			$cache = & self::$cache[NULL][$lowerEntityClass];
+			if (!isset($cache))
+			{
+				$meta = self::createEntityRules($entityClass);
+				$cache = array($meta, $meta->toArray());
+			}
+			return $cache[1];
+		}
 	}
 
+	/**
+	 * @param string
+	 * @return MetaData
+	 */
+	private static function createEntityRules($entityClass)
+	{
+		if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
+		$implements = class_implements($entityClass);
+		if (!isset($implements['Orm\IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
+		$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
+		if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
+		return $meta;
+	}
+
+	/** @deprecated */
 	public static function clean()
 	{
 		self::$cache2 = self::$cache = array();

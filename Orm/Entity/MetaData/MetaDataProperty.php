@@ -169,10 +169,6 @@ class MetaDataProperty extends Object
 		{
 			throw new InvalidStateException("You must specify foreign repository in {$this->class}::\${$this->name}");
 		}
-		else if (!RepositoryContainer::get()->isRepository($repositoryName)) // todo di
-		{
-			throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
-		}
 		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
 		$this->data['relationship'] = MetaData::OneToOne;
@@ -349,16 +345,31 @@ class MetaDataProperty extends Object
 		return $this;
 	}
 
+	public function check(RepositoryContainer $model)
+	{
+		$relationship = $this->data['relationship'];
+		if ($relationship === MetaData::OneToOne OR $relationship === MetaData::ManyToOne)
+		{
+			$repositoryName = $this->data['relationshipParam'];
+			if (!$model->isRepository($repositoryName))
+			{
+				throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
+			}
+		}
+		else if ($relationship === MetaData::OneToMany OR $relationship === MetaData::ManyToMany)
+		{
+			$this->data['relationshipParam']->check($model);
+		}
+
+		return $this->data;
+	}
+	
 	/**
 	 * @return array internal format
 	 * @see MetaData::toArray()
 	 */
 	public function toArray()
 	{
-		if ($this->data['relationshipParam'] instanceof RelationshipLoader)
-		{
-			$this->data['relationshipParam']->check();
-		}
 		return $this->data;
 	}
 

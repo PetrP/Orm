@@ -19,7 +19,6 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	protected function setUp()
 	{
-		new RepositoryContainer;
 		$this->m = new MetaData('MetaData_Test_Entity');
 	}
 
@@ -110,7 +109,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData_Test3_Entity::$mapped = true;
 		MetaData_Test4_Entity::$mapped = true;
 		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
-		MetaData::getEntityRules('MetaData_Test3_Entity');
+		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 
 	public function testMapNone1()
@@ -119,7 +118,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData_Test3_Entity::$mapped = false;
 		MetaData_Test4_Entity::$mapped = false;
 		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
-		MetaData::getEntityRules('MetaData_Test3_Entity');
+		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 
 	public function testMapNone2()
@@ -128,7 +127,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData_Test3_Entity::$mapped = NULL;
 		MetaData_Test4_Entity::$mapped = NULL;
 		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
-		MetaData::getEntityRules('MetaData_Test3_Entity');
+		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 
 	public function testMapOk1()
@@ -136,7 +135,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = true;
 		MetaData_Test4_Entity::$mapped = false;
-		MetaData::getEntityRules('MetaData_Test3_Entity');
+		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 		$this->assertTrue(true);
 	}
 
@@ -145,7 +144,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = false;
 		MetaData_Test4_Entity::$mapped = true;
-		MetaData::getEntityRules('MetaData_Test3_Entity');
+		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 		$this->assertTrue(true);
 	}
 

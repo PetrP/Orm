@@ -21,7 +21,7 @@ class SqlConventional extends Object implements IConventional
 	/** @param IMapper */
 	public function __construct(IMapper $mapper)
 	{
-		$this->loadFk((array) $mapper->getRepository()->getEntityClassName());
+		$this->loadFk((array) $mapper->getRepository()->getEntityClassName(), $mapper->getRepository()->getModel());
 	}
 
 	/**
@@ -139,15 +139,16 @@ class SqlConventional extends Object implements IConventional
 	/**
 	 * Nastavi $this->cache['fk']
 	 * @param array of entityname
+	 * @param RepositoryContainer
 	 */
-	final private function loadFk(array $entityNames)
+	final private function loadFk(array $entityNames, RepositoryContainer $model)
 	{
 		$result = array();
 		if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi
 		{
 			foreach ($entityNames as $entityName)
 			{
-				foreach (MetaData::getEntityRules($entityName) as $name => $rule)
+				foreach (MetaData::getEntityRules($entityName, $model) as $name => $rule)
 				{
 					if ($rule['relationship'] !== MetaData::ManyToOne AND $rule['relationship'] !== MetaData::OneToOne) continue;
 					$fk = $this->foreignKeyFormat($this->storageFormat($name));
