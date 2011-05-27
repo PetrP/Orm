@@ -456,7 +456,7 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$id = (string) $value;
 			if ($id)
 			{
-				$repo = $this->getModel(NULL)->getRepository($rule['relationshipParam']);
+				$repo = $this->getModel()->getRepository($rule['relationshipParam']);
 				$value = $repo->getById($id);
 				if (!$value AND !isset($rule['types']['null']))
 				{

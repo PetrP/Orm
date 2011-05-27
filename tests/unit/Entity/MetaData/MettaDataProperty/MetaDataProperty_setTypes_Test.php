@@ -91,7 +91,6 @@ class MetaDataProperty_setTypes_Test extends TestCase
 	/** Asociace se pta jestli je null, a mixed muze byt null */
 	public function testMixedContainsNull_ManyToOne()
 	{
-		new RepositoryContainer;
 		$m = new MetaData('MetaData_Test2_Entity');
 		$m->addProperty('fk', 'mixed')
 			->setManyToOne('MetaData_Test2')
@@ -103,6 +102,8 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		MetaData_Test2_Entity::$metaData = $m;
 		$e = new MetaData_Test2_Entity;
 		MetaData_Test2_Entity::$metaData = NULL;
+		$model = new RepositoryContainer;
+		$e->___event($e, 'attach', $model->tests);
 
 		$e->fk = NULL;
 		$this->assertSame(NULL, $e->fk);
@@ -114,7 +115,17 @@ class MetaDataProperty_setTypes_Test extends TestCase
 	/** Enum se pta jestli je null, a mixed muze byt null */
 	public function testMixedContainsNull_Enum()
 	{
+		$m = new MetaData('MetaData_Test2_Entity');
+		$m->addProperty('fk', 'mixed')
+			->setManyToOne('MetaData_Test2')
+		;
+		$m->addProperty('enum', 'mixed')
+			->setEnum(array('a','b','c'))
+		;
+
+		MetaData_Test2_Entity::$metaData = $m;
 		$e = new MetaData_Test2_Entity;
+		MetaData_Test2_Entity::$metaData = NULL;
 
 		$e->enum = NULL;
 		$this->assertSame(NULL, $e->enum);

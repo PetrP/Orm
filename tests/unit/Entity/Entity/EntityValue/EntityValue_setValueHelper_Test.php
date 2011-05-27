@@ -19,6 +19,7 @@ class EntityValue_setValueHelper_Test extends TestCase
 		$m = new RepositoryContainer;
 		$this->e = new EntityValue_getset_Entity;
 		$this->r = $m->TestEntity;
+		$this->e->___event($this->e, 'attach', $this->r);
 	}
 
 	public function testFkOk()
