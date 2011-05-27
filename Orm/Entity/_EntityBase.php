@@ -26,7 +26,7 @@ abstract class _EntityBase extends _EntityValue
 	 */
 	final public function toArray($mode = EntityToArray::AS_IS)
 	{
-		return EntityToArray::toArray($this, MetaData::getEntityRules(get_class($this), $this->getModel(false)), $mode);
+		return EntityToArray::toArray($this, $mode);
 	}
 
 	/**

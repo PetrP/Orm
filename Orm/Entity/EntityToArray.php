@@ -42,16 +42,16 @@ class EntityToArray extends Object
 	/**
 	 * @internal
 	 * @param IEntity
-	 * @param array
 	 * @param int
 	 * @param int
 	 */
-	public static function toArray(IEntity $entity, array $rules, $mode = self::AS_IS, $deep = 0)
+	public static function toArray(IEntity $entity, $mode = self::AS_IS, $deep = 0)
 	{
 		if ($mode === NULL) $mode = self::AS_IS;
 		$result = array(
 			'id' => isset($entity->id) ? $entity->id : NULL,
 		);
+		$rules = MetaData::getEntityRules(get_class($entity), $entity->getModel(false));
 
 		foreach ($rules as $name => $rule)
 		{
@@ -68,7 +68,7 @@ class EntityToArray extends Object
 					}
 					else if ($mode & self::ENTITY_AS_ARRAY)
 					{
-						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], MetaData::getEntityRules(get_class($result[$name]), $entity->getModel(false)), $mode, $deep+1);
+						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], $mode, $deep+1);
 					}
 					else
 					{
@@ -92,7 +92,7 @@ class EntityToArray extends Object
 							}
 							else if ($mode & self::RELATIONSHIP_AS_ARRAY_OF_ARRAY)
 							{
-								$arr[] = EntityToArray::toArray($e, MetaData::getEntityRules(get_class($e), $entity->getModel(false)), $mode, $deep+1);
+								$arr[] = EntityToArray::toArray($e, $mode, $deep+1);
 							}
 							else
 							{
