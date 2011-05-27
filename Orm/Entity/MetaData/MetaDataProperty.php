@@ -363,7 +363,7 @@ class MetaDataProperty extends Object
 
 		return $this->data;
 	}
-	
+
 	/**
 	 * @return array internal format
 	 * @see MetaData::toArray()

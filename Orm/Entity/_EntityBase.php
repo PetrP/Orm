@@ -19,7 +19,7 @@ abstract class _EntityBase extends _EntityValue
 {
 
 	/**
-	 * Entity prevadi na array, je monze nastavit co udelat z asociacemi.
+	 * Entity prevadi na array, je mozne nastavit co udelat z asociacemi.
 	 * @see EntityToArray
 	 * @param int EntityToArray::*
 	 * @return array
