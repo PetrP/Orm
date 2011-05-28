@@ -64,6 +64,15 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		}
 	}
 
+	public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+	{
+		self::assertSame(
+			$expected,
+			self::readAttribute($actualClassOrObject, $actualAttributeName),
+			$message
+		);
+	}
+
 }
 
 use Orm\PerformanceHelper;
