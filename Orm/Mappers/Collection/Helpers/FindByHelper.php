@@ -47,7 +47,7 @@ class FindByHelper
 		return false;
 	}
 
-	public static function dibiProcess(DibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $prefix = NULL)
+	public static function dibiProcess(BaseDibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $tableAlias, $prefix = NULL)
 	{
 		foreach ($findBy as $tmp)
 		foreach ($tmp as $key => $value)
@@ -61,7 +61,7 @@ class FindByHelper
 			else
 			{
 				$key = $conventional->formatEntityToStorage(array($key => NULL));
-				$key =  'e.' . key($key);
+				$key =  $tableAlias . key($key);
 			}
 			if ($value instanceof IEntityCollection)
 			{

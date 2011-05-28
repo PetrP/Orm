@@ -3,15 +3,15 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers Orm\DibiCollection::__construct
+ * @covers Orm\DataSourceCollection::__construct
  * @covers Orm\BaseDibiCollection::__construct
  */
-class DibiCollection_construct_Test extends DibiCollection_Base_Test
+class DataSourceCollection_construct_Test extends DataSourceCollection_Base_Test
 {
 
 	public function test()
 	{
-		$this->assertAttributeSame('dibicollection', 'tableName', $this->c);
+		$this->assertAttributeSame('datasourcecollection', 'sql', $this->c);
 		$this->assertAttributeSame($this->m->repository, 'repository', $this->c);
 		$this->assertAttributeSame($this->m->connection, 'connection', $this->c);
 		$this->assertAttributeSame($this->m->repository->mapper->conventional, 'conventional', $this->c);
@@ -19,7 +19,7 @@ class DibiCollection_construct_Test extends DibiCollection_Base_Test
 
 	public function testSql()
 	{
-		$this->a('SELECT [e].* FROM [dibicollection] as e');
+		$this->a('SELECT * FROM `datasourcecollection`');
 	}
 
 }

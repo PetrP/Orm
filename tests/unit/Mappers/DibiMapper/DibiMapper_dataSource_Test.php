@@ -22,7 +22,7 @@ class DibiMapper_dataSource_Test extends TestCase
 		$this->assertTrue($this->m->connection->isConnected());
 		$this->assertAttributeSame($this->m->connection, 'connection', $ds);
 		$this->assertAttributeSame($this->m->repository, 'repository', $ds);
-		$this->assertAttributeSame('SELECT * FROM [table]', 'sql', $ds);
+		$this->assertAttributeSame('table', 'sql', $ds);
 	}
 
 	public function test2()

@@ -2,226 +2,161 @@
 
 namespace Orm;
 
+use Nette\NotSupportedException;
+use Nette\NotImplementedException;
+use Nette\DeprecatedException;
 use DibiDataSourceX;
-use DibiRow;
-use DateTime;
+use DibiDataSource;
 use DibiConnection;
 
 require_once dirname(__FILE__) . '/IEntityCollection.php';
-require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
-require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
+require_once dirname(__FILE__) . '/BaseDibiCollection.php';
 
-class DataSourceCollection extends DibiDataSourceX implements IEntityCollection
+class DataSourceCollection extends BaseDibiCollection implements IEntityCollection
 {
-	/** @var Repository */
-	private $repository;
+
+	/** @var string */
+	private $sql;
+
+	/** @var int */
+	private $count;
+
+	/** @var DibiDataSource */
+	private $dataSource;
 
 	/**
-	 * Selects columns to order by.
-	 * @param  string|array  column name or array of column names
-	 * @param  string  		 sorting direction
-	 * @return DataSourceCollection  provides a fluent interface
+	 * @param string
+	 * @param DibiConnection
+	 * @param IRepository
 	 */
-	final public function orderBy($row, $sorting = 'ASC')
-	{
-		$conventional = $this->repository->getMapper()->getConventional();
-		if (is_array($row))
-		{
-			return parent::orderBy($conventional->formatEntityToStorage($row), $sorting);
-		}
-		else
-		{
-			$row = $conventional->formatEntityToStorage(array($row => $sorting));
-			return parent::orderBy(key($row), $sorting);
-		}
-	}
-
 	final public function __construct($sql, DibiConnection $connection, IRepository $repository)
 	{
-		$this->repository = $repository;
-		parent::__construct($sql, $connection);
-	}
-
-	final public function getResult()
-	{
-		return parent::getResult();
+		$this->sql = $sql;
+		parent::__construct($connection, $repository);
 	}
 
 	/**
-	 * @return DibiResultIterator
+	 * Returns the number of rows in a given data source.
+	 * @return int
 	 */
-	final public function getIterator()
+	final public function count()
 	{
-		return new EntityIterator($this->repository, $this->getResult()->getIterator());
+		if ($this->count === NULL)
+		{
+			$this->count = $this->getDataSource()->count();
+		}
+		return $this->count;
 	}
-
-
 
 	/**
-	 * Generates, executes SQL query and fetches the single row.
-	 * @return DibiRow|FALSE  array on success, FALSE if no next record
+	 * Pripoji asociaci.
+	 * @see DibiMapper::getJoinInfo()
+	 * @param string
+	 * @return DataSourceCollection $this
 	 */
-	final public function fetch()
+	public function join($key)
 	{
-		$row = $this->getResult()->fetch();
-		return $this->createEntityRecursive($row === false ? NULL : $row);
+		throw new NotSupportedException('Joins are not supported for DataSourceCollection');
 	}
-
-
 
 	/**
-	 * Like fetch(), but returns only first field.
-	 * @return mixed  value on success, FALSE if no next record
+	 * Returns SQL query.
+	 * @return string
 	 */
-	final public function fetchSingle()
+	final public function __toString()
 	{
-		return $this->getResult()->fetchSingle();
+		return $this->getDataSource()->__toString();
 	}
 
+	/** @return DibiDataSource */
+	final public function getDataSource()
+	{
+		if ($this->dataSource === NULL)
+		{
+			list($sorting, $limit, $offset) = $this->process();
+			FindByHelper::dibiProcess(
+				$this,
+				$this->repository->getMapper(),
+				$this->conventional,
+				$this->where,
+				$this->findBy,
+				$this->tableAlias
+			);
 
+			static $dsClass;
+			if ($dsClass === NULL)
+			{
+				$dsClass = 'DibiDataSource';
+				if (class_exists('DibiDataSourceX'))
+				{
+					$dsClass = 'DibiDataSourceX';
+				}
+			}
+
+			$ds = new $dsClass($this->sql, $this->connection);
+
+			foreach ($this->where as $where)
+			{
+				$ds->where($where);
+			}
+
+			foreach ($sorting as $tmp)
+			{
+				list($key, $direction) = $tmp;
+				$ds->orderBy($key, $direction);
+			}
+
+			if ($limit !== NULL OR $offset)
+			{
+				$ds->applyLimit($limit, $offset);
+			}
+
+			$this->dataSource = $ds;
+		}
+		return $this->dataSource;
+	}
 
 	/**
-	 * Fetches all records from table.
-	 * @return array
+	 * Discards the internal cache.
+	 * @param bool
 	 */
-	final public function fetchAll()
+	protected function release($count = false)
 	{
-		return $this->createEntityRecursive($this->getResult()->fetchAll());
+		if ($count)
+		{
+			$this->count = NULL;
+		}
+		$this->dataSource = NULL;
+		parent::release();
 	}
-
-
 
 	/**
-	 * Fetches all records from table and returns associative tree.
-	 * @param  string  associative descriptor
-	 * @return array
+	 * @deprecated
+	 * @return IConventional
 	 */
-	final public function fetchAssoc($assoc)
-	{
-		// todo conventional
-		return $this->createEntityRecursive($this->getResult()->fetchAssoc($assoc));
-	}
-
-
-
-	/**
-	 * Fetches all records from table like $key => $value pairs.
-	 * @param  string  associative key
-	 * @param  string  value
-	 * @return array
-	 */
-	final public function fetchPairs($key = NULL, $value = NULL)
-	{
-		/** @var SqlConventional */
-		$conventional = $this->repository->getMapper()->getConventional();
-
-		if ($key !== NULL)
-		{
-			$key = $conventional->formatEntityToStorage(array($key => NULL));
-			$key = key($key);
-		}
-		if ($value !== NULL)
-		{
-			$value = $conventional->formatEntityToStorage(array($value => NULL));
-			$value = key($value);
-		}
-
-		return $this->createEntityRecursive($this->getResult()->fetchPairs($key, $value));
-	}
-
-
-	private function createEntityRecursive($a)
-	{
-		if ($a instanceof DibiRow)
-		{
-			return $this->repository->createEntity($a);
-		}
-		else if (is_array($a))
-		{
-			$a = array_map(array($this, __FUNCTION__), $a);
-		}
-		return $a;
-	}
-
-	/** @return ArrayCollection */
-	final public function toArrayCollection()
-	{
-		return new ArrayCollection($this->fetchAll());
-	}
-
-	/** @return DataSourceCollection */
-	public function toCollection()
-	{
-		$class = get_class($this);
-		return new $class($this->__toString(), $this->connection, $this->repository);
-	}
-
-	final public function findBy(array $where)
-	{
-		$all = $this->toCollection();
-		/** @var SqlConventional */
-		$conventional = $this->repository->getMapper()->getConventional();
-		$where = $conventional->formatEntityToStorage($where);
-		foreach ($where as $key => $value)
-		{
-			if ($value instanceof IEntityCollection)
-			{
-				$value = $value->fetchPairs(NULL, 'id');
-			}
-			if ($value instanceof IEntity)
-			{
-				$value = isset($value->id) ? $value->id : NULL;
-			}
-			if (is_array($value))
-			{
-				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof Orm\IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
-						$value
-					)
-				);
-				$all->where('%n IN %in', $key, $value);
-			}
-			else if ($value === NULL)
-			{
-				$all->where('%n IS NULL', $key);
-			}
-			else if ($value instanceof DateTime)
-			{
-				$all->where('%n = %t', $key, $value);
-			}
-			else
-			{
-				$all->where('%n = %s', $key, $value);
-			}
-		}
-		return $all->toCollection();
-	}
-
-	final public function getBy(array $where)
-	{
-		return $this->findBy($where)->applyLimit(1)->fetch();
-	}
-
-	final public function __call($name, $args)
-	{
-		if (!method_exists($this, $name) AND FindByHelper::parse($name, $args))
-		{
-			return $this->$name($args);
-		}
-		return parent::__call($name, $args);
-	}
-
 	final protected function getConnventional()
 	{
-		return $this->repository->getMapper()->getConventional();
+		return $this->conventional;
 	}
 
-	final protected function getConnventionalKey($key)
+	/**
+	 * Returns the number of rows in a given data source.
+	 * @return int
+	 */
+	final public function getTotalCount()
 	{
-		$tmp = $this->repository->getMapper()->getConventional()->formatEntityToStorage(array($key => NULL));
-		return key($tmp);
+		throw new NotImplementedException();
 	}
 
-	// todo final count totalCount a toString a dalsi
+	/** @deprecated */
+	final public function fetchSingle()
+	{
+		throw new DeprecatedException('DataSourceCollection::fetchSingle() is deprecated; use DataSourceCollection->getDataSource()->fetchSingle() instead');
+	}
+
+	/** @deprecated */
+	final public function select($col, $as = NULL)
+	{
+		throw new DeprecatedException('DataSourceCollection::select() is deprecated; use DataSourceCollection->getDataSource()->select() instead');
+	}
 }

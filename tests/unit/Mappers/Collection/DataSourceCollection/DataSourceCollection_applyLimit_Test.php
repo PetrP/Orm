@@ -3,9 +3,9 @@
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
- * @covers Orm\DibiCollection::applyLimit
+ * @covers Orm\DataSourceCollection::applyLimit
  */
-class DibiCollection_applyLimit_Test extends DibiCollection_Base_Test
+class DataSourceCollection_applyLimit_Test extends DataSourceCollection_Base_Test
 {
 
 	public function test()
@@ -16,18 +16,22 @@ class DibiCollection_applyLimit_Test extends DibiCollection_Base_Test
 	}
 
 	/**
-	 * @covers Orm\DibiCollection::release
+	 * @covers Orm\DataSourceCollection::release
 	 * @covers Orm\BaseDibiCollection::release
 	 */
 	public function testWipe()
 	{
 		DibiCollection_DibiCollection::setBase($this->c, 'result', array());
-		DibiCollection_DibiCollection::set($this->c, 'count', 666);
+		DataSourceCollection_DataSourceCollection::set($this->c, 'count', 666);
+		DataSourceCollection_DataSourceCollection::set($this->c, 'dataSource', $this->c);
 		$this->assertAttributeSame(array(), 'result', $this->c);
 		$this->assertAttributeSame(666, 'count', $this->c);
+		$this->assertAttributeSame($this->c, 'dataSource', $this->c);
 		$this->c->applyLimit(10, 20);
 		$this->assertAttributeSame(NULL, 'result', $this->c);
 		$this->assertAttributeSame(NULL, 'count', $this->c);
+		$this->assertAttributeSame(NULL, 'dataSource', $this->c);
+
 	}
 
 	public function testReturns()

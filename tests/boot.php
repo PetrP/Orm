@@ -35,6 +35,8 @@ $r->addDirectory(dirname(__FILE__) . '/unit');
 $r->register();
 
 require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';
+require_once __DIR__ . '/unit/Mappers/DibiMockEscapeMySqlDriver.php';
+require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
