@@ -76,8 +76,8 @@ class DataSourceCollection extends BaseDibiCollection implements IEntityCollecti
 			list($sorting, $limit, $offset) = $this->process();
 			FindByHelper::dibiProcess(
 				$this,
-				$this->repository->getMapper(),
-				$this->conventional,
+				$this->getMapper(),
+				$this->getConventional(),
 				$this->where,
 				$this->findBy,
 				$this->tableAlias
@@ -93,7 +93,7 @@ class DataSourceCollection extends BaseDibiCollection implements IEntityCollecti
 				}
 			}
 
-			$ds = new $dsClass($this->sql, $this->connection);
+			$ds = new $dsClass($this->sql, $this->getConnection());
 
 			foreach ($this->where as $where)
 			{
@@ -128,15 +128,6 @@ class DataSourceCollection extends BaseDibiCollection implements IEntityCollecti
 		}
 		$this->dataSource = NULL;
 		parent::release();
-	}
-
-	/**
-	 * @deprecated
-	 * @return IConventional
-	 */
-	final protected function getConnventional()
-	{
-		return $this->conventional;
 	}
 
 	/**

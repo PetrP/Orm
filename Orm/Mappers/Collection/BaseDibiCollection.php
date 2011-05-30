@@ -18,11 +18,17 @@ abstract class BaseDibiCollection extends Object
 	/** @var string */
 	protected $tableAlias = '';
 
-	/** @var IRepository */
-	protected $repository;
+	/** @var IRepository @see self::getRepository() */
+	private $repository;
 
-	/** @var DibiConnection */
-	protected $connection;
+	/** @var DibiConnection @see self::getConnection() */
+	private $connection;
+
+	/** @var IConventional @see self::getConnventionalKey() @see self::getConnventional() */
+	private $conventional;
+
+	/** @var IConventional @see self::getMapper() */
+	private $mapper;
 
 	/** @var array cache */
 	private $result;
@@ -51,8 +57,6 @@ abstract class BaseDibiCollection extends Object
 	/** @var int */
 	private $sourceOffset;
 
-	/** @var IConventional @see self::getConnventionalKey() */
-	protected $conventional;
 
 
 	/**
@@ -64,7 +68,8 @@ abstract class BaseDibiCollection extends Object
 	{
 		$this->repository = $repository;
 		$this->connection = $connection;
-		$this->conventional = $repository->getMapper()->getConventional();
+		$this->mapper = $repository->getMapper();
+		$this->conventional = $this->mapper->getConventional();
 	}
 
 	/**
@@ -92,7 +97,7 @@ abstract class BaseDibiCollection extends Object
 				throw new InvalidArgumentException(get_class($this) . "::orderBy() Direction expected Dibi::ASC or Dibi::DESC, '$direction' given");
 			}
 
-			if ($join = $this->repository->getMapper()->getJoinInfo($key))
+			if ($join = $this->mapper->getJoinInfo($key))
 			{
 				$this->join($key);
 				$key = $join->key;
@@ -281,6 +286,30 @@ abstract class BaseDibiCollection extends Object
 	 * @return string
 	 */
 	abstract public function __toString();
+
+	/** @return IRepository */
+	final protected function getRepository()
+	{
+		return $this->repository;
+	}
+
+	/** @return DibiMapper */
+	final protected function getMapper()
+	{
+		return $this->mapper;
+	}
+
+	/** @return DibiConnection */
+	final protected function getConnection()
+	{
+		return $this->connection;
+	}
+
+	/** @return IConventional */
+	final protected function getConventional()
+	{
+		return $this->conventional;
+	}
 
 	/**
 	 * Merge source and this sorting, $limit and $offset

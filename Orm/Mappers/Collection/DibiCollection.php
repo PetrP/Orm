@@ -58,7 +58,7 @@ class DibiCollection extends BaseDibiCollection implements IEntityCollection
 	final public function join($key)
 	{
 		$lastAlias = 'e';
-		foreach ($this->repository->getMapper()->getJoinInfo($key)->joins as $join)
+		foreach ($this->getMapper()->getJoinInfo($key)->joins as $join)
 		{
 			if (!isset($this->join[$join['alias']]))
 			{
@@ -72,8 +72,8 @@ class DibiCollection extends BaseDibiCollection implements IEntityCollection
 					$where = array();
 					FindByHelper::dibiProcess(
 						$this,
-						$this->repository->getMapper(),
-						$this->conventional,
+						$this->getMapper(),
+						$this->getConventional(),
 						$where,
 						$findBy,
 						$this->tableAlias,
@@ -91,7 +91,7 @@ class DibiCollection extends BaseDibiCollection implements IEntityCollection
 	/** @return DataSourceCollection */
 	final public function toDataSourceCollection()
 	{
-		return new DataSourceCollection($this->__toString(), $this->connection, $this->repository);
+		return new DataSourceCollection($this->__toString(), $this->getConnection(), $this->getRepository());
 	}
 
 	/**
@@ -111,8 +111,8 @@ class DibiCollection extends BaseDibiCollection implements IEntityCollection
 		}
 		FindByHelper::dibiProcess(
 			$this,
-			$this->repository->getMapper(),
-			$this->conventional,
+			$this->getMapper(),
+			$this->getConventional(),
 			$this->where,
 			$this->findBy,
 			$this->tableAlias
@@ -154,10 +154,10 @@ class DibiCollection extends BaseDibiCollection implements IEntityCollection
 		static $translate;
 		if ($translate === NULL)
 		{
-			$translate = method_exists($this->connection, 'translate') ? 'translate' : 'sql';
+			$translate = method_exists($this->getConnection(), 'translate') ? 'translate' : 'sql';
 		}
 		$args = func_get_args();
-		return $this->connection->$translate($args);
+		return $this->getConnection()->$translate($args);
 	}
 
 	/**
