@@ -250,8 +250,9 @@ abstract class ArrayMapper extends Mapper
 
 		if (!$handle)
 		{
+			// @codeCoverageIgnoreStart
 			throw new InvalidStateException("Unable initialize critical section.");
-		}
+		}	// @codeCoverageIgnoreEnd
 		flock(self::$lock = $handle, LOCK_EX);
 	}
 

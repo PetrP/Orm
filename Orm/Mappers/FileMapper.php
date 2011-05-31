@@ -21,8 +21,9 @@ abstract class FileMapper extends ArrayMapper
 			$wrapers = stream_get_wrappers();
 			if (!in_array(SafeStream::PROTOCOL, $wrapers, true))
 			{
+				// @codeCoverageIgnoreStart
 				SafeStream::register();
-			}
+			}	// @codeCoverageIgnoreEnd
 			self::$isStreamRegistered = true;
 		}
 	}

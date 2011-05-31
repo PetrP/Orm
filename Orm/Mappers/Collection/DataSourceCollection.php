@@ -86,12 +86,13 @@ class DataSourceCollection extends BaseDibiCollection implements IEntityCollecti
 			static $dsClass;
 			if ($dsClass === NULL)
 			{
+				// @codeCoverageIgnoreStart
 				$dsClass = 'DibiDataSource';
 				if (class_exists('DibiDataSourceX'))
 				{
 					$dsClass = 'DibiDataSourceX';
 				}
-			}
+			}	// @codeCoverageIgnoreEnd
 
 			$ds = new $dsClass($this->sql, $this->getConnection());
 

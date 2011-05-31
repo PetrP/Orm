@@ -35,9 +35,10 @@ abstract class Entity extends _EntityBase implements IEntity
 		try {
 			// todo mozna zrusit
 			return isset($this->id) ? (string) $this->id : '';
+			// @codeCoverageIgnoreStart
 		} catch (Exception $e) {
 			Debug::toStringException($e);
 		}
-	}
+	}		// @codeCoverageIgnoreEnd
 
 }

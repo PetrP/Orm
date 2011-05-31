@@ -145,13 +145,17 @@ class ValidationHelper
 	{
 		if (class_exists('Nette\Tools'))
 		{
+			// @codeCoverageIgnoreStart
 			return Tools::createDateTime($time);
+			// @codeCoverageIgnoreEnd
 		}
 		else if (class_exists('Nette\DateTime'))
 		{
 			return DateTime::from($time);
 		}
+		// @codeCoverageIgnoreStart
 		throw new NotImplementedException;
+		// @codeCoverageIgnoreEnd
 	}
 
 }
