@@ -3,6 +3,8 @@
 namespace Orm;
 
 use Nette\Object;
+use Nette\InvalidStateException;
+use Nette\InvalidArgumentException;
 use Exception;
 use ReflectionMethod;
 
@@ -20,13 +22,13 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 			$construct = new ReflectionMethod($className, '__construct');
 			if ($construct->getNumberOfRequiredParameters())
 			{
-				throw new Exception("$className has required parameters in constructor, use custom factory");
+				throw new InvalidStateException("$className has required parameters in constructor, use custom factory");
 			}
 		}
 		$injection = new $className;
 		if (!($injection instanceof self))
 		{
-			throw new Exception();
+			throw new InvalidArgumentException(get_class($injection) . " is't subclass of " . __CLASS__);
 		}
 		return $injection;
 	}
