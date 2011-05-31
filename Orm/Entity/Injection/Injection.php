@@ -41,5 +41,6 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 	public function setInjectedValue($value)
 	{
 		$this->value = $value;
+		return $this;
 	}
 }
