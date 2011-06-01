@@ -5,6 +5,9 @@ namespace Orm;
 use Nette\Object;
 use Nette\Environment;
 
+/**
+ * @todo refactoring
+ */
 class PerformanceHelper extends Object
 {
 	public static $keyCallback = array(__CLASS__, 'getDefaultKey');
@@ -16,14 +19,12 @@ class PerformanceHelper extends Object
 	public static $toSave;
 	private static $toLoad;
 
-	private $key;
-
 	public function __construct(IRepository $repository)
 	{
 		$this->repositoryName = $repository->getRepositoryName();
 		if (!isset(self::$toLoad))
 		{
-			$cache = Environment::getCache(__CLASS__);
+			$cache = $this->getCache();
 			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
 			self::$toLoad = isset($cache[$key]) ? $cache[$key] : NULL;
@@ -58,7 +59,7 @@ class PerformanceHelper extends Object
 		return $tmp;
 	}
 
-	private function getCache()
+	protected function getCache()
 	{
 		return Environment::getCache(__CLASS__);
 	}
