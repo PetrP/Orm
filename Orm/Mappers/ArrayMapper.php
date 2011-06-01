@@ -51,7 +51,7 @@ abstract class ArrayMapper extends Mapper
 	 */
 	public function persist(IEntity $entity)
 	{
-		$this->begin();
+		$this->getData();
 
 		if (isset($entity->id) AND isset($this->data[$entity->id]))
 		{
@@ -83,7 +83,7 @@ abstract class ArrayMapper extends Mapper
 	public function remove(IEntity $entity)
 	{
 		// todo pri vymazavani odstanit i vazby v IRelationship
-		$this->begin();
+		$this->getData();
 		$this->data[$entity->id] = NULL;
 		return true;
 	}
@@ -210,17 +210,6 @@ abstract class ArrayMapper extends Mapper
 			}
 		}
 		return array_filter($this->data);
-	}
-
-	/**
-	 * Zahaji transakci.
-	 * Vola se pri kazde operaci. Jen pri prvnim zavolani se transakce otevira.
-	 * @see self::persist()
-	 * @see self::remove()
-	 */
-	protected function begin()
-	{
-		$this->getData();
 	}
 
 	/**

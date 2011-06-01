@@ -178,14 +178,4 @@ abstract class Mapper extends Object implements IMapper
 		return $info ? $this->collectionClass : $this->collectionClass[0];
 	}
 
-	/**
-	 * Zahaji transakci.
-	 * Vola se pri kazde operaci. Jen pri prvnim zavolani se transakce otevira.
-	 * @see self::persist()
-	 * @see self::remove()
-	 * @todo rename
-	 * @todo zrusi a nechat na implementaci kazdeho mapperu?
-	 */
-	abstract protected function begin();
-
 }
