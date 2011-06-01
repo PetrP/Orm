@@ -4,6 +4,7 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
+use Nette\DeprecatedException;
 use ReflectionClass;
 
 require_once dirname(__FILE__) . '/Entity/Entity.php';
@@ -80,9 +81,9 @@ class RepositoryContainer extends Object
 		{
 			throw new InvalidStateException('RepositoryContainer hasn\'t been instanced yet.');
 		}
-		if (func_num_args() === 0)
+		if (func_num_args() === 0 OR func_get_arg(0) !== NULL)
 		{
-			trigger_error('RepositoryContainer::get() is deprecated do not use it.', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
+			throw new DeprecatedException('RepositoryContainer::get() is deprecated do not use it.');
 		}
 		return self::$instance;
 	}
