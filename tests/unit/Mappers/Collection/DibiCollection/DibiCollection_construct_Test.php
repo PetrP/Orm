@@ -13,6 +13,7 @@ class DibiCollection_construct_Test extends DibiCollection_Base_Test
 		$this->assertAttributeSame('dibicollection', 'tableName', $this->c);
 		$this->assertAttributeSame($this->m->repository, 'repository', $this->c);
 		$this->assertAttributeSame($this->m->connection, 'connection', $this->c);
+		$this->assertAttributeSame($this->m->repository->mapper->conventional, 'conventional', $this->c);
 	}
 
 	public function testSql()
