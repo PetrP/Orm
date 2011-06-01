@@ -37,4 +37,8 @@ class DibiMapper_Connected_DibiMapper extends DibiMapper
 			'driver' => 'MockExpectedMySql',
 		));
 	}
+	public function __begin()
+	{
+		$this->begin();
+	}
 }

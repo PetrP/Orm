@@ -90,11 +90,16 @@ class DibiMapper extends Mapper
 	/**
 	 * @see IRepository::flush()
 	 * @return void
-	 * @todo vola se opakovane
 	 */
 	public function flush()
 	{
-		$this->getConnection()->commit();
+		$connection = $this->getConnection();
+		$hash = spl_object_hash($connection);
+		if (isset(self::$transactions[$hash]))
+		{
+			$connection->commit();
+			unset(self::$transactions[$hash]);
+		}
 	}
 
 	/**
