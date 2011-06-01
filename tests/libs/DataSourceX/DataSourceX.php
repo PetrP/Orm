@@ -59,7 +59,8 @@ class DibiDataSourceX extends BaseDibiDataSourceX
 			$this->sql = $sql;
 		}
 
-		if (!in_array($this->connection->getConfig('driver'), array('mysql', 'mysqli')))
+		$driver = $this->connection->getDriver();
+		if (!($driver instanceof DibiMySqlDriver) AND !($driver instanceof DibiMySqliDriver))
 		{
 			$this->classicDataSoure = true;
 			//throw new NotSupportedException('Only for mysql; use clasic DibiDataSource instead');
