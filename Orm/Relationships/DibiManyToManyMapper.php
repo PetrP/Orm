@@ -3,7 +3,7 @@
 namespace Orm;
 
 use Nette\Object;
-use Exception;
+use Nette\InvalidStateException;
 use DibiConnection;
 
 require_once dirname(__FILE__) . '/IManyToManyMapper.php';
@@ -44,8 +44,19 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	public function setParams($parentIsFirst)
 	{
-		$this->parentIsFirst = $parentIsFirst;
-		if (!$this->firstParam OR !$this->secondParam OR !$this->table) throw new Exception();
+		$this->parentIsFirst = (bool) $parentIsFirst;
+		if (!$this->firstParam)
+		{
+			throw new InvalidStateException(get_class($this) . '::$firstParam is required');
+		}
+		if (!$this->secondParam)
+		{
+			throw new InvalidStateException(get_class($this) . '::$secondParam is required');
+		}
+		if (!$this->table)
+		{
+			throw new InvalidStateException(get_class($this) . '::$table is required');
+		}
 	}
 
 	public function add(IEntity $parent, array $ids)
