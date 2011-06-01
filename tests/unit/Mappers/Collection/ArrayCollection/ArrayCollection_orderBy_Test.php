@@ -77,7 +77,7 @@ class ArrayCollection_orderBy_Test extends ArrayCollection_Base_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\ArrayCollection::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, 'bad' given");
+		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\ArrayCollection::orderBy() Direction expected Dibi::ASC or Dibi::DESC, 'bad' given");
 		$this->c->orderBy('xxx', 'bad');
 	}
 

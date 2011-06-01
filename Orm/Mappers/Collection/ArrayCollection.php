@@ -64,7 +64,7 @@ class ArrayCollection extends Object implements IEntityCollection
 			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
 			{
 				$direction = func_get_arg(1);
-				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, '$direction' given");
+				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction expected Dibi::ASC or Dibi::DESC, '$direction' given");
 			}
 
 			$this->sorting[] = array($key, $direction);

@@ -86,7 +86,7 @@ class DibiCollection_orderBy_Test extends DibiCollection_Base_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\DibiCollection::orderBy() Direction excepted Dibi::ASC or Dibi::DESC, 'bad' given");
+		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\DibiCollection::orderBy() Direction expected Dibi::ASC or Dibi::DESC, 'bad' given");
 		$this->c->orderBy('xxx', 'bad');
 	}
 

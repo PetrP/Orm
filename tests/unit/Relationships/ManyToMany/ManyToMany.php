@@ -43,13 +43,13 @@ abstract class ManyToMany_Test extends TestCase
 
 	final protected function t()
 	{
-		$excepted = func_get_args();
+		$expected = func_get_args();
 		$actual = array();
 		foreach ($this->m2m->get() as $e)
 		{
 			$actual[] = isset($e->id) ? $e->id : $e;
 		}
-		$this->assertSame($excepted, $actual);
+		$this->assertSame($expected, $actual);
 	}
 
 	final public function testBaseData()
