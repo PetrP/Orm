@@ -54,22 +54,22 @@ class DibiMockExpectedMySqlDriver extends DibiMockEscapeMySqlDriver
 
 	public function getInsertId($sequence)
 	{
-		throw new NotSupportedException;
+		return $this->expected(__FUNCTION__, $sequence);
 	}
 
 	public function begin($savepoint = NULL)
 	{
-		throw new NotSupportedException;
+		return $this->expected(__FUNCTION__, $savepoint);
 	}
 
 	public function commit($savepoint = NULL)
 	{
-		throw new NotSupportedException;
+		return $this->expected(__FUNCTION__, $savepoint);
 	}
 
 	public function rollback($savepoint = NULL)
 	{
-		throw new NotSupportedException;
+		return $this->expected(__FUNCTION__, $savepoint);
 	}
 
 	public function getResource()
@@ -79,7 +79,7 @@ class DibiMockExpectedMySqlDriver extends DibiMockEscapeMySqlDriver
 
 	public function getReflector()
 	{
-		throw new NotSupportedException;
+		return $this;
 	}
 
 	public function createResultDriver($resource)
@@ -132,6 +132,26 @@ class DibiMockExpectedMySqlDriver extends DibiMockEscapeMySqlDriver
 	public function __clone()
 	{
 		throw new InvalidStateException;
+	}
+
+	public function getTables()
+	{
+		throw new NotSupportedException;
+	}
+
+	public function getColumns($table)
+	{
+		return $this->expected(__FUNCTION__, $table);
+	}
+
+	public function getIndexes($table)
+	{
+		throw new NotSupportedException;
+	}
+
+	public function getForeignKeys($table)
+	{
+		throw new NotImplementedException;
 	}
 
 }

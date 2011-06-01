@@ -90,6 +90,7 @@ class DibiMapper extends Mapper
 	/**
 	 * @see IRepository::flush()
 	 * @return void
+	 * @todo vola se opakovane
 	 */
 	public function flush()
 	{
