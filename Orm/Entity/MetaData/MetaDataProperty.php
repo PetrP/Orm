@@ -226,7 +226,7 @@ class MetaDataProperty extends Object
 
 
 		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name, $mappedByThis);
-		$this->setInjection(callback($loader, 'create'));
+		$this->setInjection($loader);
 		$this->data['relationship'] = $relationship;
 		$this->data['relationshipParam'] = $loader;
 		return $this;
@@ -312,34 +312,71 @@ class MetaDataProperty extends Object
 		return $this;
 	}
 
-	public function setInjection($factory)
+	/**
+	 * Inject same class around value in entity.
+	 *
+	 * <pre>
+	 * 	$entity->foo = array('bar'); // call ArrayInjection::setInjectedValue(array('bar'))
+	 * 	$entity->foo implements ArrayInjection;
+	 *
+	 * 	$repo->persist($entity) // call ArrayInjection::getInjectedValue()
+	 * </pre>
+	 *
+	 * Type must by class implements IEntityInjection.
+	 * @param Callback|Closure|string|IEntityInjectionLoader|NULL
+	 * null mean load from IEntityInjectionStaticLoader which is specify in type
+	 * @return MetaDataProperty $this
+	 * @see AnnotationMetaData::builtParamsInjection()
+	 */
+	public function setInjection($factory = NULL)
 	{
-		if (isset($this->data['injection'])) throw new InvalidStateException("Already has injection in {$this->class}::\${$this->name}");
+		if (isset($this->data['injection']))
+		{
+			throw new InvalidStateException("Already has injection in {$this->class}::\${$this->name}");
+		}
 
-		$types = $this->data['types'];
-		//unset($types['null']); // todo dava smysl aby mohl byt null? i kdyby ano tak v entityvalue je potreba nevytvaret injection kdyz je null a je mozne byt null
-		if (count($types) != 1) throw new InvalidStateException(); // todo
-		$class = current($types);
-		if (!class_exists($class)) throw new Exception($class);
+		$class = $this->originalTypes;
+		if (count($this->data['types']) != 1)
+		{
+			throw new InvalidStateException("Injection expecte type as one class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
+		}
+		if (!class_exists($class))
+		{
+			throw new InvalidStateException("Injection expecte type as class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
+		}
 		$reflection = new ReflectionClass($class);
 		$class = $reflection->getName();
 
-		if (!$reflection->implementsInterface('Orm\IEntityInjection')) throw new Exception("$class not implements Orm\\IEntityInjection");
-		if (!$reflection->isInstantiable()) throw new Exception("$class not instantiable");
+		if (!$reflection->implementsInterface('Orm\IEntityInjection'))
+		{
+			throw new InvalidStateException("$class does not implements Orm\\IEntityInjection in {$this->class}::\${$this->name}");
+		}
+		if (!$reflection->isInstantiable())
+		{
+			throw new InvalidStateException("$class is abstract or not instantiable in {$this->class}::\${$this->name}");
+		}
 
-		if ($factory instanceof Callback OR $factory instanceof Closure)
+		if ($factory instanceof IEntityInjectionLoader)
+		{
+			$factory = callback($factory, 'create');
+		}
+		else if ($factory instanceof Callback OR $factory instanceof Closure OR (is_string($factory) AND strpos($factory, '::')))
 		{
 			$factory = callback($factory);
 		}
-		else if (strpos($factory, '::'))
-		{
-			$factory = callback($factory);
-		}
-		else if (!$factory)
+		else if (!$factory AND $reflection->implementsInterface('Orm\IEntityInjectionStaticLoader'))
 		{
 			$factory = callback($class, 'create');
 		}
-		else throw new Exception();
+		else
+		{
+			if (!$factory)
+			{
+				throw new InvalidStateException("There is not factory callback for injection in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
+			}
+			$tmp = is_object($factory) ? get_class($factory) : (is_string($factory) ? $factory : gettype($factory));
+			throw new InvalidStateException("Injection expected valid callback, '$tmp' given in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
+		}
 
 		$this->data['injection'] = InjectionFactory::create($factory, $class);
 
