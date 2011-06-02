@@ -112,10 +112,6 @@ class AnnotationMetaData extends Object
 				$mode = ((!$mode OR $mode === '-read') ? MetaData::READ : 0) | ((!$mode OR $mode === '-write') ? MetaData::WRITE : 0);
 				$string = $match[2];
 			}
-			else
-			{
-				throw new InvalidStateException("Invalid annotation format '@property$string' in $class");
-			}
 		}
 
 		if (preg_match('#^([a-z0-9_\|\\\\]+)\s+\$([a-z0-9_]+)($|\s(.*)$)#si', $string, $match))
