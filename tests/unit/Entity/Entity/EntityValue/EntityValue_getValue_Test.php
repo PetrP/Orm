@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RepositoryContainer;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
@@ -25,6 +27,21 @@ class EntityValue_getValue_Test extends TestCase
 	{
 		$this->e->string = 'xyz';
 		$this->assertSame('xyz', $this->e->gv('string'));
+	}
+
+	public function testNotReadable()
+	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
+		}
+		$p = new ReflectionProperty('Orm\_EntityValue', 'rules');
+		$p->setAccessible(true);
+		$rules = $p->getValue($this->e);
+		$rules['id']['get'] = NULL;
+		$p->setValue($this->e, $rules);
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read to a write-only property EntityValue_getset_Entity::$id.');
+		$this->e->___event($this->e, 'persist', new TestsRepository(new RepositoryContainer), 2);
 	}
 
 }
