@@ -1,5 +1,6 @@
 <?php
 
+use Nette\UnexpectedValueException;
 use Orm\RepositoryContainer;
 
 require_once dirname(__FILE__) . '/../../../../boot.php';
@@ -42,6 +43,47 @@ class EntityValue_getValue_Test extends TestCase
 		$p->setValue($this->e, $rules);
 		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read to a write-only property EntityValue_getset_Entity::$id.');
 		$this->e->___event($this->e, 'persist', new TestsRepository(new RepositoryContainer), 2);
+	}
+
+	public function testRestoreChanged()
+	{
+		$e = new EntityValue_getValue_Entity;
+		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$this->assertFalse($e->isChanged());
+		try {
+			$e->foo;
+			$this->fail();
+		} catch (UnexpectedValueException $ex) {
+			throw $ex;
+		} catch (Exception $ex) {}
+
+		$this->assertFalse($e->isChanged());
+	}
+
+	public function testRestoreChangedInvalidValueNeed()
+	{
+		$e = new EntityValue_getValue_Entity;
+		$e->___event($e, 'load', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
+		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$this->assertFalse($e->isChanged());
+		try {
+			$e->__getValue('foo2', true);
+			$this->fail();
+		} catch (UnexpectedValueException $ex) {}
+
+		$this->assertFalse($e->isChanged());
+	}
+
+	public function testRestoreChangedInvalidValueNotNeed()
+	{
+		$e = new EntityValue_getValue_Entity;
+		$e->___event($e, 'load', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
+		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$this->assertFalse($e->isChanged());
+		$v = $e->__getValue('foo2', false);
+		$this->assertSame(NULL, $v);
+
+		$this->assertFalse($e->isChanged());
 	}
 
 }

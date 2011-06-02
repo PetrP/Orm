@@ -111,9 +111,12 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				{
 					$this->setValueHelper($name, $value, $rule);
 				}
-			} catch (UnexpectedValueException $e) {
+			} catch (Exception $e) {
 				$this->changed = $tmpChanged;
-				if ($need) throw $e;
+				if (!($e instanceof UnexpectedValueException) OR $need)
+				{
+					throw $e;
+				}
 				return NULL;
 			}
 			$this->changed = $tmpChanged;
