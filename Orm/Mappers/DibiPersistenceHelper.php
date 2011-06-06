@@ -109,9 +109,14 @@ class DibiPersistenceHelper extends Object
 			try {
 				$id = $this->connection->getInsertId();
 			} catch (DibiException $e) {
-				if (isset($values['id'])) $id = $values['id'];
-				else if (isset($entity->id)) $id = $entity->id;
-				else throw $e;
+				if (isset($values['id']))
+				{
+					$id = $values['id'];
+				}
+				else
+				{
+					throw $e;
+				}
 			}
 		}
 
