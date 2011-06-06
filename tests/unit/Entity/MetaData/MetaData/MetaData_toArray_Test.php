@@ -6,6 +6,7 @@ require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
  * @covers Orm\MetaData::toArray
+ * @covers Orm\MetaDataProperty::toArray
  */
 class MetaData_toArray_Test extends TestCase
 {

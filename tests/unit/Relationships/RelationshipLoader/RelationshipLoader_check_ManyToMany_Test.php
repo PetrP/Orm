@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
  * @covers Orm\RelationshipLoader::check
- * @covers Orm\MetaDataProperty::toArray
+ * @covers Orm\MetaDataProperty::check
  * @covers Orm\RelationshipLoader::__construct
  */
 class RelationshipLoader_check_ManyToMany_Test extends TestCase
