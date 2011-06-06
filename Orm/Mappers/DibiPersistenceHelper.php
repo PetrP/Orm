@@ -80,8 +80,9 @@ class DibiPersistenceHelper extends Object
 		}
 		else
 		{
+			// @codeCoverageIgnoreStart
 			$columns = $this->connection->driver->getColumns($table);
-		}
+		}	// @codeCoverageIgnoreEnd
 		// todo inline cache
 
 		$tmp = array();
