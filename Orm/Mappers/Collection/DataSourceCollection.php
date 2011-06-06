@@ -9,10 +9,9 @@ use DibiDataSourceX;
 use DibiDataSource;
 use DibiConnection;
 
-require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/BaseDibiCollection.php';
 
-class DataSourceCollection extends BaseDibiCollection implements IEntityCollection
+class DataSourceCollection extends BaseDibiCollection
 {
 
 	/** @var string */

@@ -3,16 +3,16 @@
 namespace Orm;
 
 use Nette\Object;
-use Dibi;
 use DibiConnection;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
 
+require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
 require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
 require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
 
-abstract class BaseDibiCollection extends Object
+abstract class BaseDibiCollection extends Object implements IEntityCollection
 {
 
 	/** @var string */
@@ -75,10 +75,10 @@ abstract class BaseDibiCollection extends Object
 	/**
 	 * Selects columns to order by.
 	 * @param string|array column name or array of column names
-	 * @param string sorting direction Dibi::ASC or Dibi::DESC
+	 * @param string sorting direction self::ASC or self::DESC
 	 * @return DibiCollection $this
 	 */
-	final public function orderBy($key, $direction = Dibi::ASC)
+	final public function orderBy($key, $direction = self::ASC)
 	{
 		if (is_array($key))
 		{
@@ -91,10 +91,10 @@ abstract class BaseDibiCollection extends Object
 		else
 		{
 			$direction = strtoupper($direction);
-			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
+			if ($direction !== self::ASC AND $direction !== self::DESC)
 			{
 				$direction = func_get_arg(1);
-				throw new InvalidArgumentException(get_class($this) . "::orderBy() Direction expected Dibi::ASC or Dibi::DESC, '$direction' given");
+				throw new InvalidArgumentException(get_class($this) . "::orderBy() Direction expected Orm\\IEntityCollection::ASC or Orm\\IEntityCollection::DESC, '$direction' given");
 			}
 
 			if ($join = $this->mapper->getJoinInfo($key))

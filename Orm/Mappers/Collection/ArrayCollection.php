@@ -5,7 +5,6 @@ namespace Orm;
 use Nette\Object;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
-use Dibi;
 use DateTime;
 use ArrayIterator;
 
@@ -45,10 +44,10 @@ class ArrayCollection extends Object implements IEntityCollection
 	/**
 	 * Selects columns to order by.
 	 * @param string|array column name or array of column names
-	 * @param string sorting direction Dibi::ASC or Dibi::DESC
+	 * @param string sorting direction self::ASC or self::DESC
 	 * @return ArrayCollection $this
 	 */
-	final public function orderBy($key, $direction = Dibi::ASC)
+	final public function orderBy($key, $direction = self::ASC)
 	{
 		if (is_array($key))
 		{
@@ -61,10 +60,10 @@ class ArrayCollection extends Object implements IEntityCollection
 		else
 		{
 			$direction = strtoupper($direction);
-			if ($direction !== Dibi::ASC AND $direction !== Dibi::DESC)
+			if ($direction !== self::ASC AND $direction !== self::DESC)
 			{
 				$direction = func_get_arg(1);
-				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction expected Dibi::ASC or Dibi::DESC, '$direction' given");
+				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction expected Orm\\IEntityCollection::ASC or Orm\\IEntityCollection::DESC, '$direction' given");
 			}
 
 			$this->sorting[] = array($key, $direction);
@@ -299,7 +298,7 @@ class ArrayCollection extends Object implements IEntityCollection
 			if ($this->sorting)
 			{
 				$this->_sort = $this->sorting;
-				$this->_sort[] = array('id', Dibi::ASC);
+				$this->_sort[] = array('id', self::ASC);
 				usort($source, array($this, '_sort'));
 				$this->_sort = NULL;
 			}
@@ -399,7 +398,7 @@ class ArrayCollection extends Object implements IEntityCollection
 			}
 		}
 
-		if ($direction === Dibi::DESC) return -$r;
+		if ($direction === self::DESC) return -$r;
 		return $r;
 	}
 

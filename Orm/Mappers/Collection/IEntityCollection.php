@@ -4,18 +4,23 @@ namespace Orm;
 
 use Countable;
 use IteratorAggregate;
-use Dibi;
 
 interface IEntityCollection extends Countable, IteratorAggregate
 {
 
+	/** sorting order - vzestupne */
+	const ASC = 'ASC';
+
+	/** sorting order - sestupne */
+	const DESC = 'DESC';
+
 	/**
 	 * Selects columns to order by.
 	 * @param string|array column name or array of column names
-	 * @param string sorting direction Dibi::ASC or Dibi::DESC
+	 * @param string sorting direction self::ASC or self::DESC
 	 * @return IEntityCollection $this
 	 */
-	public function orderBy($row, $direction = Dibi::ASC);
+	public function orderBy($row, $direction = self::ASC);
 
 	/**
 	 * Limits number of rows.

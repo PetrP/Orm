@@ -1,5 +1,7 @@
 <?php
 
+use Orm\DibiCollection;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
@@ -20,6 +22,12 @@ class DibiCollection_construct_Test extends DibiCollection_Base_Test
 	public function testSql()
 	{
 		$this->a('SELECT [e].* FROM [dibicollection] as e');
+	}
+
+	public function testAscDesc()
+	{
+		$this->assertSame(Dibi::DESC, DibiCollection::DESC);
+		$this->assertSame(Dibi::ASC, DibiCollection::ASC);
 	}
 
 }

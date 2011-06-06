@@ -25,4 +25,10 @@ class ArrayCollection_construct_Test extends ArrayCollection_Base_Test
 		$this->assertAttributeSame(array($e1, $e3), 'source', new ArrayCollection(array($e1, $e1, $e3)));
 	}
 
+	public function testAscDesc()
+	{
+		$this->assertSame(Dibi::DESC, ArrayCollection::DESC);
+		$this->assertSame(Dibi::ASC, ArrayCollection::ASC);
+	}
+
 }

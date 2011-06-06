@@ -5,10 +5,9 @@ namespace Orm;
 use Nette\NotImplementedException;
 use DibiConnection;
 
-require_once dirname(__FILE__) . '/IEntityCollection.php';
 require_once dirname(__FILE__) . '/BaseDibiCollection.php';
 
-class DibiCollection extends BaseDibiCollection implements IEntityCollection
+class DibiCollection extends BaseDibiCollection
 {
 
 	/** @var string */

@@ -86,7 +86,7 @@ class DataSourceCollection_orderBy_Test extends DataSourceCollection_Base_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\DataSourceCollection::orderBy() Direction expected Dibi::ASC or Dibi::DESC, 'bad' given");
+		$this->setExpectedException('Nette\InvalidArgumentException', "Orm\\DataSourceCollection::orderBy() Direction expected Orm\\IEntityCollection::ASC or Orm\\IEntityCollection::DESC, 'bad' given");
 		$this->c->orderBy('xxx', 'bad');
 	}
 

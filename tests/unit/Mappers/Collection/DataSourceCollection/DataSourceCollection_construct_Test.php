@@ -1,5 +1,7 @@
 <?php
 
+use Orm\DataSourceCollection;
+
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
@@ -20,6 +22,12 @@ class DataSourceCollection_construct_Test extends DataSourceCollection_Base_Test
 	public function testSql()
 	{
 		$this->a('SELECT * FROM `datasourcecollection`');
+	}
+
+	public function testAscDesc()
+	{
+		$this->assertSame(Dibi::DESC, DataSourceCollection::DESC);
+		$this->assertSame(Dibi::ASC, DataSourceCollection::ASC);
 	}
 
 }
