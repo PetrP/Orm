@@ -70,7 +70,7 @@ require_once dirname(__FILE__) . '/../Entity/EntityHelper.php';
 abstract class Repository extends Object implements IRepository
 {
 
-	/** @var RepositoryContainer */
+	/** @var IRepositoryContainer */
 	private $model;
 
 	/** @var DibiMapper */
@@ -98,9 +98,9 @@ abstract class Repository extends Object implements IRepository
 	protected $entityClassName;
 
 	/**
-	 * @param RepositoryContainer
+	 * @param IRepositoryContainer
 	 */
-	public function __construct(RepositoryContainer $model)
+	public function __construct(IRepositoryContainer $model)
 	{
 		$this->model = $model;
 		$repositoryName = strtolower(get_class($this));
@@ -363,7 +363,7 @@ abstract class Repository extends Object implements IRepository
 		return $this->mapper;
 	}
 
-	/** @return RepositoryContainer */
+	/** @return IRepositoryContainer */
 	final public function getModel()
 	{
 		return $this->model;

@@ -2,7 +2,7 @@
 
 namespace Orm;
 
-require_once dirname(__FILE__) . '/RepositoryContainer.php';
+require_once dirname(__FILE__) . '/RepositoryContainer/RepositoryContainer.php';
 require_once dirname(__FILE__) . '/Mappers/DibiMapper.php';
 require_once dirname(__FILE__) . '/Mappers/FileMapper.php';
 require_once dirname(__FILE__) . '/Relationships/OneToMany.php';

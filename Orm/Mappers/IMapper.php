@@ -65,7 +65,7 @@ interface IMapper
 	/** @return IRepository */
 	public function getRepository();
 
-	/** @return RepositoryContainer */
+	/** @return IRepositoryContainer */
 	public function getModel();
 
 	/** @return IConventional */

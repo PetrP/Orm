@@ -7,9 +7,10 @@ use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/Entity/Entity.php';
-require_once dirname(__FILE__) . '/Repository/Repository.php';
-require_once dirname(__FILE__) . '/Mappers/Mapper.php';
+require_once dirname(__FILE__) . '/IRepositoryContainer.php';
+require_once dirname(__FILE__) . '/../Entity/Entity.php';
+require_once dirname(__FILE__) . '/../Repository/Repository.php';
+require_once dirname(__FILE__) . '/../Mappers/Mapper.php';
 
 /**
  * Kolekce Repository.
@@ -53,7 +54,7 @@ require_once dirname(__FILE__) . '/Mappers/Mapper.php';
  * }
  * </pre>
  */
-class RepositoryContainer extends Object
+class RepositoryContainer extends Object implements IRepositoryContainer
 {
 	/** @var RepositoryContainer @deprecated @see self::get() */
 	static private $instance;
@@ -116,7 +117,7 @@ class RepositoryContainer extends Object
 	 * Registruje repository pod jednodusim nazvem
 	 * @param string
 	 * @param string
-	 * @return RepositoryContainer
+	 * @return IRepositoryContainer
 	 */
 	public function register($alias, $repositoryClass)
 	{

@@ -141,7 +141,7 @@ interface IRepository
 	 */
 	public function getMapper();
 
-	/** @return RepositoryContainer */
+	/** @return IRepositoryContainer */
 	public function getModel();
 
 	/**

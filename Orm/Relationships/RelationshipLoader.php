@@ -95,7 +95,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	/**
 	 * Kontroluje asociace z druhe strany
 	 */
-	public function check(RepositoryContainer $model)
+	public function check(IRepositoryContainer $model)
 	{
 		if (!$this->checkParams) return;
 		list($relationship, $entityName) = $this->checkParams;

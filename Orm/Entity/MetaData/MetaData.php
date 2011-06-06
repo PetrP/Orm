@@ -135,8 +135,8 @@ class MetaData extends Object
 		return $properties;
 	}
 
-	/** @param RepositoryContainer */
-	public function check(RepositoryContainer $model)
+	/** @param IRepositoryContainer */
+	public function check(IRepositoryContainer $model)
 	{
 		foreach ($this->properties as $name => $property)
 		{
@@ -156,10 +156,10 @@ class MetaData extends Object
 	 * Vysledek se cachuje.
 	 * @internal
 	 * @param string class name
-	 * @param RepositoryContainer
+	 * @param IRepositoryContainer
 	 * @return array internal format
 	 */
-	public static function getEntityRules($entityClass, RepositoryContainer $model = NULL)
+	public static function getEntityRules($entityClass, IRepositoryContainer $model = NULL)
 	{
 		$lowerEntityClass = strtolower($entityClass);
 		if ($model)

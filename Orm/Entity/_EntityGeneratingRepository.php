@@ -7,7 +7,7 @@ use Nette\InvalidStateException;
 /**
  * Uchovava stav o repository kde je entita persistovana.
  * @see Entity
- * @property-read RepositoryContainer $model
+ * @property-read IRepositoryContainer $model
  * @todo zvazit jestli to neni spatny navrh
  */
 class _EntityGeneratingRepository extends _EntityEvent
@@ -15,7 +15,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	/** @var IRepository|NULL null kdyz jeste nebylo ulozeno */
 	private $repository;
 
-	/** @var RepositoryContainer|NULL cache */
+	/** @var IRepositoryContainer|NULL cache */
 	private $model;
 
 	/**
@@ -68,7 +68,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 
 	/**
 	 * @param bool
-	 * @return RepositoryContainer
+	 * @return IRepositoryContainer
 	 */
 	final public function getModel($need = true)
 	{

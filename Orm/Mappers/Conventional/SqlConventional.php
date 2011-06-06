@@ -139,9 +139,9 @@ class SqlConventional extends Object implements IConventional
 	/**
 	 * Nastavi $this->cache['fk']
 	 * @param array of entityname
-	 * @param RepositoryContainer
+	 * @param IRepositoryContainer
 	 */
-	final private function loadFk(array $entityNames, RepositoryContainer $model)
+	final private function loadFk(array $entityNames, IRepositoryContainer $model)
 	{
 		$result = array();
 		if ($this->foreignKeyFormat('test') !== 'test') // pokracovat jen kdyz se fk format lisi

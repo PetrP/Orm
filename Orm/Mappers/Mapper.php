@@ -58,7 +58,7 @@ abstract class Mapper extends Object implements IMapper
 		return $this->repository;
 	}
 
-	/** @return RepositoryContainer */
+	/** @return IRepositoryContainer */
 	final public function getModel()
 	{
 		return $this->repository->getModel();

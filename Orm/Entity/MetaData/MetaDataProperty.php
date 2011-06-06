@@ -383,7 +383,7 @@ class MetaDataProperty extends Object
 		return $this;
 	}
 
-	public function check(RepositoryContainer $model)
+	public function check(IRepositoryContainer $model)
 	{
 		$relationship = $this->data['relationship'];
 		if ($relationship === MetaData::OneToOne OR $relationship === MetaData::ManyToOne)
