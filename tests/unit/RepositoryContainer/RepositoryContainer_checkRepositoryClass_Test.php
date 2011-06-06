@@ -29,19 +29,19 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 
 	public function testImplement()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad' must implement Orm\\IRepository");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_BadRepository' must implement Orm\\IRepository");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad');
 	}
 
 	public function testAbstract()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad2' is abstract.");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_Bad2Repository' is abstract.");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad2');
 	}
 
 	public function testNotInstantiable()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'repositorycontainer_checkrepositoryclass_bad3' isn't instantiable");
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_Bad3Repository' isn't instantiable");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad3');
 	}
 

@@ -171,17 +171,17 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		if (!$reflection->implementsInterface('Orm\IRepository'))
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$name}' must implement Orm\\IRepository");
+			throw new InvalidStateException("Repository '{$originClass}' must implement Orm\\IRepository");
 		}
 		else if ($reflection->isAbstract())
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$name}' is abstract.");
+			throw new InvalidStateException("Repository '{$originClass}' is abstract.");
 		}
 		else if (!$reflection->isInstantiable())
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$name}' isn't instantiable");
+			throw new InvalidStateException("Repository '{$originClass}' isn't instantiable");
 		}
 
 		return true;
