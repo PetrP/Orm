@@ -61,10 +61,6 @@ class DibiPersistenceHelper extends Object
 			{
 				$values[$key] = serialize($value); // todo zkontrolovat jestli je jednodimenzni a neobrahuje zadne nesmysly
 			}
-			else if ($value instanceof IRelationship)
-			{
-				unset($values[$key]);
-			}
 			else if (is_object($value) AND method_exists($value, '__toString'))
 			{
 				$values[$key] = $value->__toString();
