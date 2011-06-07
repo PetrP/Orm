@@ -117,12 +117,22 @@ class SqlConventional extends Object implements IConventional
 	/**
 	 * @todo
 	 * @param IRepository
+	 * @return string
+	 */
+	public function getTable(IRepository $repository)
+	{
+		return str_replace('\\', '_', $repository->getRepositoryName());
+	}
+
+	/**
+	 * @todo
+	 * @param IRepository
 	 * @param IRepository
 	 * @return string
 	 */
 	public function getManyToManyTable(IRepository $first, IRepository $second)
 	{
-		return str_replace('\\', '_', $first->getRepositoryName() . '_x_' . $second->getRepositoryName());
+		return $this->getTable($first) . '_x_' . $this->getTable($second);
 	}
 
 	/**

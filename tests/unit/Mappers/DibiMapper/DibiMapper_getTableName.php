@@ -13,6 +13,7 @@ class DibiMapper_getTableName_DibiMapper extends DibiMapper
 
 class DibiMapper_getTableName_Repository extends Repository
 {
+	protected $entityClassName = 'TestEntity';
 	public function __setRepositoryName($rn)
 	{
 		if (PHP_VERSION_ID < 50300)
