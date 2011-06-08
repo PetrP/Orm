@@ -74,10 +74,13 @@ class FindByHelper
 			if (is_array($value))
 			{
 				$value = array_unique(
-					array_map(
-						create_function('$v', 'return $v instanceof Orm\IEntity ? (isset($v->id) ? $v->id : NULL) : $v;'),
-						$value
-					)
+					array_map(function ($v) {
+						if ($v instanceof \Orm\IEntity)
+						{
+							return isset($v->id) ? $v->id : NULL;
+						}
+						return $v;
+					}, $value)
 				);
 				$where[] = array('%n IN %in', $key, $value);
 			}

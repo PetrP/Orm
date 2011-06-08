@@ -38,9 +38,9 @@ class PerformanceHelper extends Object
 				$key = substr($key, 0, 20) . md5($key);
 			}
 
-			register_shutdown_function(create_function('$cache, $key', '
+			register_shutdown_function(function ($cache, $key) {
 				$cache[$key] = \Orm\PerformanceHelper::$toSave;
-			'), $cache, $key);
+			}, $cache, $key);
 		}
 
 		if (!isset(self::$toSave[$this->repositoryName])) self::$toSave[$this->repositoryName] = array();
