@@ -8,6 +8,12 @@ use DateTime;
 class FindByHelper
 {
 
+	/**
+	 * @param string reference
+	 * @param array reference
+	 * @return bool
+	 * @throws InvalidArgumentException
+	 */
 	public static function parse(& $name, array & $args)
 	{
 		$mode = $by = NULL;
@@ -47,6 +53,19 @@ class FindByHelper
 		return false;
 	}
 
+	/**
+	 * Z $findBy prevede do $where v dibi formatu, $findBy vyprazdni.
+	 * @param BaseDibiCollection
+	 * @param DibiMapper
+	 * @param IConventional
+	 * @param array reference
+	 * @param array reference
+	 * @param string
+	 * @param string
+	 * @see DataSourceCollection::getDataSource
+	 * @see DibiCollection::__toString
+	 * @see DibiCollection::join
+	 */
 	public static function dibiProcess(BaseDibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $tableAlias, $prefix = NULL)
 	{
 		foreach ($findBy as $tmp)

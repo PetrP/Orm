@@ -32,16 +32,19 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		$this->connection = $connection;
 	}
 
+	/** @return string */
 	final protected function getParentParam()
 	{
 		return $this->parentIsFirst ? $this->firstParam : $this->secondParam;
 	}
 
+	/** @return string */
 	final protected function getChildParam()
 	{
 		return $this->parentIsFirst ? $this->secondParam : $this->firstParam;
 	}
 
+	/** @param bool */
 	public function setParams($parentIsFirst)
 	{
 		$this->parentIsFirst = (bool) $parentIsFirst;
@@ -59,6 +62,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		}
 	}
 
+	/**
+	 * @param IEntity
+	 * @param array id => id
+	 */
 	public function add(IEntity $parent, array $ids)
 	{
 		$parentId = $parent->id;
@@ -74,6 +81,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		}
 	}
 
+	/**
+	 * @param IEntity
+	 * @param array id => id
+	 */
 	public function remove(IEntity $parent, array $ids)
 	{
 		$this->connection->delete($this->table)
@@ -84,6 +95,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		;
 	}
 
+	/**
+	 * @param IEntity
+	 * @return array id => id
+	 */
 	public function load(IEntity $parent)
 	{
 		if (!isset($parent->id)) return array();

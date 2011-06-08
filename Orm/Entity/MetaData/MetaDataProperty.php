@@ -383,6 +383,12 @@ class MetaDataProperty extends Object
 		return $this;
 	}
 
+	/**
+	 * Zkontroluje asociace
+	 * @param IRepositoryContainer
+	 * @return void
+	 * @see MetaData::check()
+	 */
 	public function check(IRepositoryContainer $model)
 	{
 		$relationship = $this->data['relationship'];

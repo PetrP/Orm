@@ -11,10 +11,22 @@ use ReflectionMethod;
 require_once __DIR__ . '/IEntityInjection.php';
 require_once __DIR__ . '/IEntityInjectionStaticLoader.php';
 
+/**
+ * Obecna implementace IEntityInjection
+ * @see IEntityInjection
+ */
 abstract class Injection extends Object implements IEntityInjection, IEntityInjectionStaticLoader
 {
+
+	/** @var mixed */
 	protected $value;
 
+	/**
+	 * @param string
+	 * @param IEntity
+	 * @param mixed
+	 * @return IEntityInjection
+	 */
 	public static function create($className, IEntity $entity, $value = NULL)
 	{
 		if (method_exists($className, '__construct'))
@@ -33,14 +45,23 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 		return $injection;
 	}
 
+	/**
+	 * Hodnota ktera se bude ukladat do uloziste.
+	 * @return mixed
+	 */
 	public function getInjectedValue()
 	{
 		return $this->value;
 	}
 
+	/**
+	 * To co prijde od uzivatele.
+	 * @param mixed
+	 */
 	public function setInjectedValue($value)
 	{
 		$this->value = $value;
 		return $this;
 	}
+
 }
