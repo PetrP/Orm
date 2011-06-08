@@ -55,7 +55,9 @@ class PerformanceHelper extends Object
 			}
 
 			register_shutdown_function(function ($cache, $key) {
+				// @codeCoverageIgnoreStart
 				$cache[$key] = \Orm\PerformanceHelper::$toSave;
+				// @codeCoverageIgnoreEnd
 			}, $cache, $key);
 		}
 
