@@ -404,8 +404,6 @@ class MetaDataProperty extends Object
 		{
 			$this->data['relationshipParam']->check($model);
 		}
-
-		return $this->data;
 	}
 
 	/**
