@@ -7,10 +7,10 @@ use DibiConnection;
 use Nette\NotImplementedException;
 use Nette\InvalidArgumentException;
 
-require_once dirname(__FILE__) . '/IEntityCollection.php';
-require_once dirname(__FILE__) . '/Helpers/EntityIterator.php';
-require_once dirname(__FILE__) . '/Helpers/FetchAssoc.php';
-require_once dirname(__FILE__) . '/Helpers/FindByHelper.php';
+require_once __DIR__ . '/IEntityCollection.php';
+require_once __DIR__ . '/Helpers/EntityIterator.php';
+require_once __DIR__ . '/Helpers/FetchAssoc.php';
+require_once __DIR__ . '/Helpers/FindByHelper.php';
 
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {

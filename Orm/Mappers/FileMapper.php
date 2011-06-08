@@ -4,7 +4,7 @@ namespace Orm;
 
 use Nette\Utils\SafeStream;
 
-require_once dirname(__FILE__) . '/ArrayMapper.php';
+require_once __DIR__ . '/ArrayMapper.php';
 
 abstract class FileMapper extends ArrayMapper
 {

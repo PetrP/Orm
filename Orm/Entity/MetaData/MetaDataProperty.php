@@ -10,8 +10,8 @@ use Exception;
 use Closure;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/../../Relationships/RelationshipLoader.php';
-require_once dirname(__FILE__) . '/../Injection/InjectionFactory.php';
+require_once __DIR__ . '/../../Relationships/RelationshipLoader.php';
+require_once __DIR__ . '/../Injection/InjectionFactory.php';
 
 /**
  * Informace o jednom parametru

@@ -8,8 +8,8 @@ use Nette\InvalidArgumentException;
 use Exception;
 use ReflectionMethod;
 
-require_once dirname(__FILE__) . '/IEntityInjection.php';
-require_once dirname(__FILE__) . '/IEntityInjectionStaticLoader.php';
+require_once __DIR__ . '/IEntityInjection.php';
+require_once __DIR__ . '/IEntityInjectionStaticLoader.php';
 
 abstract class Injection extends Object implements IEntityInjection, IEntityInjectionStaticLoader
 {

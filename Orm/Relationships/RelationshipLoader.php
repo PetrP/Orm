@@ -6,8 +6,8 @@ use Nette\Object;
 use Nette\InvalidStateException;
 use Exception;
 
-require_once dirname(__FILE__) . '/IRelationship.php';
-require_once dirname(__FILE__) . '/../Entity/Injection/IEntityInjectionLoader.php';
+require_once __DIR__ . '/IRelationship.php';
+require_once __DIR__ . '/../Entity/Injection/IEntityInjectionLoader.php';
 
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {

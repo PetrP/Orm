@@ -6,7 +6,7 @@ use Nette\Object;
 use Nette\InvalidStateException;
 use DibiConnection;
 
-require_once dirname(__FILE__) . '/IManyToManyMapper.php';
+require_once __DIR__ . '/IManyToManyMapper.php';
 
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {

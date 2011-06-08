@@ -11,10 +11,10 @@ use DibiTranslator;
 use ReflectionMethod;
 use stdClass;
 
-require_once dirname(__FILE__) . '/Mapper.php';
-require_once dirname(__FILE__) . '/DibiPersistenceHelper.php';
-require_once dirname(__FILE__) . '/Conventional/SqlConventional.php';
-require_once dirname(__FILE__) . '/Collection/DibiCollection.php';
+require_once __DIR__ . '/Mapper.php';
+require_once __DIR__ . '/DibiPersistenceHelper.php';
+require_once __DIR__ . '/Conventional/SqlConventional.php';
+require_once __DIR__ . '/Collection/DibiCollection.php';
 
 /**
  * @property-read DibiConnection $connection

@@ -4,7 +4,7 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once dirname(__FILE__) . '/IConventional.php';
+require_once __DIR__ . '/IConventional.php';
 
 /**
  * Rozdily nazvu klicu v entite a v ulozisti.

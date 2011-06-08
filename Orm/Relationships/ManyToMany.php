@@ -4,10 +4,10 @@ namespace Orm;
 
 use Nette\InvalidStateException;
 
-require_once dirname(__FILE__) . '/IRelationship.php';
-require_once dirname(__FILE__) . '/BaseToMany.php';
-require_once dirname(__FILE__) . '/DibiManyToManyMapper.php';
-require_once dirname(__FILE__) . '/ArrayManyToManyMapper.php';
+require_once __DIR__ . '/IRelationship.php';
+require_once __DIR__ . '/BaseToMany.php';
+require_once __DIR__ . '/DibiManyToManyMapper.php';
+require_once __DIR__ . '/ArrayManyToManyMapper.php';
 
 // todo rict parent entity ze se zmenila
 class ManyToMany extends BaseToMany implements IRelationship
@@ -240,4 +240,4 @@ class ManyToMany extends BaseToMany implements IRelationship
 
 }
 
-require_once dirname(__FILE__) . '/bcmm.php';
+require_once __DIR__ . '/bcmm.php';

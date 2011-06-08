@@ -6,8 +6,8 @@ use Nette\Object;
 use Nette\InvalidStateException;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/IMapper.php';
-require_once dirname(__FILE__) . '/Conventional/NoConventional.php';
+require_once __DIR__ . '/IMapper.php';
+require_once __DIR__ . '/Conventional/NoConventional.php';
 
 /**
  * @property-read IRepository $repository

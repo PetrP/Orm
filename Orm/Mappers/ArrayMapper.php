@@ -8,8 +8,8 @@ use DateTime;
 use ArrayObject;
 use Exception;
 
-require_once dirname(__FILE__) . '/Mapper.php';
-require_once dirname(__FILE__) . '/Collection/ArrayCollection.php';
+require_once __DIR__ . '/Mapper.php';
+require_once __DIR__ . '/Collection/ArrayCollection.php';
 
 abstract class ArrayMapper extends Mapper
 {
@@ -234,7 +234,7 @@ abstract class ArrayMapper extends Mapper
 		}
 		// locking on Windows causes that a file seems to be empty
 		$handle = substr(PHP_OS, 0, 3) === 'WIN'
-			? @fopen(dirname(__FILE__) . '/ArrayMapper.lockfile', 'w')
+			? @fopen(__DIR__ . '/ArrayMapper.lockfile', 'w')
 			: @fopen(__FILE__, 'r'); // @ - file may not already exist
 
 		if (!$handle)

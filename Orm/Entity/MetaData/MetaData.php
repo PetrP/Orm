@@ -7,7 +7,7 @@ use Nette\InvalidStateException;
 use Exception;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/MetaDataProperty.php';
+require_once __DIR__ . '/MetaDataProperty.php';
 
 /**
  * Informace o parametrech entity.

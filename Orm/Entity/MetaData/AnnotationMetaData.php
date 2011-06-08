@@ -9,7 +9,7 @@ use Nette\InvalidArgumentException;
 use Exception;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/MetaData.php';
+require_once __DIR__ . '/MetaData.php';
 
 /**
  * Ziskava meta data z enotaci.

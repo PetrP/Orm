@@ -7,9 +7,9 @@ use UnexpectedValueException;
 use Nette\InvalidStateException;
 use Exception;
 
-require_once dirname(__FILE__) . '/IRepository.php';
-require_once dirname(__FILE__) . '/PerformanceHelper.php';
-require_once dirname(__FILE__) . '/../Entity/EntityHelper.php';
+require_once __DIR__ . '/IRepository.php';
+require_once __DIR__ . '/PerformanceHelper.php';
+require_once __DIR__ . '/../Entity/EntityHelper.php';
 
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.

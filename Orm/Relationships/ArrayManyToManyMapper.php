@@ -4,7 +4,7 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once dirname(__FILE__) . '/IManyToManyMapper.php';
+require_once __DIR__ . '/IManyToManyMapper.php';
 
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 {

@@ -5,7 +5,7 @@ namespace Orm;
 use Nette\NotImplementedException;
 use DibiConnection;
 
-require_once dirname(__FILE__) . '/BaseDibiCollection.php';
+require_once __DIR__ . '/BaseDibiCollection.php';
 
 class DibiCollection extends BaseDibiCollection
 {

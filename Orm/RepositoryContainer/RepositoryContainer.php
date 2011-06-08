@@ -7,10 +7,10 @@ use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use ReflectionClass;
 
-require_once dirname(__FILE__) . '/IRepositoryContainer.php';
-require_once dirname(__FILE__) . '/../Entity/Entity.php';
-require_once dirname(__FILE__) . '/../Repository/Repository.php';
-require_once dirname(__FILE__) . '/../Mappers/Mapper.php';
+require_once __DIR__ . '/IRepositoryContainer.php';
+require_once __DIR__ . '/../Entity/Entity.php';
+require_once __DIR__ . '/../Repository/Repository.php';
+require_once __DIR__ . '/../Mappers/Mapper.php';
 
 /**
  * Kolekce Repository.
