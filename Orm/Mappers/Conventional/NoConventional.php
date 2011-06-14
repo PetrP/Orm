@@ -49,9 +49,9 @@ class NoConventional extends Object implements IConventional
 	 * @param IRepository
 	 * @return string
 	 */
-	public function getManyToManyTable(IRepository $first, IRepository $second)
+	public function getManyToManyTable(IRepository $source, IRepository $target)
 	{
-		return $this->getTable($first) . '_x_' . $this->getTable($second);
+		return $this->getTable($source) . '_x_' . $this->getTable($target);
 	}
 
 	/**
