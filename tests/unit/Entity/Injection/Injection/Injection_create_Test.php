@@ -23,7 +23,7 @@ class Injection_create_Test extends TestCase
 		$i1 = Injection_create_Injection::create('Injection_create_Injection', new TestEntity, 'value');
 		$this->assertInstanceOf('Orm\Injection', $i1);
 		$this->assertAttributeSame('value', 'value', $i1);
-		$i2 = Injection_create_Injection::create('Injection_create_Injection', new TestEntity);
+		$i2 = Injection_create_Injection::create('Injection_create_Injection', new TestEntity, NULL);
 		$this->assertInstanceOf('Orm\Injection', $i2);
 		$this->assertAttributeSame(NULL, 'value', $i2);
 		$this->assertNotSame($i1, $i2);
@@ -32,24 +32,24 @@ class Injection_create_Test extends TestCase
 	public function testBadClass()
 	{
 		$this->setExpectedException('Nette\InvalidArgumentException', "Nette\\Utils\\Html is't subclass of Orm\\Injection");
-		Injection_create_Injection::create('Nette\Utils\Html', new TestEntity);
+		Injection_create_Injection::create('Nette\Utils\Html', new TestEntity, NULL);
 	}
 
 	public function testHasConstructor()
 	{
-		$i = Injection_create_Injection_Constructor::create('Injection_create_Injection_Constructor', new TestEntity);
+		$i = Injection_create_Injection_Constructor::create('Injection_create_Injection_Constructor', new TestEntity, NULL);
 		$this->assertInstanceOf('Injection_create_Injection_Constructor', $i);
 	}
 
 	public function testHasConstructorWithParams()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "Injection_create_Injection_ConstructorWithParams has required parameters in constructor, use custom factory");
-		Injection_create_Injection_ConstructorWithParams::create('Injection_create_Injection_ConstructorWithParams', new TestEntity);
+		Injection_create_Injection_ConstructorWithParams::create('Injection_create_Injection_ConstructorWithParams', new TestEntity, NULL);
 	}
 
 	public function testHasConstructorWithParamsNotRequired()
 	{
-		$i = Injection_create_Injection_ConstructorWithParamsNotRequired::create('Injection_create_Injection_ConstructorWithParamsNotRequired', new TestEntity);
+		$i = Injection_create_Injection_ConstructorWithParamsNotRequired::create('Injection_create_Injection_ConstructorWithParamsNotRequired', new TestEntity, NULL);
 		$this->assertInstanceOf('Injection_create_Injection_ConstructorWithParamsNotRequired', $i);
 	}
 

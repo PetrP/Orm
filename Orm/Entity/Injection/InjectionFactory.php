@@ -19,7 +19,7 @@ class InjectionFactory
 		return callback($factory, 'call');
 	}
 
-	public function call(IEntity $entity, $value = NULL)
+	public function call(IEntity $entity, $value)
 	{
 		return call_user_func($this->callback, $this->className, $entity, $value);
 	}

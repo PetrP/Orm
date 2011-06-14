@@ -20,7 +20,7 @@ class InjectionFactory_call_Test extends TestCase
 		$r = $callback->invoke($e, 'value');
 		$this->assertSame(array('class', $e, 'value'), $r);
 
-		$r = $callback->invoke($e);
+		$r = $callback->invoke($e, NULL);
 		$this->assertSame(array('class', $e, NULL), $r);
 	}
 

@@ -15,6 +15,6 @@ interface IEntityInjectionStaticLoader
 	 * @param mixed
 	 * @return IEntityInjection
 	 */
-	static function create($className, IEntity $entity, $value = NULL);
+	static function create($className, IEntity $entity, $value);
 
 }

@@ -27,7 +27,7 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 	 * @param mixed
 	 * @return IEntityInjection
 	 */
-	public static function create($className, IEntity $entity, $value = NULL)
+	public static function create($className, IEntity $entity, $value)
 	{
 		if (method_exists($className, '__construct'))
 		{
