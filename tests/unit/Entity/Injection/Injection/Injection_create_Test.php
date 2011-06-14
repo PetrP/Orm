@@ -22,7 +22,7 @@ class Injection_create_Test extends TestCase
 	{
 		$i1 = Injection_create_Injection::create('Injection_create_Injection', new TestEntity, 'value');
 		$this->assertInstanceOf('Orm\Injection', $i1);
-		$this->assertAttributeSame(NULL, 'value', $i1);
+		$this->assertAttributeSame('value', 'value', $i1);
 		$i2 = Injection_create_Injection::create('Injection_create_Injection', new TestEntity);
 		$this->assertInstanceOf('Orm\Injection', $i2);
 		$this->assertAttributeSame(NULL, 'value', $i2);
@@ -51,6 +51,12 @@ class Injection_create_Test extends TestCase
 	{
 		$i = Injection_create_Injection_ConstructorWithParamsNotRequired::create('Injection_create_Injection_ConstructorWithParamsNotRequired', new TestEntity);
 		$this->assertInstanceOf('Injection_create_Injection_ConstructorWithParamsNotRequired', $i);
+	}
+
+	public function testInitialValue()
+	{
+		$i = Injection_create_Injection::create('Injection_create_Injection', new TestEntity, 'value');
+		$this->assertAttributeSame('value', 'value', $i);
 	}
 
 }

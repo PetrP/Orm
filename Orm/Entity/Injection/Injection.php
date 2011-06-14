@@ -42,6 +42,9 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 		{
 			throw new InvalidArgumentException(get_class($injection) . " is't subclass of " . __CLASS__);
 		}
+
+		$injection->setInjectedValue($value);
+
 		return $injection;
 	}
 
@@ -55,7 +58,7 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 	}
 
 	/**
-	 * To co prijde od uzivatele.
+	 * To co prijde od uzivatele nebo z uloziste.
 	 * @param mixed
 	 */
 	public function setInjectedValue($value)
