@@ -121,6 +121,7 @@ class SqlConventional extends NoConventional
 	 */
 	public function getManyToManyParam($param)
 	{
+		$param = parent::getManyToManyParam($param);
 		$param = $this->formatEntityToStorage(array($param => NULL));
 		return $this->foreignKeyFormat(key($param));
 	}

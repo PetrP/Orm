@@ -25,4 +25,14 @@ class SqlConventional_getManyToManyParam_Test extends TestCase
 		$this->assertSame('same_thing_same_thing_id', $this->c->getManyToManyParam('sameThingSameThing'));
 	}
 
+	public function testPlural()
+	{
+		$this->assertSame('foo_id', $this->c->getManyToManyParam('foos'));
+		$this->assertSame('clas_id', $this->c->getManyToManyParam('class'));
+	}
+
+	public function testEmpty()
+	{
+		$this->assertSame('_id', $this->c->getManyToManyParam(''));
+	}
 }
