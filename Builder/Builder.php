@@ -139,6 +139,8 @@ class Builder extends Object
 	 */
 	private function convert($data)
 	{
+		$data = PhpParser::standardizeLineEndings($data);
+
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
 			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);

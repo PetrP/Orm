@@ -71,4 +71,16 @@ class PhpParser extends Tokenizer
 		return preg_replace('#__DIR__#', 'dirname(__FILE__)', $s);
 	}
 
+	/**
+	 * Standardize line endings to unix-like
+	 * @param string
+	 * @return string
+	 */
+	public static function standardizeLineEndings($s)
+	{
+		$s = str_replace("\r\n", "\n", $s); // DOS
+		$s = strtr($s, "\r", "\n"); // Mac
+		return $s;
+	}
+
 }
