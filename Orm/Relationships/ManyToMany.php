@@ -42,8 +42,8 @@ class ManyToMany extends BaseToMany implements IRelationship
 	private $mapper;
 
 	/**
-	 * @see ArrayManyToManyMapper
 	 * @see self::getMapper()
+	 * @see ArrayManyToManyMapper::setInjectedValue()
 	 * @var mixed
 	 */
 	private $initialValue;
@@ -179,9 +179,9 @@ class ManyToMany extends BaseToMany implements IRelationship
 	public function getInjectedValue()
 	{
 		$mapper = $this->getMapper();
-		if ($mapper instanceof ArrayManyToManyMapper)
+		if ($mapper instanceof IEntityInjection)
 		{
-			return $mapper->value;
+			return $mapper->getInjectedValue();
 		}
 	}
 
@@ -211,9 +211,9 @@ class ManyToMany extends BaseToMany implements IRelationship
 				}
 				$mapper->attach($this);
 
-				if ($mapper instanceof ArrayManyToManyMapper)
+				if ($mapper instanceof IEntityInjection)
 				{
-					$mapper->value = ValidationHelper::isValid(array('array'), $this->initialValue) ? $this->initialValue : array();
+					$mapper->setInjectedValue($this->initialValue);
 				}
 				$this->mapper = $mapper;
 			}

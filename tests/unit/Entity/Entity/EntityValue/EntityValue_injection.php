@@ -73,10 +73,10 @@ class EntityValue_injectionEntity_ManyToMany extends ManyToMany
 class EntityValue_injection_ManyToManyMapper extends ArrayManyToManyMapper
 {
 	public $setValue = 0;
-	public function setValue($value)
+	public function setInjectedValue($value)
 	{
-		$this->{__FUNCTION__}++;
-		return parent::setValue($value);
+		$this->setValue++;
+		return parent::setInjectedValue($value);
 	}
 }
 

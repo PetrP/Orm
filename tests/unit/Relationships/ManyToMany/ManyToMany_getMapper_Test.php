@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 
 /**
  * @covers Orm\ManyToMany::getMapper
- * @covers Orm\ArrayManyToManyMapper::setValue
+ * @covers Orm\ArrayManyToManyMapper::setInjectedValue
  * @covers Orm\ArrayManyToManyMapper::attach
  */
 class ManyToMany_getMapper_Test extends ManyToMany_Test
@@ -36,28 +36,28 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testValue()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, NULL);
-		$this->assertSame(array(), $this->m2m->gm()->getValue());
+		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, array());
-		$this->assertSame(array(), $this->m2m->gm()->getValue());
+		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, 'a:0:{}');
-		$this->assertSame(array(), $this->m2m->gm()->getValue());
+		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
 	}
 
 	public function testValue2()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, array(10,11));
-		$this->assertSame(array(10=>10,11=>11), $this->m2m->gm()->getValue());
+		$this->assertSame(array(10=>10,11=>11), $this->m2m->gm()->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, array(11,11));
-		$this->assertSame(array(11=>11), $this->m2m->gm()->getValue());
+		$this->assertSame(array(11=>11), $this->m2m->gm()->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true, serialize(array(10)));
-		$this->assertSame(array(10=>10), $this->m2m->gm()->getValue());
+		$this->assertSame(array(10=>10), $this->m2m->gm()->getInjectedValue());
 	}
 
 	public function testNotHandled()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany(new TestEntity, $this->r, 'param', 'param', true, array(10,11));
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
-		$this->assertSame(NULL, $this->m2m->gm()->getValue());
+		$this->assertSame(NULL, $this->m2m->gm()->getInjectedValue());
 	}
 
 	public function testNotMappedByParent()

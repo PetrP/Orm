@@ -6,20 +6,28 @@ use Nette\Object;
 use Nette\DeprecatedException;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
+require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
 
-class ArrayManyToManyMapper extends Object implements IManyToManyMapper
+class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {
 	/** @var array id => id */
 	private $value;
 
 	/** @param array of id */
-	public function setValue($value)
+	public function setInjectedValue($value)
 	{
-		$this->value = $value ? array_combine($value, $value) : array();
+		if (ValidationHelper::isValid(array('array'), $value) AND $value)
+		{
+			$this->value = array_combine($value, $value);
+		}
+		else
+		{
+			$this->value = array();
+		}
 	}
 
 	/** @return array id => id */
-	public function getValue()
+	public function getInjectedValue()
 	{
 		return $this->value;
 	}
@@ -57,6 +65,18 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	public function load(IEntity $parent)
 	{
 		return $this->value;
+	}
+
+	/** @deprecated */
+	final public function setValue($value)
+	{
+		throw new DeprecatedException(get_class($this) . '::setValue() is deprecated; use ' . get_class($this) . '::setInjectedValue() instead');
+	}
+
+	/** @deprecated */
+	final public function getValue()
+	{
+		throw new DeprecatedException(get_class($this) . '::getValue() is deprecated; use ' . get_class($this) . '::getInjectedValue() instead');
 	}
 
 	/** @deprecated */
