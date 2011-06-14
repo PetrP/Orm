@@ -45,8 +45,8 @@ class DibiCollection_join_ManyToMany_Mapper extends DibiCollection_join_Mapper
 		if ($firstParam === 'joins')
 		{
 			$m->table = 'mm';
-			$m->firstParam = 'first_id';
-			$m->secondParam = 'second_id';
+			$m->parentParam = 'parent_id';
+			$m->childParam = 'child_id';
 		}
 		return $m;
 	}

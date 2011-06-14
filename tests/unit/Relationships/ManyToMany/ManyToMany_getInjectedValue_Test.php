@@ -19,8 +19,8 @@ class ManyToMany_getInjectedValue_Test extends ManyToMany_Test
 	public function testNotArray()
 	{
 		$m = new DibiManyToManyMapper(new DibiConnection(array('lazy' => true)));
-		$m->firstParam = 'foo';
-		$m->secondParam = 'bar';
+		$m->parentParam = 'foo';
+		$m->childParam = 'bar';
 		$m->table = 'foobar';
 		$this->e->generatingRepository->mapper->mmm = $m;
 		$this->assertNull($this->m2m->getInjectedValue());

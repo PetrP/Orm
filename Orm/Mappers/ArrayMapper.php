@@ -157,13 +157,14 @@ abstract class ArrayMapper extends Mapper
 	}
 
 	/**
+	 * Vytvori mapperu pro m:m asociaci
 	 * @see ManyToMany::getMapper()
-	 * @param string
-	 * @param IRepository
-	 * @param string
+	 * @param string Nazev parametru na entite ktera patri repository tohodle mapperu
+	 * @param IRepository Repository na kterou asociace ukazuje
+	 * @param string Parametr na druhe strane kam asociace ukazuje
 	 * @return IManyToManyMapper
 	 */
-	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
 	{
 		return new ArrayManyToManyMapper;
 	}

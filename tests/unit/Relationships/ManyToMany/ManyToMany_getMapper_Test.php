@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
 /**
  * @covers Orm\ManyToMany::getMapper
  * @covers Orm\ArrayManyToManyMapper::setValue
- * @covers Orm\ArrayManyToManyMapper::setParams
+ * @covers Orm\ArrayManyToManyMapper::attach
  */
 class ManyToMany_getMapper_Test extends ManyToMany_Test
 {

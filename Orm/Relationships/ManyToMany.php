@@ -209,7 +209,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 					$tmp = $this->mappedByParent ? $parentRepository->getMapper() : $childRepository->getMapper();
 					throw new InvalidStateException(get_class($tmp) . "::createManyToManyMapper() must return Orm\\IManyToManyMapper, '" . (is_object($mapper) ? get_class($mapper) : gettype($mapper)) . "' given");
 				}
-				$mapper->setParams($this->mappedByParent);
+				$mapper->attach($this);
 
 				if ($mapper instanceof ArrayManyToManyMapper)
 				{

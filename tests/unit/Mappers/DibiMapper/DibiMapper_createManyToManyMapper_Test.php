@@ -24,8 +24,8 @@ class DibiMapper_createManyToManyMapper_Test extends TestCase
 		$this->assertAttributeInstanceOf('DibiConnection', 'connection', $mmm);
 		$this->assertAttributeSame($this->m->getConnection(), 'connection', $mmm);
 		$this->assertAttributeSame('tests_x_testentity', 'table', $mmm);
-		$this->assertAttributeSame('param_first_id', 'firstParam', $mmm);
-		$this->assertAttributeSame('param_second_id', 'secondParam', $mmm);
+		$this->assertAttributeSame('param_first_id', 'childParam', $mmm);
+		$this->assertAttributeSame('param_second_id', 'parentParam', $mmm);
 	}
 
 }

@@ -6,15 +6,12 @@ require_once __DIR__ . '/../../../boot.php';
 
 /**
  * @covers Orm\DibiManyToManyMapper::add
- * @covers Orm\DibiManyToManyMapper::getParentParam
- * @covers Orm\DibiManyToManyMapper::getChildParam
  */
 class DibiManyToManyMapper_add_Test extends DibiManyToManyMapper_Connected_Test
 {
 
-	public function testParentIsFirst()
+	public function test1()
 	{
-		$this->mm->setParams(true);
 		$this->d->addExpected('query', true, 'INSERT INTO `t` (`x`, `y`) VALUES (1, 1)');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('query', true, 'INSERT INTO `t` (`x`, `y`) VALUES (1, 2)');
@@ -24,10 +21,9 @@ class DibiManyToManyMapper_add_Test extends DibiManyToManyMapper_Connected_Test
 		$this->mm->add($this->e, array(1, 2, 3));
 	}
 
-	public function testParentNotFirst()
+	public function test2()
 	{
-		$this->mm->setParams(false);
-		$this->d->addExpected('query', true, 'INSERT INTO `t` (`y`, `x`) VALUES (1, 3)');
+		$this->d->addExpected('query', true, 'INSERT INTO `t` (`x`, `y`) VALUES (1, 3)');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->mm->add($this->e, array(3));
 	}

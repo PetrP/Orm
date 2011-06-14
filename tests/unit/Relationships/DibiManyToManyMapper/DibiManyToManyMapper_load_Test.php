@@ -6,15 +6,12 @@ require_once __DIR__ . '/../../../boot.php';
 
 /**
  * @covers Orm\DibiManyToManyMapper::load
- * @covers Orm\DibiManyToManyMapper::getParentParam
- * @covers Orm\DibiManyToManyMapper::getChildParam
  */
 class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 {
 
-	public function testParentIsFirst()
+	public function test1()
 	{
-		$this->mm->setParams(true);
 		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('y' => 9), true);
@@ -24,10 +21,9 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->assertSame(array(9, 8), $r);
 	}
 
-	public function testParentNotFirst()
+	public function test2()
 	{
-		$this->mm->setParams(false);
-		$this->d->addExpected('query', true, 'SELECT `x` FROM `t` WHERE `y` = \'1\'');
+		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('y' => 4), true);
 		$this->d->addExpected('fetch', array('y' => 5), true);

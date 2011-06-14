@@ -119,19 +119,34 @@ class DibiMapper extends Mapper
 	}
 
 	/**
+	 * Vytvori mapperu pro m:m asociaci
 	 * @see ManyToMany::getMapper()
-	 * @param string
-	 * @param IRepository
-	 * @param string
+	 * @param string Nazev parametru na entite ktera patri repository tohodle mapperu
+	 * @param IRepository Repository na kterou asociace ukazuje
+	 * @param string Parametr na druhe strane kam asociace ukazuje
 	 * @return IManyToManyMapper
+	 * <pre>
+	 *
+	 *	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
+	 *	{
+	 *		$mapper = parent::createManyToManyMapper($param, $targetRepository, $targetParam);
+	 *		if ($param === 'comments')
+	 *		{
+	 *			$mapper->parentParam = 'user_id';
+	 *			$mapper->childParam = 'comment_id';
+	 *		}
+	 *		return $mapper;
+	 *	}
+	 *
+	 * </pre>
 	 */
-	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
 	{
 		$mapper = new DibiManyToManyMapper($this->getConnection());
 		$c = $this->getConventional();
-		$mapper->table = $c->getManyToManyTable($this->getRepository(), $repository);
-		$mapper->firstParam = $c->getManyToManyParam($firstParam);
-		$mapper->secondParam = $c->getManyToManyParam($secondParam);;
+		$mapper->table = $c->getManyToManyTable($this->getRepository(), $targetRepository);
+		$mapper->parentParam = $c->getManyToManyParam($targetParam);
+		$mapper->childParam = $c->getManyToManyParam($param);
 		return $mapper;
 	}
 
@@ -335,15 +350,13 @@ class DibiMapper extends Mapper
 								if ($loader["\0Orm\\RelationshipLoader\0mappedByThis"])
 								{
 									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
-									$parentParam = $manyToManyMapper->firstParam;
-									$childParam = $manyToManyMapper->secondParam;
 								}
 								else
 								{
 									$manyToManyMapper = $childRepository->getMapper()->createManyToManyMapper($childParam, $parentRepository, $parentParam);
-									$parentParam = $manyToManyMapper->secondParam;
-									$childParam = $manyToManyMapper->firstParam;
 								}
+								$parentParam = $manyToManyMapper->parentParam;
+								$childParam = $manyToManyMapper->childParam;
 								$this->joinInfoCache['fk'][$name] = array($r, $childParam, 'id', array($manyToManyMapper->table, 'id', $parentParam));
 							}
 						}

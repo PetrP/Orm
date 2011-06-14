@@ -5,6 +5,9 @@ namespace Orm;
 interface IManyToManyMapper
 {
 
+	/** @param ManyToMany */
+	function attach(ManyToMany $manyToMany);
+
 	/**
 	 * @param IEntity
 	 * @param array id => id

@@ -20,10 +20,9 @@ abstract class DibiManyToManyMapper_Connected_Test extends TestCase
 			'driver' => 'MockExpectedMySql',
 		));
 		$this->mm = new DibiManyToManyMapper($c);
-		$this->mm->firstParam = 'x';
-		$this->mm->secondParam = 'y';
+		$this->mm->parentParam = 'x';
+		$this->mm->childParam = 'y';
 		$this->mm->table = 't';
-		$this->mm->setParams(true);
 		$this->d = $c->getDriver();
 		$r = new TestsRepository(new RepositoryContainer);
 		$this->e = $r->getById(1);

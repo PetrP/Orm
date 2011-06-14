@@ -3,6 +3,7 @@
 namespace Orm;
 
 use Nette\Object;
+use Nette\DeprecatedException;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
 
@@ -23,8 +24,8 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 		return $this->value;
 	}
 
-	/** @param bool */
-	public function setParams($parentIsFirst)
+	/** @param ManyToMany */
+	public function attach(ManyToMany $manyToMany)
 	{
 
 	}
@@ -57,4 +58,11 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	{
 		return $this->value;
 	}
+
+	/** @deprecated */
+	final public function setParams($parentIsFirst)
+	{
+		throw new DeprecatedException;
+	}
+
 }

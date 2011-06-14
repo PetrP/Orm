@@ -4,6 +4,7 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
+use Nette\DeprecatedException;
 use DibiConnection;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
@@ -14,17 +15,13 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public $table;
 
 	/** @var string */
-	public $firstParam;
+	public $parentParam;
 
 	/** @var string */
-	public $secondParam;
+	public $childParam;
 
 	/** @var DibiConnection */
 	private $connection;
-
-	/** @var bool */
-	private $parentIsFirst;
-
 
 	/** @param DibiConnection */
 	public function __construct(DibiConnection $connection)
@@ -32,29 +29,16 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		$this->connection = $connection;
 	}
 
-	/** @return string */
-	final protected function getParentParam()
+	/** @param ManyToMany */
+	public function attach(ManyToMany $manyToMany)
 	{
-		return $this->parentIsFirst ? $this->firstParam : $this->secondParam;
-	}
-
-	/** @return string */
-	final protected function getChildParam()
-	{
-		return $this->parentIsFirst ? $this->secondParam : $this->firstParam;
-	}
-
-	/** @param bool */
-	public function setParams($parentIsFirst)
-	{
-		$this->parentIsFirst = (bool) $parentIsFirst;
-		if (!$this->firstParam)
+		if (!$this->parentParam)
 		{
-			throw new InvalidStateException(get_class($this) . '::$firstParam is required');
+			throw new InvalidStateException(get_class($this) . '::$parentParam is required');
 		}
-		if (!$this->secondParam)
+		if (!$this->childParam)
 		{
-			throw new InvalidStateException(get_class($this) . '::$secondParam is required');
+			throw new InvalidStateException(get_class($this) . '::$childParam is required');
 		}
 		if (!$this->table)
 		{
@@ -69,14 +53,12 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public function add(IEntity $parent, array $ids)
 	{
 		$parentId = $parent->id;
-		$parentParam = $this->getParentParam();
-		$childParam = $this->getChildParam();
 		foreach ($ids as $childId)
 		{
 			// todo jeden dotaz
 			$this->connection->insert($this->table, array(
-				$parentParam => $parentId,
-				$childParam => $childId,
+				$this->parentParam => $parentId,
+				$this->childParam => $childId,
 			))->execute();
 		}
 	}
@@ -89,8 +71,8 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	{
 		$this->connection->delete($this->table)
 			->where('%n = %s AND %n IN %in',
-				$this->getParentParam(), $parent->id,
-				$this->getChildParam(), $ids
+				$this->parentParam, $parent->id,
+				$this->childParam, $ids
 			)->execute()
 		;
 	}
@@ -102,11 +84,42 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public function load(IEntity $parent)
 	{
 		if (!isset($parent->id)) return array();
-		return $this->connection->select($this->getChildParam())
+		return $this->connection->select($this->childParam)
 			->from($this->table)
 			->where('%n = %s',
-				$this->getParentParam(), $parent->id
+				$this->parentParam, $parent->id
 			)->fetchPairs()
 		;
 	}
+
+	/** @deprecated */
+	final public function getFirstParam()
+	{
+		throw new DeprecatedException(get_class($this) . '::$firstParam is deprecated; use ' . get_class($this) . '::$childParam instead');
+	}
+
+	/** @deprecated */
+	final public function getSecondParam()
+	{
+		throw new DeprecatedException(get_class($this) . '::$secondParam is deprecated; use ' . get_class($this) . '::$parentParam instead');
+	}
+
+	/** @deprecated */
+	final public function setFirstParam($v)
+	{
+		throw new DeprecatedException(get_class($this) . '::$firstParam is deprecated; use ' . get_class($this) . '::$childParam instead');
+	}
+
+	/** @deprecated */
+	final public function setSecondParam($v)
+	{
+		throw new DeprecatedException(get_class($this) . '::$secondParam is deprecated; use ' . get_class($this) . '::$parentParam instead');
+	}
+
+	/** @deprecated */
+	final public function setParams($parentIsFirst)
+	{
+		throw new DeprecatedException;
+	}
+
 }
