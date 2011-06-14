@@ -4,7 +4,7 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once __DIR__ . '/IConventional.php';
+require_once __DIR__ . '/NoConventional.php';
 
 /**
  * Rozdily nazvu klicu v entite a v ulozisti.
@@ -12,7 +12,7 @@ require_once __DIR__ . '/IConventional.php';
  * V ulozisti underscore_separated
  * @todo Rename?
  */
-class SqlConventional extends Object implements IConventional
+class SqlConventional extends NoConventional
 {
 
 	/** @var array */
@@ -112,27 +112,6 @@ class SqlConventional extends Object implements IConventional
 	protected function foreignKeyFormat($s)
 	{
 		return $s . '_id';
-	}
-
-	/**
-	 * @todo
-	 * @param IRepository
-	 * @return string
-	 */
-	public function getTable(IRepository $repository)
-	{
-		return str_replace('\\', '_', $repository->getRepositoryName());
-	}
-
-	/**
-	 * @todo
-	 * @param IRepository
-	 * @param IRepository
-	 * @return string
-	 */
-	public function getManyToManyTable(IRepository $source, IRepository $target)
-	{
-		return $this->getTable($source) . '_x_' . $this->getTable($target);
 	}
 
 	/**
