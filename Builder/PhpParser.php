@@ -83,4 +83,55 @@ class PhpParser extends Tokenizer
 		return $s;
 	}
 
+	/**
+	 * Odstrani namespace as use.
+	 * @param string
+	 * @param bool
+	 * @param bool
+	 * @return string
+	 */
+	public static function removeNamespace($data, $orm, $nette)
+	{
+		if ($orm)
+		{
+			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
+		}
+		$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
+
+		$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace, $orm, $nette) {
+			if (!$nette AND strpos($m[2], 'Nette') === 0)
+			{
+				return $m[0];
+			}
+			if ($nette AND $inNamespace AND strpos($m[2], 'Nette') === 0)
+			{
+				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
+			}
+			if ($orm AND $inNamespace AND strpos($m[2], 'Orm') === 0)
+			{
+				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
+			}
+			if (!$orm AND !$inNamespace AND strpos($m[2], 'Orm') === 0)
+			{
+				return $m[0];
+			}
+			if (!$orm AND $inNamespace)
+			{
+				return $m[0];
+			}
+			return NULL;
+		}, $data);
+
+		if ($orm)
+		{
+			$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
+		}
+		if ($nette)
+		{
+			$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
+			$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
+		}
+		return $data;
+	}
+
 }

@@ -143,36 +143,13 @@ class Builder extends Object
 
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
-			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
-			$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
-			$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace) {
-				if ($inNamespace AND strpos($m[2], 'Orm') === 0)
-				{
-					return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
-				}
-			}, $data);
-			$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
+			$data = PhpParser::removeNamespace($data, true, true);
 			$data = PhpParser::replaceClosures($data);
 			$data = PhpParser::replaceDirConstant($data);
-
 		}
 		else if ($this->version & self::NONNS AND $this->version & self::NS_NETTE)
 		{
-			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
-			$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
-			$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace) {
-				if (strpos($m[2], 'Nette') === 0)
-				{
-					return $m[0];
-				}
-				if ($inNamespace AND strpos($m[2], 'Orm') === 0)
-				{
-					return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
-				}
-			}, $data);
-			$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
+			$data = PhpParser::removeNamespace($data, true, false);
 		}
 		else if ($this->version & self::NONNS AND $this->version & self::PREFIXED_NETTE)
 		{
@@ -180,24 +157,7 @@ class Builder extends Object
 		}
 		else if ($this->version & self::NS AND $this->version & self::NONNS_NETTE)
 		{
-			$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
-			$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace) {
-				if ($inNamespace AND strpos($m[2], 'Nette') === 0)
-				{
-					return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
-				}
-				if (!$inNamespace AND strpos($m[2], 'Orm') === 0)
-				{
-					return $m[0];
-				}
-				if ($inNamespace)
-				{
-					return $m[0];
-				}
-				return NULL;
-			}, $data);
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
+			$data = PhpParser::removeNamespace($data, false, true);
 		}
 		else if ($this->version & self::NS AND $this->version & self::NS_NETTE)
 		{
