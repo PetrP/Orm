@@ -6,6 +6,7 @@ require_once __DIR__ . '/../tests/libs/Nette/loader.php';
 require_once __DIR__ . '/../tests/libs/dump.php';
 require_once __DIR__ . '/PhpParser.php';
 require_once __DIR__ . '/Builder.php';
+require_once __DIR__ . '/Git.php';
 
 use Nette\Diagnostics\Debugger;
 

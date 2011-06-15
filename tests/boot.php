@@ -7,7 +7,7 @@ define('TMP_DIR', dirname(__FILE__) . '/tmp');
 require_once LIBS_DIR . '/Nette/loader.php';
 require_once LIBS_DIR . '/dump.php';
 require_once LIBS_DIR . '/dibi/dibi.php';
-require_once ORM_DIR . '/loader.php';
+require_once ORM_DIR . '/Orm.php';
 
 
 use Nette\Diagnostics\Debugger as Debug;

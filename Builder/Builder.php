@@ -140,6 +140,7 @@ class Builder extends Object
 	private function convert($data)
 	{
 		$data = PhpParser::standardizeLineEndings($data);
+		$data = PhpParser::buildInfo($data, $this->version);
 
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{

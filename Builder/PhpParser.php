@@ -134,4 +134,87 @@ class PhpParser extends Tokenizer
 		return $data;
 	}
 
+	/**
+	 * @param string
+	 * @param int
+	 * @return string
+	 */
+	public static function buildInfo($data, $version)
+	{
+		static $head;
+		static $tag;
+		if ($head === NULL)
+		{
+			$git = new Git(__DIR__ . '/..');
+			$head = $git->getSha('HEAD');
+			$tags = array();
+			foreach (array_filter(explode("\n", $git->command('show-ref --tags'))) as $t)
+			{
+				list($tsha, $tname) = explode(' ', $t);
+				$tname = substr($tname, strrpos($tname, '/')+1);
+				if (!preg_match('#^v[0-9]+\.[0-9]+\.[0-9]+$#s', $tname)) continue;
+				if (trim($git->command("cat-file -t $tsha")) === 'tag')
+				{
+					$tagContent = $git->command("cat-file tag $tsha");
+					if (preg_match('#^object ([0-9a-f]{40})\n#', $tagContent, $match))
+					{
+						if ($match[1] === $head)
+						{
+							$tagDate = 'unknown';
+							if (preg_match('#\ntagger [^\>]+> ([0-9]+) #', $tagContent, $match))
+							{
+								$d = \Nette\DateTime::from($match[1]);
+								$tagDate = $d->format('Y-m-d');
+							}
+							$tags[] = array($tname, $tagDate);
+						}
+					}
+				}
+				else if ($tsha === $head)
+				{
+					$tags[] = array($tname, 'unknown');
+				}
+			}
+			if (!$tags) throw new Exception;
+			if (count($tags) > 1) throw new Exception;
+			$tag = current($tags);
+			$tag[0] = ltrim($tag[0], 'v');
+		}
+
+		$_head = $head; // protoze nejaky bug pri static variable a closure use
+		$_tag = $tag;
+		$data = preg_replace_callback('#(?:/\*)?\<build\:\:([^\>]+)\>(?:\*/[^/]*/\*\*/)?#s', function (array $m) use ($version, $_head, $_tag) {
+			$m = $m[1];
+			if ($m === 'orm')
+			{
+				return $version & Builder::NS ? '5.3' : '5.2';
+			}
+			else if ($m === 'nette')
+			{
+				if ($version & Builder::PREFIXED_NETTE) return '5.2 prefixed';
+				if ($version & Builder::NONNS_NETTE) return '5.2 without prefixes';
+				if ($version & Builder::NS_NETTE) return '5.3';
+			}
+			else if ($m === 'date')
+			{
+				return $_tag[1];
+			}
+			else if ($m === 'revision')
+			{
+				return substr($_head, 0, 7);
+			}
+			else if ($m === 'version')
+			{
+				return $_tag[0];
+			}
+			else if ($m === 'version_id')
+			{
+				$tmp = explode('.', $_tag[0]);
+				return $tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2];
+			}
+			throw new Exception($m);
+		}, $data);
+
+		return $data;
+	}
 }
