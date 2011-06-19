@@ -521,4 +521,45 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 		$this->changed = true;
 	}
 
+	/**
+	 * Call to undefined static method.
+	 * @param string
+	 * @param array
+	 * @return mixed
+	 * @throws MemberAccessException
+	 */
+	public static function __callStatic($name, $args)
+	{
+		// @codeCoverageIgnoreStart
+		if (PHP_VERSION_ID === 50303)
+		{
+			// fix for bug 5.3.3 #52713; Generates a warning, because too slow.
+			if (strncmp($name, 'get', 3) === 0 OR strncmp($name, 'is', 3) === 0 OR strncmp($name, 'set', 3) === 0)
+			{
+				$m = substr($name, 0, 1);
+				$var = substr($name, 3);
+				if ($m === 'i')
+				{
+					$m = 'g';
+					$var = substr($name, 2);
+				}
+				if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
+				$message = "setValue('$var', \$value) instead of parent::$name(\$value)";
+				if ($m === 'g')
+				{
+					$message = "getValue('$var') instead of parent::$name()";
+				}
+				trigger_error("php 5.3.3 bug #52713; Upgrade php or use \$this->$message", E_USER_WARNING);
+				foreach (debug_backtrace() as $trace)
+				{
+					if (isset($trace['object']) AND $trace['object'] instanceof IEntity)
+					{
+						return $trace['object']->__call($name, $args);
+					}
+				}
+			}
+		}
+		return parent::__callStatic($name, $args);
+	}	// @codeCoverageIgnoreEnd
+
 }

@@ -48,6 +48,20 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 
 	public function testNew()
 	{
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->x('new');
 	}
 
@@ -97,6 +111,9 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		} catch (EntityValue_setter_Test_Exception $ee) {}
 		$this->assertException($ee, 'EntityValue_setter_Test_Exception', '');
 		$e->throw = false;
+		$this->php533bugAddExcepted('g', 'exception', 'getException');
+		$this->php533bugAddExcepted('g', 'exception', 'getException');
+		$this->php533bugAddExcepted('s', 'exception', 'setException');
 		$this->a($e, $key, 2);
 	}
 
@@ -142,44 +159,96 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 	{
 		$key = 'callOther';
 		$e = new EntityValue_gettersetter_Test_Entity;
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'callOther', 'setCallOther');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
 		$this->a($e, $key, 1, 1);
 		$this->assertSame(1, $e->setNewCount);
 		$this->assertSame(1, $e->setOldCount);
 		$this->assertSame(2, $e->setNoParentSetCount); // 2x protoze default
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->new);
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->old);
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->withoutMethod);
 		$this->assertSame(NULL, $e->noParentGet);
 		$this->assertSame(NULL, $e->noParentSet);
 
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'callOther', 'setCallOther');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
 		$this->a($e, $key, 2, 2);
 		$this->assertSame(2, $e->setNewCount);
 		$this->assertSame(2, $e->setOldCount);
 		$this->assertSame(3, $e->setNoParentSetCount); // 3x protoze default
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->new);
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->old);
+		$this->php533bugAddExcepted('g', 'callOther', 'getCallOther');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->withoutMethod);
 		$this->assertSame(NULL, $e->noParentGet);
 		$this->assertSame(NULL, $e->noParentSet);
 
 		$key = 'callOther2';
 
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'callOther2', 'setCallOther2');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
 		$this->a($e, $key, 1, 1);
 		$this->assertSame(3, $e->setNewCount);
 		$this->assertSame(3, $e->setOldCount);
 		$this->assertSame(4, $e->setNoParentSetCount); // 4x protoze default
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->new);
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->old);
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->withoutMethod);
 		$this->assertSame(NULL, $e->noParentGet);
 		$this->assertSame(NULL, $e->noParentSet);
 
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('s', 'callOther2', 'setCallOther2');
+		$this->php533bugAddExcepted('s', 'new', 'setNew');
 		$this->a($e, $key, 2, 2);
 		$this->assertSame(4, $e->setNewCount);
 		$this->assertSame(4, $e->setOldCount);
 		$this->assertSame(5, $e->setNoParentSetCount); // 5x protoze default
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->new);
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->old);
+		$this->php533bugAddExcepted('g', 'callOther2', 'getCallOther2');
+		$this->php533bugAddExcepted('g', 'new', 'getNew');
 		$this->assertSame($e->$key, $e->withoutMethod);
 		$this->assertSame(NULL, $e->noParentGet);
 		$this->assertSame(NULL, $e->noParentSet);
