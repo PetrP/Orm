@@ -27,7 +27,30 @@ class MetaDataProperty_setDefault_Test extends TestCase
 	public function test()
 	{
 		$this->p->setDefault(MetaData_Test_Entity::XXX);
-		$this->assertEquals(MetaData_Test_Entity::XXX, $this->setDefault());
+		$this->assertSame(MetaData_Test_Entity::XXX, $this->setDefault());
 	}
 
+	public function testEmpty()
+	{
+		$this->p->setDefault('');
+		$this->assertSame('', $this->setDefault());
+	}
+
+	public function testNull()
+	{
+		$this->p->setDefault(NULL);
+		$this->assertSame(NULL, $this->setDefault());
+	}
+
+	public function testBool()
+	{
+		$this->p->setDefault(false);
+		$this->assertSame(false, $this->setDefault());
+	}
+
+	public function testInt()
+	{
+		$this->p->setDefault(123);
+		$this->assertSame(123, $this->setDefault());
+	}
 }

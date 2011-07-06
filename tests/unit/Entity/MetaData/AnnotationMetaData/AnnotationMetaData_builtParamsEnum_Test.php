@@ -5,6 +5,7 @@ require_once dirname(__FILE__) . '/../../../../boot.php';
 /**
  * @covers Orm\AnnotationMetaData::builtParamsEnum
  * @covers Orm\AnnotationMetaData::builtSelf
+ * @covers Orm\AnnotationMetaData::parseString
  */
 class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 {

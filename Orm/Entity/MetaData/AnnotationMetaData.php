@@ -307,23 +307,7 @@ class AnnotationMetaData extends Object
 			foreach (explode(',', $string) as $d)
 			{
 				$d = $this->builtSelf($d);
-
-				if (is_numeric($d))
-				{
-					$value = (float) $d;
-				}
-				else if (defined($d))
-				{
-					$value = constant($d);
-				}
-				else if (strpos($d, '::') !== false)
-				{
-					throw new InvalidArgumentException("'{$this->class}' '{enum {$string}}': Constant $d not exists");
-				}
-				else
-				{
-					$value = trim($d,'\'"'); // todo lepe?
-				}
+				$value = $this->parseString($d, "{enum {$string}}");
 				$enum[] = $value;
 				$original[] = $d;
 			}
@@ -350,22 +334,7 @@ class AnnotationMetaData extends Object
 	public function builtParamsDefault($string)
 	{
 		$string = $this->builtSelf($string);
-		if (is_numeric($string))
-		{
-			$string = (float) $string;
-		}
-		else if (defined($string))
-		{
-			$string = constant($string);
-		}
-		else if (strpos($string, '::') !== false)
-		{
-			throw new InvalidArgumentException("'{$this->class}' '{default {$string}}': Constant $string not exists");
-		}
-		else
-		{
-			$string = trim($string, '\'"'); // todo lepe?
-		}
+		$string = $this->parseString($string, "{default {$string}}");
 		return array($string);
 	}
 
@@ -378,6 +347,39 @@ class AnnotationMetaData extends Object
 	public function builtParamsInjection($string)
 	{
 		return array(rtrim($this->builtSelf($string), '()'));
+	}
+
+	/**
+	 * Na hodnutu konstanty, cislo nebo string
+	 * @param string
+	 * @return scalar
+	 * @see self::builtParamsEnum()
+	 * @see self::builtParamsDefault()
+	 */
+	private function parseString($value, $errorMessage)
+	{
+		if (is_numeric($value))
+		{
+			$value = (float) $value;
+			$intValue = (int) $value;
+			if ($intValue == $value)
+			{
+				$value = $intValue;
+			}
+		}
+		else if (defined($value))
+		{
+			$value = constant($value);
+		}
+		else if (strpos($value, '::') !== false)
+		{
+			throw new InvalidArgumentException("'{$this->class}' '$errorMessage': Constant $value not exists");
+		}
+		else
+		{
+			$value = trim($value, '\'"'); // todo lepe?
+		}
+		return $value;
 	}
 
 }
