@@ -260,24 +260,6 @@ class AnnotationMetaData extends Object
 	}
 
 	/**
-	 * Nahradi self:: za nazev entity
-	 * @param string
-	 * @return string
-	 * @see self::builtParamsEnum()
-	 * @see self::builtParamsDefault()
-	 * @see self::builtParamsInjection()
-	 */
-	private function builtSelf($string)
-	{
-		$string = trim($string);
-		if (substr($string, 0, 6) === 'self::')
-		{
-			$string = str_replace('self::', "{$this->class}::", $string);
-		}
-		return $string;
-	}
-
-	/**
 	 * Upravi vstupni parametry pro enum, kdyz jsou zadavany jako string (napr. v anotaci)
 	 * Vytvori pole z hodnot rozdelenych carkou, umoznuje zapis konstant.
 	 * Nebo umoznuje zavolat statickou tridu ktera vrati pole hodnot (pouzijou se klice)
@@ -297,7 +279,7 @@ class AnnotationMetaData extends Object
 	{
 		if (preg_match('#^([a-z0-9_\\\\]+::[a-z0-9_]+)\(\)$#si', trim($string), $tmp))
 		{
-			$enum = callback($this->builtSelf($tmp[1]))->invoke();
+			$enum = callback($this->parseSelf($tmp[1]))->invoke();
 			if (!is_array($enum)) throw new InvalidStateException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
 			$original = $enum = array_keys($enum);
 		}
@@ -306,7 +288,7 @@ class AnnotationMetaData extends Object
 			$original = $enum = array();
 			foreach (explode(',', $string) as $d)
 			{
-				$d = $this->builtSelf($d);
+				$d = $this->parseSelf($d);
 				$value = $this->parseString($d, "{enum {$string}}");
 				$enum[] = $value;
 				$original[] = $d;
@@ -333,7 +315,7 @@ class AnnotationMetaData extends Object
 	 */
 	public function builtParamsDefault($string)
 	{
-		$string = $this->builtSelf($string);
+		$string = $this->parseSelf($string);
 		$string = $this->parseString($string, "{default {$string}}");
 		return array($string);
 	}
@@ -346,7 +328,25 @@ class AnnotationMetaData extends Object
 	 */
 	public function builtParamsInjection($string)
 	{
-		return array(rtrim($this->builtSelf($string), '()'));
+		return array(rtrim($this->parseSelf($string), '()'));
+	}
+
+	/**
+	 * Nahradi self:: za nazev entity
+	 * @param string
+	 * @return string
+	 * @see self::builtParamsEnum()
+	 * @see self::builtParamsDefault()
+	 * @see self::builtParamsInjection()
+	 */
+	private function parseSelf($string)
+	{
+		$string = trim($string);
+		if (substr($string, 0, 6) === 'self::')
+		{
+			$string = str_replace('self::', "{$this->class}::", $string);
+		}
+		return $string;
 	}
 
 	/**

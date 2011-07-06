@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../../boot.php';
 
 /**
  * @covers Orm\AnnotationMetaData::builtParamsInjection
- * @covers Orm\AnnotationMetaData::builtSelf
+ * @covers Orm\AnnotationMetaData::parseSelf
  */
 class AnnotationMetaData_builtParamsInjection_Test extends TestCase
 {
