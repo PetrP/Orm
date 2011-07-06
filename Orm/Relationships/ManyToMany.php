@@ -190,6 +190,12 @@ class ManyToMany extends BaseToMany implements IRelationship
 		}
 	}
 
+	/** @return bool */
+	final public function isMappedByParent()
+	{
+		return $this->mappedByParent;
+	}
+
 	/**
 	 * @return IManyToManyMapper
 	 */

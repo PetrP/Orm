@@ -39,10 +39,10 @@ class DibiCollection_join_ManyToMany2_Repository extends DibiCollection_join_Man
 
 class DibiCollection_join_ManyToMany_Mapper extends DibiCollection_join_Mapper
 {
-	public function createManyToManyMapper($firstParam, IRepository $repository, $secondParam)
+	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
 	{
-		$m =  parent::createManyToManyMapper($firstParam, $repository, $secondParam);
-		if ($firstParam === 'joins')
+		$m =  parent::createManyToManyMapper($param, $targetRepository, $targetParam);
+		if ($param === 'joins')
 		{
 			$m->table = 'mm';
 			$m->parentParam = 'parent_id';

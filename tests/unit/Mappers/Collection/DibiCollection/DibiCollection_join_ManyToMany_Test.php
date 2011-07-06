@@ -51,8 +51,8 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 			SELECT [e].* FROM [dibicollection_join_manytomany1_] as e
 			LEFT JOIN [mm] as [m2m__joins] ON [m2m__joins].[parent_id] = [e].[id]
 			LEFT JOIN [dibicollection_join_manytomany2_] as [joins] ON [joins].[id] = [m2m__joins].[child_id]
-			LEFT JOIN [mm] as [joins->m2m__joins] ON [joins->m2m__joins].[parent_id] = [joins].[id]
-			LEFT JOIN [dibicollection_join_manytomany1_] as [joins->joins] ON [joins->joins].[id] = [joins->m2m__joins].[child_id]
+			LEFT JOIN [mm] as [joins->m2m__joins] ON [joins->m2m__joins].[child_id] = [joins].[id]
+			LEFT JOIN [dibicollection_join_manytomany1_] as [joins->joins] ON [joins->joins].[id] = [joins->m2m__joins].[parent_id]
 			GROUP BY [e].[id]
 			ORDER BY [joins->joins].[name] ASC
 		', $this->c->orderBy('joins->joins->name'));
@@ -64,8 +64,8 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 			SELECT [e].* FROM [dibicollection_join_manytomany1_] as e
 			LEFT JOIN [mm] as [m2m__joins] ON [m2m__joins].[parent_id] = [e].[id]
 			LEFT JOIN [dibicollection_join_manytomany2_] as [joins] ON [joins].[id] = [m2m__joins].[child_id]
-			LEFT JOIN [mm] as [joins->m2m__joins] ON [joins->m2m__joins].[parent_id] = [joins].[id]
-			LEFT JOIN [dibicollection_join_manytomany1_] as [joins->joins] ON [joins->joins].[id] = [joins->m2m__joins].[child_id]
+			LEFT JOIN [mm] as [joins->m2m__joins] ON [joins->m2m__joins].[child_id] = [joins].[id]
+			LEFT JOIN [dibicollection_join_manytomany1_] as [joins->joins] ON [joins->joins].[id] = [joins->m2m__joins].[parent_id]
 			GROUP BY [e].[id]
 			ORDER BY [joins->joins].[name] ASC, [joins].[name] ASC
 		', $this->c->orderBy('joins->joins->name')->orderBy('joins->name'));

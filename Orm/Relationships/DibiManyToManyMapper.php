@@ -49,6 +49,12 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		{
 			throw new InvalidStateException(get_class($this) . '::$table is required');
 		}
+		if (!$manyToMany->isMappedByParent())
+		{
+			$tmp = $this->childParam;
+			$this->childParam = $this->parentParam;
+			$this->parentParam = $tmp;
+		}
 	}
 
 	/**

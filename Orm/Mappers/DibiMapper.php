@@ -355,13 +355,15 @@ class DibiMapper extends Mapper
 								if ($loader["\0Orm\\RelationshipLoader\0mappedByThis"])
 								{
 									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
+									$parentParam = $manyToManyMapper->parentParam;
+									$childParam = $manyToManyMapper->childParam;
 								}
 								else
 								{
 									$manyToManyMapper = $childRepository->getMapper()->createManyToManyMapper($childParam, $parentRepository, $parentParam);
+									$parentParam = $manyToManyMapper->childParam;
+									$childParam = $manyToManyMapper->parentParam;
 								}
-								$parentParam = $manyToManyMapper->parentParam;
-								$childParam = $manyToManyMapper->childParam;
 								$this->joinInfoCache['fk'][$name] = array($r, $childParam, 'id', array($manyToManyMapper->table, 'id', $parentParam));
 							}
 						}
