@@ -170,7 +170,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	 * @param mixed
 	 * @return IRelationship
 	 */
-	public function create($className, IEntity $parent, $value = NULL)
+	public function create($className, IEntity $parent, $value)
 	{
 		if ($this->class !== $className) throw new InvalidStateException();
 		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mappedByThis, $value);
