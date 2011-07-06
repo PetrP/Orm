@@ -36,6 +36,9 @@ class DibiMapper extends Mapper
 	/** @var array @see self::begin() */
 	private static $transactions = array();
 
+	/** @var string @see self::getTableName() */
+	private $tableName;
+
 	/**
 	 * Vsechny entity.
 	 * Musi vratit skutecne vsechny entity.
@@ -279,10 +282,15 @@ class DibiMapper extends Mapper
 	/**
 	 * Nazev tabulky
 	 * @return string
+	 * @see self::$tableName
 	 */
 	protected function getTableName()
 	{
-		return $this->getConventional()->getTable($this->getRepository());
+		if ($this->tableName === NULL)
+		{
+			$this->tableName = $this->getConventional()->getTable($this->getRepository());
+		}
+		return $this->tableName;
 	}
 
 	/**
