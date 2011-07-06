@@ -42,7 +42,7 @@ abstract class Entity extends _EntityBase implements IEntity
 			return isset($this->id) ? (string) $this->id : '';
 			// @codeCoverageIgnoreStart
 		} catch (Exception $e) {
-			Debug::toStringException($e);
+			trigger_error($e->getMessage(), E_USER_ERROR);
 		}
 	}		// @codeCoverageIgnoreEnd
 
