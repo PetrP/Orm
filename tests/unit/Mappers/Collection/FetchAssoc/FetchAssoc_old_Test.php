@@ -1,6 +1,7 @@
 <?php
 
 use Orm\FetchAssoc;
+use Orm\RepositoryContainer;
 
 require_once dirname(__FILE__) . '/../../../../boot.php';
 
@@ -48,6 +49,39 @@ class FetchAssoc_old_Test extends FetchAssoc_Base_Test
 	{
 		$this->setExpectedException('Nette\MemberAccessException', "Cannot read an undeclared property ArrayCollection_Entity::\$unknown.");
 		$r = FetchAssoc::apply($this->e, 'unknown,unknown');
+	}
+
+	public function testByEntityNull()
+	{
+		$r = FetchAssoc::apply($this->e, 'e,#');
+		$this->assertSame(array(
+			'' => array(
+				$this->e[0],
+				$this->e[1],
+				$this->e[2],
+				$this->e[3],
+			),
+		), $r);
+	}
+
+	public function testByEntity()
+	{
+		$m = new RepositoryContainer;
+		$this->e[0]->e = $m->tests->getById(1);
+		$this->e[1]->e = $m->tests->getById(1);
+		$this->e[2]->e = $m->tests->getById(2);
+		$this->e[3]->e = $m->tests->getById(2);
+		$r = FetchAssoc::apply($this->e, 'e,#');
+		$this->assertSame(array(
+			1 => array(
+				$this->e[0],
+				$this->e[1],
+			),
+			2 => array(
+				$this->e[2],
+				$this->e[3],
+			),
+		), $r);
 	}
 
 }

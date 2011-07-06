@@ -79,7 +79,7 @@ class FetchAssoc
 				}
 				else if ($as !== '|') // associative-array node
 				{
-					$x = & $x[$row->$as];
+					$x = & $x[(string) $row->$as];
 				}
 			}
 
@@ -131,7 +131,7 @@ class FetchAssoc
 				}
 				else // associative-array node
 				{
-					$x = & $x[$row->$as];
+					$x = & $x[(string) $row->$as];
 				}
 			}
 
