@@ -10,6 +10,12 @@ class PerformanceHelper_Base_PerformanceHelper extends PerformanceHelper
 	{
 		return self::$cache;
 	}
+
+	/** @return Nette\Caching\Cache */
+	public function __getCache()
+	{
+		return parent::getCache();
+	}
 }
 
 class PerformanceHelper_ArrayObject extends ArrayObject
