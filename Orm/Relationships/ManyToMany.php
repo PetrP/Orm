@@ -142,7 +142,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	}
 
 	/** @see IManyToManyMapper */
-	public function persist()
+	final public function persist()
 	{
 		$repository = $this->getChildRepository();
 

@@ -144,7 +144,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		return $this->get;
 	}
 
-	public function persist()
+	final public function persist()
 	{
 		$repository = $this->getChildRepository();
 

@@ -50,13 +50,13 @@ abstract class BaseToMany extends Object
 	}
 
 	/** @return int */
-	public function count()
+	final public function count()
 	{
 		return $this->getCollection()->count();
 	}
 
 	/** @return Traversable */
-	public function getIterator()
+	final public function getIterator()
 	{
 		return $this->getCollection()->getIterator();
 	}
