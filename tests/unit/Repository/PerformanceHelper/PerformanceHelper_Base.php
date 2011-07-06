@@ -11,3 +11,15 @@ class PerformanceHelper_Base_PerformanceHelper extends PerformanceHelper
 		return self::$cache;
 	}
 }
+
+class PerformanceHelper_ArrayObject extends ArrayObject
+{
+	public $lastIndex;
+
+	public function offsetExists($index)
+	{
+		$this->lastIndex = $index;
+		return parent::offsetExists($index);
+	}
+
+}

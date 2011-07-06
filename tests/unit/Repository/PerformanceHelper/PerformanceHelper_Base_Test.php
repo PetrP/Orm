@@ -23,7 +23,7 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->r = $m->tests;
 		$this->wipe();
 		$this->originCb = PerformanceHelper::$keyCallback;
-		$this->cache = new ArrayObject;
+		$this->cache = new PerformanceHelper_ArrayObject;
 		PerformanceHelper_Base_PerformanceHelper::$cache = $this->cache;
 		PerformanceHelper::$keyCallback = array($this , 'cb');
 	}
@@ -54,6 +54,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	public function test()
 	{
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 		$this->assertAttributeSame('tests', 'repositoryName', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
 		$this->assertAttributeSame(array('tests' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
@@ -73,6 +74,7 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2);
 		$this->cache['*']['tests'] = array(3 => 3);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 		$this->assertAttributeSame('tests', 'repositoryName', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
 		$this->assertAttributeSame(array('tests' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
@@ -88,6 +90,7 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2);
 		$this->cache['*']['tests'] = array(3 => 3);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('*', $this->cache->lastIndex);
 		$this->assertAttributeSame('tests', 'repositoryName', $h);
 		$this->assertAttributeSame(array(3 => 3), 'access', $h);
 		$this->assertAttributeSame(array('tests' => array(3 => 3)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
@@ -107,6 +110,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
 		$r->setAccessible(true);
@@ -131,6 +135,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
 		$r->setAccessible(true);
@@ -155,6 +160,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
 		$r->setAccessible(true);
@@ -178,6 +184,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
 		$r->setAccessible(true);
@@ -194,6 +201,14 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->assertSame($this->r->getById(2), $entities[2]);
 		$this->assertSame($this->r->getById(1), $entities[1]);
 		$this->assertSame($e, $entities[1]);
+	}
+
+	public function testKeyLongerThen50()
+	{
+		PerformanceHelper::$keyCallback = function () { return str_repeat('a', 51); };
+		$this->assertSame(51, strlen(callback(PerformanceHelper::$keyCallback)->invoke()));
+		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$this->assertSame('aaaaaaaaaaaaaaaaaaaa1bb77918e5695c944be02c16ae29b25e', $this->cache->lastIndex);
 	}
 
 }

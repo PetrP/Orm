@@ -48,15 +48,15 @@ class PerformanceHelper extends Object
 			$cache = $this->getCache();
 			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
+			if (strlen($key) > 50)
+			{
+				$key = substr($key, 0, 20) . md5($key);
+			}
 			self::$toLoad = isset($cache[$key]) ? $cache[$key] : NULL;
 			if (!self::$toLoad) self::$toLoad = array();
 			if ($key === '*')
 			{
 				self::$toSave = self::$toLoad;
-			}
-			else if (strlen($key) > 50)
-			{
-				$key = substr($key, 0, 20) . md5($key);
 			}
 
 			register_shutdown_function(function ($cache, $key) {
