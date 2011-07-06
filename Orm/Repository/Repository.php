@@ -506,7 +506,16 @@ abstract class Repository extends Object implements IRepository
 	{
 		if (!isset($this->allowedEntities))
 		{
-			$this->allowedEntities = array_fill_keys(array_map('strtolower',(array) $this->getEntityClassName()), true);
+			$allowedEntities = array();
+			foreach ((array) $this->getEntityClassName() as $en)
+			{
+				if (!class_exists($en))
+				{
+					throw new UnexpectedValueException(get_class($this) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
+				}
+				$allowedEntities[strtolower($en)] = true;
+			}
+			$this->allowedEntities = $allowedEntities;
 		}
 		// todo strtolower mozna bude moc pomale
 		if (!isset($this->allowedEntities[strtolower($entityName)]))
