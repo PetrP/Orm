@@ -460,11 +460,11 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 			$value = $this->getDefaultValueHelper($name, $rule);
 		}
 
-		if (($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne) AND !($value instanceof IEntity))
+		if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 		{
-			$id = (string) $value;
-			if ($id)
+			if (!($value instanceof IEntity) AND $value !== NULL)
 			{
+				$id = (string) $value;
 				$repo = $this->getModel()->getRepository($rule['relationshipParam']);
 				$value = $repo->getById($id);
 				if (!$value AND !isset($rule['types']['null']))
