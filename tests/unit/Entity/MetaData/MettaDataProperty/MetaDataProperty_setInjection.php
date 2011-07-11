@@ -18,5 +18,5 @@ class MetaDataProperty_setInjection_JustInjection implements IEntityInjection
 
 class MetaDataProperty_setInjection_NonStaticInjectionLoader implements IEntityInjectionLoader
 {
-	function create($className, IEntity $entity, $value = NULL){}
+	function create($className, IEntity $entity, $value){}
 }
