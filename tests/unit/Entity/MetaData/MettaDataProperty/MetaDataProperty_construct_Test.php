@@ -3,8 +3,6 @@
 use Orm\MetaData;
 use Orm\MetaDataProperty;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\MetaDataProperty::__construct
  * @covers Orm\MetaDataProperty::getSince

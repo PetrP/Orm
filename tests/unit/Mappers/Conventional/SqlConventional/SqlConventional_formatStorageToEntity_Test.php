@@ -2,8 +2,6 @@
 
 use Nette\Utils\Html;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\SqlConventional::formatStorageToEntity
  * @covers Orm\SqlConventional::entityFormat

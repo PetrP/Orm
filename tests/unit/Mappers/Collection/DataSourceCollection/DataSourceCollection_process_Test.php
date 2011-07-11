@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DataSourceCollection::process
  * @see DataSourceCollection_toString_applyLimit_Test

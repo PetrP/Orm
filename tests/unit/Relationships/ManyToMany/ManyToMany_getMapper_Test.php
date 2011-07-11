@@ -3,8 +3,6 @@
 use Nette\Utils\Html;
 use Orm\ManyToMany;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\ManyToMany::getMapper
  * @covers Orm\ArrayManyToManyMapper::setInjectedValue

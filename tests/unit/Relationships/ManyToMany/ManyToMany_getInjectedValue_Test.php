@@ -2,8 +2,6 @@
 
 use Orm\DibiManyToManyMapper;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\ManyToMany::getInjectedValue
  * @covers Orm\ArrayManyToManyMapper::getValue

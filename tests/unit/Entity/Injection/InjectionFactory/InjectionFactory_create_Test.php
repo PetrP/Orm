@@ -2,8 +2,6 @@
 
 use Orm\InjectionFactory;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\InjectionFactory::create
  * @covers Orm\InjectionFactory::__construct

@@ -2,8 +2,6 @@
 
 use Orm\DibiCollection;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DibiCollection::getBy
  */

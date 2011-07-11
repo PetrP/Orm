@@ -4,8 +4,6 @@ use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
 use Orm\RepositoryContainer;
 
-require_once __DIR__ . '/../../../boot.php';
-
 /**
  * @covers Orm\DibiManyToManyMapper::attach
  */

@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\_EntityBase::offsetExists
  * @covers Orm\_EntityBase::offsetGet

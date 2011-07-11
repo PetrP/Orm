@@ -3,8 +3,6 @@
 use Orm\RepositoryContainer;
 use Orm\NoConventional;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\NoConventional::getTable
  */

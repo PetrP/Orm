@@ -5,8 +5,6 @@ use Orm\OldOneToMany;
 use Orm\MetaDataProperty;
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\MetaDataProperty::setOneToMany
  * @covers Orm\MetaDataProperty::setToMany

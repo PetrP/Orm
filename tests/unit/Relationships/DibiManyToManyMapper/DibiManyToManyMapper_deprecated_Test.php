@@ -2,8 +2,6 @@
 
 use Orm\DibiManyToManyMapper;
 
-require_once __DIR__ . '/../../../boot.php';
-
 /**
  * @covers Orm\DibiManyToManyMapper::setParams
  * @covers Orm\DibiManyToManyMapper::getFirstParam

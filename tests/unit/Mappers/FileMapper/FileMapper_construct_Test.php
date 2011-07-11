@@ -3,8 +3,6 @@
 use Orm\RepositoryContainer;
 use Nette\Utils\SafeStream;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\FileMapper::__construct
  */

@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DibiCollection::process
  * @see DibiCollection_toString_applyLimit_Test

@@ -3,8 +3,6 @@
 use Orm\InjectionFactory;
 use Orm\IEntity;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\Injection::create
  */

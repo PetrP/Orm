@@ -3,8 +3,6 @@
 use Orm\NoConventional;
 use Nette\Utils\Html;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\NoConventional::formatStorageToEntity
  */

@@ -2,8 +2,6 @@
 
 use Orm\PerformanceHelper;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\PerformanceHelper::getDefaultKey
  */

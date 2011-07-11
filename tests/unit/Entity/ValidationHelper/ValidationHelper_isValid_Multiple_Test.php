@@ -3,8 +3,6 @@
 use Nette\Utils\Html;
 use Orm\ValidationHelper;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\ValidationHelper::isValid
  */

@@ -3,8 +3,6 @@
 use Orm\RelationshipLoader;
 use Orm\MetaData;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\RelationshipLoader::create
  */

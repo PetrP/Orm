@@ -2,8 +2,6 @@
 
 use Orm\FindByHelper;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\FindByHelper::parse
  */

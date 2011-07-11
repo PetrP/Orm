@@ -2,8 +2,6 @@
 
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../boot.php';
-
 /**
  * @covers Orm\RepositoryContainer::isRepository
  */

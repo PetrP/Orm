@@ -3,8 +3,6 @@
 use Orm\DibiCollection;
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DibiCollection::join
  * @covers Orm\DibiMapper::getJoinInfo

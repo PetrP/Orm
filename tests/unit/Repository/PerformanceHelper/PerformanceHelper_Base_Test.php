@@ -3,8 +3,6 @@
 use Orm\PerformanceHelper;
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\PerformanceHelper::__construct
  * @covers Orm\PerformanceHelper::access

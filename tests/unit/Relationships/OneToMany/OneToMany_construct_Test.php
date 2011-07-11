@@ -2,8 +2,6 @@
 
 use Orm\OneToMany;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\OneToMany::__construct
  * @covers Orm\BaseToMany::__construct

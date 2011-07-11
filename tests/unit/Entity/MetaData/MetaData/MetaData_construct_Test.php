@@ -2,8 +2,6 @@
 
 use Orm\MetaData;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\MetaData::__construct
  */

@@ -4,8 +4,6 @@ use Nette\InvalidStateException;
 use Orm\MetaData;
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\RelationshipLoader::check
  * @covers Orm\MetaDataProperty::check

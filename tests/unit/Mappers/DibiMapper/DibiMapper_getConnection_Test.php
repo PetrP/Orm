@@ -4,8 +4,6 @@ use Orm\RepositoryContainer;
 
 use Nette\Utils\Html;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\DibiMapper::getConnection
  */

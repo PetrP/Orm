@@ -2,8 +2,6 @@
 
 use Orm\DataSourceCollection;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DataSourceCollection::__call
  * @covers Orm\FindByHelper::parse

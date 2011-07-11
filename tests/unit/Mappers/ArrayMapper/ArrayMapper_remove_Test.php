@@ -3,8 +3,6 @@
 use Orm\RepositoryContainer;
 use Nette\NotImplementedException;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\ArrayMapper::remove
  */

@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\SqlConventional::getManyToManyParam
  * @covers Orm\SqlConventional::foreignKeyFormat

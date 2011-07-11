@@ -4,8 +4,6 @@ use Orm\RepositoryContainer;
 use Orm\ValidationHelper;
 use Nette\NotImplementedException;
 
-require_once dirname(__FILE__) . '/../../../boot.php';
-
 /**
  * @covers Orm\ArrayMapper::flush
  */

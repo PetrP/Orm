@@ -4,8 +4,6 @@ use Nette\Utils\Html;
 use Orm\MetaData;
 use Orm\RepositoryContainer;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\MetaData::getEntityRules
  * @covers Orm\MetaData::createEntityRules

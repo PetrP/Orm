@@ -2,8 +2,6 @@
 
 use Orm\DataSourceCollection;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\DataSourceCollection::findBy
  * @covers Orm\FindByHelper::dibiProcess

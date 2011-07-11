@@ -3,8 +3,6 @@
 use Orm\RepositoryContainer;
 use Orm\ArrayCollection;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\ArrayCollection::findBy
  */

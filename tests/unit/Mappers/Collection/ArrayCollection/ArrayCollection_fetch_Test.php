@@ -2,8 +2,6 @@
 
 use Orm\ArrayCollection;
 
-require_once dirname(__FILE__) . '/../../../../boot.php';
-
 /**
  * @covers Orm\ArrayCollection::fetch
  */

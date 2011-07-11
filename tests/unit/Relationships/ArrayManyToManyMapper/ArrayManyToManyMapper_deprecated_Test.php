@@ -2,8 +2,6 @@
 
 use Orm\ArrayManyToManyMapper;
 
-require_once __DIR__ . '/../../../boot.php';
-
 /**
  * @covers Orm\ArrayManyToManyMapper::setParams
  * @covers Orm\ArrayManyToManyMapper::setValue
