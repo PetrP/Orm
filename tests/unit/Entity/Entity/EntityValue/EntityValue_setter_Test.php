@@ -106,8 +106,9 @@ class EntityValue_setter_Test extends EntityValue_settergetter_Base
 		$ee = NULL;
 		try {
 			$e->$key = 3;
+			throw new Exception;
 		} catch (EntityValue_setter_Test_Exception $ee) {}
-		$this->assertException($ee, 'EntityValue_setter_Test_Exception', '');
+
 		$e->throw = false;
 		$this->php533bugAddExcepted('g', 'exception', 'getException');
 		$this->php533bugAddExcepted('g', 'exception', 'getException');

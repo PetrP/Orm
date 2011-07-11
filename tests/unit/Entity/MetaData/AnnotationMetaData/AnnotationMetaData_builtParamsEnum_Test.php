@@ -66,17 +66,16 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 		return 'hůůů';
 	}
 
-	public function testInvalidCallback()
+	public function testInvalidCallback1()
 	{
-		try {
-			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::xyz()');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'Nette\InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_Test::xyz' is not callable.");
+		$this->setExpectedException('Nette\InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_Test::xyz' is not callable.");
+		$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::xyz()');
+	}
 
-		try {
-			$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::invalidCallback()');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'Nette\InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
+	public function testInvalidCallback2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
+		$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::invalidCallback()');
 	}
 
 	public function testUnexistsConstant()

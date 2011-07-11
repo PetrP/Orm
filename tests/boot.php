@@ -35,11 +35,6 @@ require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-	public function assertException(Exception $e, $type, $message)
-	{
-		$this->assertEquals($type, get_class($e));
-		$this->assertEquals($e->getMessage(), $message);
-	}
 
 	public static function readAttribute($classOrObject, $attributeName)
 	{

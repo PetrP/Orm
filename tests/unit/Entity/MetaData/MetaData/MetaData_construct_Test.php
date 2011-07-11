@@ -21,10 +21,8 @@ class MetaData_construct_Test extends TestCase
 
 	public function testNotExists()
 	{
-		try {
-			new MetaData('Xxxasdsad');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'Nette\InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		$this->setExpectedException('Nette\InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		new MetaData('Xxxasdsad');
 	}
 
 	public function testNotEntity()
