@@ -57,10 +57,8 @@ class MetaDataProperty_setAccess_Test extends TestCase
 
 	public function testNonSense()
 	{
-		try {
-			$this->setAccess('kukuk');
-		} catch (Exception $e) {}
-		$this->assertException($e, 'Exception', "");
+		$this->setExpectedException('Nette\InvalidArgumentException', 'Orm\MetaDataProperty access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
+		$this->setAccess('kukuk');
 	}
 
 }

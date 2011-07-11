@@ -11,7 +11,6 @@ use Nette\Object;
 use Nette\InvalidStateException;
 use InvalidArgumentException;
 use Nette\Callback;
-use Exception;
 use Closure;
 use ReflectionClass;
 
@@ -145,7 +144,7 @@ class MetaDataProperty extends Object
 	{
 		if ($access === NULL) $access = MetaData::READWRITE;
 		if ($access === MetaData::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: {$this->class}::\${$this->name}");
-		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new Exception();
+		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new InvalidArgumentException(__CLASS__ . ' access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
 		$methods = $meta->getMethods($this->name);
 		if ($methods['is'] AND $this->data['types'] === array('bool' => 'bool'))
 		{
