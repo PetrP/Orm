@@ -102,6 +102,14 @@ class MetaDataProperty_setInjection_Test extends TestCase
 		$this->t('MetaDataProperty_setInjection_JustInjection', $loader);
 	}
 
+	public function testCallbackCreateFunction()
+	{
+		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');
+		$loader = create_function('', '');
+		$this->p->setInjection($loader);
+		$this->t('MetaDataProperty_setInjection_JustInjection', $loader);
+	}
+
 	public function testCallbackString()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');

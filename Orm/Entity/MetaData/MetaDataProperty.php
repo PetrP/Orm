@@ -365,7 +365,7 @@ class MetaDataProperty extends Object
 		{
 			$factory = callback($factory, 'create');
 		}
-		else if ($factory instanceof Callback OR $factory instanceof Closure OR (is_string($factory) AND strpos($factory, '::')))
+		else if ($factory instanceof Callback OR $factory instanceof Closure OR (is_string($factory) AND (strpos($factory, '::') OR strncmp($factory, "\0lambda_", 8) === 0)))
 		{
 			$factory = callback($factory);
 		}
