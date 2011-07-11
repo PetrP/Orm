@@ -1,13 +1,9 @@
 <?php
 
-define('ORM_DIR', dirname(__FILE__) . '/../Orm');
-define('LIBS_DIR', dirname(__FILE__) . '/libs');
-
-require_once LIBS_DIR . '/Nette/loader.php';
-require_once LIBS_DIR . '/dump.php';
-require_once LIBS_DIR . '/dibi/dibi.php';
-require_once ORM_DIR . '/Orm.php';
-
+require_once __DIR__ . '/libs/Nette/loader.php';
+require_once __DIR__ . '/libs/dump.php';
+require_once __DIR__ . '/libs/dibi/dibi.php';
+require_once __DIR__ . '/../Orm/Orm.php';
 
 use Nette\Diagnostics\Debugger as Debug;
 use Nette\Environment;
@@ -19,7 +15,7 @@ Debug::$strictMode = true;
 
 date_default_timezone_set('Europe/Prague');
 
-Environment::setVariable('tempDir', dirname(__FILE__) . '/tmp');
+Environment::setVariable('tempDir', __DIR__ . '/tmp');
 
 try {
 	$storage = Environment::getService(str_replace('-', '\\', 'Nette-Caching-ICacheStorage'));
@@ -29,11 +25,11 @@ try {
 
 $r = new RobotLoader;
 $r->setCacheStorage($storage);
-$r->addDirectory(LIBS_DIR);
-$r->addDirectory(dirname(__FILE__) . '/unit');
+$r->addDirectory(__DIR__ . '/libs');
+$r->addDirectory(__DIR__ . '/unit');
 $r->register();
 
-require_once ORM_DIR . '/Mappers/Collection/DataSourceCollection.php';
+require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
 require_once __DIR__ . '/unit/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 
