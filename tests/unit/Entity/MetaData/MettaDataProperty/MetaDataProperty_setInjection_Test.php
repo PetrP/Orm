@@ -114,7 +114,12 @@ class MetaDataProperty_setInjection_Test extends TestCase
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');
 		$this->p->setInjection('MetaDataProperty_setInjection_NonStaticInjectionLoader::create');
-		$this->t('MetaDataProperty_setInjection_JustInjection', array('MetaDataProperty_setInjection_NonStaticInjectionLoader', 'create'));
+		try {
+			// in php < 5.2.2 and always in newer nette
+			$this->t('MetaDataProperty_setInjection_JustInjection', array('MetaDataProperty_setInjection_NonStaticInjectionLoader', 'create'));
+		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
+			$this->t('MetaDataProperty_setInjection_JustInjection', 'MetaDataProperty_setInjection_NonStaticInjectionLoader::create');
+		}
 	}
 
 	public function testCallbackBad()
