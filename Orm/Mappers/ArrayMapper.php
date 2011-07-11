@@ -238,10 +238,18 @@ abstract class ArrayMapper extends Mapper
 		{
 			throw new InvalidStateException('Critical section has already been entered.');
 		}
-		// locking on Windows causes that a file seems to be empty
-		$handle = substr(PHP_OS, 0, 3) === 'WIN'
-			? @fopen(__DIR__ . '/ArrayMapper.lockfile', 'w')
-			: @fopen(__FILE__, 'r'); // @ - file may not already exist
+
+		static $handleParam;
+		if ($handleParam === NULL)
+		{
+			$handleParam = array(__FILE__, 'r');
+			if (substr(PHP_OS, 0, 3) === 'WIN')
+			{
+				// locking on Windows causes that a file seems to be empty
+				$handleParam = array(realpath(sys_get_temp_dir()) . '/Orm_ArrayMapper.lockfile.' . md5(__FILE__), 'w');
+			}
+		}
+		$handle = @fopen($handleParam[0], $handleParam[1]); // @ - file may not already exist
 
 		if (!$handle)
 		{
