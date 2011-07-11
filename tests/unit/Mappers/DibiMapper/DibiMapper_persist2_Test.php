@@ -68,7 +68,14 @@ class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 	public function testArrayObject()
 	{
 		$this->e->mixed = $a = new ArrayObject(array('cow', 'boy'));
-		$this->t("'C:11:\\\"ArrayObject\\\":49:{x:i:0;a:2:{i:0;s:3:\\\"cow\\\";i:1;s:3:\\\"boy\\\";};m:a:0:{}}'");
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->t("'O:11:\\\"ArrayObject\\\":2:{i:0;s:3:\\\"cow\\\";i:1;s:3:\\\"boy\\\";}'");
+		}
+		else
+		{
+			$this->t("'C:11:\\\"ArrayObject\\\":49:{x:i:0;a:2:{i:0;s:3:\\\"cow\\\";i:1;s:3:\\\"boy\\\";};m:a:0:{}}'");
+		}
 	}
 
 	public function testArrayObjectSubClass()
