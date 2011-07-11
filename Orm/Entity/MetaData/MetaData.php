@@ -73,9 +73,13 @@ class MetaData extends Object
 	{
 		if (isset($this->properties[$name]))
 		{
-			if ($since === NULL OR $this->properties[$name]->getSince() === $since)
+			if ($since === NULL)
 			{
-				throw new Exception(); // todo
+				throw new InvalidStateException($this->getEntityClass() . "::\$$name already defined (use param \$since to redefine)");
+			}
+			else if ($this->properties[$name]->getSince() === $since)
+			{
+				throw new InvalidStateException($this->getEntityClass() . "::\$$name is defined twice in $since");
 			}
 			$this->properties[$name] = new MetaDataProperty($this, $name, $types, $access, $since);
 		}
