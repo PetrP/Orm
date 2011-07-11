@@ -31,14 +31,14 @@ class MetaData_addProperty_Test extends TestCase
 		$this->assertSame('MetaData_Test_Entity::$id already defined (use param $since to redefine)', $e->getMessage());
 
 		$array = $m->toArray();
-		$this->assertEquals(1, count($array));
+		$this->assertSame(1, count($array));
 		$this->assertArrayHasKey('id', $array);
-		$this->assertEquals(array('int3' => 'int3'), $array['id']['types']);
+		$this->assertSame(array('int3' => 'int3'), $array['id']['types']);
 
 		$m->addProperty('id', 'int6', MetaData::READ, 'Neexistuje');
 
 		$array = $m->toArray();
-		$this->assertEquals(array('int6' => 'int6'), $array['id']['types']);
+		$this->assertSame(array('int6' => 'int6'), $array['id']['types']);
 
 	}
 
@@ -47,9 +47,9 @@ class MetaData_addProperty_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 		$property = $m->addProperty('id', 'int1', MetaData::READ);
 		$this->assertInstanceof('Orm\MetaDataProperty', $property);
-		$this->assertAttributeEquals('id', 'name', $property);
-		$this->assertAttributeEquals($m->getEntityClass(), 'class', $property);
-		$this->assertAttributeEquals(array('id' => $property), 'properties', $m);
+		$this->assertAttributeSame('id', 'name', $property);
+		$this->assertAttributeSame($m->getEntityClass(), 'class', $property);
+		$this->assertAttributeSame(array('id' => $property), 'properties', $m);
 	}
 
 }

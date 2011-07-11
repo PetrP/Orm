@@ -12,7 +12,7 @@ class MetaData_getMethods_Test extends TestCase
 	{
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('id', 'int', MetaData::READ, 'Orm\Entity');
-		$this->assertEquals(
+		$this->assertSame(
 			array(
 				'id' => array(
 					'types' => array('int' => 'int'),
@@ -36,8 +36,8 @@ class MetaData_getMethods_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('getter', 'NULL', MetaData::READ);
 		$a = $m->toArray();
-		$this->assertEquals('getGetter', $a['getter']['get']['method']);
-		$this->assertEquals(NULL, $a['getter']['set']);
+		$this->assertSame('getGetter', $a['getter']['get']['method']);
+		$this->assertSame(NULL, $a['getter']['set']);
 	}
 
 	public function testSetter()
@@ -45,8 +45,8 @@ class MetaData_getMethods_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('setter', 'NULL', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals(NULL, $a['setter']['get']['method']);
-		$this->assertEquals('setSetter', $a['setter']['set']['method']);
+		$this->assertSame(NULL, $a['setter']['get']['method']);
+		$this->assertSame('setSetter', $a['setter']['set']['method']);
 	}
 
 	public function testGetterSetter()
@@ -54,8 +54,8 @@ class MetaData_getMethods_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('getterSetter', 'NULL', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals('getGetterSetter', $a['getterSetter']['get']['method']);
-		$this->assertEquals('setGetterSetter', $a['getterSetter']['set']['method']);
+		$this->assertSame('getGetterSetter', $a['getterSetter']['get']['method']);
+		$this->assertSame('setGetterSetter', $a['getterSetter']['set']['method']);
 	}
 
 	public function testIs()
@@ -63,25 +63,25 @@ class MetaData_getMethods_Test extends TestCase
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('getter', 'bool', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals('isGetter', $a['getter']['get']['method']); // wtf existuje getGetter i isGetter, pouzije se posledni nastaveny
-		$this->assertEquals(NULL, $a['getter']['set']['method']);
+		$this->assertSame('isGetter', $a['getter']['get']['method']); // wtf existuje getGetter i isGetter, pouzije se posledni nastaveny
+		$this->assertSame(NULL, $a['getter']['set']['method']);
 
 		$m->addProperty('getterSetter', 'bool', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals('getGetterSetter', $a['getterSetter']['get']['method']);
-		$this->assertEquals('setGetterSetter', $a['getterSetter']['set']['method']);
+		$this->assertSame('getGetterSetter', $a['getterSetter']['get']['method']);
+		$this->assertSame('setGetterSetter', $a['getterSetter']['set']['method']);
 
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('bool', 'bool', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals('isBool', $a['bool']['get']['method']);
-		$this->assertEquals(NULL, $a['bool']['set']['method']);
+		$this->assertSame('isBool', $a['bool']['get']['method']);
+		$this->assertSame(NULL, $a['bool']['set']['method']);
 
 		$m = new MetaData('MetaData_Test_Entity');
 		$m->addProperty('bool', 'bool|null', MetaData::READWRITE);
 		$a = $m->toArray();
-		$this->assertEquals(NULL, $a['bool']['get']['method']);
-		$this->assertEquals(NULL, $a['bool']['set']['method']);
+		$this->assertSame(NULL, $a['bool']['get']['method']);
+		$this->assertSame(NULL, $a['bool']['set']['method']);
 	}
 
 }

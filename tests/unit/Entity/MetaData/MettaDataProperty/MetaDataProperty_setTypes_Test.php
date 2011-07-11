@@ -21,12 +21,12 @@ class MetaDataProperty_setTypes_Test extends TestCase
 
 	public function testOne()
 	{
-		$this->assertEquals(array('blabla' => 'blabla'), $this->setTypes('BlaBla'));
+		$this->assertSame(array('blabla' => 'blabla'), $this->setTypes('BlaBla'));
 	}
 
 	public function testMore()
 	{
-		$this->assertEquals(array(
+		$this->assertSame(array(
 		'blabla' => 'blabla',
 		'int' => 'int',
 		'bool' => 'bool',
@@ -36,7 +36,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 
 	public function testArray()
 	{
-		$this->assertEquals(array(
+		$this->assertSame(array(
 		'bool' => 'bool',
 		'string' => 'string',
 		), $this->setTypes(array('boOL', 'STRinG')));
@@ -44,46 +44,46 @@ class MetaDataProperty_setTypes_Test extends TestCase
 
 	public function testMixed()
 	{
-		$this->assertEquals($this->mixed, $this->setTypes('mixed'));
-		$this->assertEquals($this->mixed, $this->setTypes('BlaBla|mIXed|bool'));
-		$this->assertEquals($this->mixed, $this->setTypes('mixed|NULL'));
+		$this->assertSame($this->mixed, $this->setTypes('mixed'));
+		$this->assertSame($this->mixed, $this->setTypes('BlaBla|mIXed|bool'));
+		$this->assertSame($this->mixed, $this->setTypes('mixed|NULL'));
 	}
 
 	public function testAllias()
 	{
-		$this->assertEquals(array('null' => 'null'), $this->setTypes('void'));
-		$this->assertEquals(array('float' => 'float'), $this->setTypes('double'));
-		$this->assertEquals(array('float' => 'float'), $this->setTypes('real'));
-		$this->assertEquals(array('float' => 'float'), $this->setTypes('numeric'));
-		$this->assertEquals(array('float' => 'float'), $this->setTypes('number'));
-		$this->assertEquals(array('int' => 'int'), $this->setTypes('integer'));
-		$this->assertEquals(array('bool' => 'bool'), $this->setTypes('boolean'));
-		$this->assertEquals(array('string' => 'string'), $this->setTypes('text'));
+		$this->assertSame(array('null' => 'null'), $this->setTypes('void'));
+		$this->assertSame(array('float' => 'float'), $this->setTypes('double'));
+		$this->assertSame(array('float' => 'float'), $this->setTypes('real'));
+		$this->assertSame(array('float' => 'float'), $this->setTypes('numeric'));
+		$this->assertSame(array('float' => 'float'), $this->setTypes('number'));
+		$this->assertSame(array('int' => 'int'), $this->setTypes('integer'));
+		$this->assertSame(array('bool' => 'bool'), $this->setTypes('boolean'));
+		$this->assertSame(array('string' => 'string'), $this->setTypes('text'));
 
-		$this->assertEquals(array('scalar' => 'scalar'), $this->setTypes('scalar')); // todo
+		$this->assertSame(array('scalar' => 'scalar'), $this->setTypes('scalar')); // todo
 	}
 
 	public function testMultiple()
 	{
-		$this->assertEquals(array('int' => 'int'), $this->setTypes('int|INT|int'));
-		$this->assertEquals(array('float' => 'float'), $this->setTypes('float|double|real|numeric|number'));
-		$this->assertEquals(array('float' => 'float', 'int' => 'int'), $this->setTypes('float|double|real|numeric|number|integer|int'));
-		$this->assertEquals(array('float' => 'float', 'datetime' => 'datetime'), $this->setTypes(array('float', 'real', 'dateTime', 'DateTime')));
+		$this->assertSame(array('int' => 'int'), $this->setTypes('int|INT|int'));
+		$this->assertSame(array('float' => 'float'), $this->setTypes('float|double|real|numeric|number'));
+		$this->assertSame(array('float' => 'float', 'int' => 'int'), $this->setTypes('float|double|real|numeric|number|integer|int'));
+		$this->assertSame(array('float' => 'float', 'datetime' => 'datetime'), $this->setTypes(array('float', 'real', 'dateTime', 'DateTime')));
 	}
 
 	public function testEmpty()
 	{
-		$this->assertEquals($this->mixed, $this->setTypes(array()));
-		$this->assertEquals($this->mixed, $this->setTypes(''));
+		$this->assertSame($this->mixed, $this->setTypes(array()));
+		$this->assertSame($this->mixed, $this->setTypes(''));
 	}
 
 	public function testTrim()
 	{
-		$this->assertEquals(array('int' => 'int', 'float' => 'float'), $this->setTypes(array('    int', ' float ')));
-		$this->assertEquals($this->mixed, $this->setTypes('    '));
-		$this->assertEquals($this->mixed, $this->setTypes(array('    ', '  ')));
-		$this->assertEquals(array('int' => 'int'), $this->setTypes('    |int|  '));
-		$this->assertEquals(array('int' => 'int', 'bool' => 'bool'), $this->setTypes('int | bool |'));
+		$this->assertSame(array('int' => 'int', 'float' => 'float'), $this->setTypes(array('    int', ' float ')));
+		$this->assertSame($this->mixed, $this->setTypes('    '));
+		$this->assertSame($this->mixed, $this->setTypes(array('    ', '  ')));
+		$this->assertSame(array('int' => 'int'), $this->setTypes('    |int|  '));
+		$this->assertSame(array('int' => 'int', 'bool' => 'bool'), $this->setTypes('int | bool |'));
 	}
 
 	/** Asociace se pta jestli je null, a mixed muze byt null */

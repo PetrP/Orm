@@ -28,7 +28,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 
 	public function testNull()
 	{
-		$this->assertEquals(MetaData::READWRITE, $this->setAccess(NULL));
+		$this->assertSame(MetaData::READWRITE, $this->setAccess(NULL));
 	}
 
 	public function testWrite()
@@ -39,18 +39,18 @@ class MetaDataProperty_setAccess_Test extends TestCase
 
 	public function testRead()
 	{
-		$this->assertEquals(MetaData::READ, $this->setAccess(MetaData::READ, $a));
+		$this->assertSame(MetaData::READ, $this->setAccess(MetaData::READ, $a));
 
-		$this->assertEquals(array('method' => 'getId'), $a['get']);
-		$this->assertEquals(NULL, $a['set']);
+		$this->assertSame(array('method' => 'getId'), $a['get']);
+		$this->assertSame(NULL, $a['set']);
 	}
 
 	public function testReadWrite()
 	{
-		$this->assertEquals(MetaData::READWRITE, $this->setAccess(MetaData::READWRITE, $a));
+		$this->assertSame(MetaData::READWRITE, $this->setAccess(MetaData::READWRITE, $a));
 
-		$this->assertEquals(array('method' => 'getId'), $a['get']);
-		$this->assertEquals(array('method' => NULL), $a['set']);
+		$this->assertSame(array('method' => 'getId'), $a['get']);
+		$this->assertSame(array('method' => NULL), $a['set']);
 	}
 
 	public function testNonSense()

@@ -16,31 +16,31 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 
 	public function testInt()
 	{
-		$this->assertEquals(array(array(1,2,3), '1, 2, 3'), $this->p->builtParamsEnum('1,2,3'));
-		$this->assertEquals(array(array(1,2,3), '"1", "2", "3"'), $this->p->builtParamsEnum('"1" , "2" , "3"'));
+		$this->assertSame(array(array(1,2,3), '1, 2, 3'), $this->p->builtParamsEnum('1,2,3'));
+		$this->assertSame(array(array('1','2','3'), '"1", "2", "3"'), $this->p->builtParamsEnum('"1" , "2" , "3"'));
 	}
 
 	public function testFloat()
 	{
-		$this->assertEquals(array(array(1.5,2,3.9599959595), '1.5, 2, 3.9599959595'), $this->p->builtParamsEnum('1.5,2,3.9599959595'));
-		$this->assertEquals(array(array(1.5), '"1.5"'), $this->p->builtParamsEnum('"1.5"'));
+		$this->assertSame(array(array(1.5,2,3.9599959595), '1.5, 2, 3.9599959595'), $this->p->builtParamsEnum('1.5,2,3.9599959595'));
+		$this->assertSame(array(array('1.5'), '"1.5"'), $this->p->builtParamsEnum('"1.5"'));
 	}
 
 	public function testString()
 	{
-		$this->assertEquals(array(array('abc', 'abc', 'abc'), '"abc", abc, \'abc\''), $this->p->builtParamsEnum('"abc" , abc , \'abc\''));
-		$this->assertEquals(array(array('true'), '"true"'), $this->p->builtParamsEnum('"true"'));
+		$this->assertSame(array(array('abc', 'abc', 'abc'), '"abc", abc, \'abc\''), $this->p->builtParamsEnum('"abc" , abc , \'abc\''));
+		$this->assertSame(array(array('true'), '"true"'), $this->p->builtParamsEnum('"true"'));
 	}
 
 	public function testConstant()
 	{
-		$this->assertEquals(array(array(true, false, true), 'true, false, trUE'), $this->p->builtParamsEnum('true, false, trUE'));
+		$this->assertSame(array(array(true, false, true), 'true, false, trUE'), $this->p->builtParamsEnum('true, false, trUE'));
 	}
 
 	public function testSelfConstant()
 	{
-		$this->assertEquals(array(array('xxx', 'yyy'), 'MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'), $this->p->builtParamsEnum('MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'));
-		$this->assertEquals(array(array('xxx', 'yyy'), 'MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'), $this->p->builtParamsEnum('self::XXX, self::YYY'));
+		$this->assertSame(array(array('xxx', 'yyy'), 'MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'), $this->p->builtParamsEnum('MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'));
+		$this->assertSame(array(array('xxx', 'yyy'), 'MetaData_Test_Entity::XXX, MetaData_Test_Entity::YYY'), $this->p->builtParamsEnum('self::XXX, self::YYY'));
 	}
 
 	public static function callback()
@@ -53,12 +53,12 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 
 	public function testCallback()
 	{
-		$this->assertEquals(array(array('a', 'c'), 'a, c'), $this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::callback()'));
+		$this->assertSame(array(array('a', 'c'), 'a, c'), $this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::callback()'));
 	}
 
 	public function testSelfCallback()
 	{
-		$this->assertEquals(array(array('foo'), 'foo'), $this->p->builtParamsEnum('self::enum()'));
+		$this->assertSame(array(array('foo'), 'foo'), $this->p->builtParamsEnum('self::enum()'));
 	}
 
 	public static function invalidCallback()

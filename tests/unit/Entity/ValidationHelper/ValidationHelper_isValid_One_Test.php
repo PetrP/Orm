@@ -85,8 +85,8 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t("\0", false);
 		$this->t('0', true, 0.0);
 		$this->t('1', true, 1.0);
-		$this->t(1, true);
-		$this->t(0, true);
+		$this->t(1, true, 1.0);
+		$this->t(0, true, 0.0);
 		$this->t(5.69, true, 5.69);
 		$this->t(array(), true, 0.0); // wtf
 		$this->t(array('xx' => 'aa'), false);
@@ -157,8 +157,8 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(1, false);
 		$this->t(0, false);
 		$this->t(5.69, false);
-		$this->t(array(), true, (object) array());
-		$this->t(array('xx' => 'aa'), true, (object) array('xx' => 'aa'));
+		$this->t(array(), true, (object) array(), false);
+		$this->t(array('xx' => 'aa'), true, (object) array('xx' => 'aa'), false);
 		$this->t((object) array(), true);
 		$this->t(new ArrayObject, true);
 
@@ -172,50 +172,50 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 	public function testDateTime()
 	{
 		$this->type = 'datetime';
-		$this->t('2010-11-11', true, ValidationHelper::createDateTime('2010-11-11'));
-		$this->t(NULL, true, ValidationHelper::createDateTime('now'));
-		$this->t(false, true, ValidationHelper::createDateTime('now')); // wtf
+		$this->t('2010-11-11', true, ValidationHelper::createDateTime('2010-11-11'), false);
+		$this->t(NULL, true, ValidationHelper::createDateTime('now'), false);
+		$this->t(false, true, ValidationHelper::createDateTime('now'), false); // wtf
 		try {
 			$this->t(true, false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (1): Unexpected character');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (1): Unexpected character');
 		}
-		$this->t('', true, ValidationHelper::createDateTime('now'));
-		$this->t(' ', true, ValidationHelper::createDateTime('now')); // wtf
+		$this->t('', true, ValidationHelper::createDateTime('now'), false);
+		$this->t(' ', true, ValidationHelper::createDateTime('now'), false); // wtf
 		try {
 			$this->t('xx', false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (xx) at position 0 (x): The timezone could not be found in the database');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (xx) at position 0 (x): The timezone could not be found in the database');
 		}
-		$this->t("\0", true, ValidationHelper::createDateTime('now'));
-		$this->t('0', true, ValidationHelper::createDateTime('now'));
-		$this->t('1', true, ValidationHelper::createDateTime('+1 second'));
-		$this->t(1, true, ValidationHelper::createDateTime('+1 second'));
-		$this->t(0, true, ValidationHelper::createDateTime('now'));
-		$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'));
+		$this->t("\0", true, ValidationHelper::createDateTime('now'), false);
+		$this->t('0', true, ValidationHelper::createDateTime('now'), false);
+		$this->t('1', true, ValidationHelper::createDateTime('+1 second'), false);
+		$this->t(1, true, ValidationHelper::createDateTime('+1 second'), false);
+		$this->t(0, true, ValidationHelper::createDateTime('now'), false);
+		$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'), false);
 		try {
 			$this->t(array(), false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, array given');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, array given');
 		}
 		try {
 			$this->t(array('xx' => 'aa'), false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, array given');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, array given');
 		}
 		try {
 			$this->t((object) array(), false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, object given');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, object given');
 		}
 		try {
 			$this->t(new ArrayObject, false);
 		} catch (Exception $e) {
-			$this->assertEquals($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, object given');
+			$this->assertSame($e->getMessage(), 'DateTime::__construct() expects parameter 1 to be string, object given');
 		}
 
 		$this->t(new DateTime('2011-11-11'), true);
-		$this->t('-1 month', true, ValidationHelper::createDateTime('-1 month'));
+		$this->t('-1 month', true, ValidationHelper::createDateTime('-1 month'), false);
 	}
 
 	public function testArrayObject()
@@ -243,7 +243,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(new ArrayObject(array('xx' => 'aa')), true);
 		$this->t(serialize(array('xx' => 'aa')), false);
 		$this->t(serialize((object) array('xx' => 'aa')), false);
-		$this->t(serialize(new ArrayObject(array('xx' => 'aa'))), true, new ArrayObject(array('xx' => 'aa')));
+		$this->t(serialize(new ArrayObject(array('xx' => 'aa'))), true, new ArrayObject(array('xx' => 'aa')), false);
 	}
 
 	public function testMixed()

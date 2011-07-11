@@ -42,18 +42,18 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->type = 'object|null';
 		$this->t(NULL, true);
 		$this->t(new Html, true);
-		$this->t(array(), true, (object) array());
+		$this->t(array(), true, (object) array(), false);
 		$this->t('', false);
 
 		$this->type = 'datetime|null';
 		$this->t(NULL, true);
 		$this->t(new DateTime, true);
-		$this->t('now', true, ValidationHelper::createDateTime('now'));
+		$this->t('now', true, ValidationHelper::createDateTime('now'), false);
 
 		$this->type = 'arrayobject|null';
 		$this->t(NULL, true);
 		$this->t(new ArrayObject, true);
-		$this->t(serialize(new ArrayObject(array('xx' => 'aa'))), true, new ArrayObject(array('xx' => 'aa')));
+		$this->t(serialize(new ArrayObject(array('xx' => 'aa'))), true, new ArrayObject(array('xx' => 'aa')), false);
 		$this->t('', false);
 
 		$this->type = 'mixed|null';

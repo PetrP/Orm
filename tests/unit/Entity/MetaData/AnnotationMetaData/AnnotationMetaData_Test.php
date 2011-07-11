@@ -11,11 +11,16 @@ class AnnotationMetaData_Test extends TestCase
 {
 	protected function x($property, $return = NULL)
 	{
+		return (object) $this->y($property, $return);
+	}
+
+	protected function y($property, $return = NULL)
+	{
 		$property = explode(' ', $property, 2);
 		if ($property[0]{0} === '@') $property[0] = substr($property[0], 1);
 		MockAnnotationMetaData::$mock = array($property[0] => array(@$property[1]));
 		$a = MockAnnotationMetaData::getMetaData('AnnotationMetaData_MockEntity')->toArray();
-		return (object) ($return ? $a[$return] : end($a));
+		return $return ? $a[$return] : end($a);
 	}
 
 	public function testBase()
@@ -29,15 +34,15 @@ class AnnotationMetaData_Test extends TestCase
 
 	public function testTypeAfter()
 	{
-		$this->assertEquals($this->x('@property string $blaBla'), $this->x('@property $blaBla string'));
-		$this->assertEquals($this->x('@property string $blaBla comment'), $this->x('@property $blaBla string comment'));
-		$this->assertEquals($this->x('@property string|NULL $blaBla'), $this->x('@property $blaBla string|NULL'));
-		$this->assertEquals($this->x('@property string|NULL $blaBla comment'), $this->x('@property $blaBla string|NULL comment'));
+		$this->assertSame($this->y('@property string $blaBla'), $this->y('@property $blaBla string'));
+		$this->assertSame($this->y('@property string $blaBla comment'), $this->y('@property $blaBla string comment'));
+		$this->assertSame($this->y('@property string|NULL $blaBla'), $this->y('@property $blaBla string|NULL'));
+		$this->assertSame($this->y('@property string|NULL $blaBla comment'), $this->y('@property $blaBla string|NULL comment'));
 	}
 
 	public function testNoType()
 	{
-		$this->assertEquals($this->x('@property mixed $blabla'), $this->x('@property $blabla'));
+		$this->assertSame($this->y('@property mixed $blabla'), $this->y('@property $blabla'));
 	}
 
 	public function testRead()

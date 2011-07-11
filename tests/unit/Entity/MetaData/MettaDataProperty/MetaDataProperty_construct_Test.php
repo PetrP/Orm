@@ -18,7 +18,7 @@ class MetaDataProperty_construct_Test extends TestCase
 	public function test()
 	{
 		$property = $this->t('id');
-		$this->assertEquals(
+		$this->assertSame(
 			array(
 				'types' => array('types' => 'types'),
 				'get' => array('method' => 'getId'),
@@ -32,9 +32,9 @@ class MetaDataProperty_construct_Test extends TestCase
 			)
 			, $a = $property->toArray()
 		);
-		$this->assertEquals('since', $property->getSince());
-		$this->assertAttributeEquals('id', 'name', $property);
-		$this->assertAttributeEquals('MetaData_Test_Entity', 'class', $property);
+		$this->assertSame('since', $property->getSince());
+		$this->assertAttributeSame('id', 'name', $property);
+		$this->assertAttributeSame('MetaData_Test_Entity', 'class', $property);
 	}
 
 	public function testAscii()

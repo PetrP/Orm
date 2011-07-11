@@ -21,7 +21,7 @@ class MetaData_getEntityRules_NoRepoCon_Test extends TestCase
 		MetaData::getEntityRules('MeTaData_Test_Entity');
 		MetaData::getEntityRules('MeTaData_Test_Entity');
 		MetaData::getEntityRules('MeTaData_Test_Entity');
-		$this->assertEquals(1, MetaData_Test_Entity::$count);
+		$this->assertSame(1, MetaData_Test_Entity::$count);
 	}
 
 	public function testNotExists()
