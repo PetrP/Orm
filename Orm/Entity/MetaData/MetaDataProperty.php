@@ -9,7 +9,7 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
-use InvalidArgumentException;
+use Nette\InvalidArgumentException;
 use Nette\Callback;
 use Closure;
 use ReflectionClass;
