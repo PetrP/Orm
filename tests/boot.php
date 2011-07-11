@@ -2,7 +2,6 @@
 
 define('ORM_DIR', dirname(__FILE__) . '/../Orm');
 define('LIBS_DIR', dirname(__FILE__) . '/libs');
-define('TMP_DIR', dirname(__FILE__) . '/tmp');
 
 require_once LIBS_DIR . '/Nette/loader.php';
 require_once LIBS_DIR . '/dump.php';
@@ -20,7 +19,7 @@ Debug::$strictMode = true;
 
 date_default_timezone_set('Europe/Prague');
 
-Environment::setVariable('tempDir', TMP_DIR);
+Environment::setVariable('tempDir', dirname(__FILE__) . '/tmp');
 
 try {
 	$storage = Environment::getService(str_replace('-', '\\', 'Nette-Caching-ICacheStorage'));

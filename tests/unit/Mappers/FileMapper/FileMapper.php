@@ -5,9 +5,10 @@ use Orm\RepositoryContainer;
 
 class FileMapper_FileMapper extends FileMapper
 {
+
 	protected function getFilePath()
 	{
-		return TMP_DIR . '/' . __CLASS__ . '.data';
+		return realpath(sys_get_temp_dir()) . '/OrmTest_' . __CLASS__ . '.data';
 	}
 
 	public function _loadData()
