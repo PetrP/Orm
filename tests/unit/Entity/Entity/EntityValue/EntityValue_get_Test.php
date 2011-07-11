@@ -30,12 +30,8 @@ class EntityValue_get_Test extends TestCase
 
 	public function testNotReadable()
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = new ReflectionProperty('Orm\_EntityValue', 'rules');
-		$p->setAccessible(true);
+		setAccessible($p);
 		$rules = $p->getValue($this->e);
 		$rules['id']['get'] = NULL;
 		$p->setValue($this->e, $rules);

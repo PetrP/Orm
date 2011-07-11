@@ -30,12 +30,8 @@ class PerformanceHelper_Base_Test extends TestCase
 
 	private function wipe()
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$r = new ReflectionProperty('Orm\PerformanceHelper', 'toLoad');
-		$r->setAccessible(true);
+		setAccessible($r);
 		$r->setValue(NULL);
 		PerformanceHelper::$toSave = NULL;
 	}

@@ -16,12 +16,8 @@ class DibiMapper_getTableName_Repository extends Repository
 	protected $entityClassName = 'TestEntity';
 	public function __setRepositoryName($rn)
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$r = new ReflectionProperty('Orm\Repository', 'repositoryName');
-		$r->setAccessible(true);
+		setAccessible($r);
 		$r->setValue($this, $rn);
 	}
 }

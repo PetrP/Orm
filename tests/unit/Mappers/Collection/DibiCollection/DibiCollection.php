@@ -32,23 +32,15 @@ class DibiCollection_DibiCollection extends DibiCollection
 {
 	public static function set(DibiCollection $c, $property, $value)
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = $c->getReflection()->getProperty($property);
-		$p->setAccessible(true);
+		setAccessible($p);
 		$p->setValue($c, $value);
 	}
 
 	public static function setBase(BaseDibiCollection $c, $property, $value)
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = new ReflectionProperty('Orm\BaseDibiCollection', $property);
-		$p->setAccessible(true);
+		setAccessible($p);
 		$p->setValue($c, $value);
 	}
 

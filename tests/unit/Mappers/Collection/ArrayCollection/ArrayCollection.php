@@ -6,12 +6,8 @@ class ArrayCollection_ArrayCollection extends ArrayCollection
 {
 	public static function set(ArrayCollection $c, $property, $value)
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = $c->getReflection()->getProperty($property);
-		$p->setAccessible(true);
+		setAccessible($p);
 		$p->setValue($c, $value);
 	}
 

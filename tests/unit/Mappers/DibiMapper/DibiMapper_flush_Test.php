@@ -46,12 +46,8 @@ class DibiMapper_flush_Test extends DibiMapper_Connected_Test
 
 		$m = new RepositoryContainer;
 		$m = $m->DibiMapper_Connected_Dibi->getMapper();
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = new ReflectionProperty('Orm\DibiMapper', 'connection');
-		$p->setAccessible(true);
+		setAccessible($p);
 		$p->setValue($m, $this->m->getConnection());
 
 		$this->d->addExpected('commit', NULL, NULL);

@@ -80,3 +80,16 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 use Orm\PerformanceHelper;
 
 PerformanceHelper::$keyCallback = create_function('', 'return md5(lcg_value()) . md5(lcg_value()) . md5(lcg_value());');
+
+function setAccessible(ReflectionProperty $r)
+{
+	if (!$r->isPrivate())
+	{
+		throw new Exception();
+	}
+	if (PHP_VERSION_ID < 50300)
+	{
+		throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
+	}
+	$r->setAccessible(true);
+}

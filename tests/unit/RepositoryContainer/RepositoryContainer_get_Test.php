@@ -21,12 +21,8 @@ class RepositoryContainer_get_Test extends TestCase
 
 	public function testNoOne()
 	{
-		if (PHP_VERSION_ID < 50300)
-		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
-		}
 		$p = new ReflectionProperty('Orm\RepositoryContainer', 'instance');
-		$p->setAccessible(true);
+		setAccessible($p);
 		$p->setValue(NULL);
 		$this->setExpectedException('Nette\InvalidStateException', 'RepositoryContainer hasn\'t been instanced yet.');
 		RepositoryContainer::get();
