@@ -36,35 +36,6 @@ require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
 
-	public static function readAttribute($classOrObject, $attributeName)
-	{
-		try {
-			return parent::readAttribute($classOrObject, $attributeName);
-		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
-			if (is_object($classOrObject) AND $e->getMessage() == 'Failed asserting that object of class "'.get_class($classOrObject).'" has attribute "'.$attributeName.'".')
-			{
-				$needle = "\0$attributeName";
-				foreach ((array) $classOrObject as $key => $value)
-				{
-					if (substr($key, -strlen($needle)) === $needle)
-					{
-						return $value;
-					}
-				}
-			}
-			throw $e;
-		}
-	}
-
-	public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
-	{
-		self::assertSame(
-			$expected,
-			self::readAttribute($actualClassOrObject, $actualAttributeName),
-			$message
-		);
-	}
-
 }
 
 use Orm\PerformanceHelper;
