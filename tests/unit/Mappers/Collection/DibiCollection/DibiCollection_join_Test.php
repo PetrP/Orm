@@ -39,63 +39,63 @@ class DibiCollection_join_Test extends TestCase
 	public function testNoJoin()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join1_] as e
+			SELECT `e`.* FROM `dibicollection_join1_` as e
 		', $this->c);
 	}
 
 	public function testOneTable()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			GROUP BY [e].[id]
-			ORDER BY [join2].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			GROUP BY `e`.`id`
+			ORDER BY `join2`.`name` ASC
 		', $this->c->orderBy('join2->name'));
 	}
 
 	public function testOverTwoTable()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
-			GROUP BY [e].[id]
-			ORDER BY [join2->join1].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			LEFT JOIN `dibicollection_join1_` as `join2->join1` ON `join2->join1`.`id` = `join2`.`join1_id`
+			GROUP BY `e`.`id`
+			ORDER BY `join2->join1`.`name` ASC
 		', $this->c->orderBy('join2->join1->name'));
 	}
 
 	public function testTwoJoin()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
-			GROUP BY [e].[id]
-			ORDER BY [join2->join1].[name] ASC, [join2].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			LEFT JOIN `dibicollection_join1_` as `join2->join1` ON `join2->join1`.`id` = `join2`.`join1_id`
+			GROUP BY `e`.`id`
+			ORDER BY `join2->join1`.`name` ASC, `join2`.`name` ASC
 		', $this->c->orderBy('join2->join1->name')->orderBy('join2->name'));
 	}
 
 	public function testFindBy()
 	{
 		$this->a("
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
-			WHERE ([join2->join1].[name] = 'xyz')
-			GROUP BY [e].[id]
-			ORDER BY [join2].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			LEFT JOIN `dibicollection_join1_` as `join2->join1` ON `join2->join1`.`id` = `join2`.`join1_id`
+			WHERE (`join2->join1`.`name` = 'xyz')
+			GROUP BY `e`.`id`
+			ORDER BY `join2`.`name` ASC
 		", $this->c->{'findByJoin2->join1->name'}('xyz')->orderBy('join2->name'));
 	}
 
 	public function testFindBy2()
 	{
 		$this->a("
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
-			WHERE ([join2->join1].[name] = 'xyz')
-			GROUP BY [e].[id]
-			ORDER BY [join2].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			LEFT JOIN `dibicollection_join1_` as `join2->join1` ON `join2->join1`.`id` = `join2`.`join1_id`
+			WHERE (`join2->join1`.`name` = 'xyz')
+			GROUP BY `e`.`id`
+			ORDER BY `join2`.`name` ASC
 		", $this->c->orderBy('join2->name')->findBy(array('join2->join1->name' => 'xyz')));
 	}
 
@@ -126,35 +126,35 @@ class DibiCollection_join_Test extends TestCase
 	public function testModifyFindAll()
 	{
 		$this->a("
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join3_] as [join3] ON [join3].[id] = [e].[join3_id] AND ([join3].[type] = 'xyz')
-			GROUP BY [e].[id]
-			ORDER BY [join3].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join3_` as `join3` ON `join3`.`id` = `e`.`join3_id` AND (`join3`.`type` = 'xyz')
+			GROUP BY `e`.`id`
+			ORDER BY `join3`.`name` ASC
 		", $this->c->orderBy('join3->name'));
 	}
 
 	public function testModifyFindAllOverMore()
 	{
 		$this->a("
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join2_] as [join2] ON [join2].[id] = [e].[join2_id]
-			LEFT JOIN [dibicollection_join1_] as [join2->join1] ON [join2->join1].[id] = [join2].[join1_id]
-			LEFT JOIN [dibicollection_join3_] as [join2->join1->join3] ON [join2->join1->join3].[id] = [join2->join1].[join3_id] AND ([join2->join1->join3].[type] = 'xyz')
-			LEFT JOIN [dibicollection_join1_] as [join2->join1->join3->join1] ON [join2->join1->join3->join1].[id] = [join2->join1->join3].[join1_id]
-			GROUP BY [e].[id]
-			ORDER BY [join2->join1->join3->join1].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join2_` as `join2` ON `join2`.`id` = `e`.`join2_id`
+			LEFT JOIN `dibicollection_join1_` as `join2->join1` ON `join2->join1`.`id` = `join2`.`join1_id`
+			LEFT JOIN `dibicollection_join3_` as `join2->join1->join3` ON `join2->join1->join3`.`id` = `join2->join1`.`join3_id` AND (`join2->join1->join3`.`type` = 'xyz')
+			LEFT JOIN `dibicollection_join1_` as `join2->join1->join3->join1` ON `join2->join1->join3->join1`.`id` = `join2->join1->join3`.`join1_id`
+			GROUP BY `e`.`id`
+			ORDER BY `join2->join1->join3->join1`.`name` ASC
 		", $this->c->orderBy('join2->join1->join3->join1->name'));
 	}
 
 	public function testFindAllWithJoin()
 	{
 		$this->a("
-			SELECT [e].* FROM [dibicollection_join1_] as e
-			LEFT JOIN [dibicollection_join4_] as [join4] ON [join4].[id] = [e].[join4_id] AND ([join4->join1->join3].[type] = 'aaa') AND ([join4->join1].[type] = 'bbb')
-			LEFT JOIN [dibicollection_join1_] as [join4->join1] ON [join4->join1].[id] = [join4].[join1_id]
-			LEFT JOIN [dibicollection_join3_] as [join4->join1->join3] ON [join4->join1->join3].[id] = [join4->join1].[join3_id] AND ([join4->join1->join3].[type] = 'xyz')
-			GROUP BY [e].[id]
-			ORDER BY [join4].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join1_` as e
+			LEFT JOIN `dibicollection_join4_` as `join4` ON `join4`.`id` = `e`.`join4_id` AND (`join4->join1->join3`.`type` = 'aaa') AND (`join4->join1`.`type` = 'bbb')
+			LEFT JOIN `dibicollection_join1_` as `join4->join1` ON `join4->join1`.`id` = `join4`.`join1_id`
+			LEFT JOIN `dibicollection_join3_` as `join4->join1->join3` ON `join4->join1->join3`.`id` = `join4->join1`.`join3_id` AND (`join4->join1->join3`.`type` = 'xyz')
+			GROUP BY `e`.`id`
+			ORDER BY `join4`.`name` ASC
 		", $this->c->orderBy('join4->name'));
 	}
 

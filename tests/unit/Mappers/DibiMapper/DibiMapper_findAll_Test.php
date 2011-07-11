@@ -23,7 +23,7 @@ class DibiMapper_findAll_Test extends TestCase
 		$this->assertAttributeSame($this->m->connection, 'connection', $all);
 		$this->assertAttributeSame($this->m->repository, 'repository', $all);
 		$this->assertAttributeSame('dibimapper_findall_dibi', 'tableName', $all);
-		$this->assertSame('SELECT [e].* FROM [dibimapper_findall_dibi] as e', trim(preg_replace('#\s+#', ' ', $all->__toString())));
+		$this->assertSame('SELECT `e`.* FROM `dibimapper_findall_dibi` as e', trim(preg_replace('#\s+#', ' ', $all->__toString())));
 	}
 
 	public function testDataSource()
@@ -31,7 +31,7 @@ class DibiMapper_findAll_Test extends TestCase
 		$this->m->collectionClass = 'Orm\DataSourceCollection';
 		$all = $this->m->findAll();
 		$this->assertInstanceOf('Orm\DataSourceCollection', $all);
-		$this->assertSame('SELECT * FROM (SELECT * FROM [dibimapper_findall_dibi]) t', trim(preg_replace('#\s+#', ' ', $all->__toString())));
+		$this->assertSame('SELECT * FROM `dibimapper_findall_dibi`', trim(preg_replace('#\s+#', ' ', $all->__toString())));
 	}
 
 	public function testArray()

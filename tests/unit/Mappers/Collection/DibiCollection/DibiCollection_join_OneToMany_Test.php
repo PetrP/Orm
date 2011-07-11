@@ -37,43 +37,43 @@ class DibiCollection_join_OneToMany_Test extends TestCase
 	public function testOneTable()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join_onetomany1_] as e
-			LEFT JOIN [dibicollection_join_onetomany2_] as [joins] ON [joins].[join_id] = [e].[id]
-			GROUP BY [e].[id]
-			ORDER BY [joins].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join_onetomany1_` as e
+			LEFT JOIN `dibicollection_join_onetomany2_` as `joins` ON `joins`.`join_id` = `e`.`id`
+			GROUP BY `e`.`id`
+			ORDER BY `joins`.`name` ASC
 		', $this->c->orderBy('joins->name'));
 	}
 
 	public function testOverTwoTable1()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join_onetomany1_] as e
-			LEFT JOIN [dibicollection_join_onetomany2_] as [joins] ON [joins].[join_id] = [e].[id]
-			LEFT JOIN [dibicollection_join_onetomany1_] as [joins->join] ON [joins->join].[id] = [joins].[join_id]
-			GROUP BY [e].[id]
-			ORDER BY [joins->join].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join_onetomany1_` as e
+			LEFT JOIN `dibicollection_join_onetomany2_` as `joins` ON `joins`.`join_id` = `e`.`id`
+			LEFT JOIN `dibicollection_join_onetomany1_` as `joins->join` ON `joins->join`.`id` = `joins`.`join_id`
+			GROUP BY `e`.`id`
+			ORDER BY `joins->join`.`name` ASC
 		', $this->c->orderBy('joins->join->name'));
 	}
 
 	public function testOverTwoTable2()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join_onetomany1_] as e
-			LEFT JOIN [dibicollection_join_onetomany2_] as [joins] ON [joins].[join_id] = [e].[id]
-			LEFT JOIN [dibicollection_join_onetomany1_] as [joins->joins] ON [joins->joins].[join_id] = [joins].[id]
-			GROUP BY [e].[id]
-			ORDER BY [joins->joins].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join_onetomany1_` as e
+			LEFT JOIN `dibicollection_join_onetomany2_` as `joins` ON `joins`.`join_id` = `e`.`id`
+			LEFT JOIN `dibicollection_join_onetomany1_` as `joins->joins` ON `joins->joins`.`join_id` = `joins`.`id`
+			GROUP BY `e`.`id`
+			ORDER BY `joins->joins`.`name` ASC
 		', $this->c->orderBy('joins->joins->name'));
 	}
 
 	public function testTwoJoin()
 	{
 		$this->a('
-			SELECT [e].* FROM [dibicollection_join_onetomany1_] as e
-			LEFT JOIN [dibicollection_join_onetomany2_] as [joins] ON [joins].[join_id] = [e].[id]
-			LEFT JOIN [dibicollection_join_onetomany1_] as [joins->joins] ON [joins->joins].[join_id] = [joins].[id]
-			GROUP BY [e].[id]
-			ORDER BY [joins->joins].[name] ASC, [joins].[name] ASC
+			SELECT `e`.* FROM `dibicollection_join_onetomany1_` as e
+			LEFT JOIN `dibicollection_join_onetomany2_` as `joins` ON `joins`.`join_id` = `e`.`id`
+			LEFT JOIN `dibicollection_join_onetomany1_` as `joins->joins` ON `joins->joins`.`join_id` = `joins`.`id`
+			GROUP BY `e`.`id`
+			ORDER BY `joins->joins`.`name` ASC, `joins`.`name` ASC
 		', $this->c->orderBy('joins->joins->name')->orderBy('joins->name'));
 	}
 

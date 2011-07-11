@@ -18,8 +18,8 @@ class DibiCollection_where_Test extends DibiCollection_Base_Test
 
 	public function testArray()
 	{
-		$this->c->where(array('[bb] = [aa]'), 'lost');
-		$this->assertAttributeSame(array(array('[bb] = [aa]')), 'where', $this->c);
+		$this->c->where(array('`bb` = `aa`'), 'lost');
+		$this->assertAttributeSame(array(array('`bb` = `aa`')), 'where', $this->c);
 	}
 
 	public function testMoreParams()

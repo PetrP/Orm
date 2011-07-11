@@ -52,9 +52,7 @@ class DibiCollection_join_Mapper extends DibiMapper
 		if (!isset(self::$dibiConnection))
 		{
 			self::$dibiConnection = new DibiConnection(array(
-				'driver' => 'sqlite',
-				'database' => TMP_DIR . '/sqlite',
-				'lazy' => true,
+				'driver' => 'MockEscapeMysql',
 			));
 		}
 		return self::$dibiConnection;

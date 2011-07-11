@@ -28,7 +28,7 @@ class DibiMapper_dataSource_Test extends TestCase
 	public function test2()
 	{
 		$ds = $this->m->ds('SELECT * FROM %n WHERE %n = %i', 'table', 'foo' , 5);
-		$this->assertAttributeSame('SELECT * FROM [table] WHERE [foo] = 5', 'sql', $ds);
+		$this->assertAttributeSame('SELECT * FROM `table` WHERE `foo` = 5', 'sql', $ds);
 	}
 
 	public function testDibiCollection()
