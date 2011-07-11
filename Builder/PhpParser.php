@@ -137,9 +137,10 @@ class PhpParser extends Tokenizer
 	/**
 	 * @param string
 	 * @param int
+	 * @param bool
 	 * @return string
 	 */
-	public static function buildInfo($data, $version)
+	public static function buildInfo($data, $version, $isDev = false)
 	{
 		static $head;
 		static $tag;
@@ -175,7 +176,11 @@ class PhpParser extends Tokenizer
 					$tags[] = array($tname, 'unknown');
 				}
 			}
-			if (!$tags) throw new Exception;
+			if (!$tags)
+			{
+				if (!$isDev) throw new Exception;
+				$tags = array(array('0.0.0.dev', '0000-00-00'));
+			}
 			if (count($tags) > 1) throw new Exception;
 			$tag = current($tags);
 			$tag[0] = ltrim($tag[0], 'v');

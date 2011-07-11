@@ -24,7 +24,7 @@ foreach (array(
 	//Builder::NS | Builder::PREFIXED_NETTE => 'bez namespace/pro Nette s prefixy',
 ) as $version => $dir)
 {
-	$b = new Builder($version);
+	$b = new Builder($version, isset($_GET['dev']));
 	foreach (array(
 		'Orm',
 		'tests/unit',

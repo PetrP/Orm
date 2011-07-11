@@ -27,10 +27,17 @@ class Builder extends Object
 	/** @var int */
 	private $version;
 
-	/** @param int */
-	public function __construct($version)
+	/** @var bool */
+	private $isDev;
+
+	/**
+	 * @param int
+	 * @param bool
+	 */
+	public function __construct($version, $isDev = false)
 	{
 		$this->version = $version;
+		$this->isDev = $isDev;
 	}
 
 	/**
@@ -140,7 +147,7 @@ class Builder extends Object
 	private function convert($data)
 	{
 		$data = PhpParser::standardizeLineEndings($data);
-		$data = PhpParser::buildInfo($data, $this->version);
+		$data = PhpParser::buildInfo($data, $this->version, $this->isDev);
 
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
