@@ -35,3 +35,8 @@ class AnnotationMetaData_MockEntity extends Entity
 
 class AnnotationMetaData_ManyToMany extends OldManyToMany {};
 class AnnotationMetaData_OneToMany extends OldOneToMany {};
+
+if (PHP_VERSION_ID < 50300)
+{
+	class SameClass {}
+}
