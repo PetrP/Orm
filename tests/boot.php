@@ -40,7 +40,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
 use Orm\PerformanceHelper;
 
-PerformanceHelper::$keyCallback = create_function('', 'return md5(lcg_value()) . md5(lcg_value()) . md5(lcg_value());');
+PerformanceHelper::$keyCallback = NULL;
 
 function setAccessible(ReflectionProperty $r)
 {

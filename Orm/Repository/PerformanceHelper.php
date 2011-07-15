@@ -42,6 +42,7 @@ class PerformanceHelper extends Object
 	/** @param IRepository */
 	public function __construct(IRepository $repository)
 	{
+		if (!self::$keyCallback) return;
 		$this->repositoryName = $repository->getRepositoryName();
 		if (!isset(self::$toLoad))
 		{
@@ -86,8 +87,12 @@ class PerformanceHelper extends Object
 	 */
 	public function get()
 	{
-		$tmp = isset(self::$toLoad[$this->repositoryName]) ? self::$toLoad[$this->repositoryName] : NULL;
-		self::$toLoad[$this->repositoryName] = NULL;
+		$tmp = NULL;
+		if (isset(self::$toLoad[$this->repositoryName]))
+		{
+			$tmp = self::$toLoad[$this->repositoryName];
+			self::$toLoad[$this->repositoryName] = NULL;
+		}
 		return $tmp;
 	}
 
