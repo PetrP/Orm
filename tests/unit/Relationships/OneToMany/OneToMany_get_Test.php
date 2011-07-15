@@ -1,6 +1,6 @@
 <?php
 
-use Orm\OneToMany;
+use Nette\Utils\Html;
 
 /**
  * @covers Orm\OneToMany::get
@@ -13,66 +13,50 @@ class OneToMany_get_Test extends OneToMany_Test
 		$this->assertInstanceOf('Orm\IEntityCollection', $this->o2m->get());
 	}
 
-	public function testCache()
+	public function testClone()
 	{
-		$this->assertSame($this->o2m->get(), $this->o2m->get());
+		$this->assertNotSame($this->o2m->get(), $this->o2m->get());
 	}
 
-	public function testFindByRepo()
+	public function testCloneHasResult()
 	{
-		$o2m = new OneToMany($this->e, $this->e->model->OneToMany_2, 'param');
-		$o2m->get();
-		$this->assertSame(1, $this->e->model->OneToMany_2->count);
-		$this->assertSame(0, $this->e->model->OneToMany_2->mapper->count);
+		$cc = $this->o2m->_getCollection();
+		$this->assertInstanceOf('Orm\ArrayCollection', $cc);
+
+		$all = $cc->fetchAll();
+		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
+		$html = array(new Html, new Html);
+		$r->setValue($cc, $html);
+
+		$c = $this->o2m->get();
+		$this->assertInstanceOf('Orm\ArrayCollection', $c);
+
+		$this->assertAttributeSame($html, 'source', $c);
+		$this->assertAttributeSame($html, 'result', $cc);
 	}
 
-	public function testFindByMapper()
+	public function testCloneHasResultLate()
 	{
-		$o2m = new OneToMany($this->e, $this->e->model->OneToMany_3, 'param');
-		$o2m->get();
-		$this->assertSame(1, $this->e->model->OneToMany_3->mapper->count);
+		$cc = $this->o2m->_getCollection();
+		$this->assertInstanceOf('Orm\ArrayCollection', $cc);
+
+		$c = $this->o2m->get();
+		$this->assertInstanceOf('Orm\ArrayCollection', $c);
+
+		$all = $cc->fetchAll();
+		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
+		$html = array(new Html, new Html);
+		$r->setValue($cc, $html);
+
+		$this->assertAttributeSame($all, 'source', $c);
+		$this->assertAttributeSame($html, 'result', $cc);
 	}
 
-	public function testNotHandledParent()
+	public function testSameData()
 	{
-		$this->e->generatingRepository->remove($this->e);
-		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->get());
-		$this->assertSame(array(), $this->o2m->get()->fetchAll());
-	}
-
-	public function testAdd()
-	{
-		$this->o2m->add($e = new OneToMany_Entity2);
-		$this->t(10,11,12,13,$e);
-	}
-
-	public function testAdd2()
-	{
-		$this->o2m->add($e = new OneToMany_Entity2);
-		$e->param = NULL;
-		$this->t(10,11,12,13);
-	}
-
-	public function testRemove()
-	{
-		$this->o2m->remove(11);
-		$this->t(10,12,13);
-	}
-
-	public function testRemove2()
-	{
-		$e = new OneToMany_Entity2;
-		$this->o2m->add($e);
-		$this->o2m->persist();
-		$this->o2m->remove($e);
-		$this->t(10,11,12,13);
-	}
-
-	public function testChange()
-	{
-		$e = $this->r->getById(11);
-		$e->param = new TestEntity;
-		$this->t(10,12,13);
+		$ids1 = $this->o2m->get()->fetchPairs('id', 'id');
+		$ids2 = $this->o2m->_getCollection()->fetchPairs('id', 'id');
+		$this->assertSame($ids2, $ids1);
 	}
 
 }

@@ -47,7 +47,7 @@ class ManyToMany_persist_Test extends ManyToMany_Test
 
 	public function testCascade()
 	{
-		$e = $this->m2m->get()->getById(11);
+		$e = $this->m2m->_getCollection()->getById(11);
 		$e->string = 'poi';
 		$this->assertTrue($e->isChanged());
 		$this->m2m->persist();

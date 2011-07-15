@@ -35,7 +35,7 @@ class OneToMany_remove_Test extends OneToMany_Test
 
 	public function testMultipleSame()
 	{
-		$e = $this->o2m->get()->getById(11);
+		$e = $this->o2m->_getCollection()->getById(11);
 		$p = $e->param;
 		$this->o2m->remove(11);
 		$ee = $this->o2m->remove(11);
@@ -63,7 +63,7 @@ class OneToMany_remove_Test extends OneToMany_Test
 
 	public function testBad2()
 	{
-		$e = $this->o2m->get()->getById(11);
+		$e = $this->o2m->_getCollection()->getById(11);
 		$e->param = new TestEntity;
 		$this->setExpectedException('UnexpectedValueException', 'Entity OneToMany_Entity#11 is not asociated with this entity.');
 		$this->o2m->remove($e);

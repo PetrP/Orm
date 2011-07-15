@@ -23,7 +23,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	/** @var string */
 	private $param;
 
-	/** @var IEntityCollection @see self::get() */
+	/** @var IEntityCollection @see self::getCollection() */
 	private $get;
 
 	/**
@@ -112,7 +112,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	}
 
 	/** @return IEntityCollection */
-	final public function get()
+	final protected function getCollection()
 	{
 		if (!isset($this->get))
 		{

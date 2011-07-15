@@ -53,4 +53,5 @@ function setAccessible(ReflectionProperty $r)
 		throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
 	}
 	$r->setAccessible(true);
+	return $r;
 }

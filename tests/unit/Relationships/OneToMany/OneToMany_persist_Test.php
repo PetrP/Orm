@@ -59,7 +59,7 @@ class OneToMany_persist_Test extends OneToMany_Test
 
 	public function testCascade()
 	{
-		$e = $this->o2m->get()->getById(11);
+		$e = $this->o2m->_getCollection()->getById(11);
 		$e->string = 'poi';
 		$this->assertTrue($e->isChanged());
 		$this->o2m->persist();

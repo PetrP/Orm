@@ -77,7 +77,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 
 	public function testWipeGet()
 	{
-		$this->m2m->get();
+		$this->m2m->_getCollection();
 		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->m2m);
 		$this->tt(11);
 		$this->assertAttributeSame(NULL, 'get', $this->m2m);

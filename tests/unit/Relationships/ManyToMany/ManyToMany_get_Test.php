@@ -1,8 +1,9 @@
 <?php
 
+use Nette\Utils\Html;
+
 /**
  * @covers Orm\ManyToMany::get
- * @covers Orm\ArrayManyToManyMapper::load
  */
 class ManyToMany_get_Test extends ManyToMany_Test
 {
@@ -12,28 +13,51 @@ class ManyToMany_get_Test extends ManyToMany_Test
 		$this->assertInstanceOf('Orm\IEntityCollection', $this->m2m->get());
 	}
 
-	public function testCache()
+	public function testClone()
 	{
-		$this->assertSame($this->m2m->get(), $this->m2m->get());
+		$this->assertNotSame($this->m2m->get(), $this->m2m->get());
 	}
 
-	public function testNotHandledParent()
+
+	public function testCloneHasResult()
 	{
-		$this->e->generatingRepository->remove($this->e);
-		$this->assertInstanceOf('Orm\ArrayCollection', $this->m2m->get());
-		$this->assertSame(array(), $this->m2m->get()->fetchAll());
+		$cc = $this->m2m->_getCollection();
+		$this->assertInstanceOf('Orm\ArrayCollection', $cc);
+
+		$all = $cc->fetchAll();
+		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
+		$html = array(new Html, new Html);
+		$r->setValue($cc, $html);
+
+		$c = $this->m2m->get();
+		$this->assertInstanceOf('Orm\ArrayCollection', $c);
+
+		$this->assertAttributeSame($html, 'source', $c);
+		$this->assertAttributeSame($html, 'result', $cc);
 	}
 
-	public function testAdd()
+	public function testCloneHasResultLate()
 	{
-		$this->m2m->add($e = new OneToMany_Entity2);
-		$this->t(10,11,12,13,$e);
+		$cc = $this->m2m->_getCollection();
+		$this->assertInstanceOf('Orm\ArrayCollection', $cc);
+
+		$c = $this->m2m->get();
+		$this->assertInstanceOf('Orm\ArrayCollection', $c);
+
+		$all = $cc->fetchAll();
+		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
+		$html = array(new Html, new Html);
+		$r->setValue($cc, $html);
+
+		$this->assertAttributeSame($all, 'source', $c);
+		$this->assertAttributeSame($html, 'result', $cc);
 	}
 
-	public function testRemove()
+	public function testSameData()
 	{
-		$this->m2m->remove(11);
-		$this->t(10,12,13);
+		$ids1 = $this->m2m->get()->fetchPairs('id', 'id');
+		$ids2 = $this->m2m->_getCollection()->fetchPairs('id', 'id');
+		$this->assertSame($ids2, $ids1);
 	}
 
 }

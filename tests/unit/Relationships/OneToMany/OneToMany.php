@@ -71,8 +71,18 @@ class OneToMany_2Mapper extends OneToMany_Mapper
 class OneToMany_3Repository extends OneToMany_Repository {}
 class OneToMany_3Mapper extends OneToMany_2Mapper {}
 
+
+class OneToMany_OneToMany extends OneToMany
+{
+	public function _getCollection()
+	{
+		return $this->getCollection();
+	}
+}
+
 abstract class OneToMany_Test extends TestCase
 {
+	/** @var OneToMany_OneToMany */
 	protected $o2m;
 	protected $e;
 	protected $r;
@@ -81,7 +91,7 @@ abstract class OneToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->tests;
 		$this->e = $e = $r->getById(1);
-		$this->o2m = new OneToMany($e, 'OneToMany_', 'param');
+		$this->o2m = new OneToMany_OneToMany($e, 'OneToMany_', 'param');
 		$this->r = $m->OneToMany_;
 	}
 
@@ -89,7 +99,7 @@ abstract class OneToMany_Test extends TestCase
 	{
 		$expected = func_get_args();
 		$actual = array();
-		foreach ($this->o2m->get() as $e)
+		foreach ($this->o2m->_getCollection() as $e)
 		{
 			$actual[] = isset($e->id) ? $e->id : $e;
 		}

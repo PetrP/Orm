@@ -23,7 +23,7 @@ abstract class BaseToMany extends Object
 	 */
 	final public function set(array $data)
 	{
-		foreach ($this->get() as $entity)
+		foreach ($this->getCollection() as $entity)
 		{
 			$this->remove($entity);
 		}
@@ -33,6 +33,12 @@ abstract class BaseToMany extends Object
 			$this->add($row);
 		}
 		return $this;
+	}
+
+	/** @return IEntityCollection */
+	final public function get()
+	{
+		return $this->getCollection()->toCollection();
 	}
 
 	/**
@@ -46,13 +52,13 @@ abstract class BaseToMany extends Object
 	/** @return int */
 	public function count()
 	{
-		return $this->get()->count();
+		return $this->getCollection()->count();
 	}
 
 	/** @return Traversable */
 	public function getIterator()
 	{
-		return $this->get()->getIterator();
+		return $this->getCollection()->getIterator();
 	}
 
 	public function getInjectedValue()
@@ -120,5 +126,11 @@ abstract class BaseToMany extends Object
 	{
 		return false;
 	}
+
+	/**
+	 * @return IEntityCollection
+	 * @see self::get()
+	 */
+	abstract protected function getCollection();
 
 }

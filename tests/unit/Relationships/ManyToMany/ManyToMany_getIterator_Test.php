@@ -13,7 +13,7 @@ class ManyToMany_getIterator_Test extends ManyToMany_Test
 
 	public function test2()
 	{
-		$this->assertSame($this->m2m->get()->fetchAll(), iterator_to_array($this->m2m->getIterator()));
+		$this->assertSame($this->m2m->_getCollection()->fetchAll(), iterator_to_array($this->m2m->getIterator()));
 	}
 
 	public function test3()
