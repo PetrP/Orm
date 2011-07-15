@@ -92,8 +92,11 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				{
 					foreach ($lazyLoadParams as $n => $v)
 					{
-						$this->values[$n] = $v;
-						$this->valid[$n] = false;
+						if ($name == $n OR !array_key_exists($n, $this->values))
+						{
+							$this->values[$n] = $v;
+							$this->valid[$n] = false;
+						}
 					}
 					if (array_key_exists($name, $this->values))
 					{

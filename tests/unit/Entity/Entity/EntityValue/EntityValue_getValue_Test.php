@@ -83,11 +83,17 @@ class EntityValue_getValue_Test extends TestCase
 	public function testLazy()
 	{
 		$e = new EntityValue_getValue_Entity;
-		$e->___event($e, 'attach', new EntityValue_getValue_LazyRepository(new RepositoryContainer));
+		$r = new EntityValue_getValue_LazyRepository(new RepositoryContainer);
+		$e->___event($e, 'attach', $r);
 		$e->foo2 = 4;
 		$this->assertSame(4, $e->foo2);
+		$this->assertSame(0, $r->count);
 		$this->assertSame('lazy', $e->mixed);
-		$this->assertSame(3, $e->foo2); // bug? lazy muze zmenit params
+		$this->assertSame(1, $r->count);
+		$this->assertSame(5, $e->foo3);
+		$this->assertSame(4, $e->foo2);
+		$this->assertFalse(isset($e->unexists));
+		$this->assertSame(1, $r->count);
 	}
 
 }
