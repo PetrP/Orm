@@ -33,10 +33,7 @@ require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
 require_once __DIR__ . '/unit/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 
-abstract class TestCase extends PHPUnit_Framework_TestCase
-{
-
-}
+require_once __DIR__ . '/TestCase.php';
 
 use Orm\PerformanceHelper;
 
