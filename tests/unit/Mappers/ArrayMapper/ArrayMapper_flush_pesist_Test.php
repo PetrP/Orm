@@ -10,6 +10,7 @@ class ArrayMapper_flush_pesist_Test extends TestCase
 {
 	private $r;
 	private $m;
+	private $e;
 	protected function setUp()
 	{
 		$this->r = new ArrayMapper_flush_Repository(new RepositoryContainer);
