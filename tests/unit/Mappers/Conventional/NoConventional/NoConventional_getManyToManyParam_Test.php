@@ -8,7 +8,7 @@ use Orm\NoConventional;
 class NoConventional_getManyToManyParam_Test extends TestCase
 {
 
-	private $a;
+	private $c;
 	protected function setUp()
 	{
 		$this->c = new NoConventional;

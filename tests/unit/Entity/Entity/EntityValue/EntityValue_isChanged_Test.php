@@ -8,6 +8,7 @@ use Orm\RepositoryContainer;
 class EntityValue_isChanged_Test extends TestCase
 {
 	private $r;
+	private $e;
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;

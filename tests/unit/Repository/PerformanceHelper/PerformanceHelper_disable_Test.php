@@ -10,6 +10,7 @@ require_once dirname(__FILE__) . '/../../../boot.php';
  */
 class PerformanceHelper_disable_Test extends TestCase
 {
+	private $r;
 	private $originCb;
 	private $ph;
 	private $originToSave;
