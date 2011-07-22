@@ -5,6 +5,7 @@ use Orm\Entity;
 use Orm\SqlConventional;
 use Orm\RepositoryContainer;
 
+/** @mapper Orm\DibiMapper */
 class SqlConventional_TestRepository extends Repository
 {
 	protected $entityClassName = 'SqlConventional_TestEntity';

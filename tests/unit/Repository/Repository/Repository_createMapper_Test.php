@@ -23,7 +23,8 @@ class Repository_createMapper_Test extends TestCase
 	public function testDefault()
 	{
 		$r = new Repository_DefaultMapper_Repository($this->m);
-		$this->assertInstanceOf('Orm\DibiMapper', $r->getMapper());
+		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'Repository_DefaultMapper_Repository::@mapper no class found');
+		$r->getMapper();
 	}
 
 	public function testNamespace()

@@ -87,21 +87,18 @@ class MapperFactory_createMapper_anotation_Test extends TestCase
 
 	public function testAbstractParantHasDefault()
 	{
-		$this->markTestSkipped();
 		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'MapperFactory_createMapper_anotation_AbstractParantHasDefault_Repository::@mapper no class found');
 		$this->t('AbstractParantHasDefault', '?');
 	}
 
 	public function testAbstractParantHasAbstractDefault()
 	{
-		$this->markTestSkipped();
 		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'MapperFactory_createMapper_anotation_AbstractParantHasAbstractDefault_Repository::@mapper no class found');
 		$this->t('AbstractParantHasAbstractDefault', '?');
 	}
 
 	public function testParantHasAbstractDefault()
 	{
-		$this->markTestSkipped();
 		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'MapperFactory_createMapper_anotation_ParantHasAbstractDefault_Repository::@mapper no class found');
 		$this->t('ParantHasAbstractDefault', '?');
 	}

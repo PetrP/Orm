@@ -70,8 +70,6 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  * @see self::remove() mazani
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
- *
- * @mapper DibiMapper
  */
 abstract class Repository extends Object implements IRepository
 {
