@@ -8,9 +8,7 @@
 namespace Orm;
 
 use ArrayObject;
-use Nette\NotImplementedException;
-use Nette\Tools;
-use Nette\DateTime;
+use DateTime;
 
 /**
  * Helper ktery pouziva entita pro validovani.
@@ -148,19 +146,20 @@ class ValidationHelper
 	 */
 	public static function createDateTime($time)
 	{
-		if (class_exists('Nette\Tools'))
+		if ($time instanceof DateTime)
 		{
-			// @codeCoverageIgnoreStart
-			return Tools::createDateTime($time);
-			// @codeCoverageIgnoreEnd
+			return clone $time;
 		}
-		else if (class_exists('Nette\DateTime'))
+		else if (is_numeric($time))
 		{
-			return DateTime::from($time);
+			if ($time <= 31557600) // year
+			{
+				$time += time();
+			}
+			return new DateTime(date('Y-m-d H:i:s', $time));
 		}
-		// @codeCoverageIgnoreStart
-		throw new NotImplementedException;
-		// @codeCoverageIgnoreEnd
+		// textual or NULL
+		return new DateTime($time);
 	}
 
 }
