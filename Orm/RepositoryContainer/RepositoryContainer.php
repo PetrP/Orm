@@ -16,6 +16,7 @@ require_once __DIR__ . '/IRepositoryContainer.php';
 require_once __DIR__ . '/../Entity/Entity.php';
 require_once __DIR__ . '/../Repository/Repository.php';
 require_once __DIR__ . '/../Mappers/Mapper.php';
+require_once __DIR__ . '/../DI/ServiceContainer.php';
 
 /**
  * Kolekce Repository.
@@ -70,9 +71,29 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	/** @var array repositoryAlias => repositoryClass */
 	private $aliases = array();
 
+	/** @var IServiceContainer */
+	private $container;
+
 	public function __construct()
 	{
 		self::$instance = $this;
+		$this->container = new ServiceContainer;
+	}
+
+	/** @return IServiceContainer */
+	public function getContext()
+	{
+		return $this->container;
+	}
+
+	/**
+	 * @param IServiceContainer
+	 * @return IRepositoryContainer
+	 */
+	public function setContext(IServiceContainer $container)
+	{
+		$this->container = $container;
+		return $this;
 	}
 
 	/**
