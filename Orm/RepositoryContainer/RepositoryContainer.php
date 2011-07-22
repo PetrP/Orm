@@ -17,6 +17,7 @@ require_once __DIR__ . '/../Entity/Entity.php';
 require_once __DIR__ . '/../Repository/Repository.php';
 require_once __DIR__ . '/../Mappers/Mapper.php';
 require_once __DIR__ . '/../DI/ServiceContainer.php';
+require_once __DIR__ . '/../Mappers/Factory/AnnotationClassParser.php';
 
 /**
  * Kolekce Repository.
@@ -78,6 +79,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		self::$instance = $this;
 		$this->container = new ServiceContainer;
+		$this->container->addService('annotationClassParser', 'Orm\AnnotationClassParser');
 	}
 
 	/** @return IServiceContainer */
