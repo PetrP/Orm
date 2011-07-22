@@ -14,16 +14,16 @@ require_once __DIR__ . '/IEntity.php';
 require_once __DIR__ . '/MetaData/AnnotationMetaData.php';
 require_once __DIR__ . '/ValidationHelper.php';
 require_once __DIR__ . '/EntityToArray.php';
-require_once __DIR__ . '/_EntityEvent.php';
-require_once __DIR__ . '/_EntityGeneratingRepository.php';
-require_once __DIR__ . '/_EntityValue.php';
-require_once __DIR__ . '/_EntityBase.php';
+require_once __DIR__ . '/EntityFragments/EventEntityFragment.php';
+require_once __DIR__ . '/EntityFragments/AttachableEntityFragment.php';
+require_once __DIR__ . '/EntityFragments/ValueEntityFragment.php';
+require_once __DIR__ . '/EntityFragments/BaseEntityFragment.php';
 require_once __DIR__ . '/EntityHelper.php';
 
 /**
  * @property-read id $id
  */
-abstract class Entity extends _EntityBase implements IEntity
+abstract class Entity extends BaseEntityFragment implements IEntity
 {
 
 	/** @return scalar */

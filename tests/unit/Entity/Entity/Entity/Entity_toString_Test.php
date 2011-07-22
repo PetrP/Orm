@@ -32,7 +32,7 @@ class Entity_toString_Test extends TestCase
 	public function testBadId()
 	{
 		$e = <<<EOT
-O:10:"TestEntity":1:{s:20:"\x00_EntityValue\x00values";a:1:{s:2:"id";s:3:"xyz";}}
+O:10:"TestEntity":1:{s:27:"\x00ValueEntityFragment\x00values";a:1:{s:2:"id";s:3:"xyz";}}
 EOT;
 		$e = unserialize($e);
 		$e->___event($e, 'create', $this->r);

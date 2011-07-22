@@ -105,7 +105,7 @@ class MetaData extends Object
 	{
 		if (!isset($this->methods))
 		{
-			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Orm\_EntityBase'));
+			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Orm\BaseEntityFragment'));
 			// TODO neumoznuje pouzit vlastni IEntity
 			foreach ($methods as $method)
 			{

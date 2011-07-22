@@ -5,7 +5,7 @@ use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\EntityToArray::toArray
- * @covers Orm\_EntityBase::toArray
+ * @covers Orm\BaseEntityFragment::toArray
  */
 class EntityToArray_toArray_Test extends TestCase
 {
