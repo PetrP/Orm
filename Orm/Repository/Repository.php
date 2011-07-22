@@ -71,6 +71,7 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
  *
+ * @mapper DibiMapper
  */
 abstract class Repository extends Object implements IRepository
 {
@@ -439,12 +440,12 @@ abstract class Repository extends Object implements IRepository
 	 */
 	protected function createMapper()
 	{
-		$class = $this->getRepositoryName() . 'Mapper';
-		if (class_exists($class))
-		{
-			return new $class($this);
-		}
-		return new DibiMapper($this);
+		return $this
+			->model
+			->getContext()
+			->getService('mapperFactory', 'Orm\IMapperFactory')
+			->createMapper($this)
+		;
 	}
 
 	/**

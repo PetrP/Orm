@@ -37,4 +37,31 @@ class Repository_createMapper_Test extends TestCase
 		$this->assertInstanceOf('Repository_createMapper\Repository_createMapperMapper', $r->getMapper());
 	}
 
+	public function testFactory()
+	{
+		$factory = new Repository_createMapper_MapperFactory;
+		$this->m->getContext()->removeService('mapperFactory')->addService('mapperFactory', $factory);
+		$r = new Repository_DefaultMapper_Repository($this->m);
+		$factory->class = new TestsMapper($r);
+		$this->assertInstanceOf('TestsMapper', $r->getMapper());
+	}
+
+	public function testFactoryBadFactory()
+	{
+		$this->m->getContext()->removeService('mapperFactory')->addService('mapperFactory', new ArrayObject);
+		$r = new Repository_DefaultMapper_Repository($this->m);
+		$this->setExpectedException('Orm\ServiceNotInstanceOfException', "Service 'mapperFactory' is not instance of 'Orm\\IMapperFactory'.");
+		$r->getMapper();
+	}
+
+	public function testFactoryBadReturn()
+	{
+		$factory = new Repository_createMapper_MapperFactory;
+		$this->m->getContext()->removeService('mapperFactory')->addService('mapperFactory', $factory);
+		$r = new Repository_DefaultMapper_Repository($this->m);
+		$factory->class = '';
+		$this->setExpectedException('Nette\InvalidStateException', "Repository_DefaultMapper_Repository::createMapper() must return Orm\\IMapper, 'string' given");
+		$r->getMapper();
+	}
+
 }
