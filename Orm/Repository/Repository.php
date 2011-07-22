@@ -10,6 +10,7 @@ namespace Orm;
 use Nette\Object;
 use UnexpectedValueException;
 use Nette\InvalidStateException;
+use Nette\DeprecatedException;
 use Exception;
 
 require_once __DIR__ . '/IRepository.php';
@@ -469,7 +470,7 @@ abstract class Repository extends Object implements IRepository
 	 * @return IEntity
 	 * @see self::getEntityClassName()
 	 */
-	final public function createEntity($data) // todo rename
+	final public function hydrateEntity($data)
 	{
 		$id = isset($data['id']) ? $data['id'] : NULL;
 		if (!$id)
@@ -559,5 +560,8 @@ abstract class Repository extends Object implements IRepository
 		}
 		return $fks[$entityName];
 	}
+
+	/** @deprecated */
+	final public function createEntity($data) { throw new DeprecatedException('Orm\Repository::createEntity() is deprecated; use Orm\Repository::hydrateEntity() instead'); }
 
 }

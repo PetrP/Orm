@@ -23,7 +23,7 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	public function getEntityClassName(array $data = NULL) {}
 	public function lazyLoad(IEntity $entity, $param) {}
 	public function isEntity(IEntity $entity) {}
-	public function createEntity($data) {}
+	public function hydrateEntity($data) {}
 }
 
 class RepositoryContainer_flush2Repository extends RepositoryContainer_flush1Repository

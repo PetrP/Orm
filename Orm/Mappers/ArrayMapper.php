@@ -212,7 +212,7 @@ abstract class ArrayMapper extends Mapper
 			$repository = $this->getRepository();
 			foreach ($this->loadData() as $id => $row)
 			{
-				$this->data[$id] = $row ? $repository->createEntity($row) : NULL;
+				$this->data[$id] = $row ? $repository->hydrateEntity($row) : NULL;
 			}
 		}
 		return array_filter($this->data);

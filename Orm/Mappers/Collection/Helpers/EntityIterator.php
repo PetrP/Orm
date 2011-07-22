@@ -29,7 +29,7 @@ class EntityIterator extends IteratorIterator implements Countable
 	/** @return IEntity */
 	public function current()
 	{
-		return $this->repository->createEntity(parent::current());
+		return $this->repository->hydrateEntity(parent::current());
 	}
 
 	/** @return int */

@@ -25,5 +25,5 @@ class RepositoryContainer_checkRepositoryClass_Bad3Repository extends Object imp
 	public function getEntityClassName(array $data = NULL) {}
 	public function lazyLoad(IEntity $entity, $param) {}
 	public function isEntity(IEntity $entity) {}
-	public function createEntity($data) {}
+	public function hydrateEntity($data) {}
 }

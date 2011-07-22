@@ -227,6 +227,6 @@ interface IRepository
 	 * @return IEntity
 	 * @see self::getEntityClassName()
 	 */
-	public function createEntity($data);
+	public function hydrateEntity($data);
 
 }

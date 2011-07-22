@@ -141,7 +141,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	{
 		$row = $this->getResult()->fetch();
 		if ($row === false) return NULL;
-		return $this->repository->createEntity($row);
+		return $this->repository->hydrateEntity($row);
 	}
 
 	/**
@@ -150,7 +150,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 */
 	final public function fetchAll()
 	{
-		return array_map(array($this->repository, 'createEntity'), $this->getResult()->fetchAll());
+		return array_map(array($this->repository, 'hydrateEntity'), $this->getResult()->fetchAll());
 	}
 
 	/**
