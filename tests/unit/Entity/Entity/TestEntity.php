@@ -13,19 +13,11 @@ class TestEntity extends Entity
 
 }
 
-/**
- * @property string $string
- * @property DateTime $date
- */
 class TestEntityRepository extends Repository
 {
 	protected $entityClassName = 'TestEntity';
 }
 
-/**
- * @property string $string
- * @property DateTime $date
- */
 class TestEntityMapper extends ArrayMapper
 {
 	private $array = array(
