@@ -39,4 +39,11 @@ class OrmClosureFix
 		return count(self::$vars)-1;
 	}
 }
+
+if (!defined('PHP_VERSION_ID'))
+{
+	// php < 5.2.7
+	$tmp = explode('.', PHP_VERSION);
+	define('PHP_VERSION_ID', ($tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2]));
+}
 php52*/
