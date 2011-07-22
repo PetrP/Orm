@@ -9,6 +9,7 @@ namespace Orm;
 
 use ArrayObject;
 use DateTime;
+use Exception;
 
 /**
  * Helper ktery pouziva entita pro validovani.
@@ -26,6 +27,7 @@ class ValidationHelper
 	public static function isValid(array $types, & $value)
 	{
 		$_value = $value;
+		$_e = NULL;
 
 		if (isset($types['mixed']) OR !$types) return true;
 
@@ -49,7 +51,11 @@ class ValidationHelper
 				if ($value instanceof $type) return true;
 				else if ($type === 'datetime' AND $value !== '' AND (is_string($value) OR is_int($value) OR is_float($value)))
 				{
-					$_value = self::createDateTime($value);
+					try {
+						$_value = self::createDateTime($value);
+					} catch (Exception $e) {
+						$_e = $e;
+					}
 				}
 				else if ($type === 'arrayobject' AND is_string($value) AND in_array(substr($value, 0, 1), array('O','C')) AND substr($value, 1, 18) === ':11:"ArrayObject":' AND ($tmp = @unserialize($value)) instanceof ArrayObject) // intentionally @
 				{
@@ -103,6 +109,10 @@ class ValidationHelper
 
 		if ($_value === $value)
 		{
+			if ($_e)
+			{
+				throw $_e;
+			}
 			return false;
 		}
 		else
