@@ -9,7 +9,7 @@ use Orm\IEntity;
 
 /**
  * @property TestEntity $param {m:1 tests}
- * @property string $string
+ * @property string $string {default ''}
  */
 class OneToMany_Entity extends Entity
 {

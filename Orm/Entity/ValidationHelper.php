@@ -47,7 +47,7 @@ class ValidationHelper
 			else if (!in_array($type, array('string', 'float', 'int', 'bool', 'array', 'object', 'mixed', 'scalar')))
 			{
 				if ($value instanceof $type) return true;
-				else if ($type === 'datetime')
+				else if ($type === 'datetime' AND $value !== '' AND (is_string($value) OR is_int($value) OR is_float($value)))
 				{
 					$_value = self::createDateTime($value);
 				}
@@ -63,7 +63,7 @@ class ValidationHelper
 				if (call_user_func("is_$type", $value)) return true;
 				else
 				{
-					if (in_array($type, array('float', 'int')) AND (is_numeric($value) OR empty($value)))
+					if (in_array($type, array('float', 'int')) AND (is_numeric($value)))
 					{
 						$_value = $value;
 						settype($_value, $type);
@@ -73,7 +73,7 @@ class ValidationHelper
 						$_value = $value;
 						settype($_value, $type);
 					}
-					else if ($type === 'string' AND ($value === NULL OR is_int($value) OR is_float($value) OR (is_object($value) AND method_exists($value, '__toString'))))
+					else if ($type === 'string' AND (is_int($value) OR is_float($value) OR (is_object($value) AND method_exists($value, '__toString'))))
 					{
 						$_value = (string) $value;
 					}
@@ -81,7 +81,7 @@ class ValidationHelper
 					{
 						$_value = $tmp;
 					}
-					else if ($type === 'bool')
+					else if ($type === 'bool' AND in_array($value, array(0, 0.0, '0', 1, 1.0, '1'), true))
 					{
 						$_value = (bool) $value;
 					}

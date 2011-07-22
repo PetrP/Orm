@@ -5,8 +5,8 @@ use Orm\Repository;
 use Orm\ArrayMapper;
 
 /**
- * @property string $string
- * @property DateTime $date
+ * @property string $string {default ''}
+ * @property DateTime $date {default 'now'}
  */
 class TestEntity extends Entity
 {

@@ -4,7 +4,7 @@ use Orm\Repository;
 use Orm\IEntity;
 
 /**
- * @property int $foo
+ * @property int $foo {default 0}
  * @property int $foo2
  * @property int $foo3
  * @property $mixed

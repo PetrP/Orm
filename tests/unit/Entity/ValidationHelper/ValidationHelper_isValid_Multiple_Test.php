@@ -13,7 +13,7 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->type = 'bool|null';
 		$this->t(NULL, true);
 		$this->t(false, true);
-		$this->t('', true, false);
+		$this->t('', false);
 
 		$this->type = 'int|null';
 		$this->t(NULL, true);
@@ -70,7 +70,7 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 	public function testStringInt()
 	{
 		$this->type = 'string|int';
-		$this->t(NULL, true, 0); // wtf
+		$this->t(NULL, false);
 		$this->t(0, true);
 		$this->t('0', true);
 		$this->t('xxx', true);
