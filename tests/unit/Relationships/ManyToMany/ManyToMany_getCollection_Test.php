@@ -19,7 +19,7 @@ class ManyToMany_getCollection_Test extends ManyToMany_Test
 
 	public function testNotHandledParent()
 	{
-		$this->e->generatingRepository->remove($this->e);
+		$this->e->repository->remove($this->e);
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->m2m->_getCollection());
 		$this->assertSame(array(), $this->m2m->_getCollection()->fetchAll());
 	}

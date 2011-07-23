@@ -22,7 +22,7 @@ class ValueEntityFragment_clone_Test extends TestCase
 		$this->assertSame(1, $e->id);
 		$this->assertSame('string', $e->string);
 		$this->assertSame('2011-11-11', $e->date->format('Y-m-d'));
-		$this->assertSame('testentity', $e->generatingRepository->repositoryName);
+		$this->assertSame('testentity', $e->repository->repositoryName);
 		$this->assertSame(false, $e->isChanged());
 
 		$ee = clone $e;
@@ -30,13 +30,13 @@ class ValueEntityFragment_clone_Test extends TestCase
 		$this->assertSame(NULL, isset($ee->id) ? $ee->id : NULL);
 		$this->assertSame('string', $ee->string);
 		$this->assertSame('2011-11-11', $ee->date->format('Y-m-d'));
-		$this->assertSame('testentity', $ee->generatingRepository->repositoryName);
+		$this->assertSame('testentity', $ee->repository->repositoryName);
 		$this->assertSame(true, $ee->isChanged());
 
 		$this->assertSame(1, $e->id);
 		$this->assertSame('string', $e->string);
 		$this->assertSame('2011-11-11', $e->date->format('Y-m-d'));
-		$this->assertSame('testentity', $e->generatingRepository->repositoryName);
+		$this->assertSame('testentity', $e->repository->repositoryName);
 		$this->assertSame(false, $e->isChanged());
 	}
 

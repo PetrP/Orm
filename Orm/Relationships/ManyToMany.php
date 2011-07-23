@@ -205,7 +205,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		{
 			if ($this->parent->getModel(false))
 			{
-				$parentRepository = $this->parent->getGeneratingRepository();
+				$parentRepository = $this->parent->getRepository();
 				$childRepository = $this->getChildRepository();
 				if ($this->mappedByParent)
 				{

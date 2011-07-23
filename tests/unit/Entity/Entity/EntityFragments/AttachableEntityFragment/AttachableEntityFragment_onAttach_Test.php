@@ -18,17 +18,17 @@ class AttachableEntityFragment_onAttach_Test extends TestCase
 	public function testNew()
 	{
 		$e = new TestEntity;
-		$this->assertSame(NULL, $e->getGeneratingRepository(false));
+		$this->assertSame(NULL, $e->getRepository(false));
 		$this->r->attach($e);
-		$this->assertSame($this->r, $e->getGeneratingRepository(false));
+		$this->assertSame($this->r, $e->getRepository(false));
 	}
 
 	public function testAlreadyAttached()
 	{
 		$e = $this->r->getById(1);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 		$this->r->attach($e);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 }

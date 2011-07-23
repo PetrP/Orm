@@ -87,9 +87,9 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		else
 		{
 			$this->values[$name] = NULL; // zabranuje opakovanemu volani default a lazyload, kdyz setter nic nedela
-			if ($this->getGeneratingRepository(false)) // lazy load
+			if ($this->getRepository(false)) // lazy load
 			{
-				if ($lazyLoadParams = $this->getGeneratingRepository()->lazyLoad($this, $name))
+				if ($lazyLoadParams = $this->getRepository()->lazyLoad($this, $name))
 				{
 					foreach ($lazyLoadParams as $n => $v)
 					{

@@ -18,9 +18,9 @@ class AttachableEntityFragment_onPersist_Test extends TestCase
 	public function test()
 	{
 		$e = new TestEntity;
-		$this->assertSame(NULL, $e->getGeneratingRepository(false));
+		$this->assertSame(NULL, $e->getRepository(false));
 		$this->r->persist($e);
-		$this->assertSame($this->r, $e->getGeneratingRepository(false));
+		$this->assertSame($this->r, $e->getRepository(false));
 	}
 
 }

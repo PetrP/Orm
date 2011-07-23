@@ -61,7 +61,7 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * @throws InvalidStateException
 	 * @return IRepository |NULL
 	 */
-	public function getGeneratingRepository($need = true);
+	public function getRepository($need = true);
 
 	/**
 	 * @param bool

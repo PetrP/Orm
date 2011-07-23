@@ -26,7 +26,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testBad()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true);
-		$this->e->generatingRepository->mapper->mmm = new Html;
+		$this->e->repository->mapper->mmm = new Html;
 		$this->setExpectedException('Nette\InvalidStateException', "ManyToMany_Mapper::createManyToManyMapper() must return Orm\\IManyToManyMapper, 'Nette\\Utils\\Html' given");
 		$this->m2m->gm();
 	}

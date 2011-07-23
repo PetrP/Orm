@@ -18,9 +18,9 @@ class Repository_attach_Test extends TestCase
 	public function testNew()
 	{
 		$e = new TestEntity;
-		$this->assertSame(NULL, $e->getGeneratingRepository(false));
+		$this->assertSame(NULL, $e->getRepository(false));
 		$this->assertSame($e, $this->r->attach($e));
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testBad1()
@@ -39,9 +39,9 @@ class Repository_attach_Test extends TestCase
 	public function testAlreadyAttached()
 	{
 		$e = $this->r->getById(1);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 		$this->assertSame($e, $this->r->attach($e));
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 }

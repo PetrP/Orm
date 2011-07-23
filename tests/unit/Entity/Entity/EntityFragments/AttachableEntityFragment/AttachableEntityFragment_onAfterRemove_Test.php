@@ -18,9 +18,9 @@ class AttachableEntityFragment_onAfterRemove_Test extends TestCase
 	public function test()
 	{
 		$e = $this->r->getById(1);
-		$this->assertSame($this->r, $e->getGeneratingRepository(false));
+		$this->assertSame($this->r, $e->getRepository(false));
 		$this->r->remove($e);
-		$this->assertSame(NULL, $e->getGeneratingRepository(false));
+		$this->assertSame(NULL, $e->getRepository(false));
 	}
 
 }

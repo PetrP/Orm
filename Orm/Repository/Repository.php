@@ -177,7 +177,7 @@ abstract class Repository extends Object implements IRepository
 	public function attach(IEntity $entity)
 	{
 		$this->checkEntity(get_class($entity), $entity);
-		if (!$entity->getGeneratingRepository(false))
+		if (!$entity->getRepository(false))
 		{
 			$entity->___event($entity, 'attach', $this);
 		}
@@ -529,7 +529,7 @@ abstract class Repository extends Object implements IRepository
 			}
 			return false;
 		}
-		if ($entity AND $r = $entity->getGeneratingRepository(false) AND $r !== $this)
+		if ($entity AND $r = $entity->getRepository(false) AND $r !== $this)
 		{
 			if ($throw)
 			{

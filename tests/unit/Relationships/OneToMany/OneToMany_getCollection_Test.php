@@ -33,7 +33,7 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 
 	public function testNotHandledParent()
 	{
-		$this->e->generatingRepository->remove($this->e);
+		$this->e->repository->remove($this->e);
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
 		$this->assertSame(array(), $this->o2m->_getCollection()->fetchAll());
 	}

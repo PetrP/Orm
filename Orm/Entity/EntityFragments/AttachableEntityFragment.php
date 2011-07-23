@@ -8,6 +8,7 @@
 namespace Orm;
 
 use Nette\InvalidStateException;
+use Nette\DeprecatedException;
 
 /**
  * Uchovava stav o repository kde je entita attachnuta.
@@ -62,7 +63,7 @@ class AttachableEntityFragment extends EventEntityFragment
 	 * @throws InvalidStateException
 	 * @return IRepository |NULL
 	 */
-	final public function getGeneratingRepository($need = true) // todo generating je blbost, lepsi nazev by bylo neco jako getOwningReppository nebo jen getRepository
+	final public function getRepository($need = true)
 	{
 		if (!$this->repository AND $need)
 		{
@@ -79,17 +80,20 @@ class AttachableEntityFragment extends EventEntityFragment
 	{
 		if (!isset($this->model))
 		{
-			if ($need === NULL AND !$this->getGeneratingRepository(false)) // bc
+			if ($need === NULL AND !$this->getRepository(false)) // bc
 			{
 				// trigger_error('Entity::getModel(NULL) is deprecated do not use it.', E_USER_DEPRECATED);
 				return RepositoryContainer::get(NULL); // todo di
 			}
-			if ($r = $this->getGeneratingRepository($need))
+			if ($r = $this->getRepository($need))
 			{
 				$this->model = $r->getModel();
 			}
 		}
 		return $this->model;
 	}
+
+	/** @deprecated */
+	final public function getGeneratingRepository($need = true) { throw new DeprecatedException('Orm\Entity::getGeneratingRepository() is deprecated; use Orm\Entity::getRepository() instead'); }
 
 }

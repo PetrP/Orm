@@ -20,7 +20,7 @@ class ManyToMany_getInjectedValue_Test extends ManyToMany_Test
 		$m->parentParam = 'foo';
 		$m->childParam = 'bar';
 		$m->table = 'foobar';
-		$this->e->generatingRepository->mapper->mmm = $m;
+		$this->e->repository->mapper->mmm = $m;
 		$this->assertNull($this->m2m->getInjectedValue());
 	}
 

@@ -17,7 +17,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 	{
 		$e = new OneToMany_Entity;
 		$this->assertSame($e, $this->tt($e));
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testBad()
@@ -30,7 +30,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 	{
 		$e = $this->r->getById(11);
 		$this->assertSame($e, $this->tt(11));
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testIdNotFound()
@@ -45,7 +45,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testArrayWithId()
@@ -54,7 +54,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$ee = $this->tt(array('id' => 11, 'string' => 'xyz'));
 		$this->assertSame($e, $ee);
 		$this->assertSame('xyz', $e->string);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testArrayWithIdNotFound()
@@ -63,7 +63,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testTraversable()
@@ -72,7 +72,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$this->assertInstanceOf('OneToMany_Entity', $e);
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
-		$this->assertSame($this->r, $e->getGeneratingRepository());
+		$this->assertSame($this->r, $e->getRepository());
 	}
 
 	public function testWipeGet()
