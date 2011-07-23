@@ -96,7 +96,7 @@ class AnnotationMetaData extends Object
 		{
 			if ($class === 'Nette\Object') break;
 			$classes[] = $class;
-			if ($class === 'Orm\Entity') break; // todo
+			if ($class === 'Orm\Entity') break; // todo neumoznuje pouzit vlastni IEntity
 			$class = get_parent_class($class);
 		}
 		return array_reverse($classes);
