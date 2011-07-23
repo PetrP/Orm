@@ -10,6 +10,7 @@ namespace Orm;
 use InvalidArgumentException;
 use Nette\MemberAccessException;
 use Nette\UnexpectedValueException;
+use Nette\DeprecatedException;
 use Exception;
 use ReflectionMethod;
 
@@ -164,17 +165,29 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
-	 * @param NULL|true
 	 * @return bool
 	 * @see self::$changed
+	 * @see self::markAsChanged()
 	 */
-	final public function isChanged($set = NULL)
+	final public function isChanged()
 	{
-		if ($set === true)
+		if (func_num_args() > 0 AND func_get_arg(0) === true)
 		{
-			$this->changed = true;
+			throw new DeprecatedException('Orm\Entity::isChanged(TRUE) is deprecated; use Orm\Repository::markAsChanged() instead');
 		}
 		return $this->__isset('id') ? $this->changed : true;
+	}
+
+	/**
+	 * Nastavit, ze tato entita byla zmenena.
+	 * @return IEntity $this
+	 * @see self::$changed
+	 * @see self::isChanged()
+	 */
+	final public function markAsChanged()
+	{
+		$this->changed = true;
+		return $this;
 	}
 
 	/** Vytvorena nova entita */

@@ -49,7 +49,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	 */
 	public function add(IEntity $parent, array $ids)
 	{
-		$parent->isChanged(true);
+		$parent->markAsChanged();
 		$this->value = $this->value + $ids;
 	}
 
@@ -59,7 +59,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	 */
 	public function remove(IEntity $parent, array $ids)
 	{
-		$parent->isChanged(true);
+		$parent->markAsChanged();
 		$this->value = array_diff_key($this->value, $ids);
 	}
 

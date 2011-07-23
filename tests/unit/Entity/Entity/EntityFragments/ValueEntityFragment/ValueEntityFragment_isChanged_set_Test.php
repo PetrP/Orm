@@ -19,6 +19,7 @@ class ValueEntityFragment_isChanged_set_Test extends TestCase
 	public function testNoChange1()
 	{
 		$this->assertSame(true, $this->e1->isChanged());
+		// deprecated
 		$this->assertSame(true, $this->e1->isChanged(NULL));
 		$this->assertSame(true, $this->e1->isChanged(false));
 		$this->assertSame(true, $this->e1->isChanged('xyz'));
@@ -29,6 +30,7 @@ class ValueEntityFragment_isChanged_set_Test extends TestCase
 	public function testNoChange2()
 	{
 		$this->assertSame(false, $this->e2->isChanged());
+		// deprecated
 		$this->assertSame(false, $this->e2->isChanged(NULL));
 		$this->assertSame(false, $this->e2->isChanged(false));
 		$this->assertSame(false, $this->e2->isChanged('xyz'));
@@ -39,15 +41,15 @@ class ValueEntityFragment_isChanged_set_Test extends TestCase
 	public function testSet1()
 	{
 		$this->assertSame(true, $this->e1->isChanged());
-		$this->assertSame(true, $this->e1->isChanged(true));
-		$this->assertSame(true, $this->e1->isChanged());
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\Entity::isChanged(TRUE) is deprecated; use Orm\Repository::markAsChanged() instead');
+		$this->e1->isChanged(true);
 	}
 
 	public function testSet2()
 	{
 		$this->assertSame(false, $this->e2->isChanged());
-		$this->assertSame(true, $this->e2->isChanged(true));
-		$this->assertSame(true, $this->e2->isChanged());
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\Entity::isChanged(TRUE) is deprecated; use Orm\Repository::markAsChanged() instead');
+		$this->e2->isChanged(true);
 	}
 
 }

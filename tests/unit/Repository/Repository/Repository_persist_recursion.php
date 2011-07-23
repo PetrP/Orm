@@ -31,7 +31,7 @@ class Repository_persist_recursion2_Entity extends TestEntity
 	protected function onAfterPersist(IRepository $repository)
 	{
 		parent::onAfterPersist($repository);
-		$this->isChanged(true);
+		$this->markAsChanged();
 	}
 }
 
