@@ -2,7 +2,7 @@
 
 use Orm\Repository;
 
-class Repository_isEntity_Repository extends Repository
+class Repository_isAttachableEntity_Repository extends Repository
 {
 	public function getEntityClassName(array $data = NULL)
 	{

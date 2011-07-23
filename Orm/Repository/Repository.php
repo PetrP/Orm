@@ -93,7 +93,7 @@ abstract class Repository extends Object implements IRepository
 	/** @var PerformanceHelper */
 	private $performanceHelper;
 
-	/** @var array cache {@see self::checkEntity() */
+	/** @var array cache {@see self::checkAttachableEntity() */
 	private $allowedEntities;
 
 	/**
@@ -176,7 +176,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	public function attach(IEntity $entity)
 	{
-		$this->checkEntity(get_class($entity), $entity);
+		$this->checkAttachableEntity(get_class($entity), $entity);
 		if (!$entity->getRepository(false))
 		{
 			$entity->___event($entity, 'attach', $this);
@@ -277,7 +277,7 @@ abstract class Repository extends Object implements IRepository
 	final public function remove($entity)
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
-		$this->checkEntity(get_class($entity), $entity);
+		$this->checkAttachableEntity(get_class($entity), $entity);
 
 		$entity->___event($entity, 'beforeRemove', $this);
 		if (isset($entity->id))
@@ -448,14 +448,14 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
-	 * Je mozne tuto entitu ulozit do tohoto repository?
+	 * Je mozne tuto entitu pripojit do tohoto repository?
 	 * @param IEntity
 	 * @return bool
 	 * @see self::getEntityClassName()
 	 */
-	final public function isEntity(IEntity $entity) // todo rename
+	final public function isAttachableEntity(IEntity $entity)
 	{
-		return $this->checkEntity(get_class($entity), $entity, false);
+		return $this->checkAttachableEntity(get_class($entity), $entity, false);
 	}
 
 	/**
@@ -485,7 +485,7 @@ abstract class Repository extends Object implements IRepository
 			}
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
-			$this->checkEntity($entityName);
+			$this->checkAttachableEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidStateException();
 			$entity->___event($entity, 'load', $this, $data);
@@ -499,10 +499,10 @@ abstract class Repository extends Object implements IRepository
 	 * @param string
 	 * @return void
 	 * @throws UnexpectedValueException
-	 * @see self::isEntity()
+	 * @see self::isAttachableEntity()
 	 * @see self::getEntityClassName()
 	 */
-	final private function checkEntity($entityName, IEntity $entity = NULL, $throw = true)
+	final private function checkAttachableEntity($entityName, IEntity $entity = NULL, $throw = true)
 	{
 		if (!isset($this->allowedEntities))
 		{
@@ -563,5 +563,7 @@ abstract class Repository extends Object implements IRepository
 
 	/** @deprecated */
 	final public function createEntity($data) { throw new DeprecatedException('Orm\Repository::createEntity() is deprecated; use Orm\Repository::hydrateEntity() instead'); }
+	/** @deprecated */
+	final public function isEntity(IEntity $entity) { throw new DeprecatedException('Orm\Repository::isEntity() is deprecated; use Orm\Repository::isAttachableEntity() instead'); }
 
 }

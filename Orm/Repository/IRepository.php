@@ -213,7 +213,7 @@ interface IRepository
 	 * @return bool
 	 * @see self::getEntityClassName()
 	 */
-	public function isEntity(IEntity $entity);
+	public function isAttachableEntity(IEntity $entity);
 
 	/**
 	 * Vytvori entity, nebo vrati tuto existujici.

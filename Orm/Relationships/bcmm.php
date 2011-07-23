@@ -31,13 +31,13 @@ abstract class OldManyToMany extends ManyToMany
 		$firstRepository = $this->getFirstRepository();
 		$secondRepository = $this->getSecondRepository();
 
-		if ($firstRepository->isEntity($parent))
+		if ($firstRepository->isAttachableEntity($parent))
 		{
 			$this->parentRepository = $firstRepository;
 			$this->childRepository = $secondRepository;
 			$mappedByParent = true;
 		}
-		else if ($this->getSecondRepository()->isEntity($parent))
+		else if ($this->getSecondRepository()->isAttachableEntity($parent))
 		{
 			$this->parentRepository = $secondRepository;
 			$this->childRepository = $firstRepository;

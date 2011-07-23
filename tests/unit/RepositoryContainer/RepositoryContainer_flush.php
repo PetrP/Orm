@@ -22,7 +22,7 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	public function getModel() {}
 	public function getEntityClassName(array $data = NULL) {}
 	public function lazyLoad(IEntity $entity, $param) {}
-	public function isEntity(IEntity $entity) {}
+	public function isAttachableEntity(IEntity $entity) {}
 	public function hydrateEntity($data) {}
 }
 
