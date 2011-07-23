@@ -12,6 +12,7 @@ require_once __DIR__ . '/InvalidServiceFactoryException.php';
 require_once __DIR__ . '/ServiceAlreadyExistsException.php';
 require_once __DIR__ . '/ServiceNotFoundException.php';
 require_once __DIR__ . '/ServiceNotInstanceOfException.php';
+require_once __DIR__ . '/FrozenContainerException.php';
 
 /** DI Container */
 class ServiceContainer extends Object implements IServiceContainer
@@ -19,6 +20,9 @@ class ServiceContainer extends Object implements IServiceContainer
 
 	/** @var array of name => Object */
 	private $services = array();
+
+	/** @var bool */
+	private $frozen = false;
 
 	/**
 	 * <pre>
@@ -31,9 +35,11 @@ class ServiceContainer extends Object implements IServiceContainer
 	 * @param Callback|Closure|string|Object class name, callback or object
 	 * @return IServiceContainer
 	 * @throws ServiceAlreadyExistsException
+	 * @throws FrozenContainerException
 	 */
 	public function addService($name, $service)
 	{
+		$this->updating();
 		if (isset($this->services[$name]))
 		{
 			throw new ServiceAlreadyExistsException("Service '$name' already exists");
@@ -99,9 +105,11 @@ class ServiceContainer extends Object implements IServiceContainer
 	 * @param string
 	 * @return Object
 	 * @throws ServiceNotFoundException
+	 * @throws FrozenContainerException
 	 */
 	public function removeService($name)
 	{
+		$this->updating();
 		$this->hasService($name, true);
 		unset($this->services[$name]);
 		return $this;
@@ -124,5 +132,27 @@ class ServiceContainer extends Object implements IServiceContainer
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Makes the object unmodifiable.
+	 * @return ServiceNotFoundException
+	 */
+	public function freeze()
+	{
+		$this->frozen = true;
+		return $this;
+	}
+
+	/**
+	 * @return void
+	 * @throws FrozenContainerException
+	 */
+	protected function updating()
+	{
+		if ($this->frozen)
+		{
+			throw new FrozenContainerException("Cannot modify a frozen container.");
+		}
 	}
 }

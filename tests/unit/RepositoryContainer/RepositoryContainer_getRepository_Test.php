@@ -52,4 +52,11 @@ class RepositoryContainer_getRepository_Test extends TestCase
 		$this->assertSame($this->m->getRepository('rcn'), $this->m->rcn);
 		$this->assertSame($this->m->getRepository('rcn'), $this->m->getRepository('RepositoryContainer_namespace\RepositoryContainer_namespace'));
 	}
+
+	public function testFreezeContext()
+	{
+		$this->assertAttributeSame(false, 'frozen', $this->m->getContext());
+		$this->m->tests;
+		$this->assertAttributeSame(true, 'frozen', $this->m->getContext());
+	}
 }

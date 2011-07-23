@@ -140,6 +140,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		}
 		if (!isset($this->repositories[$class]))
 		{
+			$this->container->freeze();
 			$this->repositories[$class] = new $class($this);
 		}
 		return $this->repositories[$class];

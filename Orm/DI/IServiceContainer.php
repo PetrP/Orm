@@ -45,4 +45,10 @@ interface IServiceContainer
 	 */
 	public function hasService($name, $throw = false);
 
+	/**
+	 * Makes the object unmodifiable.
+	 * @return ServiceNotFoundException
+	 */
+	public function freeze();
+
 }
