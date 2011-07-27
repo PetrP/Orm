@@ -204,7 +204,6 @@ class DibiMapper extends Mapper
 		$h->connection = $this->getConnection();
 		$h->conventional = $this->getConventional();
 		$h->table = $this->getTableName();
-		$h->mapper = $this;
 		return $h;
 	}
 

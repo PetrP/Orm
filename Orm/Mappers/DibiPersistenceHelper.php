@@ -11,6 +11,7 @@ use Nette\Object;
 use ArrayObject;
 use DateTime;
 use Nette\InvalidStateException;
+use Nette\DeprecatedException;
 use DibiException;
 
 // todo refactor constructor
@@ -25,9 +26,6 @@ class DibiPersistenceHelper extends Object
 
 	/** @var IConventional */
 	public $conventional;
-
-	/** @var DibiMapper */
-	public $mapper;
 
 	/** @var array|NULL */
 	public $witchParams = NULL;
@@ -128,5 +126,10 @@ class DibiPersistenceHelper extends Object
 
 		return $id;
 	}
+
+	/** @deprecated */
+	final public function getMapper() { throw new DeprecatedException(__CLASS__ . '::$mapper is depreacted'); }
+	/** @deprecated */
+	final public function setMapper() { throw new DeprecatedException(__CLASS__ . '::$mapper is depreacted'); }
 
 }

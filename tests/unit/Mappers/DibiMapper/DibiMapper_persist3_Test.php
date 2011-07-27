@@ -17,7 +17,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->h->table = 'table';
 		$this->h->connection = $this->m->connection;
 		$this->h->conventional = $this->m->conventional;
-		$this->h->mapper = $this->m;
 		$this->e = new DibiMapper_persist_Entity;
 		$this->e->mixed = 1;
 		$this->e->mixed2 = 2;
