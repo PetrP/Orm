@@ -5,7 +5,7 @@ use Nette\Utils\Html;
 
 /**
  * @covers Orm\DibiMapper::persist
- * @covers Orm\DibiPersistenceHelper
+ * @covers Orm\DibiPersistenceHelper::persist
  */
 class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 {

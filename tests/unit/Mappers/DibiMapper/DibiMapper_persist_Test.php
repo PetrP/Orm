@@ -4,7 +4,7 @@ use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\DibiMapper::persist
- * @covers Orm\DibiPersistenceHelper
+ * @covers Orm\DibiPersistenceHelper::persist
  */
 class DibiMapper_persist_Test extends DibiMapper_Connected_Test
 {

@@ -3,7 +3,7 @@
 use Orm\DibiPersistenceHelper;
 
 /**
- * @covers Orm\DibiPersistenceHelper
+ * @covers Orm\DibiPersistenceHelper::persist
  */
 class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 {
@@ -73,6 +73,20 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3 WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->h->witchParams = array('id');
+		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
+		$r = $this->h->persist($this->e);
+		$this->assertSame(3, $r);
+	}
+
+	public function testWitchParamsIdNot()
+	{
+		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
+		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->d->addExpected('fetch', array('id' => 3), true);
+		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3 WHERE `id` = '3'");
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->h->witchParams = array();
 		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
