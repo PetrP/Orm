@@ -22,7 +22,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testNormal()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed`, `mixed2`, `mixed3`) VALUES (1, 2, 3)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
@@ -32,7 +31,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParams()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed`, `mixed3`) VALUES (1, 3)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
@@ -43,7 +41,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParamsNot()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed2`) VALUES (2)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
@@ -54,7 +51,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParamsAndWitchParamsNot()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed2`) VALUES (2)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
@@ -66,7 +62,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParamsId()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => 3), true);
@@ -80,7 +75,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParamsIdNot()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => 3), true);
@@ -94,7 +88,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testWitchParamsNotId()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => 3), true);
@@ -108,7 +101,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testId()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`id`, `mixed`, `mixed2`, `mixed3`) VALUES (666, 1, 2, 3)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', NULL, NULL);
@@ -118,7 +110,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testIdAndGetInsertIdFail()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed`, `mixed2`, `mixed3`) VALUES (1, 2, 3)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', NULL, NULL);
@@ -128,7 +119,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testNotInDb()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '666'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', NULL, true);
@@ -142,7 +132,6 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 
 	public function testNotInDbAndGetInsertIdFail()
 	{
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '666'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', NULL, true);

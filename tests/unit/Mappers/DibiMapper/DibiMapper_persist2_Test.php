@@ -20,8 +20,7 @@ class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 	private function t($v)
 	{
 		$this->d->addExpected('begin', NULL, NULL);
-		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed')), 'dibimapper_connected_dibi');
-		$this->d->addExpected('query', true, "INSERT INTO `dibimapper_connected_dibi` (`mixed`) VALUES ($v)");
+		$this->d->addExpected('query', true, "INSERT INTO `dibimapper_connected_dibi` (`mixed`, `mixed2`, `mixed3`) VALUES ($v, NULL, NULL)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
 		$this->m->persist($this->e);

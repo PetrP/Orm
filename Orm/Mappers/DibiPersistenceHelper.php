@@ -78,30 +78,6 @@ class DibiPersistenceHelper extends Object
 	{
 		$values = $this->toArray($entity, $id);
 
-		if (method_exists($this->connection->driver, 'getReflector'))
-		{
-			$columns = $this->connection->driver->getReflector()->getColumns($this->table);
-		}
-		else
-		{
-			// @codeCoverageIgnoreStart
-			$columns = $this->connection->driver->getColumns($this->table);
-		}	// @codeCoverageIgnoreEnd
-		// todo inline cache
-
-		$tmp = array();
-		foreach ($columns as $column)
-		{
-			if (array_key_exists($column['name'], $values))
-			{
-				$tmp[$column['name']] = $values[$column['name']];
-			}
-			// todo else nejaky zpusob jak rict o chybe, protoze nekdy to chyba byt muze, jindy ale ne
-		}
-		// todo dalsi ktere nejsou v tabulce muze byt taky chyba (ale nemusi)
-		// todo vytvorit moznost zkontrolovat db, kde se budou kontrolovat jestli nejaky radek nechybi, nebo naopak nepribyva, jestli nekte nechyby NULL (nebo naopak), mozna i zkontrolovat default hodnoy, a typy
-		$values = $tmp;
-
 		if ($this->hasEntry($entity))
 		{
 			$id = $entity->id;
