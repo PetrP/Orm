@@ -13,10 +13,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 	protected function setUp()
 	{
 		parent::setUp();
-		$this->h = new DibiPersistenceHelper;
-		$this->h->table = 'table';
-		$this->h->connection = $this->m->connection;
-		$this->h->conventional = $this->m->conventional;
+		$this->h = new DibiPersistenceHelper($this->m->connection, $this->m->conventional, 'table');
 		$this->e = new DibiMapper_persist_Entity;
 		$this->e->mixed = 1;
 		$this->e->mixed2 = 2;

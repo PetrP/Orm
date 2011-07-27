@@ -13,25 +13,37 @@ use DateTime;
 use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use DibiException;
+use DibiConnection;
 
-// todo refactor constructor
 class DibiPersistenceHelper extends Object
 {
 
 	/** @var string */
 	public $table;
 
-	/** @var DibiConnection */
-	public $connection;
-
-	/** @var IConventional */
-	public $conventional;
 
 	/** @var array|NULL */
 	public $witchParams = NULL;
 
 	/** @var array|NULL */
 	public $witchParamsNot = NULL;
+
+	/** @var DibiConnection */
+	private $connection;
+
+	/** @var IConventional */
+	private $conventional;
+
+	/**
+	 * @param DibiConnection
+	 * @param IConventional
+	 */
+	public function __construct(DibiConnection $connection, IConventional $conventional, $table)
+	{
+		$this->connection = $connection;
+		$this->conventional = $conventional;
+		$this->table = $table;
+	}
 
 	/**
 	 * @param IEntity
@@ -127,6 +139,22 @@ class DibiPersistenceHelper extends Object
 		return $id;
 	}
 
+	/** @return DibiConnection */
+	public function getConnection()
+	{
+		return $this->connection;
+	}
+
+	/** @return IConventional */
+	public function getConventional()
+	{
+		return $this->conventional;
+	}
+
+	/** @deprecated */
+	final public function setConnection() { throw new DeprecatedException(__CLASS__ . '::$connection setter is depreacted; use constructor instead'); }
+	/** @deprecated */
+	final public function setConventional() { throw new DeprecatedException(__CLASS__ . '::$conventional setter is depreacted; use constructor instead'); }
 	/** @deprecated */
 	final public function getMapper() { throw new DeprecatedException(__CLASS__ . '::$mapper is depreacted'); }
 	/** @deprecated */
