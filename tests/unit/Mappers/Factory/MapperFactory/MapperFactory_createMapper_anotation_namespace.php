@@ -115,3 +115,19 @@ abstract class Mfcmans_ParantHasAbstractDefault_parent_Mapper extends TestsMappe
 {}
 class Mfcmans_ParantHasAbstractDefault_Repository extends Mfcmans_ParantHasAbstractDefault_parent_Repository
 {}
+
+/**
+ * @mapper false
+ */
+class Mfcmans_HasDefaultButFalse_Repository extends Repository
+{}
+class Mfcmans_HasDefaultButFalse_Mapper extends TestsMapper
+{}
+
+/**
+ * @mapper false
+ */
+class Mfcmans_HasDefaultButFalseJumpToParent_Repository extends Mfcmans_InAnotation_Repository
+{}
+class Mfcmans_HasDefaultButFalseJumpToParent_Mapper extends TestsMapper
+{}

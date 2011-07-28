@@ -112,3 +112,19 @@ abstract class MapperFactory_createMapper_anotation_ParantHasAbstractDefault_par
 {}
 class MapperFactory_createMapper_anotation_ParantHasAbstractDefault_Repository extends MapperFactory_createMapper_anotation_ParantHasAbstractDefault_parent_Repository
 {}
+
+/**
+ * @mapper false
+ */
+class MapperFactory_createMapper_anotation_HasDefaultButFalse_Repository extends Repository
+{}
+class MapperFactory_createMapper_anotation_HasDefaultButFalse_Mapper extends TestsMapper
+{}
+
+/**
+ * @mapper false
+ */
+class MapperFactory_createMapper_anotation_HasDefaultButFalseJumpToParent_Repository extends MapperFactory_createMapper_anotation_InAnotation_Repository
+{}
+class MapperFactory_createMapper_anotation_HasDefaultButFalseJumpToParent_Mapper extends TestsMapper
+{}

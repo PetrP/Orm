@@ -103,4 +103,15 @@ class MapperFactory_createMapper_anotation_namaspace_Test extends TestCase
 		$this->t('ParantHasAbstractDefault', '?');
 	}
 
+	public function testHasDefaultButFalse()
+	{
+		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'MapperFactory_createMapper_anotation_namespace\Mfcmans_HasDefaultButFalse_Repository::@mapper no class found');
+		$this->t('HasDefaultButFalse', '?');
+	}
+
+	public function testHasDefaultButFalseJumpToParent()
+	{
+		$this->t('HasDefaultButFalseJumpToParent', 1);
+	}
+
 }

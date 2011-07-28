@@ -179,24 +179,31 @@ class AnnotationClassParser extends Object
 				throw new AnnotationClassParserException('Cannot redeclare ' . $reflection->getName() . '::@' . $r->annotation);
 			}
 			$class = $annotation[$r->annotation][0];
-			if (!is_string($class))
+			if ($class === false)
 			{
-				$tmp = gettype($class);
-				throw new AnnotationClassParserException($reflection->getName() . "::@{$r->annotation} expected class name, $tmp given");
+				$defaultClass = NULL;
 			}
-			if (PHP_VERSION_ID >= 50300 AND ($ns = $reflection->getNamespaceName()) !== '' AND class_exists($ns . '\\' . $class))
+			else
 			{
-				$class = $ns . '\\' . $class;
+				if (!is_string($class))
+				{
+					$tmp = gettype($class);
+					throw new AnnotationClassParserException($reflection->getName() . "::@{$r->annotation} expected class name, $tmp given");
+				}
+				if (PHP_VERSION_ID >= 50300 AND ($ns = $reflection->getNamespaceName()) !== '' AND class_exists($ns . '\\' . $class))
+				{
+					$class = $ns . '\\' . $class;
+				}
+				else if (!class_exists($class))
+				{
+					throw new AnnotationClassParserException($reflection->getName() . "::@{$r->annotation} class '$class' not exists");
+				}
+				if ($defaultClass AND strcasecmp($class, $defaultClass) !== 0)
+				{
+					throw new AnnotationClassParserMorePossibleClassesException('Exists annotation ' . $reflection->getName() . '::@' . $r->annotation . " and fallback '$defaultClass'");
+				}
+				return $class;
 			}
-			else if (!class_exists($class))
-			{
-				throw new AnnotationClassParserException($reflection->getName() . "::@{$r->annotation} class '$class' not exists");
-			}
-			if ($defaultClass AND strcasecmp($class, $defaultClass) !== 0)
-			{
-				throw new AnnotationClassParserMorePossibleClassesException('Exists annotation ' . $reflection->getName() . '::@' . $r->annotation . " and fallback '$defaultClass'");
-			}
-			return $class;
 		}
 		if ($defaultClass)
 		{

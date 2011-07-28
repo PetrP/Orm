@@ -222,4 +222,24 @@ class AnnotationClassParser_get_Test extends TestCase
 		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', "AnnotationClassParser_get_ArrayObject::@test no class found");
 		$this->p->get('test', new AnnotationClassParser_get_ArrayObject);
 	}
+
+	public function testHasDefaultButFalse()
+	{
+		$this->p->register('test', 'Traversable', function ($class) {
+			return 'ArrayObject';
+		});
+		$this->p->a['ArrayObject'] = array('test' => array(false));
+		$this->setExpectedException('Orm\AnnotationClassParserNoClassFoundException', 'ArrayObject::@test no class found');
+		$this->p->get('test', new ArrayObject);
+	}
+
+	public function testHasDefaultButFalseJumpToParent()
+	{
+		$this->p->register('test', 'Traversable', function ($class) {
+			return $class;
+		});
+		$this->p->a['AnnotationClassParser_get_ArrayObject'] = array('test' => array(false));
+		$this->assertSame('ArrayObject', $this->p->get('test', new AnnotationClassParser_get_ArrayObject));
+	}
+
 }
