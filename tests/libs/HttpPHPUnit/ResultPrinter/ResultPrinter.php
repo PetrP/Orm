@@ -1,12 +1,22 @@
 <?php
 
+namespace HttpPHPUnit;
+
 use Nette\Diagnostics\Debugger as Debug;
 use Nette\Utils\Html;
+use PHPUnit_Util_TestDox_ResultPrinter;
+use PHPUnit_Framework_Test;
+use PHPUnit_Framework_AssertionFailedError;
+use Exception;
+use PHPUnit_Framework_TestCase;
+use PHPUnit_Runner_BaseTestRunner;
+use ReflectionClass;
+use PHPUnit_Util_Test;
 
 /**
  * @author Petr Prochazka
  */
-class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_ResultPrinter
+class ResultPrinter extends PHPUnit_Util_TestDox_ResultPrinter
 {
 	const FAILURE = 'Failure';
 	const ERROR = 'Error';
@@ -34,6 +44,9 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 
 	/** @var array */
 	private $endInfo = array(self::INCOMPLETE => array(), self::SKIPPED => array());
+
+	/** @var bool */
+	private $progressStarted = false;
 
 	public function __construct()
 	{
@@ -95,48 +108,47 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 	/** Vypise chybu */
 	protected function renderError(PHPUnit_Framework_Test $test, Exception $e, $state)
 	{
-		$this->write("<h2>{$state} ");
-		$this->renderInfo($test, $e);
-		$this->write('</h2>');
+		if ($this->failed === 0) {
+			$this->write('<h2>Failures</h2>');
+		}
+
+		$this->write('<div class="' . strtolower($state) . '">');
+		$this->write("<h3><span class=\"state\">{$state}</span> in ");
+		$this->renderInfo($test, $e, false);
+		$this->write('</h3>');
+
 		$message = $e->getMessage();
 		if (!$message) $message = '(no message)';
 		if ($state === self::ERROR) $message = get_class($e) . ': ' . $message;
 		if (strlen($message) > 400 OR substr_count($message, "\n") > 4)
 		{
-			static $id = 0;
-			$id++;
 			$short = strtok(substr($message, 0, 400), "\n");
 			for ($i=3; $i--;) $short .= "\n" . strtok("\n");
 			$this->write(
 				Html::el('p', $short)
-					->id("message-short-$id")
-			);
-			$this->write(
-				Html::el('a', "\xE2\x80\xA6full message\xE2\x80\xA6")
-					->id("message-link-$id")
-					->href('#')
-					->onclick("
-						document.getElementById('message-short-$id').style.display = 'none';
-						document.getElementById('message-full-$id').style.display = 'block';
-						this.style.display = 'none';
-						return false;
-					")
+					->class('message-short')
 			);
 			$this->write(
 				Html::el('p', $message)
-					->id("message-full-$id")
-					->style('display: none; cursor: pointer;')
-					->onclick("
-						this.style.display = 'none';
-						document.getElementById('message-short-$id').style.display = 'block';
-						document.getElementById('message-link-$id').style.display = 'block';
-					")
+					->class('message-full')
+					->style('display: none;')
+			);
+			$this->write(
+				Html::el('a')
+					->class('message-link')
+					->href('#')
+					->add(Html::el('span', 'show'))
+					->add(Html::el('span', 'hide')->style('display: none;'))
+					->add(' full message')
 			);
 		}
 		else
 		{
 			$this->write(Html::el('p', $message));
 		}
+
+		$this->write('</div>');
+
 		if ($this->debug)
 		{
 			Debug::toStringException($e);
@@ -147,14 +159,53 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 	protected function endRun()
 	{
 		parent::endRun();
-		if (!$this->failed)
+		$this->write('<script>Progress.end();</script>');
+
+		$this->write('<div id="summary">');
+
+		$state = 'unknown';
+
+		$count = $this->failed + $this->successful + $this->skipped + $this->incomplete;
+		$f = function ($c, $s = true) use ($count) {
+			if ($c === 1 AND $count === 1) return 'Test ' . ($s ? 'was ' : '');
+			if ($c === 1) return '1 test ' . ($s ? 'was ' : '');
+			return "$c tests " . ($s ? 'were ' : '');
+		};
+
+		if ($this->failed)
 		{
-			$this->write("<h1>OK {$this->successful}</h1>");
+			$state = 'failure';
+			$summary[] = $f($this->failed, false) . 'failed!';
 		}
-		else
+		else if ($this->successful)
 		{
-			$this->write("<h1>FAILURES! {$this->failed}</h1>");
+			$state = 'ok';
+			$summary[] = $f($this->successful) . 'successful.';
 		}
+
+		if ($this->incomplete)
+		{
+			$summary[] = $f($this->incomplete) . 'incomplete.';
+		}
+		if ($this->skipped)
+		{
+			$summary[] = $f($this->skipped) . 'skipped.';
+		}
+
+		if (!$summary)
+		{
+			$state = 'failure';
+			$summary[] = 'No tests';
+		}
+
+		$this->write("<h2>Summary</h2>");
+		$this->write("<p id=\"sentence\" data-state=\"$state\">" . implode(' ', $summary) . '</p>');
+
+		if ($this->failed)
+		{
+			$this->write("<h3>Failed: {$this->failed}</h3>");
+		}
+
 		foreach (array(
 			array(self::INCOMPLETE, $this->incomplete),
 			array(self::SKIPPED, $this->skipped),
@@ -163,17 +214,25 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 			list($state, $count) = $tmp;
 			if ($count)
 			{
-				$this->write("{$state}: {$count}<br><small>");
+				$this->write("<h3>{$state}: {$count}</h3>");
+				$this->write("<div class=\"details\">");
 				foreach ($this->endInfo[$state] as $tmp)
 				{
 					list($test, $e) = $tmp;
 					$this->renderInfo($test, $e);
 					$this->write(" " . htmlspecialchars($e->getMessage()) . "\n");
 				}
-				$this->write("</small><br><br>");
+				$this->write("</div>");
 			}
 		}
-		if ($this->failed) $this->write("Completed: {$this->successful}<br>");
+
+		if ($this->successful)
+		{
+			$this->write("<h3>Completed: {$this->successful}</h3>");
+		}
+
+
+		$this->write('</div>'); // #summary
 	}
 
 	/** Odregistruje Debug aby chyby chytal PHPUnit */
@@ -186,12 +245,19 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 			$this->netteDebugHandler = set_error_handler(create_function('', ''));
 			restore_error_handler(); restore_error_handler();
 		}
+		if (!$this->progressStarted AND $test instanceof PHPUnit_Framework_TestCase AND $tmp = $test->getTestResultObject() AND $tmp = $tmp->topTestSuite())
+		{
+			$this->progressStarted = true;
+			$this->write('<script>Progress.start(' . json_encode($tmp->count()) . ');</script>');
+		}
+		list($class, $method, $path) = $this->getTestInfo($test);
+		$this->write('<script>Progress.add(' . json_encode("$class::$method") . ');</script>');
 	}
 
 	/** Zaregistruje zpet Debug */
 	public function endTest(PHPUnit_Framework_Test $test, $time)
 	{
-		if (Debug::isEnabled())
+		if (Debug::isEnabled() AND $this->netteDebugHandler)
 		{
 			set_error_handler($this->netteDebugHandler);
 		}
@@ -199,7 +265,7 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 		{
 			$this->successful++;
 		}
-		parent::startTest($test, $time);
+		parent::endTest($test, $time);
 	}
 
 	/**
@@ -222,7 +288,8 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 		if ($this->dir AND strncasecmp($path, $this->dir, strlen($this->dir)) === 0)
 		{
 			$dir = substr($path, strlen($this->dir));
-			$filter = strtr(urlencode($dir), array('%5C' => '\\', '%2F' => '/')) . '::' . urlencode($method);
+			$describe = PHPUnit_Util_Test::describe($test, false);
+			$filter = strtr(urlencode($dir), array('%5C' => '\\', '%2F' => '/')) . '::' . urlencode($describe[1]);
 		}
 		return array($class, $method, $path, $filter);
 	}
@@ -230,15 +297,21 @@ class HttpPHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_TestDox_Result
 	/**
 	 * @param PHPUnit_Framework_Test
 	 * @param Exception
+	 * @param bool
 	 */
-	private function renderInfo(PHPUnit_Framework_Test $test, Exception $e)
+	private function renderInfo(PHPUnit_Framework_Test $test, Exception $e, $oneLine = true)
 	{
 		list($class, $method, $path, $filter) = $this->getTestInfo($test);
 		$this->write(Html::el($filter ? 'a' : NULL, "$class :: $method")->href("?test=$filter"));
 		if ($editor = $this->getEditorLink($path, $e, $method))
 		{
-			$editor = Html::el('a', '(open in editor)')->href($editor);
-			$this->write(" <small><small>$editor</small></small>");
+			$editor = Html::el('a', 'open in editor')->href($editor);
+			$this->write(" <small class=\"editor\">$editor</small>");
+		}
+		if ($test instanceof PHPUnit_Framework_TestCase AND $dataSet = ResultPrinterTestCaseHelper::_getDataSetAsString($test))
+		{
+			if (!$oneLine) $this->write('<br>');
+			$this->write('<small><small>' . Html::el(NULL, $dataSet) . '</small></small>');
 		}
 	}
 
