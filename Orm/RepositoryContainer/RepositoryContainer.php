@@ -84,6 +84,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		$this->container->addService('mapperFactory', function (\Orm\IServiceContainer $container) {
 			return new \Orm\MapperFactory($container->getService('annotationClassParser', 'Orm\AnnotationClassParser'));
 		});
+		$this->container->addService('repositoryHelper', 'Orm\RepositoryHelper');
 	}
 
 	/** @return IServiceContainer */

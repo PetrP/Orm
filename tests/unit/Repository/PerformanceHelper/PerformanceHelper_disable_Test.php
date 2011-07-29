@@ -36,7 +36,7 @@ class PerformanceHelper_disable_Test extends TestCase
 
 	public function testConstruct()
 	{
-		$this->assertAttributeSame(NULL, 'repositoryName', $this->ph);
+		$this->assertAttributeSame(NULL, 'repositoryClass', $this->ph);
 		$this->assertAttributeSame(array(), 'access', $this->ph);
 		$this->assertSame(NULL, PerformanceHelper::$toSave);
 		$this->assertAttributeEmpty('toLoad', 'Orm\PerformanceHelper');
@@ -46,7 +46,7 @@ class PerformanceHelper_disable_Test extends TestCase
 	public function testAccess()
 	{
 		$this->ph->access(123);
-		$this->assertAttributeSame(NULL, 'repositoryName', $this->ph);
+		$this->assertAttributeSame(NULL, 'repositoryClass', $this->ph);
 		$this->assertAttributeSame(array(123 => 123), 'access', $this->ph);
 		$this->assertSame(NULL, PerformanceHelper::$toSave);
 		$this->assertAttributeEmpty('toLoad', 'Orm\PerformanceHelper');
@@ -56,7 +56,7 @@ class PerformanceHelper_disable_Test extends TestCase
 	public function testGet()
 	{
 		$this->assertSame(NULL, $this->ph->get());
-		$this->assertAttributeSame(NULL, 'repositoryName', $this->ph);
+		$this->assertAttributeSame(NULL, 'repositoryClass', $this->ph);
 		$this->assertAttributeSame(array(), 'access', $this->ph);
 		$this->assertSame(NULL, PerformanceHelper::$toSave);
 		$this->assertAttributeEmpty('toLoad', 'Orm\PerformanceHelper');

@@ -9,7 +9,7 @@ class ManyToMany_construct_Test extends ManyToMany_Test
 
 	public function testWithRepoName()
 	{
-		$this->m2m = new ManyToMany_ManyToMany($this->e, $this->r->getRepositoryName(), 'param', 'param', true, array(10,11,12,13));
+		$this->m2m = new ManyToMany_ManyToMany($this->e, get_class($this->r), 'param', 'param', true, array(10,11,12,13));
 		$this->t(10,11,12,13);
 	}
 
@@ -35,7 +35,7 @@ class ManyToMany_construct_Test extends ManyToMany_Test
 
 	public function testNoPersistedEntity_repoName()
 	{
-		$this->m2m = new ManyToMany_ManyToMany(new TestEntity, $this->r->getRepositoryName(), 'param', 'param', true);
+		$this->m2m = new ManyToMany_ManyToMany(new TestEntity, get_class($this->r), 'param', 'param', true);
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->m2m->_getCollection());
 		$this->t();
 	}

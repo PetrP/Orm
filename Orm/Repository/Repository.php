@@ -16,6 +16,7 @@ use Exception;
 require_once __DIR__ . '/IRepository.php';
 require_once __DIR__ . '/PerformanceHelper.php';
 require_once __DIR__ . '/../Entity/EntityHelper.php';
+require_once __DIR__ . '/RepositoryHelper.php';
 
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.
@@ -81,9 +82,6 @@ abstract class Repository extends Object implements IRepository
 	/** @var DibiMapper */
 	private $mapper;
 
-	/** @var string */
-	private $repositoryName;
-
 	/** @var SqlConventional */
 	private $conventional;
 
@@ -108,12 +106,6 @@ abstract class Repository extends Object implements IRepository
 	public function __construct(IRepositoryContainer $model)
 	{
 		$this->model = $model;
-		$repositoryName = strtolower(get_class($this));
-		if (substr($repositoryName, -10) === 'repository')
-		{
-			$repositoryName = substr($repositoryName, 0, strlen($repositoryName) - 10);
-		}
-		$this->repositoryName = $repositoryName;
 		$this->performanceHelper = new PerformanceHelper($this);
 	}
 
@@ -337,15 +329,6 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/**
-	 * Nazev repository. Vetsinou lowercase nazev tridy bez sufixu Repository
-	 * @return string
-	 */
-	final public function getRepositoryName()
-	{
-		return $this->repositoryName;
-	}
-
-	/**
 	 * Mapper ktery pouziva tato repository.
 	 * @see self::createMapper()
 	 * @return DibiMapper |IMapper
@@ -411,8 +394,12 @@ abstract class Repository extends Object implements IRepository
 	 */
 	public function getEntityClassName(array $data = NULL)
 	{
-		if (isset($this->entityClassName)) return (string) $this->entityClassName;
-		return rtrim($this->getRepositoryName(), 's');
+		if ($this->entityClassName === NULL)
+		{
+			$helper = $this->getModel()->getContext()->getService('repositoryHelper', 'Orm\RepositoryHelper');
+			$this->entityClassName = rtrim($helper->normalizeRepository($this), 's');
+		}
+		return $this->entityClassName;
 	}
 
 	/**
@@ -565,5 +552,7 @@ abstract class Repository extends Object implements IRepository
 	final public function createEntity($data) { throw new DeprecatedException('Orm\Repository::createEntity() is deprecated; use Orm\Repository::hydrateEntity() instead'); }
 	/** @deprecated */
 	final public function isEntity(IEntity $entity) { throw new DeprecatedException('Orm\Repository::isEntity() is deprecated; use Orm\Repository::isAttachableEntity() instead'); }
+	/** @deprecated */
+	final public function getRepositoryName(){ throw new DeprecatedException('Orm\Repository::getRepositoryName() is deprecated; use get_class($repository) instead'); }
 
 }

@@ -19,7 +19,6 @@ class RepositoryContainer_checkRepositoryClass_Bad3Repository extends Object imp
 	public function remove($entity) {}
 	public function flush($onlyThis = false) {}
 	public function clean($onlyThis = false) {}
-	public function getRepositoryName() {}
 	public function getMapper() {}
 	public function getModel() {}
 	public function getEntityClassName(array $data = NULL) {}

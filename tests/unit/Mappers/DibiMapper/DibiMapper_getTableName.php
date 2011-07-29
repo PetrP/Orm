@@ -16,8 +16,11 @@ class DibiMapper_getTableName_Repository extends Repository
 	protected $entityClassName = 'TestEntity';
 	public function __setRepositoryName($rn)
 	{
-		$r = new ReflectionProperty('Orm\Repository', 'repositoryName');
+		$helper = $this->getModel()->getContext()->getService('repositoryHelper', 'Orm\RepositoryHelper');
+		$r = new ReflectionProperty('Orm\RepositoryHelper', 'normalizeRepositoryCache');
 		setAccessible($r);
-		$r->setValue($this, $rn);
+		$cache = $r->getValue($helper);
+		$cache[get_class($this)] = $rn;
+		$r->setValue($helper, $cache);
 	}
 }

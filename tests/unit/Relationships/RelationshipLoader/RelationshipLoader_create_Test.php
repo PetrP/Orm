@@ -12,7 +12,7 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 	protected function setUp()
 	{
 		parent::setUp();
-		$this->l = new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', $this->r->getRepositoryName(), 'param', get_class($this->e), 'many');
+		$this->l = new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', get_class($this->r), 'param', get_class($this->e), 'many');
 	}
 
 	public function testInjection()
@@ -35,7 +35,7 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 
 	public function testValue()
 	{
-		$this->l = new RelationshipLoader(MetaData::OneToMany, 'OneToMany_OneToMany', $this->r->getRepositoryName(), 'param', get_class($this->e), 'many');
+		$this->l = new RelationshipLoader(MetaData::OneToMany, 'OneToMany_OneToMany', get_class($this->r), 'param', get_class($this->e), 'many');
 		$this->o2m = $this->l->create('OneToMany_OneToMany', $this->e, array(10,11,12,13));
 		$this->t(10,11,12,13);
 	}

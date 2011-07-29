@@ -134,12 +134,6 @@ interface IRepository
 	public function clean($onlyThis = false);
 
 	/**
-	 * Nazev repository. Vetsinou lowercase nazev tridy bez sufixu Repository
-	 * @return string
-	 */
-	public function getRepositoryName();
-
-	/**
 	 * Mapper ktery pouziva tato repository.
 	 * @see self::createMapper()
 	 * @return DibiMapper |IMapper

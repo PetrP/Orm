@@ -29,7 +29,7 @@ class ValueEntityFragment_onPersist_Test extends TestCase
 
 		$this->assertSame(2, $e->id);
 		$this->assertSame('xyz', $e->string);
-		$this->assertSame('testentity', $e->repository->repositoryName);
+		$this->assertSame('TestEntityRepository', get_class($e->repository));
 		$this->assertSame(false, $e->isChanged());
 	}
 

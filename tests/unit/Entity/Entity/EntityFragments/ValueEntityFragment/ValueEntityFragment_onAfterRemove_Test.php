@@ -23,7 +23,7 @@ class ValueEntityFragment_onAfterRemove_Test extends TestCase
 
 		$this->assertSame(1, $e->id);
 		$this->assertSame('string', $e->string);
-		$this->assertSame('testentity', $e->repository->repositoryName);
+		$this->assertSame('TestEntityRepository', get_class($e->repository));
 		$this->assertSame(false, $e->isChanged());
 
 		$this->r->remove($e);

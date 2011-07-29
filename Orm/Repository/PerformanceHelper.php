@@ -28,7 +28,7 @@ class PerformanceHelper extends Object
 	public static $keyCallback = array(__CLASS__, 'getDefaultKey');
 
 	/** @var string */
-	private $repositoryName;
+	private $repositoryClass;
 
 	/** @var array reference na self::$toSave */
 	private $access = array();
@@ -43,7 +43,7 @@ class PerformanceHelper extends Object
 	public function __construct(IRepository $repository)
 	{
 		if (!self::$keyCallback) return;
-		$this->repositoryName = $repository->getRepositoryName();
+		$this->repositoryClass = get_class($repository);
 		if (!isset(self::$toLoad))
 		{
 			$cache = $this->getCache();
@@ -67,8 +67,8 @@ class PerformanceHelper extends Object
 			}, $cache, $key);
 		}
 
-		if (!isset(self::$toSave[$this->repositoryName])) self::$toSave[$this->repositoryName] = array();
-		$this->access = & self::$toSave[$this->repositoryName];
+		if (!isset(self::$toSave[$this->repositoryClass])) self::$toSave[$this->repositoryClass] = array();
+		$this->access = & self::$toSave[$this->repositoryClass];
 	}
 
 	/**
@@ -88,10 +88,10 @@ class PerformanceHelper extends Object
 	public function get()
 	{
 		$tmp = NULL;
-		if (isset(self::$toLoad[$this->repositoryName]))
+		if (isset(self::$toLoad[$this->repositoryClass]))
 		{
-			$tmp = self::$toLoad[$this->repositoryName];
-			self::$toLoad[$this->repositoryName] = NULL;
+			$tmp = self::$toLoad[$this->repositoryClass];
+			self::$toLoad[$this->repositoryClass] = NULL;
 		}
 		return $tmp;
 	}

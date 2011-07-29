@@ -49,9 +49,9 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
-		$this->assertAttributeSame('tests', 'repositoryName', $h);
+		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
-		$this->assertAttributeSame(array('tests' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertAttributeSame(array(), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 
@@ -59,42 +59,42 @@ class PerformanceHelper_Base_Test extends TestCase
 		$h->access(2);
 
 		$this->assertAttributeSame(array(1 => 1, 2 => 2), 'access', $h);
-		$this->assertAttributeSame(array('tests' => array(1 => 1, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 	}
 
 	public function testCache()
 	{
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2);
-		$this->cache['*']['tests'] = array(3 => 3);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2);
+		$this->cache['*']['TestsRepository'] = array(3 => 3);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
-		$this->assertAttributeSame('tests', 'repositoryName', $h);
+		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
-		$this->assertAttributeSame(array('tests' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
-		$this->assertAttributeSame(array('tests' => array(1 => 1, 2 => 2)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(array(1 => 1, 2 => 2), $h->get());
-		$this->assertAttributeSame(array('tests' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 	}
 
 	public function testCacheStar()
 	{
 		$this->cb = NULL;
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2);
-		$this->cache['*']['tests'] = array(3 => 3);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2);
+		$this->cache['*']['TestsRepository'] = array(3 => 3);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('*', $this->cache->lastIndex);
-		$this->assertAttributeSame('tests', 'repositoryName', $h);
+		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(3 => 3), 'access', $h);
-		$this->assertAttributeSame(array('tests' => array(3 => 3)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
-		$this->assertAttributeSame(array('tests' => array(3 => 3)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(array(3 => 3), $h->get());
-		$this->assertAttributeSame(array('tests' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 
 		$h->access(2);
-		$this->assertAttributeSame(array('tests' => array(3 => 3, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
 	}
 
 	/**
@@ -102,7 +102,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	 */
 	public function testGetById_IdNotPerformedNotExist()
 	{
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
@@ -127,7 +127,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	 */
 	public function testGetById_IdNotPerformedExist()
 	{
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 4 => 4, 999 => 999);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
@@ -152,7 +152,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	 */
 	public function testGetById_IdIsPerformedNotExist()
 	{
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
@@ -176,7 +176,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	 */
 	public function testGetById_IdIsPerformedExist()
 	{
-		$this->cache[__CLASS__]['tests'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
+		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
 		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 

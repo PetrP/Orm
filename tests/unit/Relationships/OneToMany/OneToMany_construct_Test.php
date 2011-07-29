@@ -9,7 +9,7 @@ class OneToMany_construct_Test extends OneToMany_Test
 
 	public function testWithRepoName()
 	{
-		$this->o2m = new OneToMany_OneToMany($this->e, $this->r->getRepositoryName(), 'param');
+		$this->o2m = new OneToMany_OneToMany($this->e, get_class($this->r), 'param');
 		$this->t(10,11,12,13);
 	}
 
@@ -43,7 +43,7 @@ class OneToMany_construct_Test extends OneToMany_Test
 
 	public function testNoPersistedEntity_repoName()
 	{
-		$this->o2m = new OneToMany_OneToMany(new TestEntity, $this->r->getRepositoryName(), 'param');
+		$this->o2m = new OneToMany_OneToMany(new TestEntity, get_class($this->r), 'param');
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
 		$this->t();
 	}

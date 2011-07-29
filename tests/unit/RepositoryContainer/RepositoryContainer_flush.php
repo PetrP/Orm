@@ -17,7 +17,6 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	public function persist(IEntity $entity) {}
 	public function remove($entity) {}
 	public function clean($onlyThis = false) {}
-	public function getRepositoryName() {}
 	public function getMapper() {}
 	public function getModel() {}
 	public function getEntityClassName(array $data = NULL) {}
