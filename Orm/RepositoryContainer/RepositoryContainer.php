@@ -21,7 +21,7 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  * Kolekce Repository.
  * Stara se o jejich vytvareni.
  * Je to vstupni bod do modelu z jinych casti aplikace.
-
+ *
  * Na repository se pristupuje jako k property:
  * <pre>
  *
