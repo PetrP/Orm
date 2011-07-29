@@ -130,7 +130,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/** @deprecated */
 	final public function setParams($parentIsFirst)
 	{
-		throw new DeprecatedException;
+		throw new DeprecatedException(get_class($this) . '::setParams() is deprecated; use ' . get_class($this) . '::attach() instead');
 	}
 
 }

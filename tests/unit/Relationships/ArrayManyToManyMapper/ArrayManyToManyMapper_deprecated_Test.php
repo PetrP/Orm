@@ -18,7 +18,7 @@ class ArrayManyToManyMapper_deprecated_Test extends TestCase
 
 	public function testSetParams()
 	{
-		$this->setExpectedException('Nette\DeprecatedException');
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\ArrayManyToManyMapper::setParams() is deprecated; use Orm\ArrayManyToManyMapper::attach() instead');
 		$this->mm->setParams(false);
 	}
 
