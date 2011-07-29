@@ -25,10 +25,22 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 		$this->t('unexists');
 	}
 
+	public function testUnexist2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'unexistsrepository' doesn't exists");
+		$this->t('unexistsRepository');
+	}
+
 	public function testImplement()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_BadRepository' must implement Orm\\IRepository");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad');
+	}
+
+	public function testImplement2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_BadRepository' must implement Orm\\IRepository");
+		$this->t('RepositoryContainer_checkRepositoryClass_BadRepository');
 	}
 
 	public function testAbstract()
@@ -37,10 +49,22 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad2');
 	}
 
+	public function testAbstract2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_Bad2Repository' is abstract.");
+		$this->t('RepositoryContainer_checkRepositoryClass_Bad2Repository');
+	}
+
 	public function testNotInstantiable()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_Bad3Repository' isn't instantiable");
 		$this->t('RepositoryContainer_checkRepositoryClass_Bad3');
+	}
+
+	public function testNotInstantiable2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'RepositoryContainer_checkRepositoryClass_Bad3Repository' isn't instantiable");
+		$this->t('RepositoryContainer_checkRepositoryClass_Bad3Repository');
 	}
 
 	public function testEmpty()
@@ -54,9 +78,20 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 		$this->assertInstanceOf('TestsRepository', $this->t('tests'));
 	}
 
+	public function testOk2()
+	{
+		$this->assertInstanceOf('TestsRepository', $this->t('testsRepository'));
+	}
+
 	public function testIntefrace()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "Repository 'i' doesn't exists");
 		$this->t('i');
+	}
+
+	public function testIntefrace2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'orm\\irepository' doesn't exists");
+		$this->t('Orm\\IRepository');
 	}
 }

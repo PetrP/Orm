@@ -33,6 +33,6 @@ class EntityToArray_ManyToMany extends OldManyToMany
 	}
 	protected function getSecondRepository()
 	{
-		return $this->model->TestEntity;
+		return $this->model->TestEntityRepository;
 	}
 }

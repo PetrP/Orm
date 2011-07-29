@@ -13,7 +13,7 @@ class ValueEntityFragment_markAsChanged_set_Test extends TestCase
 	{
 		$m = new RepositoryContainer;
 		$this->e1 = new TestEntity;
-		$this->e2 = $m->TestEntity->getById(1);
+		$this->e2 = $m->TestEntityRepository->getById(1);
 	}
 
 	public function testSet1()

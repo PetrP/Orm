@@ -124,7 +124,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 
 	/**
 	 * Dej mi instanci repository.
-	 * @var string repositoryName
+	 * @var string repositoryClassName|alias
 	 * @return Repository |IRepository
 	 */
 	public function getRepository($name)
@@ -136,7 +136,16 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		}
 		else
 		{
-			$this->checkRepositoryClass($this->getRepositoryClass($name), $name, true, $originalClass);
+			$old = $this->getRepositoryClass($name, true);
+			if (!class_exists($name) AND class_exists($old))
+			{
+				// bc
+				$this->checkRepositoryClass($old, $name, true, $originalClass);
+			}
+			else
+			{
+				$this->checkRepositoryClass($name, $name, true, $originalClass);
+			}
 			$class = $this->aliases[$name] = $originalClass;
 		}
 		if (!isset($this->repositories[$class]))
@@ -167,15 +176,21 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 
 	/**
 	 * Existuje repository pod timto nazvem?
-	 * @param string repositoryName
+	 * @param string repositoryClassName|alias
 	 * @return bool
 	 */
 	final public function isRepository($name)
 	{
 		$name = strtolower($name);
 		if (isset($this->aliases[$name])) return true;
-		if ($this->checkRepositoryClass($this->getRepositoryClass($name), $name, false, $originClass))
+		if ($this->checkRepositoryClass($name, $name, false, $originClass))
 		{
+			$this->aliases[$name] = $originClass;
+			return true;
+		}
+		if ($this->checkRepositoryClass($this->getRepositoryClass($name, true), $name, false, $originClass))
+		{
+			// bc
 			$this->aliases[$name] = $originClass;
 			return true;
 		}
@@ -185,7 +200,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	/**
 	 * Je tato trida repository?
 	 * @param string repositoryClass
-	 * @param string repositoryName
+	 * @param string repositoryClassName
 	 * @param bool
 	 * @param string origin class name
 	 * @return true or throw exception
@@ -222,12 +237,17 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	}
 
 	/**
+	 * @deprecated proto final; je pro bc, neda se s nim upravit chovani
 	 * repositoryName > repositoryClass
 	 * @param string repositoryName
 	 * @return string repositoryClass
 	 */
-	protected function getRepositoryClass($name)
+	final protected function getRepositoryClass($name)
 	{
+		if (func_num_args() < 2 OR func_get_arg(1) !== true)
+		{
+			throw new DeprecatedException('Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+		}
 		if (!$name) return NULL;
 		$class = $name . 'Repository';
 		$class[0] = strtoupper($class[0]);
@@ -239,7 +259,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * $orm->articles;
 	 * </pre>
 	 * Do not call directly.
-	 * @param string repositoryName
+	 * @param string repositoryClassName|alias
 	 * @return IRepository
 	 */
 	public function & __get($name)

@@ -13,7 +13,7 @@ class AttachableEntityFragment_getModel_Test extends TestCase
 	protected function setUp()
 	{
 		$this->m = new RepositoryContainer;
-		$this->r = $this->m->testentity;
+		$this->r = $this->m->testentityrepository;
 	}
 
 	public function testNotNeed()

@@ -20,11 +20,18 @@ class RepositoryContainer_register_Test extends TestCase
 		$this->m->register('tests', 'TestsRepository');
 	}
 
+	public function testOld2()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', "Repository alias 'testsrepository' is already registered");
+		$this->m->register('TestsRepository', 'TestsRepository');
+	}
+
 	public function testAlias()
 	{
 		$this->m->register('xyz', 'TestsRepository');
 		$this->assertInstanceOf('TestsRepository', $this->m->xyz);
 		$this->assertSame($this->m->tests, $this->m->xyz);
+		$this->assertSame($this->m->TestsRepository, $this->m->xyz);
 	}
 
 	public function testMore()
@@ -56,10 +63,36 @@ class RepositoryContainer_register_Test extends TestCase
 		$this->assertSame($t, $this->m->tests);
 	}
 
+
+	public function testOldBefore3()
+	{
+		$t = $this->m->testsRepository;
+		$this->m->register('xyz', 'TestsRepository');
+		$this->assertSame($this->m->testsRepository, $this->m->xyz);
+		$this->assertSame($t, $this->m->xyz);
+		$this->assertSame($t, $this->m->testsRepository);
+	}
+
+	public function testOldBefore4()
+	{
+		$this->m->register('xyz', 'TestsRepository');
+		$t = $this->m->testsRepository;
+		$this->assertSame($this->m->testsRepository, $this->m->xyz);
+		$this->assertSame($t, $this->m->xyz);
+		$this->assertSame($t, $this->m->testsRepository);
+	}
+
+	
 	public function testOldAfter()
 	{
 		$this->m->register('xyz', 'TestsRepository');
 		$this->assertSame($this->m->tests, $this->m->xyz);
+	}
+
+	public function testOldAfter2()
+	{
+		$this->m->register('xyz', 'TestsRepository');
+		$this->assertSame($this->m->testsRepository, $this->m->xyz);
 	}
 
 	public function testBad()

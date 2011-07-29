@@ -12,7 +12,7 @@ class AttachableEntityFragment_onAttach_Test extends TestCase
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$this->r = $m->testentity;
+		$this->r = $m->testentityrepository;
 	}
 
 	public function testNew()

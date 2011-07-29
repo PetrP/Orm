@@ -13,8 +13,8 @@ class ValueEntityFragment_onAfterRemove_Test extends TestCase
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$this->r = $m->testentity;
-		$this->e = $m->testentity->getById(1);
+		$this->r = $m->testentityrepository;
+		$this->e = $m->testentityrepository->getById(1);
 	}
 
 	public function test()

@@ -16,7 +16,7 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 	{
 		$m = new RepositoryContainer;
 		$this->e = new ValueEntityFragment_getset_Entity;
-		$this->r = $m->TestEntity;
+		$this->r = $m->TestEntityRepository;
 		$this->e->___event($this->e, 'attach', $this->r);
 	}
 

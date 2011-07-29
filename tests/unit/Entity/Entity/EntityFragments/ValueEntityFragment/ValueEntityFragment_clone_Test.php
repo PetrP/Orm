@@ -12,7 +12,7 @@ class ValueEntityFragment_clone_Test extends TestCase
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$this->e = $m->testentity->getById(1);
+		$this->e = $m->testentityrepository->getById(1);
 	}
 
 	public function testBase()

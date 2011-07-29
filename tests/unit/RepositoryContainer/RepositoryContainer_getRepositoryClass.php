@@ -4,8 +4,12 @@ use Orm\RepositoryContainer;
 
 class RepositoryContainer_getRepositoryClass extends RepositoryContainer
 {
-	public function getRepositoryClass($name)
+	public function __getRepositoryClass($name, $deprecated = NULL)
 	{
-		return parent::getRepositoryClass($name);
+		if ($deprecated === NULL)
+		{
+			return parent::getRepositoryClass($name);
+		}
+		return parent::getRepositoryClass($name, $deprecated);
 	}
 }

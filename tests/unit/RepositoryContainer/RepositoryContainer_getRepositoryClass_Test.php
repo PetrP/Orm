@@ -8,7 +8,7 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 	private function t($rn)
 	{
 		$m = new RepositoryContainer_getRepositoryClass;
-		return $m->getRepositoryClass($rn);
+		return $m->__getRepositoryClass($rn, true);
 	}
 
 	public function test()
@@ -23,5 +23,19 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 		$this->assertSame(NULL, $this->t(NULL));
 		$this->assertSame(NULL, $this->t(0));
 		$this->t('');
+	}
+
+	public function testDeprecated1()
+	{
+		$m = new RepositoryContainer_getRepositoryClass;
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+		$m->__getRepositoryClass('xxx');
+	}
+
+	public function testDeprecated2()
+	{
+		$m = new RepositoryContainer_getRepositoryClass;
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+		$m->__getRepositoryClass('xxx', false);
 	}
 }

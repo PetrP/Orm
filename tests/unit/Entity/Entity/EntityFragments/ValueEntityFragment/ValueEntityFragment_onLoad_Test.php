@@ -12,7 +12,7 @@ class ValueEntityFragment_onLoad_Test extends TestCase
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$this->r = $m->TestEntity;
+		$this->r = $m->TestEntityRepository;
 	}
 
 	public function test()
