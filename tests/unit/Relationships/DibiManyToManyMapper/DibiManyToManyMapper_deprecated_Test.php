@@ -21,7 +21,7 @@ class DibiManyToManyMapper_deprecated_Test extends TestCase
 
 	public function testSetParams()
 	{
-		$this->setExpectedException('Nette\DeprecatedException');
+		$this->setExpectedException('Nette\DeprecatedException', 'Orm\DibiManyToManyMapper::setParams() is deprecated; use Orm\DibiManyToManyMapper::attach() instead');
 		$this->mm->setParams(false);
 	}
 
