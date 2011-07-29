@@ -85,8 +85,8 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 
 	public function testIntefrace()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'i' doesn't exists");
-		$this->t('i');
+		$this->setExpectedException('Nette\InvalidStateException', "Repository 'orm\\i' doesn't exists");
+		$this->t('Orm\\I');
 	}
 
 	public function testIntefrace2()
