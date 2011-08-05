@@ -175,6 +175,15 @@ abstract class ArrayMapper extends Mapper
 	}
 
 	/**
+	 * @see self::createConventional()
+	 * @return IConventional
+	 */
+	final public function getConventional()
+	{
+		return parent::getConventional();
+	}
+
+	/**
 	 * Load data from storage
 	 * <pre>
 	 * 	return array(

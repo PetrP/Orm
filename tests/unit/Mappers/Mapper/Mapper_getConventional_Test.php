@@ -31,4 +31,17 @@ class Mapper_getConventional_Test extends TestCase
 		$this->m->getConventional();
 	}
 
+	public function testJustIConventional()
+	{
+		$this->m->c = new Mapper_getConventional_Conventional;
+		$this->assertInstanceOf('Mapper_getConventional_Conventional', $this->m->getConventional());
+	}
+
+	public function testJustIConventionalRequereDatabase()
+	{
+		$this->m->c = new Mapper_getConventional_Conventional;
+		$this->setExpectedException('Nette\InvalidStateException', 'Mapper_getConventional_Mapper::createConventional() must return Orm\IDatabaseConventional');
+		$this->assertInstanceOf('Mapper_getConventional_Conventional', $this->m->getConventional('Orm\IDatabaseConventional'));
+	}
+
 }

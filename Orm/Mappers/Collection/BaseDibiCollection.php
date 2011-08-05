@@ -29,10 +29,10 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	/** @var DibiConnection @see self::getConnection() */
 	private $connection;
 
-	/** @var IConventional @see self::getConnventionalKey() @see self::getConnventional() */
+	/** @var IDatabaseConventional @see self::getConnventionalKey() @see self::getConnventional() */
 	private $conventional;
 
-	/** @var IConventional @see self::getMapper() */
+	/** @var IMapper @see self::getMapper() */
 	private $mapper;
 
 	/** @var array cache */
@@ -310,7 +310,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 		return $this->connection;
 	}
 
-	/** @return IConventional */
+	/** @return IDatabaseConventional */
 	final protected function getConventional()
 	{
 		return $this->conventional;

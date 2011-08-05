@@ -62,7 +62,7 @@ class FindByHelper
 	 * Z $findBy prevede do $where v dibi formatu, $findBy vyprazdni.
 	 * @param BaseDibiCollection
 	 * @param DibiMapper
-	 * @param IConventional
+	 * @param IDatabaseConventional
 	 * @param array reference
 	 * @param array reference
 	 * @param string
@@ -71,7 +71,7 @@ class FindByHelper
 	 * @see DibiCollection::__toString
 	 * @see DibiCollection::join
 	 */
-	public static function dibiProcess(BaseDibiCollection $collection, DibiMapper $mapper, IConventional $conventional, array & $where, array & $findBy, $tableAlias, $prefix = NULL)
+	public static function dibiProcess(BaseDibiCollection $collection, DibiMapper $mapper, IDatabaseConventional $conventional, array & $where, array & $findBy, $tableAlias, $prefix = NULL)
 	{
 		foreach ($findBy as $tmp)
 		foreach ($tmp as $key => $value)

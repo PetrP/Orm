@@ -71,13 +71,19 @@ abstract class Mapper extends Object implements IMapper
 
 	/**
 	 * @see self::createConventional()
+	 * @param string $interface internal
 	 * @return IConventional
 	 */
-	final public function getConventional()
+	public function getConventional()
 	{
 		if (!isset($this->conventional))
 		{
 			$conventional = $this->createConventional();
+			$interface = func_num_args() ? func_get_arg(0) : NULL;
+			if ($interface !== NULL AND !($conventional instanceof $interface))
+			{
+				throw new InvalidStateException(get_class($this) . '::createConventional() must return ' . $interface);
+			}
 			if (!($conventional instanceof IConventional))
 			{
 				throw new InvalidStateException(get_class($this) . '::createConventional() must return Orm\IConventional');

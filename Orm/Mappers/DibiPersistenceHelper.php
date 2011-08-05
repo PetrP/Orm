@@ -55,14 +55,14 @@ class DibiPersistenceHelper extends Object
 	/** @var DibiConnection */
 	private $connection;
 
-	/** @var IConventional */
+	/** @var IDatabaseConventional */
 	private $conventional;
 
 	/**
 	 * @param DibiConnection
-	 * @param IConventional
+	 * @param IDatabaseConventional
 	 */
-	public function __construct(DibiConnection $connection, IConventional $conventional, $table)
+	public function __construct(DibiConnection $connection, IDatabaseConventional $conventional, $table)
 	{
 		$this->connection = $connection;
 		$this->conventional = $conventional;
@@ -96,7 +96,7 @@ class DibiPersistenceHelper extends Object
 		return $this->connection;
 	}
 
-	/** @return IConventional */
+	/** @return IDatabaseConventional */
 	public function getConventional()
 	{
 		return $this->conventional;

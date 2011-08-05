@@ -23,6 +23,7 @@ require_once __DIR__ . '/Collection/DibiCollection.php';
 
 /**
  * @property-read DibiConnection $connection
+ * @property-read IDatabaseConventional $conventional
  */
 class DibiMapper extends Mapper
 {
@@ -177,6 +178,15 @@ class DibiMapper extends Mapper
 	}
 
 	/**
+	 * @see self::createConventional()
+	 * @return IDatabaseConventional
+	 */
+	final public function getConventional()
+	{
+		return parent::getConventional('Orm\IDatabaseConventional');
+	}
+
+	/**
 	 * @see self::getConnection()
 	 * @return DibiConnection
 	 */
@@ -187,7 +197,7 @@ class DibiMapper extends Mapper
 
 	/**
 	 * @see self::getConventional()
-	 * @return IConventional
+	 * @return IDatabaseConventional
 	 */
 	protected function createConventional()
 	{
@@ -301,7 +311,7 @@ class DibiMapper extends Mapper
 	 * 		table => users
 	 * 		findBy => array
 	 * 	?	mapper => DibiMapper
-	 * 	?	conventional => IConventional
+	 * 	?	conventional => IDatabaseConventional
 	 * )
 	 * Work with all propel defined association.
 	 * @todo refactor
