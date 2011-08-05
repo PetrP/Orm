@@ -34,6 +34,7 @@ require_once __DIR__ . '/unit/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
 
 require_once __DIR__ . '/TestCase.php';
+require_once __DIR__ . '/InterfaceTestCase.php';
 
 use Orm\PerformanceHelper;
 

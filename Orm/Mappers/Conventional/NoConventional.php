@@ -9,13 +9,13 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once __DIR__ . '/IConventional.php';
+require_once __DIR__ . '/IDatabaseConventional.php';
 
 /**
  * Rozdily nazvu klicu v entite a v ulozisti.
  * Nedela zadny rozdil, uklada stejne.
  */
-class NoConventional extends Object implements IConventional
+class NoConventional extends Object implements IDatabaseConventional
 {
 
 	/**
