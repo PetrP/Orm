@@ -424,7 +424,7 @@ class DibiMapper extends Mapper
 
 			$tmp['table'] = $tmp['mapper']->getTableName();
 			// todo brat table z collection?
-			if ($tmp['mapper']->getConnection() !== $this->connection)
+			if ($tmp['mapper']->getConnection() !== $this->getConnection())
 			{
 				// todo porovnavat connection na collection?
 				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
