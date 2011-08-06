@@ -43,6 +43,9 @@ class DibiPersistenceHelper extends Object
 	/** @var string */
 	public $table;
 
+	/** @var string */
+	public $primaryKey;
+
 	/** @var array of bool|callback */
 	public $params = array();
 
@@ -67,6 +70,7 @@ class DibiPersistenceHelper extends Object
 		$this->connection = $connection;
 		$this->conventional = $conventional;
 		$this->table = $table;
+		$this->primaryKey = $conventional->getPrimaryKey();
 	}
 
 	/**
@@ -151,7 +155,15 @@ class DibiPersistenceHelper extends Object
 			$result[$key] = $this->scalarizeValue($value, $key, $entity);
 		}
 
-		return $this->conventional->formatEntityToStorage($result);
+		$result = $this->conventional->formatEntityToStorage($result);
+		$primaryKey = $this->conventional->getPrimaryKey();
+		if ($primaryKey !== $this->primaryKey AND array_key_exists($primaryKey, $result))
+		{
+			$id = $result[$primaryKey];
+			unset($result[$primaryKey]);
+			$result = array($this->primaryKey => $id) + $result;
+		}
+		return $result;
 	}
 
 	/**
@@ -194,7 +206,7 @@ class DibiPersistenceHelper extends Object
 	 */
 	protected function hasEntry(IEntity $entity)
 	{
-		return isset($entity->id) AND $this->connection->fetch('SELECT [id] FROM %n WHERE [id] = %s', $this->table, $entity->id);
+		return isset($entity->id) AND $this->connection->fetch('SELECT %n FROM %n WHERE %n = %s', $this->primaryKey, $this->table, $this->primaryKey, $entity->id);
 	}
 
 	/**
@@ -204,7 +216,7 @@ class DibiPersistenceHelper extends Object
 	 */
 	protected function update(array $values, $id)
 	{
-		$this->connection->update($this->table, $values)->where('[id] = %s', $id)->execute();
+		$this->connection->update($this->table, $values)->where('%n = %s', $this->primaryKey, $id)->execute();
 	}
 
 	/**
@@ -217,9 +229,9 @@ class DibiPersistenceHelper extends Object
 		try {
 			$id = $this->connection->getInsertId();
 		} catch (DibiException $e) {
-			if (isset($values['id']))
+			if (isset($values[$this->primaryKey]))
 			{
-				$id = $values['id'];
+				$id = $values[$this->primaryKey];
 			}
 			else
 			{

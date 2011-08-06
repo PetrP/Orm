@@ -13,6 +13,9 @@ require_once __DIR__ . '/IConventional.php';
 interface IDatabaseConventional extends IConventional
 {
 
+	/** @return string */
+	public function getPrimaryKey();
+
 	/**
 	 * @param IRepository
 	 * @return string

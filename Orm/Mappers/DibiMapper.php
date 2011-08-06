@@ -40,6 +40,9 @@ class DibiMapper extends Mapper
 	/** @var string @see self::getTableName() */
 	private $tableName;
 
+	/** @var string @see self::getPrimaryKey() */
+	private $primaryKey;
+
 	/**
 	 * Vsechny entity.
 	 * Musi vratit skutecne vsechny entity.
@@ -71,7 +74,7 @@ class DibiMapper extends Mapper
 	public function getById($id)
 	{
 		if (!$id) return NULL;
-		return $this->findAll()->where('[id] = %s', $id)->applyLimit(1)->fetch();
+		return $this->findAll()->where('%n = %s', $this->getPrimaryKey(), $id)->applyLimit(1)->fetch();
 	}
 
 	/**
@@ -93,7 +96,7 @@ class DibiMapper extends Mapper
 	public function remove(IEntity $entity)
 	{
 		$this->begin();
-		return (bool) $this->getConnection()->delete($this->getTableName())->where('[id] = %s', $entity->id)->execute();
+		return (bool) $this->getConnection()->delete($this->getTableName())->where('%n = %s', $this->getPrimaryKey(), $entity->id)->execute();
 	}
 
 	/**
@@ -300,6 +303,21 @@ class DibiMapper extends Mapper
 	}
 
 	/**
+	 * Primarni klic
+	 * @return string
+	 * @see self::$primaryKey
+	 * @see IDatabaseConventional::getPrimaryKey()
+	 */
+	final protected function getPrimaryKey()
+	{
+		if ($this->primaryKey === NULL)
+		{
+			$this->primaryKey = $this->getConventional()->getPrimaryKey();
+		}
+		return $this->primaryKey;
+	}
+
+	/**
 	 * @internal
 	 * @param string author->lastName or author->group->name
 	 * @return object
@@ -352,7 +370,7 @@ class DibiMapper extends Mapper
 							$p = $loader["\0Orm\\RelationshipLoader\0param"];
 							if ($r AND $p)
 							{
-								$this->joinInfoCache['fk'][$name] = array($r, array('id', true), array($p, false));
+								$this->joinInfoCache['fk'][$name] = array($r, array('id', false), array($p, false));
 							}
 						}
 						else if ($rule['relationship'] === MetaData::ManyToMany)
@@ -378,12 +396,12 @@ class DibiMapper extends Mapper
 									$parentParam = $manyToManyMapper->childParam;
 									$childParam = $manyToManyMapper->parentParam;
 								}
-								$this->joinInfoCache['fk'][$name] = array($r, array($childParam, true), array('id', true), array($manyToManyMapper->table, array('id', true), array($parentParam, true)));
+								$this->joinInfoCache['fk'][$name] = array($r, array($childParam, true), array('id', false), array($manyToManyMapper->table, array('id', false), array($parentParam, true)));
 							}
 						}
 						else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 						{
-							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], array(NULL, false), array('id', true));
+							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], array(NULL, false), array('id', false));
 						}
 					}
 				}

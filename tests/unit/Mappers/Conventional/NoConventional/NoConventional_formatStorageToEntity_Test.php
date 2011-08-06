@@ -27,4 +27,9 @@ class NoConventional_formatStorageToEntity_Test extends TestCase
 		$this->assertSame($this->a, $this->c->formatStorageToEntity(new ArrayObject($this->a)));
 	}
 
+	public function testId()
+	{
+		$this->assertSame(array('id' => 123), $this->c->formatStorageToEntity(array('id' => 123)));
+	}
+
 }

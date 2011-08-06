@@ -6,7 +6,7 @@
 class IDatabaseConventional_Test extends InterfaceTestCase
 {
 	protected $interface = 'Orm\IDatabaseConventional';
-	protected $methodCounts = 5;
+	protected $methodCounts = 6;
 
 	public function testImplements()
 	{
@@ -17,6 +17,7 @@ class IDatabaseConventional_Test extends InterfaceTestCase
 	{
 		$this->assertMethod('formatEntityToStorage', '$data');
 		$this->assertMethod('formatStorageToEntity', '$data');
+		$this->assertMethod('getPrimaryKey', '');
 		$this->assertMethod('getTable', 'Orm\IRepository $repository');
 		$this->assertMethod('getManyToManyTable', 'Orm\IRepository $source, Orm\IRepository $target');
 		$this->assertMethod('getManyToManyParam', '$param');

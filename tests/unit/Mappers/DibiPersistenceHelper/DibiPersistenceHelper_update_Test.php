@@ -14,4 +14,13 @@ class DibiPersistenceHelper_update_Test extends DibiPersistenceHelper_Test
 		$this->assertSame(NULL, $r);
 	}
 
+	public function testPrimaryKey()
+	{
+		$this->h->primaryKey = 'foo_bar';
+		$this->d->addExpected('query', true, "UPDATE `table` SET `foo_bar`=3, `aaa`='aaa' WHERE `foo_bar` = '3'");
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$r = $this->h->call('update', array(array('foo_bar' => 3, 'aaa' => 'aaa'), 3));
+		$this->assertSame(NULL, $r);
+	}
+
 }

@@ -88,6 +88,9 @@ abstract class Repository extends Object implements IRepository
 	/** @var SqlConventional */
 	private $conventional;
 
+	/** @var string @see IDatabaseConventional::getPrimaryKey() */
+	private $primaryKey;
+
 	/** @var array @todo refaktorovat */
 	private $entities = array();
 
@@ -462,17 +465,18 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function hydrateEntity($data)
 	{
-		$id = isset($data['id']) ? $data['id'] : NULL;
+		if (!isset($this->conventional))
+		{
+			$this->conventional = $this->getMapper()->getConventional(); // speedup
+			$this->primaryKey = $this->conventional->getPrimaryKey();
+		}
+		$id = isset($data[$this->primaryKey]) ? $data[$this->primaryKey] : NULL;
 		if (!$id)
 		{
 			throw new InvalidStateException("Data, that is returned from storage, doesn't contain id.");
 		}
 		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{
-			if (!isset($this->conventional))
-			{
-				$this->conventional = $this->getMapper()->getConventional(); // speedup
-			}
 			$data = (array) $this->conventional->formatStorageToEntity($data);
 			$entityName = $this->getEntityClassName($data);
 			$this->checkAttachableEntity($entityName);

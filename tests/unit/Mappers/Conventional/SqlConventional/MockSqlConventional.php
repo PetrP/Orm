@@ -4,6 +4,7 @@ use Orm\Repository;
 use Orm\Entity;
 use Orm\SqlConventional;
 use Orm\RepositoryContainer;
+use Orm\IMapper;
 
 /** @mapper Orm\DibiMapper */
 class SqlConventional_TestRepository extends Repository
@@ -23,10 +24,14 @@ class SqlConventional_TestEntity extends Entity
 class MockSqlConventional extends SqlConventional
 {
 
-	public function __construct()
+	public function __construct(IMapper $mapper = NULL)
 	{
-		$r = new SqlConventional_TestRepository(new RepositoryContainer);
-		parent::__construct($r->mapper);
+		if ($mapper === NULL)
+		{
+			$r = new SqlConventional_TestRepository(new RepositoryContainer);
+			$mapper = $r->mapper;
+		}
+		parent::__construct($mapper);
 	}
 
 }

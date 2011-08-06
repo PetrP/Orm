@@ -27,6 +27,9 @@ class SqlConventional extends NoConventional
 	public function __construct(IMapper $mapper)
 	{
 		$this->loadFk((array) $mapper->getRepository()->getEntityClassName(), $mapper->getRepository()->getModel());
+		$primaryKey = $this->getPrimaryKey();
+		$this->cache['entity']['id'] = $primaryKey;
+		$this->cache['storage'][$primaryKey] = 'id';
 	}
 
 	/**

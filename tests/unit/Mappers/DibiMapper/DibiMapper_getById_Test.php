@@ -23,4 +23,17 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		$this->assertInstanceOf('Orm\IEntity', $e);
 		$this->assertSame(1, $e->id);
 	}
+
+	public function testPrimaryKey()
+	{
+		setAccessible(new ReflectionProperty('Orm\Mapper', 'conventional'))
+			->setValue($this->m, new SqlConventional_getPrimaryKey_SqlConventional($this->m))
+		;
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`foo_bar` = '1') LIMIT 1");
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->d->addExpected('fetch', array('foo_bar' => 1), true);
+		$e = $this->m->getById(1);
+		$this->assertInstanceOf('Orm\IEntity', $e);
+		$this->assertSame(1, $e->id);
+	}
 }

@@ -18,6 +18,14 @@ require_once __DIR__ . '/IDatabaseConventional.php';
 class NoConventional extends Object implements IDatabaseConventional
 {
 
+	/** @var bool */
+	private $isNonStandartPrimaryKey;
+
+	public function __construct()
+	{
+		$this->isNonStandartPrimaryKey = $this->getPrimaryKey() !== 'id';
+	}
+
 	/**
 	 * Prejmenuje klice z entity do formatu uloziste
 	 * @param array|Traversable
@@ -25,7 +33,12 @@ class NoConventional extends Object implements IDatabaseConventional
 	 */
 	public function formatEntityToStorage($data)
 	{
-		return (array) $data;
+		$data = (array) $data;
+		if ($this->isNonStandartPrimaryKey)
+		{
+			$this->renameKey($data, 'id', $this->getPrimaryKey());
+		}
+		return $data;
 	}
 
 	/**
@@ -35,7 +48,18 @@ class NoConventional extends Object implements IDatabaseConventional
 	 */
 	public function formatStorageToEntity($data)
 	{
-		return (array) $data;
+		$data = (array) $data;
+		if ($this->isNonStandartPrimaryKey)
+		{
+			$this->renameKey($data, $this->getPrimaryKey(), 'id');
+		}
+		return $data;
+	}
+
+	/** @return string */
+	public function getPrimaryKey()
+	{
+		return 'id';
 	}
 
 	/**
@@ -72,6 +96,25 @@ class NoConventional extends Object implements IDatabaseConventional
 			$param = substr_replace($param, '', -1);
 		}
 		return $param;
+	}
+
+	/**
+	 * Renames key in array.
+	 * @param array
+	 * @param mixed
+	 * @param mixed
+	 * @return void
+	 */
+	private function renameKey(array & $arr, $oldKey, $newKey)
+	{
+		$foo = array($oldKey => NULL);
+		$offset = array_search(key($foo), array_keys($arr), true);
+		if ($offset !== false)
+		{
+			$keys = array_keys($arr);
+			$keys[$offset] = $newKey;
+			$arr = array_combine($keys, $arr);
+		}
 	}
 
 }
