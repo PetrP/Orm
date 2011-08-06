@@ -67,7 +67,7 @@ class Main extends Object
 		if ($this->testDir AND $pos = strrpos($this->testDir, '::'))
 		{
 			$this->method = substr($this->testDir, $pos+2);
-			$this->arg('--filter ' . escapeshellarg('#(^|::)' . preg_quote($this->method, '#') . '($| )#'));
+			$this->arg('--filter ' . escapeshellarg('#(^|::)' . str_replace('"', '\x22', preg_quote($this->method, '#')) . '($| )#'));
 			$this->testDir = substr($this->testDir, 0, $pos);
 			if ($this->debug === NULL) $this->debug = true;
 		}
@@ -158,7 +158,6 @@ class Main extends Object
 		}
 		$appDir = realpath($appDir);
 		$coverage->filter()->addDirectoryToWhitelist($appDir);
-		$coverage->setProcessUncoveredFilesFromWhitelist(false);
 		$lastModify = array();
 		$this->onBefore['coverage'] = function () use ($coverageDir, & $lastModify) {
 			foreach (Finder::findFiles('*.html')->from($coverageDir) as $file)
