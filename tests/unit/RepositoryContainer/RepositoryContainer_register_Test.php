@@ -82,7 +82,7 @@ class RepositoryContainer_register_Test extends TestCase
 		$this->assertSame($t, $this->m->testsRepository);
 	}
 
-	
+
 	public function testOldAfter()
 	{
 		$this->m->register('xyz', 'TestsRepository');

@@ -72,6 +72,9 @@ require_once __DIR__ . '/RepositoryHelper.php';
  * @see self::remove() mazani
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
+ *
+ * @property-read IMapper $mapper
+ * @property-read IRepositoryContainer $model
  */
 abstract class Repository extends Object implements IRepository
 {

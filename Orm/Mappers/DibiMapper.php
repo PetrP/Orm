@@ -288,6 +288,7 @@ class DibiMapper extends Mapper
 	 * Nazev tabulky
 	 * @return string
 	 * @see self::$tableName
+	 * @see IDatabaseConventional::getTable()
 	 */
 	protected function getTableName()
 	{

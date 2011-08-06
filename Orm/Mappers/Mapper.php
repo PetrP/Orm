@@ -17,6 +17,7 @@ require_once __DIR__ . '/Conventional/NoConventional.php';
 /**
  * @property-read IRepository $repository
  * @property-read IConventional $conventional
+ * @property-read IRepositoryContainer $model
  */
 abstract class Mapper extends Object implements IMapper
 {
