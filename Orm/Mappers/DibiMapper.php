@@ -351,7 +351,7 @@ class DibiMapper extends Mapper
 							$p = $loader["\0Orm\\RelationshipLoader\0param"];
 							if ($r AND $p)
 							{
-								$this->joinInfoCache['fk'][$name] = array($r, 'id', $p);
+								$this->joinInfoCache['fk'][$name] = array($r, array('id', true), array($p, false));
 							}
 						}
 						else if ($rule['relationship'] === MetaData::ManyToMany)
@@ -377,12 +377,12 @@ class DibiMapper extends Mapper
 									$parentParam = $manyToManyMapper->childParam;
 									$childParam = $manyToManyMapper->parentParam;
 								}
-								$this->joinInfoCache['fk'][$name] = array($r, $childParam, 'id', array($manyToManyMapper->table, 'id', $parentParam));
+								$this->joinInfoCache['fk'][$name] = array($r, array($childParam, true), array('id', true), array($manyToManyMapper->table, array('id', true), array($parentParam, true)));
 							}
 						}
 						else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 						{
-							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], NULL, 'id');
+							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], array(NULL, false), array('id', true));
 						}
 					}
 				}
@@ -391,18 +391,21 @@ class DibiMapper extends Mapper
 			{
 				throw new InvalidStateException(get_class($this->getRepository()) . ": neni zadna vazba na `$sourceKey`");
 			}
-			$manyToManyJoin = NULL;
-			if (isset($this->joinInfoCache['fk'][$sourceKey][3]))
-			{
-				$manyToManyJoin = $this->joinInfoCache['fk'][$sourceKey][3];
-				$manyToManyJoin = array(
-					'alias' => 'm2m__' . $sourceKey,
-					'xConventionalKey' => $manyToManyJoin[1],
-					'yConventionalKey' => $manyToManyJoin[2],
-					'table' => $manyToManyJoin[0],
-					'findBy' => array(),
-				);
-			}
+			static $format;
+			if ($format === NULL) $format = function (array $key, IDatabaseConventional $conventional, $default = NULL) {
+				list($key, $wasFormated) = $key;
+				if ($key === NULL)
+				{
+					$key = $default;
+				}
+				if (!$wasFormated)
+				{
+					$tmp = $conventional->formatEntityToStorage(array($key => NULL));
+					$key = key($tmp);
+				}
+				return $key;
+			};
+
 			$joinRepository = $model->getRepository($this->joinInfoCache['fk'][$sourceKey][0]);
 			$tmp['mapper'] = $joinRepository->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
@@ -410,6 +413,20 @@ class DibiMapper extends Mapper
 				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
 			}
 			$tmp['conventional'] = $tmp['mapper']->getConventional();
+
+			$manyToManyJoin = NULL;
+			if (isset($this->joinInfoCache['fk'][$sourceKey][3]))
+			{
+				$manyToManyJoin = $this->joinInfoCache['fk'][$sourceKey][3];
+				$manyToManyJoin = array(
+					'alias' => 'm2m__' . $sourceKey,
+					'xConventionalKey' => $format($manyToManyJoin[1], $conventional),
+					'yConventionalKey' => $format($manyToManyJoin[2], $tmp['conventional']),
+					'table' => $manyToManyJoin[0],
+					'findBy' => array(),
+				);
+			}
+
 			$tmp['table'] = $tmp['mapper']->getTableName();
 			// todo brat table z collection?
 			if ($tmp['mapper']->getConnection() !== $this->connection)
@@ -418,10 +435,8 @@ class DibiMapper extends Mapper
 				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
-			$cTmp = $conventional->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][1] === NULL ? $sourceKey : $this->joinInfoCache['fk'][$sourceKey][1] => NULL));
-			$tmp['xConventionalKey'] = key($cTmp);
-			$cTmp = $tmp['conventional']->formatEntityToStorage(array($this->joinInfoCache['fk'][$sourceKey][2] => NULL));
-			$tmp['yConventionalKey'] = key($cTmp);
+			$tmp['xConventionalKey'] = $format($this->joinInfoCache['fk'][$sourceKey][1], $conventional, $sourceKey);
+			$tmp['yConventionalKey'] = $format($this->joinInfoCache['fk'][$sourceKey][2], $tmp['conventional']);
 			$tmp['alias'] = $sourceKey;
 
 			$collection = $tmp['mapper']->findAll();

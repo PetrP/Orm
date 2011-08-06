@@ -28,4 +28,20 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 		$this->m->getJoinInfo('string->id');
 	}
 
+	public function testProperFormat()
+	{
+		$model = new RepositoryContainer;
+		$model->DibiMapper_getJoinInfo1_ManyToMany_->mapper->getJoinInfo('joins->name');
+		$c1 = $model->DibiMapper_getJoinInfo1_ManyToMany_->mapper->getConventional();
+		$c2 = $model->DibiMapper_getJoinInfo2_ManyToMany_->mapper->getConventional();
+
+		$this->assertSame(array('storageFormat' => array(
+			'join',
+		)), $c1->info);
+		$this->assertSame(array('storageFormat' => array(
+			'id',
+			'name',
+		)), $c2->info);
+	}
+
 }
