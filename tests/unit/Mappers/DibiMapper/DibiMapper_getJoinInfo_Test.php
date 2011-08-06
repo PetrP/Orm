@@ -22,4 +22,10 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 		$this->assertNull($this->m->getJoinInfo('blaBla'));
 	}
 
+	public function testNoFk()
+	{
+		$this->setExpectedException('Nette\InvalidStateException', 'TestsRepository: neni zadna vazba na `string`');
+		$this->m->getJoinInfo('string->id');
+	}
+
 }
