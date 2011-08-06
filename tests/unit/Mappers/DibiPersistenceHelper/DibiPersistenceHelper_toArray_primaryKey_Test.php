@@ -94,13 +94,8 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 	{
 		$this->h->primaryKey = 'foo_bar';
 		$this->h->witchParamsNot = array('foo_bar');
-		$r = $this->h->call('toArray', array($this->e, 35));
-		$this->assertSame(array(
-			'foo_bar' => 35,
-			'mi_xed' => 1,
-			'mi_xed2' => 2,
-			'mi_xed3' => 3,
-		), $r);
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
+		$this->h->call('toArray', array($this->e, 35));
 	}
 
 }

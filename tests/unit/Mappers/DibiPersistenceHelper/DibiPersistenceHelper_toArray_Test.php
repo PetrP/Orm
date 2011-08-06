@@ -68,6 +68,13 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		), $r);
 	}
 
+	public function testParamsFalseUnexists()
+	{
+		$this->h->params['foo'] = false;
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
+		$this->h->call('toArray', array($this->e, NULL));
+	}
+
 	public function testParamsTrue()
 	{
 		$this->h->params['miXed2'] = true;

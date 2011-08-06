@@ -134,10 +134,6 @@ class DibiPersistenceHelper extends Object
 		$result = array();
 		foreach ($params as $key => $do)
 		{
-			if ($do === false)
-			{
-				continue;
-			}
 			if (array_key_exists($key, $values))
 			{
 				$value = $values[$key];
@@ -146,6 +142,10 @@ class DibiPersistenceHelper extends Object
 			{
 				// pokusi se precist, muze existovat getter, jinak vyhodi exception
 				$value = $entity->{$key};
+			}
+			if ($do === false)
+			{
+				continue;
 			}
 			if ($do !== true)
 			{
