@@ -375,7 +375,7 @@ class DibiMapper extends Mapper
 								$this->joinInfoCache['fk'][$name] = array($r, $childParam, 'id', array($manyToManyMapper->table, 'id', $parentParam));
 							}
 						}
-						else
+						else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 						{
 							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], NULL, 'id');
 						}
