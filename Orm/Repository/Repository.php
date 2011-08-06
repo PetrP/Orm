@@ -71,6 +71,8 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  * @see self::flush() promitnuti zmen
  * @see self::clean() zruseni zmen
  *
+ * @property-read IMapper $mapper
+ * @property-read IRepositoryContainer $model
  */
 abstract class Repository extends Object implements IRepository
 {
