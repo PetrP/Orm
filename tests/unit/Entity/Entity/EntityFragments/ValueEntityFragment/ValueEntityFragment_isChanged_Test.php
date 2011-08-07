@@ -8,24 +8,26 @@ use Orm\RepositoryContainer;
 class ValueEntityFragment_isChanged_Test extends TestCase
 {
 	private $r;
-	private $e;
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
 		$this->r = $m->TestEntityRepository;
-		$this->e = new TestEntity;
 	}
 
 	public function testCreate()
 	{
 		$e = new TestEntity;
 		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
 	}
 
 	public function testLoad()
 	{
 		$e = $this->r->getById(1);
 		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
 	}
 
 	public function testSet()
@@ -33,6 +35,8 @@ class ValueEntityFragment_isChanged_Test extends TestCase
 		$e = $this->r->getById(1);
 		$e->string = 'xyz';
 		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
 	}
 
 	public function testPersist()
@@ -41,6 +45,8 @@ class ValueEntityFragment_isChanged_Test extends TestCase
 		$e->string = 'xyz';
 		$this->r->persist($e);
 		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
 	}
 
 	public function testGet()
@@ -48,6 +54,18 @@ class ValueEntityFragment_isChanged_Test extends TestCase
 		$e = $this->r->getById(1);
 		$e->string;
 		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
+	}
+
+	public function testSetAndGet()
+	{
+		$e = $this->r->getById(1);
+		$e->date = 'now';
+		$e->string;
+		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
 	}
 
 	public function testRemove()
@@ -55,6 +73,15 @@ class ValueEntityFragment_isChanged_Test extends TestCase
 		$e = $this->r->getById(1);
 		$this->r->remove($e);
 		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
+	}
+
+	public function testUnknown()
+	{
+		$e = $this->r->getById(1);
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot check an undeclared property TestEntity::$unknown.');
+		$e->isChanged('unknown');
 	}
 
 }

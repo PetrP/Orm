@@ -30,8 +30,8 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	/** @var array internal format MetaData */
 	private $rules;
 
-	/** @var bool Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni? */
-	private $changed = false;
+	/** @var array Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni? */
+	private $changed = array();
 
 	/** @var array Za behu informace ktere metody se volaji, aby bylo mozne magicke pretezovani */
 	private $overwriteMethodTemp = array();
@@ -165,28 +165,42 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
+	 * @param string|NULL
 	 * @return bool
 	 * @see self::$changed
 	 * @see self::markAsChanged()
 	 */
-	final public function isChanged()
+	final public function isChanged($name = NULL)
 	{
 		if (func_num_args() > 0 AND func_get_arg(0) === true)
 		{
 			throw new DeprecatedException('Orm\Entity::isChanged(TRUE) is deprecated; use Orm\Repository::markAsChanged() instead');
 		}
-		return $this->__isset('id') ? $this->changed : true;
+		if ($name === NULL)
+		{
+			return (bool) $this->changed;
+		}
+		if (!isset($this->rules[$name]))
+		{
+			throw new MemberAccessException("Cannot check an undeclared property ".get_class($this)."::\$$name.");
+		}
+		return isset($this->changed[NULL]) OR isset($this->changed[$name]);
 	}
 
 	/**
 	 * Nastavit, ze tato entita byla zmenena.
+	 * @param string|NULL
 	 * @return IEntity $this
 	 * @see self::$changed
 	 * @see self::isChanged()
 	 */
-	final public function markAsChanged()
+	final public function markAsChanged($name = NULL)
 	{
-		$this->changed = true;
+		if ($name !== NULL AND !isset($this->rules[$name]))
+		{
+			throw new MemberAccessException("Cannot mark as changed an undeclared property ".get_class($this)."::\$$name.");
+		}
+		$this->changed[$name] = true;
 		return $this;
 	}
 
@@ -194,7 +208,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	protected function onCreate()
 	{
 		parent::onCreate();
-		$this->changed = true;
+		$this->changed[NULL] = true;
 		$this->rules = MetaData::getEntityRules(get_class($this));
 	}
 
@@ -233,7 +247,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		$this->values['id'] = $id;
 		$this->valid['id'] = false;
 		$this->getValue('id'); // throw error if any
-		$this->changed = false;
+		$this->changed = array();
 	}
 
 	/**
@@ -245,7 +259,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		parent::onAfterRemove($repository);
 		$this->values['id'] = NULL;
 		$this->valid['id'] = false;
-		$this->changed = true;
+		$this->changed[NULL] = true;
 	}
 
 	/** Pri klonovani vznika nova entita se stejnejma datama */
@@ -253,7 +267,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		$this->values['id'] = NULL;
 		$this->valid['id'] = false;
-		$this->changed = true;
+		$this->changed[NULL] = true;
 	}
 
 	/**
@@ -534,7 +548,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
-		$this->changed = true;
+		$this->changed[$name] = true;
 	}
 
 	/**

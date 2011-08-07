@@ -71,17 +71,19 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 
 	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
+	 * @param string|NULL
 	 * @return bool
 	 * @see self::markAsChanged()
 	 */
-	public function isChanged();
+	public function isChanged($name = NULL);
 
 	/**
 	 * Nastavit, ze tato entita byla zmenena.
+	 * @param string|NULL
 	 * @return IEntity $this
 	 * @see self::isChanged()
 	 */
-	public function markAsChanged();
+	public function markAsChanged($name = NULL);
 
 	/**
 	 * Vytvori MetaData

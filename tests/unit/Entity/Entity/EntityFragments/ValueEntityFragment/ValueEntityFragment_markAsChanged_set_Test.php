@@ -7,33 +7,64 @@ use Orm\RepositoryContainer;
  */
 class ValueEntityFragment_markAsChanged_set_Test extends TestCase
 {
-	private $e1;
-	private $e2;
+	private $r;
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$this->e1 = new TestEntity;
-		$this->e2 = $m->TestEntityRepository->getById(1);
+		$this->r = $m->TestEntityRepository;
 	}
 
 	public function testSet1()
 	{
-		$this->assertSame(true, $this->e1->isChanged());
-		$this->e1->markAsChanged();
-		$this->assertSame(true, $this->e1->isChanged());
+		$e = new TestEntity;
+		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
+		$e->markAsChanged();
+		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
 	}
 
 	public function testSet2()
 	{
-		$this->assertSame(false, $this->e2->isChanged());
-		$this->e2->markAsChanged();
-		$this->assertSame(true, $this->e2->isChanged());
+		$e = $this->r->getById(1);
+		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
+		$e->markAsChanged();
+		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(true, $e->isChanged('date'));
+	}
+
+	public function testJustOne()
+	{
+		$e = $this->r->getById(1);
+		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
+		$e->markAsChanged('string');
+		$this->assertSame(true, $e->isChanged());
+		$this->assertSame(true, $e->isChanged('string'));
+		$this->assertSame(false, $e->isChanged('date'));
 	}
 
 	public function testReturns()
 	{
-		$this->assertSame($this->e1, $this->e1->markAsChanged());
-		$this->assertSame($this->e2, $this->e2->markAsChanged());
+		$e1 = new TestEntity;
+		$e2 = $this->r->getById(1);
+		$this->assertSame($e1, $e1->markAsChanged());
+		$this->assertSame($e1, $e1->markAsChanged('string'));
+		$this->assertSame($e2, $e2->markAsChanged());
+		$this->assertSame($e2, $e2->markAsChanged('string'));
+	}
+
+	public function testUnknown()
+	{
+		$e = $this->r->getById(1);
+		$this->setExpectedException('Nette\MemberAccessException', 'Cannot mark as changed an undeclared property TestEntity::$unknown.');
+		$e->markAsChanged('unknown');
 	}
 
 }
