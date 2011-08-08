@@ -30,4 +30,9 @@ class ValueEntityFragment_getset_Entity extends TestEntity
 	{
 		return $this->setValue($name, $value);
 	}
+
+	public function srov($name, $value)
+	{
+		return $this->setReadOnlyValue($name, $value);
+	}
 }

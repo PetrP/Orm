@@ -182,4 +182,12 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * @return Entity $this
 	 */
 	//protected function setValue($name, $value)
+
+	/**
+	 * Nastavi read-only property
+	 * @param string
+	 * @param mixed
+	 * @return Entity $this
+	 */
+	//protected function setReadOnlyValue($name, $value)
 }

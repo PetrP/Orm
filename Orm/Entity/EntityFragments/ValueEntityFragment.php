@@ -164,6 +164,31 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	}
 
 	/**
+	 * Nastavi read-only property
+	 * @param string
+	 * @param mixed
+	 * @return Entity $this
+	 */
+	final protected function setReadOnlyValue($name, $value)
+	{
+		if (!isset($this->rules[$name]))
+		{
+			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
+		}
+
+		$rule = $this->rules[$name];
+
+		if (isset($rule['set']))
+		{
+			throw new MemberAccessException("Property ".get_class($this)."::\$$name is not read-only.");
+		}
+
+		$this->setValueHelper($name, $value, $rule);
+
+		return $this;
+	}
+
+	/**
 	 * Byla zmenena nejaka hodnota na teto entite od posledniho ulozeni?
 	 * @param string|NULL
 	 * @return bool
