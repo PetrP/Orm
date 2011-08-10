@@ -27,4 +27,9 @@ class RepositoryContainer_context_Test extends TestCase
 		$this->assertAttributeSame($this->c->getService('annotationClassParser'), 'parser', $this->c->getService('mapperFactory'));
 	}
 
+	public function testRepositoryHelper()
+	{
+		$this->assertInstanceOf('Orm\RepositoryHelper', $this->c->getService('repositoryHelper'));
+	}
+
 }
