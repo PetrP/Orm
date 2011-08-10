@@ -103,9 +103,8 @@ class OneToMany extends BaseToMany implements IRelationship
 	{
 		if (!isset($this->get))
 		{
-			if ($this->parent->getModel(false))
+			if ($repository = $this->getChildRepository(false))
 			{
-				$repository = $this->getChildRepository();
 				$method = 'findBy' . $this->param;
 				$all = method_exists($repository, $method) ? $repository->$method($this->parent) : $repository->mapper->$method($this->parent);
 			}
@@ -179,10 +178,13 @@ class OneToMany extends BaseToMany implements IRelationship
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
-	/** @return IRepositoryContainer */
-	public function getModel()
+	/**
+	 * @param bool
+	 * @return IRepositoryContainer
+	 */
+	public function getModel($need = true)
 	{
-		return $this->parent->getModel();
+		return $this->parent->getModel((bool) $need);
 	}
 
 	/**

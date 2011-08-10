@@ -174,10 +174,13 @@ class ManyToMany extends BaseToMany implements IRelationship
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
 	}
 
-	/** @return IRepositoryContainer */
-	public function getModel()
+	/**
+	 * @param bool
+	 * @return IRepositoryContainer
+	 */
+	public function getModel($need = true)
 	{
-		return $this->parent->getModel();
+		return $this->parent->getModel((bool) $need);
 	}
 
 	/** @return mixed */
@@ -203,10 +206,10 @@ class ManyToMany extends BaseToMany implements IRelationship
 	{
 		if (!isset($this->mapper))
 		{
-			if ($this->parent->getModel(false))
+			$parentRepository = $this->parent->getRepository(false);
+			$childRepository = $this->getChildRepository(false);
+			if ($parentRepository AND $childRepository)
 			{
-				$parentRepository = $this->parent->getRepository();
-				$childRepository = $this->getChildRepository();
 				if ($this->mappedByParent)
 				{
 					$mapper = $parentRepository->getMapper()->createManyToManyMapper($this->parentParam, $childRepository, $this->param);

@@ -74,13 +74,18 @@ abstract class BaseToMany extends Object
 
 	/**
 	 * Repository
-	 * @return Repository
+	 * @param bool
+	 * @return Repository|NULL
 	 */
-	protected function getChildRepository()
+	protected function getChildRepository($need = true)
 	{
 		if (!($this->repository instanceof IRepository))
 		{
-			$this->repository = $this->getModel()->getRepository($this->repository);
+			if (!($model = $this->getModel($need)))
+			{
+				return NULL;
+			}
+			$this->repository = $model->getRepository($this->repository);
 		}
 		return $this->repository;
 	}

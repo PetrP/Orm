@@ -71,12 +71,12 @@ abstract class OldOneToMany extends OneToMany
 	 * Repository
 	 * @return Repository
 	 */
-	protected function getChildRepository()
+	protected function getChildRepository($need = true)
 	{
 		return $this->getSecondRepository();
 	}
 
-	public function getModel()
+	public function getModel($need = true)
 	{
 		return $this->parent->getModel(NULL);
 	}

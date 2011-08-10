@@ -51,7 +51,7 @@ abstract class OldManyToMany extends ManyToMany
 		parent::__construct($parent, $this->childRepository, $childParam, $parentParam, $mappedByParent, $value);
 	}
 
-	public function getModel()
+	public function getModel($need = true)
 	{
 		return $this->parent->getModel(NULL);
 	}
