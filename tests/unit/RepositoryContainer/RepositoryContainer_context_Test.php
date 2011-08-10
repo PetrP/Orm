@@ -32,4 +32,21 @@ class RepositoryContainer_context_Test extends TestCase
 		$this->assertInstanceOf('Orm\RepositoryHelper', $this->c->getService('repositoryHelper'));
 	}
 
+	public function testDibiNoConnection()
+	{
+		$this->setExpectedException('DibiException', 'Dibi is not connected to database.');
+		$this->c->getService('dibi');
+	}
+
+	public function testDibiHasConnection()
+	{
+		$r = new ReflectionProperty('Dibi', 'connection');
+		setAccessible($r);
+
+		Dibi::setConnection($c = new DibiConnection(array('lazy' => true)));
+		$this->assertInstanceOf('DibiConnection', $this->c->getService('dibi'));
+		$this->assertSame($c, $this->c->getService('dibi'));
+
+		$r->setValue(NULL);
+	}
 }

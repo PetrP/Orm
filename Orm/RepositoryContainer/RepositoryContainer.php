@@ -11,6 +11,7 @@ use Nette\Object;
 use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use ReflectionClass;
+use Dibi;
 
 require_once __DIR__ . '/IRepositoryContainer.php';
 require_once __DIR__ . '/../Entity/Entity.php';
@@ -85,6 +86,9 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 			return new \Orm\MapperFactory($container->getService('annotationClassParser', 'Orm\AnnotationClassParser'));
 		});
 		$this->container->addService('repositoryHelper', 'Orm\RepositoryHelper');
+		$this->container->addService('dibi', function () {
+			return dibi::getConnection();
+		});
 	}
 
 	/** @return IServiceContainer */

@@ -27,4 +27,22 @@ class DibiMapper_createConnection_Test extends TestCase
 
 		$r->setValue(NULL);
 	}
+
+	public function testContext()
+	{
+		$c = new DibiConnection(array('lazy' => true));
+		$m = new DibiMapper(new TestsRepository($r = new RepositoryContainer));
+		$r->getContext()->removeService('dibi')->addService('dibi', $c);
+
+		$this->assertSame($c, $m->getConnection());
+	}
+
+	public function testContextBad()
+	{
+		$m = new DibiMapper(new TestsRepository($r = new RepositoryContainer));
+		$r->getContext()->removeService('dibi')->addService('dibi', $m);
+
+		$this->setExpectedException('Orm\ServiceNotInstanceOfException', "Service 'dibi' is not instance of 'DibiConnection'.");
+		$m->getConnection();
+	}
 }

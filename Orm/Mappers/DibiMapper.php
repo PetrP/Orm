@@ -195,7 +195,7 @@ class DibiMapper extends Mapper
 	 */
 	protected function createConnection()
 	{
-		return dibi::getConnection();
+		return $this->getModel()->getContext()->getService('dibi', 'DibiConnection');
 	}
 
 	/**
