@@ -34,4 +34,14 @@ class DibiMapper_getConnection_Test extends TestCase
 		$this->assertSame($c, $this->m->getConnection());
 
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'getConnection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

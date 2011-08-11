@@ -81,4 +81,13 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$this->assertAttributeSame(NULL, 'get', $this->m2m);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'createEntity');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

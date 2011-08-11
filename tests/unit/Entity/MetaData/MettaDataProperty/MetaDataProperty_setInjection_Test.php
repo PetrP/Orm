@@ -132,4 +132,13 @@ class MetaDataProperty_setInjection_Test extends TestCase
 		$this->assertSame($this->p, $this->p->setInjection());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setInjection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -14,4 +14,14 @@ class DibiManyToManyMapper_construct_Test extends TestCase
 		$this->assertInstanceOf('Orm\IManyToManyMapper', $mm);
 		$this->assertAttributeSame($c, 'connection', $mm);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiManyToManyMapper', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

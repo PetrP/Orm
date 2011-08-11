@@ -75,4 +75,13 @@ class OneToMany_persist_Test extends OneToMany_Test
 		$this->assertTrue($e->isChanged());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\OneToMany', 'persist');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

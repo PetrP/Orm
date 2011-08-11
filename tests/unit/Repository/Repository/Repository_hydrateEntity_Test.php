@@ -49,4 +49,13 @@ class Repository_hydrateEntity_Test extends TestCase
 		$this->assertSame(1, $e->id);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'hydrateEntity');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

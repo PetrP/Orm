@@ -34,4 +34,13 @@ class ValueEntityFragment_isset_Test extends TestCase
 		$this->assertFalse(isset($this->e->test2));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', '__isset');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

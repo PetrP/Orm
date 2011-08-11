@@ -16,4 +16,13 @@ class DibiCollection_fetchAssoc_Test extends DibiCollection_BaseConnected_Test
 		), $this->c->fetchAssoc('id=string'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'fetchAssoc');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

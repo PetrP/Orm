@@ -51,4 +51,14 @@ class MetaDataProperty_setDefault_Test extends TestCase
 		$this->p->setDefault(123);
 		$this->assertSame(123, $this->setDefault());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setDefault');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

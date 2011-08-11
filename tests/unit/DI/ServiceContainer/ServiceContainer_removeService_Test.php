@@ -46,4 +46,14 @@ class ServiceContainer_removeService_Test extends TestCase
 		$this->c->addService('test', 'foo');
 		$this->assertSame($this->c, $this->c->removeService('test'));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ServiceContainer', 'removeService');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

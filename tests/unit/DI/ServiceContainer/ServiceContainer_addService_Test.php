@@ -37,4 +37,13 @@ class ServiceContainer_addService_Test extends TestCase
 		$this->assertSame($this->c, $this->c->addService('test', 'foo'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ServiceContainer', 'addService');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

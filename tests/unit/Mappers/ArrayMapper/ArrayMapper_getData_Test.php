@@ -44,4 +44,13 @@ class ArrayMapper_getData_Test extends TestCase
 		$this->assertSame(NULL, $data[1]);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'getData');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

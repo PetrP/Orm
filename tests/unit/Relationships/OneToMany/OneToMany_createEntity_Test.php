@@ -81,4 +81,13 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$this->assertAttributeSame(NULL, 'get', $this->o2m);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\OneToMany', 'createEntity');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

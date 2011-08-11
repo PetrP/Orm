@@ -33,4 +33,13 @@ class DibiCollection_applyLimit_Test extends DibiCollection_Base_Test
 		$this->assertSame($this->c, $this->c->applyLimit(10, 20));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'applyLimit');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

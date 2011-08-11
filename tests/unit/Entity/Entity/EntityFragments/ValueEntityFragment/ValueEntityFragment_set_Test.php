@@ -32,4 +32,14 @@ class ValueEntityFragment_set_Test extends TestCase
 		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to a read-only property ValueEntityFragment_getset_Entity::$readOnly.');
 		$this->e->readOnly = 'xyz';
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', '__set');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -62,4 +62,14 @@ class Repository_isAttachableEntity_Test extends TestCase
 		$this->setExpectedException('UnexpectedValueException', "Repository_getEntityClassNamesRepository: entity 'Haha' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
 		$this->assertFalse($this->r->isAttachableEntity(new TestEntity));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'isAttachableEntity');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

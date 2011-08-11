@@ -87,4 +87,14 @@ class Repository_clean_Test extends TestCase
 		$this->assertSame($e, $this->r->getById(1));
 		$this->assertSame('xyz', $e->string); // bug?
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'clean');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

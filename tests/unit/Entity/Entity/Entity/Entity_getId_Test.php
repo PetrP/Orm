@@ -35,4 +35,13 @@ class Entity_getId_Test extends TestCase
 		$e->id = 2;
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Entity', 'getId');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

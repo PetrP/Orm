@@ -55,4 +55,13 @@ class ArrayMapper_unlock_Test extends TestCase
 		$this->m2->_unlock();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'unlock');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

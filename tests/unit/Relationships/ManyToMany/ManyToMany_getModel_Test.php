@@ -46,4 +46,14 @@ class ManyToMany_getModel_Test extends ManyToMany_Test
 		$this->setExpectedException('Nette\InvalidStateException', 'ManyToMany_Entity is not attached to repository.');
 		$this->m2m->getModel(true);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'getModel');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

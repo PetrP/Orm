@@ -94,4 +94,14 @@ class RepositoryContainer_checkRepositoryClass_Test extends TestCase
 		$this->setExpectedException('Nette\InvalidStateException', "Repository 'orm\\irepository' doesn't exists");
 		$this->t('Orm\\IRepository');
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'checkRepositoryClass');
+		$this->assertTrue($r->isPrivate(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

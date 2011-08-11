@@ -25,4 +25,13 @@ class MetaData_check_Test extends TestCase
 		$m->check(new RepositoryContainer);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', 'check');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

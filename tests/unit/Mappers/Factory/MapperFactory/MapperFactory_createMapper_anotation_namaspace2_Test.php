@@ -114,4 +114,13 @@ class MapperFactory_createMapper_anotation_namaspace2_Test extends TestCase
 		$this->t('HasDefaultButFalseJumpToParent', 1);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MapperFactory', 'createMapper');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

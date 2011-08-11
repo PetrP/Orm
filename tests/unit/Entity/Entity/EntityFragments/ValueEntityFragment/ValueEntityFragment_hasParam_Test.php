@@ -47,4 +47,13 @@ class ValueEntityFragment_hasParam_Test extends TestCase
 		$e->hasParam('read', 'xyz');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'hasParam');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -15,4 +15,13 @@ class DibiCollection_count_Test extends DibiCollection_BaseConnected_Test
 		$this->assertSame(3, $this->c->count()); // cache
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', 'count');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

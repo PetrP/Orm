@@ -71,4 +71,13 @@ class ManyToMany_createEntity_NotInvasive_Test extends ManyToMany_Test
 		$this->assertAttributeSame($c, 'get', $this->m2m);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'createEntity');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

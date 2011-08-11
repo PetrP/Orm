@@ -36,4 +36,13 @@ class ManyToMany_getCollection_Test extends ManyToMany_Test
 		$this->t(10,12,13);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'getCollection');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -23,4 +23,13 @@ class AttachableEntityFragment_onAfterRemove_Test extends TestCase
 		$this->assertSame(NULL, $e->getRepository(false));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onAfterRemove');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

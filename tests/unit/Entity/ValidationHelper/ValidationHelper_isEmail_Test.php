@@ -14,4 +14,13 @@ class ValidationHelper_isEmail_Test extends TestCase
 		$this->assertFalse(ValidationHelper::isEmail('foo'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValidationHelper', 'isEmail');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

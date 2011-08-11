@@ -59,4 +59,13 @@ class MetaDataProperty_setAccess_Test extends TestCase
 		$this->setAccess('kukuk');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setAccess');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

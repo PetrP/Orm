@@ -17,4 +17,14 @@ class ValidationHelper_isValid_Date_Test extends ValidationHelper_isValid_Base
 		$this->setExpectedException('Exception', 'DateTime::__construct(): Failed to parse time string (xxx) at position 0 (x): The timezone could not be found in the database');
 		$this->t('xxx', false);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValidationHelper', 'isValid');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

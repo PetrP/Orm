@@ -50,4 +50,13 @@ class ArrayMapper_lock_Test extends TestCase
 		}
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'lock');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

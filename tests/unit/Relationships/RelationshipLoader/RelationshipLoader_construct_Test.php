@@ -30,4 +30,13 @@ class RelationshipLoader_construct_Test extends TestCase
 		new RelationshipLoader(MetaData::OneToMany, 'RelationshipLoader_construct_OldOneToMany', 'repo', '', 'Entity', 'foo');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RelationshipLoader', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

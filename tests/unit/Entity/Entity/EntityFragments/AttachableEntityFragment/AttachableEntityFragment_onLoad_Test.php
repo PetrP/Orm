@@ -23,4 +23,13 @@ class AttachableEntityFragment_onLoad_Test extends TestCase
 		$this->assertSame($this->r, $e->getRepository(false));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onLoad');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

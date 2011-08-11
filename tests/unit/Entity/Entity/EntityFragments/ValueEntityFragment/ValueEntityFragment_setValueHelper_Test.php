@@ -155,4 +155,13 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 		$this->assertSame(NULL, $e->enumNull);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'setValueHelper');
+		$this->assertTrue($r->isPrivate(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -27,4 +27,13 @@ class DataSourceCollection_toArrayCollection_Test extends DataSourceCollection_B
 		$this->assertSame(0, $this->c->toArrayCollection()->count());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'toArrayCollection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

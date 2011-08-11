@@ -94,4 +94,13 @@ class DibiCollection_toString_applyLimit_Test extends DibiCollection_Base_Test
 	}
 
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', '__toString');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

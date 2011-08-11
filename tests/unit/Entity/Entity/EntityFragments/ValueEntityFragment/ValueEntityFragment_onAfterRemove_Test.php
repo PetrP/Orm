@@ -34,4 +34,13 @@ class ValueEntityFragment_onAfterRemove_Test extends TestCase
 		$this->assertSame(true, $e->isChanged());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'onAfterRemove');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

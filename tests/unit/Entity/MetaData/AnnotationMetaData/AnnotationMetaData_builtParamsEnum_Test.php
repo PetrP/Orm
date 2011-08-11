@@ -84,4 +84,13 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 		$this->p->builtParamsEnum('SameClass::UNEXISTS_CONSTANT');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationMetaData', 'builtParamsEnum');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -42,4 +42,13 @@ class ServiceContainer_updating_Test extends TestCase
 		$this->c->addService('test', NULL);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ServiceContainer', 'updating');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -47,4 +47,13 @@ class ValueEntityFragment_call_is_Test extends TestCase
 		$this->e->getDdd();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', '__call');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -94,4 +94,13 @@ class DataSourceCollection_toString_applyLimit_Test extends DataSourceCollection
 	}
 
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DataSourceCollection', '__toString');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

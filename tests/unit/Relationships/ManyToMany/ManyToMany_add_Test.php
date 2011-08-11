@@ -65,4 +65,13 @@ class ManyToMany_add_Test extends ManyToMany_Test
 		$this->assertSame(2, count($this->m2m));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'add');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

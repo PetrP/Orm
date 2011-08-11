@@ -15,4 +15,13 @@ class DibiCollection_toDataSourceCollection_Test extends DibiCollection_Base_Tes
 		$this->assertSame('SELECT `e`.* FROM `dibicollection` as e', trim(preg_replace('#\s+#', ' ', $this->readAttribute($c, 'sql'))));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', 'toDataSourceCollection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -33,4 +33,13 @@ class DibiCollection_fetchAll_Test extends DibiCollection_BaseConnected_Test
 		$this->assertSame(array(), $all);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'fetchAll');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

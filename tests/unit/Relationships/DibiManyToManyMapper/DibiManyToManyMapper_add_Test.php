@@ -38,4 +38,13 @@ class DibiManyToManyMapper_add_Test extends DibiManyToManyMapper_Connected_Test
 	}
 
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiManyToManyMapper', 'add');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

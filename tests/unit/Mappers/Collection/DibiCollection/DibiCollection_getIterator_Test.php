@@ -22,4 +22,13 @@ class DibiCollection_getIterator_Test extends DibiCollection_BaseConnected_Test
 		$this->assertSame(array(), iterator_to_array($this->c->getIterator()));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'getIterator');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

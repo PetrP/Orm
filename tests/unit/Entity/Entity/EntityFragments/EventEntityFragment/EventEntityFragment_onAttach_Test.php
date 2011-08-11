@@ -26,4 +26,13 @@ class EventEntityFragment_onAttach_Test extends EventEntityFragment_event_Base
 		$this->assertSame(array(), $e->all);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EventEntityFragment', 'onAttach');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -37,4 +37,14 @@ class RepositoryContainer_isRepository_Test extends TestCase
 		$this->assertFalse($this->m->isRepository('Xyz'));
 		$this->assertFalse($this->m->isRepository('XyzRepository'));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'isRepository');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

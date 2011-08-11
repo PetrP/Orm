@@ -67,4 +67,13 @@ class ArrayMapper_flush_Test extends TestCase
 		$m->flush();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'flush');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -21,4 +21,13 @@ class AnnotationMetaData_builtParamsInjection_Test extends TestCase
 		$this->assertSame(array('MetaData_Test_Entity::method'), $this->p->builtParamsInjection("self::method()"));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationMetaData', 'builtParamsInjection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

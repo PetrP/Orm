@@ -91,4 +91,14 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$table is required');
 		$this->mm->attach($this->m2);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiManyToManyMapper', 'attach');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

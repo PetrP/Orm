@@ -40,4 +40,14 @@ class Repository_persistAndFlush_Test extends TestCase
 		$this->assertSame(1, $this->fr->mapper->count);
 		$this->assertSame(1, $this->fr2->mapper->count);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'persistAndFlush');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

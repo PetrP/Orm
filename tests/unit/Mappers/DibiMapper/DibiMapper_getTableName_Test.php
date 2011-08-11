@@ -46,4 +46,14 @@ class DibiMapper_getTableName_Test extends TestCase
 		$this->r->__setRepositoryName('bla\bla\aasdasdasdsad654___\asdasd');
 		$this->assertSame('dibimapper_gettablename_', $this->m->__getTableName());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'getTableName');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

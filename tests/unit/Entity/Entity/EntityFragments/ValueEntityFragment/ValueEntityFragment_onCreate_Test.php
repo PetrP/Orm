@@ -18,4 +18,13 @@ class ValueEntityFragment_onCreate_Test extends TestCase
 		$this->assertInternalType('array', $this->readAttribute($this->e, 'rules'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'onCreate');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

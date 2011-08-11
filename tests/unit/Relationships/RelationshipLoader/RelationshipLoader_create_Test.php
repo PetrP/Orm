@@ -46,4 +46,13 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 		$this->l->create('Orm\ManyToMany', $this->e, array(10,11,12,13));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RelationshipLoader', 'create');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

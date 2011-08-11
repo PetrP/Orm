@@ -12,4 +12,13 @@ class DataSourceCollection_select_Test extends DataSourceCollection_Base_Test
 		$this->c->select('foo');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DataSourceCollection', 'select');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

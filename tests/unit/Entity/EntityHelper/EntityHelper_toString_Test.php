@@ -33,4 +33,13 @@ class EntityHelper_toString_Test extends TestCase
 		$this->assertSame('MetaData_Test2_Entity', EntityHelper::toString($e));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EntityHelper', 'toString');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

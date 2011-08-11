@@ -59,4 +59,13 @@ class DibiMapper_begin_Test extends DibiMapper_Connected_Test
 		$this->m->__begin();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'begin');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

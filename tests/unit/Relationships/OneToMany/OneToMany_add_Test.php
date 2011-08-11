@@ -74,4 +74,13 @@ class OneToMany_add_Test extends OneToMany_Test
 		$this->assertSame(2, count($this->o2m));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\OneToMany', 'add');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

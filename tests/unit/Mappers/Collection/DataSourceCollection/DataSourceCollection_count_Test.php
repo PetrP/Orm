@@ -15,4 +15,13 @@ class DataSourceCollection_count_Test extends DataSourceCollection_BaseConnected
 		$this->assertSame(3, $this->c->count()); // cache
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DataSourceCollection', 'count');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

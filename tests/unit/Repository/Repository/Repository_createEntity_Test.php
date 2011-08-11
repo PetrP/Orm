@@ -15,4 +15,13 @@ class Repository_createEntity_Test extends TestCase
 		$r->createEntity(array());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'createEntity');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

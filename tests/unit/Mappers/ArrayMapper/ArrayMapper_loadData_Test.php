@@ -19,4 +19,13 @@ class ArrayMapper_loadData_Test extends TestCase
 		$this->m->findAll();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'loadData');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

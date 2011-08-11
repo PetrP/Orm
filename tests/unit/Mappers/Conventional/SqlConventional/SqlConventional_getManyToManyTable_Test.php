@@ -31,4 +31,13 @@ class SqlConventional_getManyToManyTable_Test extends TestCase
 		$this->assertSame('namespace_tests_x_namespace_tests', $this->c->getManyToManyTable($this->r2, $this->r2));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\NoConventional', 'getManyToManyTable');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

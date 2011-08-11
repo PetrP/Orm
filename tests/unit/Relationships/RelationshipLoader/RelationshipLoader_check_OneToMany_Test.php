@@ -17,4 +17,13 @@ class RelationshipLoader_check_OneToMany_Test extends TestCase
 		$rl->check(new RepositoryContainer);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RelationshipLoader', 'check');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

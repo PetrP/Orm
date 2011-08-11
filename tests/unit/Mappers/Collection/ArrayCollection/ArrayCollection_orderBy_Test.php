@@ -100,4 +100,14 @@ class ArrayCollection_orderBy_Test extends ArrayCollection_Base_Test
 			array('bBb', Dibi::DESC),
 		), 'sorting', $this->c);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'orderBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

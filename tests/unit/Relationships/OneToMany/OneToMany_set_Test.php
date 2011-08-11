@@ -19,4 +19,13 @@ class OneToMany_set_Test extends OneToMany_Test
 		$this->t();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseToMany', 'set');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

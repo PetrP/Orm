@@ -66,4 +66,13 @@ class ArrayCollection_fetchPairs_Test extends ArrayCollection_Base_Test
 		$this->assertSame(array(), $this->c->fetchPairs('int', 'string'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'fetchPairs');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

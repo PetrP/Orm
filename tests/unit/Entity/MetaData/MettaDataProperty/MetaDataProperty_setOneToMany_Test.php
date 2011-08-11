@@ -100,6 +100,16 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		;
 		$this->t($p, 'Orm\OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setOneToMany');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }
 
 class MetaDataProperty_setOneToMany_OneToMany extends OldOneToMany

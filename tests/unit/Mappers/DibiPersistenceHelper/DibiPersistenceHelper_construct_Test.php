@@ -25,4 +25,13 @@ class DibiPersistenceHelper_construct_Test extends DibiPersistenceHelper_Test
 		$this->assertSame('foo_bar', $h->primaryKey);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiPersistenceHelper', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

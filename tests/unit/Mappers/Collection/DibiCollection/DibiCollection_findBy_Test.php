@@ -72,4 +72,13 @@ class DibiCollection_findBy_Test extends DibiCollection_Base_Test
 		$this->a("SELECT `e`.* FROM `dibicollection` as e WHERE (`e`.`x` IN (2, 1))", $c);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'findBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

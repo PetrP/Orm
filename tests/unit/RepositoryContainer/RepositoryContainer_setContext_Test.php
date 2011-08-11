@@ -26,4 +26,14 @@ class RepositoryContainer_setContext_Test extends TestCase
 	{
 		$this->assertSame($this->m, $this->m->setContext(new ServiceContainer));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'setContext');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

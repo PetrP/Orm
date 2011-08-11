@@ -56,4 +56,14 @@ class ArrayMapper_findAll_Test extends TestCase
 		$this->assertInstanceOf('TestEntity', $source[0]);
 		$this->assertInstanceOf('TestEntity', $source[1]);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'findAll');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

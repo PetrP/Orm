@@ -38,4 +38,13 @@ class AnnotationMetaData_builtParamsOneToMany_Test extends TestCase
 		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('  repositoryName   param   dalsi  '));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationMetaData', 'builtParamsOneToMany');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

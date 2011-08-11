@@ -64,6 +64,15 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'getMapper');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }
 
 class ManyToMany_getMapper_ManyToMany extends ManyToMany

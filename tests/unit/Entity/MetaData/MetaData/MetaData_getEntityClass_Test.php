@@ -19,4 +19,13 @@ class MetaData_getEntityClass_Test extends TestCase
 		$this->assertSame('MetaData_Test_Entity', $m->getEntityClass());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', 'getEntityClass');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

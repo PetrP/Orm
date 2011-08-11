@@ -242,4 +242,13 @@ class AnnotationClassParser_get_Test extends TestCase
 		$this->assertSame('ArrayObject', $this->p->get('test', new AnnotationClassParser_get_ArrayObject));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationClassParser', 'get');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -37,4 +37,13 @@ class AttachableEntityFragment_getRepository_Test extends TestCase
 		$e->getRepository(true);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'getRepository');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

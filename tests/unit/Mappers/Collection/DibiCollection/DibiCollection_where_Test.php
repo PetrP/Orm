@@ -46,4 +46,13 @@ class DibiCollection_where_Test extends DibiCollection_Base_Test
 		$this->assertSame($this->c, $this->c->where('1=1'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'where');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

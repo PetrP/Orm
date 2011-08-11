@@ -50,4 +50,13 @@ class BaseEntityFragment_createMetaData_Test extends TestCase
 		), TestEntity::createMetaData('TestEntity')->toArray());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseEntityFragment', 'createMetaData');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

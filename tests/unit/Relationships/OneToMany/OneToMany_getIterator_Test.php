@@ -21,4 +21,13 @@ class OneToMany_getIterator_Test extends OneToMany_Test
 		$this->assertSame(4, iterator_count($this->o2m->getIterator()));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseToMany', 'getIterator');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

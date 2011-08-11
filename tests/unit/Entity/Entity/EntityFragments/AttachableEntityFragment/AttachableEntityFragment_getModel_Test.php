@@ -44,4 +44,13 @@ class AttachableEntityFragment_getModel_Test extends TestCase
 		$this->assertSame($this->m, $e->getModel(NULL));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'getModel');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

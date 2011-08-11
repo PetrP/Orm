@@ -72,4 +72,13 @@ class DataSourceCollection_findBy_Test extends DataSourceCollection_Base_Test
 		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (2, 1))", $c);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'findBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

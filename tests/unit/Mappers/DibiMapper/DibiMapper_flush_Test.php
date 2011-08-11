@@ -83,4 +83,13 @@ class DibiMapper_flush_Test extends DibiMapper_Connected_Test
 		$this->m->flush();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'flush');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

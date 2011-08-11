@@ -160,4 +160,14 @@ class ArrayCollection_findBy_Test extends ArrayCollection_Base_Test
 		$c = $this->c->findBy(array('e' => new ArrayCollection(array($e1, $e2))));
 		$this->assertSame(array($this->e[0], $this->e[1]), $c->fetchAll());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'findBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

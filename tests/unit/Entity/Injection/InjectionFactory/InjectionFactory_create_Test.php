@@ -21,4 +21,13 @@ class InjectionFactory_create_Test extends TestCase
 		$this->assertAttributeSame($closure, 'callback', $nativeCb[0]);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\InjectionFactory', 'create');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

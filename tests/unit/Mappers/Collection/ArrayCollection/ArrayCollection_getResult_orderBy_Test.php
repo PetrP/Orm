@@ -193,4 +193,14 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$this->setExpectedException('Nette\InvalidArgumentException', "'mixed' is not key in 'mixed->string'");
 		$c->getResult();
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'getResult');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

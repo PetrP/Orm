@@ -98,4 +98,13 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 		$this->h->call('toArray', array($this->e, 35));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiPersistenceHelper', 'toArray');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

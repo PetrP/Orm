@@ -90,4 +90,13 @@ class Mapper_getCollectionClass_Test extends TestCase
 		$this->m->mockGetCollectionClass();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Mapper', 'getCollectionClass');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -37,4 +37,13 @@ class DibiCollection_toString_orderBy_Test extends DibiCollection_Base_Test
 		$this->a('SELECT `e`.* FROM `dibicollection` as e ORDER BY `e`.`aaa` ASC');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', '__toString');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -12,4 +12,13 @@ class DataSourceCollection_fetchSingle_Test extends DataSourceCollection_Base_Te
 		$this->c->fetchSingle();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DataSourceCollection', 'fetchSingle');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

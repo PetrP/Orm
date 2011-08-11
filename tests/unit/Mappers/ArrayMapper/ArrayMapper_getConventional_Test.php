@@ -37,4 +37,13 @@ class ArrayMapper_getConventional_Test extends TestCase
 		$this->assertInstanceOf('Mapper_getConventional_Conventional', $this->m->getConventional());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayMapper', 'getConventional');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -53,4 +53,13 @@ class DibiCollection_fetchPairs_Test extends DibiCollection_BaseConnected_Test
 		$all = $this->c->fetchPairs('id');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'fetchPairs');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

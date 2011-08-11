@@ -40,4 +40,13 @@ class Repository_getEntityClassName_Test extends TestCase
 		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName(array()));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'getEntityClassName');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

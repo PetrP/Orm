@@ -32,4 +32,13 @@ class NoConventional_formatStorageToEntity_Test extends TestCase
 		$this->assertSame(array('id' => 123), $this->c->formatStorageToEntity(array('id' => 123)));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\NoConventional', 'formatStorageToEntity');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

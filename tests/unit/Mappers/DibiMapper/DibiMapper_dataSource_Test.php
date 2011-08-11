@@ -68,4 +68,13 @@ class DibiMapper_dataSource_Test extends TestCase
 		$this->assertInstanceOf('Orm\DataSourceCollection', $this->m->ds('table'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'dataSource');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

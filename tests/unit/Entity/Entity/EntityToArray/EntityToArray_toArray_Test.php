@@ -201,4 +201,14 @@ class EntityToArray_toArray_Test extends TestCase
 	{
 		$this->assertSame(0, $bits & $expected);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EntityToArray', 'toArray');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -18,4 +18,13 @@ class EntityIterator_count_Test extends EntityIterator_Base_Test
 		$this->assertSame(0, $this->i->count());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EntityIterator', 'count');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

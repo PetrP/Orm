@@ -37,4 +37,14 @@ class ArrayCollection_getResult_applyLimit_Test extends ArrayCollection_Base_Tes
 		$this->c->applyLimit(1, 3);
 		$this->assertSame(array($this->e[3]), $this->c->getResult());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'getResult');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

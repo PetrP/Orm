@@ -38,4 +38,13 @@ class DibiManyToManyMapper_remove_Test extends DibiManyToManyMapper_Connected_Te
 	}
 
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiManyToManyMapper', 'remove');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

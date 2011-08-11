@@ -27,4 +27,13 @@ class ArrayCollection_toArrayCollection_Test extends ArrayCollection_Base_Test
 		$this->assertAttributeSame(NULL, 'result', $c);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'toArrayCollection');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

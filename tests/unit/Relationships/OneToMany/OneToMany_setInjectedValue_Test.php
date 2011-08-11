@@ -19,4 +19,13 @@ class OneToMany_setInjectedValue_Test extends OneToMany_Test
 		$this->t(11, 10);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseToMany', 'setInjectedValue');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

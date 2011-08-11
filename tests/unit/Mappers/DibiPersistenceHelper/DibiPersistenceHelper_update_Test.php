@@ -23,4 +23,13 @@ class DibiPersistenceHelper_update_Test extends DibiPersistenceHelper_Test
 		$this->assertSame(NULL, $r);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiPersistenceHelper', 'update');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

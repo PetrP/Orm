@@ -44,4 +44,13 @@ class Repository_attach_Test extends TestCase
 		$this->assertSame($this->r, $e->getRepository());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'attach');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

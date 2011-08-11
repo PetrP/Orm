@@ -69,4 +69,14 @@ class RepositoryContainer_getRepository_Test extends TestCase
 		$this->m->tests;
 		$this->assertAttributeSame(true, 'frozen', $this->m->getContext());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'getRepository');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

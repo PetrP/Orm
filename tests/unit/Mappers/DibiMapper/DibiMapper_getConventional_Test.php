@@ -38,4 +38,13 @@ class DibiMapper_getConventional_Test extends TestCase
 		$this->m->getConventional();
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'getConventional');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -22,4 +22,13 @@ class InjectionFactory_call_Test extends TestCase
 		$this->assertSame(array('class', $e, NULL), $r);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\InjectionFactory', 'call');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

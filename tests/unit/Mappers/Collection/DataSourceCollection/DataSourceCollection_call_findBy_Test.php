@@ -35,4 +35,13 @@ class DataSourceCollection_call_findBy_Test extends DataSourceCollection_Base_Te
 		$this->c->findXyz('abc');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', '__call');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

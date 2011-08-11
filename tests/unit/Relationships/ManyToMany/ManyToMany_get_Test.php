@@ -60,4 +60,13 @@ class ManyToMany_get_Test extends ManyToMany_Test
 		$this->assertSame($ids2, $ids1);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseToMany', 'get');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

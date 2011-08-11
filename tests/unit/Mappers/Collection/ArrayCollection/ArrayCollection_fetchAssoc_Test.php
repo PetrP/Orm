@@ -15,4 +15,13 @@ class ArrayCollection_fetchAssoc_Test extends ArrayCollection_Base_Test
 		), $a);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'fetchAssoc');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

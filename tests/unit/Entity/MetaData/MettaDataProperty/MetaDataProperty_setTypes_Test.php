@@ -134,4 +134,14 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		$this->setExpectedException('UnexpectedValueException', "Param MetaData_Test2_Entity::\$enum must be 'a, b, c', 'd' given");
 		$e->enum = 'd';
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setTypes');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

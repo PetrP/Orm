@@ -36,4 +36,14 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		$this->assertInstanceOf('Orm\IEntity', $e);
 		$this->assertSame(1, $e->id);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'getById');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

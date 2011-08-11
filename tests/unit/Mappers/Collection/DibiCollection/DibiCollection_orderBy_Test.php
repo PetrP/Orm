@@ -121,4 +121,14 @@ class DibiCollection_orderBy_Test extends DibiCollection_Base_Test
 			array('e.b_bb', Dibi::DESC),
 		), 'sorting', $this->c);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'orderBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

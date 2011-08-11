@@ -42,4 +42,13 @@ class MetaData_toArray_Test extends TestCase
 		);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', 'toArray');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

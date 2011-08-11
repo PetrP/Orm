@@ -24,4 +24,14 @@ class ArrayCollection_getBy_Test extends ArrayCollection_Base_Test
 		$c = $this->c->getBy(array('string' => 'a', 'int' => 3));
 		$this->assertSame($this->e[2], $c);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'getBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

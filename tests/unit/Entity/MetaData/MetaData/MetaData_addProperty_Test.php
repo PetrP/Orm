@@ -52,4 +52,13 @@ class MetaData_addProperty_Test extends TestCase
 		$this->assertAttributeSame(array('id' => $property), 'properties', $m);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', 'addProperty');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

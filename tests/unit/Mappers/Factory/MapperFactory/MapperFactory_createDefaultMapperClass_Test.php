@@ -36,4 +36,13 @@ class MapperFactory_createDefaultMapperClass_Test extends TestCase
 		$this->assertSame('Repository\Repository\RepositoryMapper', $this->f->createDefaultMapperClass('Repository\Repository\RepositoryRepository'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MapperFactory', 'createDefaultMapperClass');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

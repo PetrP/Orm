@@ -29,4 +29,14 @@ class NoConventional_getManyToManyParam_Test extends TestCase
 	{
 		$this->assertSame('', $this->c->getManyToManyParam(''));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\NoConventional', 'getManyToManyParam');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

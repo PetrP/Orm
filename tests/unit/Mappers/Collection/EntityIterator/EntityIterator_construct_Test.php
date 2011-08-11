@@ -15,4 +15,14 @@ class EntityIterator_construct_Test extends EntityIterator_Base_Test
 		$this->assertInstanceOf('Traversable', $this->i);
 		$this->assertInstanceOf('Countable', $this->i);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EntityIterator', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

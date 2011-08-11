@@ -58,4 +58,14 @@ class BaseEntityFragment_setValues_Test extends TestCase
 		$this->e->setValues(array('methodPrivate2' => 123));
 		$this->assertTrue(true);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseEntityFragment', 'setValues');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

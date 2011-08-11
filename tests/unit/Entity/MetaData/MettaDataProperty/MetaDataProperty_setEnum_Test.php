@@ -31,4 +31,13 @@ class MetaDataProperty_setEnum_Test extends TestCase
 		$this->assertSame(array('constants' => array('xxx'), 'original' => 'MetaData_Test_Entity::XXX'), $this->getEnum());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setEnum');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

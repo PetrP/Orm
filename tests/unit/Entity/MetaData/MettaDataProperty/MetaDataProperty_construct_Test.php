@@ -90,4 +90,13 @@ class MetaDataProperty_construct_Test extends TestCase
 		$this->t("&");
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

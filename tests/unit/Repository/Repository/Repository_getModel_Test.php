@@ -16,4 +16,13 @@ class Repository_getModel_Test extends TestCase
 		$this->assertSame($m, $r->getModel());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'getModel');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

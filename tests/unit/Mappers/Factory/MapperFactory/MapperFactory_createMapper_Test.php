@@ -26,4 +26,13 @@ class MapperFactory_createMapper_Test extends TestCase
 		$this->assertSame((array) $r, (array) $m); // ArrayObject v constructoru pretypuje repository na array a obsahuje vsechny jeho property
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MapperFactory', 'createMapper');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -19,4 +19,14 @@ class FileMapper_loadData_Test extends FileMapper_Base_Test
 		file_put_contents($this->m->_getFilePath(), 'a:1:{s:1:"a";s:1:"b";}');
 		$this->assertSame(array('a' => 'b'), $this->m->_loadData());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\FileMapper', 'loadData');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

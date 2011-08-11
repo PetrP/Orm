@@ -53,4 +53,13 @@ class DataSourceCollection_fetchPairs_Test extends DataSourceCollection_BaseConn
 		$all = $this->c->fetchPairs('id');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'fetchPairs');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

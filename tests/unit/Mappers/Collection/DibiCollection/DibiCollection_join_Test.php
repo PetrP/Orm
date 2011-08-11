@@ -168,4 +168,13 @@ class DibiCollection_join_Test extends TestCase
 		$this->c->orderBy('join2->joinHasWhere->name');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', 'join');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -171,4 +171,14 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 			'None' => array(false, false, 'id'),
 		);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'getJoinInfo');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

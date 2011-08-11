@@ -46,4 +46,14 @@ class OneToMany_getModel_Test extends OneToMany_Test
 		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
 		$this->o2m->getModel(true);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\OneToMany', 'getModel');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

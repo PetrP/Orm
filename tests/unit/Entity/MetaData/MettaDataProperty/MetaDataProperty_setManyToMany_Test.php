@@ -146,6 +146,15 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaDataProperty', 'setManyToMany');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }
 
 class MetaDataProperty_setManyToMany_ManyToMany extends OldManyToMany

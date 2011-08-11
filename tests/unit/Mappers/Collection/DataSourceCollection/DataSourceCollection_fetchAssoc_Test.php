@@ -16,4 +16,13 @@ class DataSourceCollection_fetchAssoc_Test extends DataSourceCollection_BaseConn
 		), $this->c->fetchAssoc('id=string'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'fetchAssoc');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

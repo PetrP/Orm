@@ -26,4 +26,13 @@ class DibiMapper_createManyToManyMapper_Test extends TestCase
 		$this->assertAttributeSame('param_second_id', 'parentParam', $mmm);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'createManyToManyMapper');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

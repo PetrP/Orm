@@ -44,4 +44,13 @@ class Mapper_getConventional_Test extends TestCase
 		$this->assertInstanceOf('Mapper_getConventional_Conventional', $this->m->getConventional('Orm\IDatabaseConventional'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Mapper', 'getConventional');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

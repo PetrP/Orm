@@ -31,4 +31,13 @@ class ArrayCollection_fetchAll_Test extends ArrayCollection_Base_Test
 		$this->assertSame(array($this->e[1]), $this->c->fetchAll());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ArrayCollection', 'fetchAll');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

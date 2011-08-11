@@ -32,4 +32,13 @@ class NoConventional_getTable_Test extends TestCase
 		$this->assertSame('namespace_namespace_foo', $this->c->getTable($this->r2));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\NoConventional', 'getTable');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -38,4 +38,14 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 		$this->setExpectedException('Nette\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
 		$m->__getRepositoryClass('xxx', false);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'getRepositoryClass');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

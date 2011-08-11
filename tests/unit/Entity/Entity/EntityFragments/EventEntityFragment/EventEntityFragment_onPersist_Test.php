@@ -43,4 +43,13 @@ class EventEntityFragment_onPersist_Test extends EventEntityFragment_event_Base
 		$this->assertSame(1, $this->e->id);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EventEntityFragment', 'onPersist');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

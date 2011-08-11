@@ -69,4 +69,13 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 		', $this->c->orderBy('joins->joins->name')->orderBy('joins->name'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', 'join');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

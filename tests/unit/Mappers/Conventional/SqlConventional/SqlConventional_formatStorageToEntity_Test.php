@@ -116,4 +116,14 @@ class SqlConventional_formatStorageToEntity_Test extends SqlConventional_formatE
 		$this->t(parent::t('AAA', 'a_a_a'), 'aAA');
 		parent::t($this->t('_abc', 'Abc'), 'abc');
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\SqlConventional', 'formatStorageToEntity');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

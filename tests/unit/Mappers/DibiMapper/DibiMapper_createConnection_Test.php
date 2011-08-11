@@ -45,4 +45,14 @@ class DibiMapper_createConnection_Test extends TestCase
 		$this->setExpectedException('Orm\ServiceNotInstanceOfException', "Service 'dibi' is not instance of 'DibiConnection'.");
 		$m->getConnection();
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiMapper', 'createConnection');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

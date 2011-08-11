@@ -107,4 +107,14 @@ class RepositoryContainer_register_Test extends TestCase
 		$this->setExpectedException('Nette\InvalidStateException', "Repository alias 'xyz' is already registered");
 		$this->m->register('xyz', 'TestsRepository');
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'register');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

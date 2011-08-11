@@ -89,4 +89,14 @@ class FetchAssoc_apply_Test extends FetchAssoc_Base_Test
 			),
 		), $r);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\FetchAssoc', 'apply');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

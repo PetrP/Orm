@@ -104,4 +104,14 @@ class AnnotationClassParser_register_Test extends TestCase
 	{
 		$this->assertSame($this->p, $this->p->register('test', 'Countable'));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationClassParser', 'register');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

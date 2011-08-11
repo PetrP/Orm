@@ -60,4 +60,14 @@ class ValueEntityFragment_setReadOnlyValue_Test extends TestCase
 		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'setReadOnlyValue');
 		$this->assertTrue($r->isFinal());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'setReadOnlyValue');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

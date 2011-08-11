@@ -28,4 +28,13 @@ class RepositoryHelper_normalizeRepository_Test extends TestCase
 		$this->assertSame('repository_createmapper\repository_createmapper', $h->normalizeRepository($r));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryHelper', 'normalizeRepository');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -24,4 +24,13 @@ class PerformanceHelper_getDefaultKey_Test extends TestCase
 		$_SERVER['REQUEST_URI'] = $tmp;
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\PerformanceHelper', 'getDefaultKey');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

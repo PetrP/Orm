@@ -28,4 +28,13 @@ class DibiCollection_construct_Test extends DibiCollection_Base_Test
 		$this->assertSame(Dibi::ASC, DibiCollection::ASC);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiCollection', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

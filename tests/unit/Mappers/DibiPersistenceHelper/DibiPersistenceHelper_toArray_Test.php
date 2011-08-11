@@ -186,4 +186,13 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		), $r);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiPersistenceHelper', 'toArray');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

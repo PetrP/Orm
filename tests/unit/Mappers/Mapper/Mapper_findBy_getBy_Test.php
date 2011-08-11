@@ -36,4 +36,13 @@ class Mapper_findBy_getBy_Test extends TestCase
 		$this->t(array('name' => 'abc', 'id' => array(10,11,12)));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Mapper', 'findBy');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

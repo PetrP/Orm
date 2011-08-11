@@ -69,4 +69,13 @@ class OneToMany_remove_Test extends OneToMany_Test
 		$this->o2m->remove($e);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\OneToMany', 'remove');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

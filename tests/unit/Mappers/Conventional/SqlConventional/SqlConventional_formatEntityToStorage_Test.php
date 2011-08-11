@@ -98,4 +98,14 @@ class SqlConventional_formatEntityToStorage_Test extends TestCase
 		$this->t('aaa', 'aaa_id');
 		$this->t('bBB', 'b_b_b_id');
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\SqlConventional', 'formatEntityToStorage');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

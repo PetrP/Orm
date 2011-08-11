@@ -50,4 +50,13 @@ class FindByHelper_parse_Test extends TestCase
 		$this->t('findByFooAndBar', array('bar'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\FindByHelper', 'parse');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

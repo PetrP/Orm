@@ -54,4 +54,13 @@ class DibiPersistenceHelper_hasEntry_Test extends DibiPersistenceHelper_Test
 		$this->assertSame(true, $r);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DibiPersistenceHelper', 'hasEntry');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

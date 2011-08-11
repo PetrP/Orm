@@ -75,4 +75,14 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->t('0', true);
 		$this->t('xxx', true);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValidationHelper', 'isValid');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

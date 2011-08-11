@@ -35,4 +35,14 @@ class Repository_getMapper_Test extends TestCase
 		$this->assertInstanceOf('TestsMapper', $r->getMapper());
 		$this->assertSame($r->getMapper(), $r->getMapper());
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'getMapper');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

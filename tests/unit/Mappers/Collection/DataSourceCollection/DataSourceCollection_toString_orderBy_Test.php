@@ -46,4 +46,13 @@ class DataSourceCollection_toString_orderBy_Test extends DataSourceCollection_Ba
 		$this->a('SELECT * FROM `datasourcecollection` ORDER BY `aaa` ASC');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\DataSourceCollection', '__toString');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

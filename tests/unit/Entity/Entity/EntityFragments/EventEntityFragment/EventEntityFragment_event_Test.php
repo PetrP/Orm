@@ -54,4 +54,14 @@ class EventEntityFragment_event_Test extends EventEntityFragment_event_Base
 		$this->setExpectedException('Nette\InvalidStateException', 'Method EventEntityFragment2_Entity::onAfterPersist() or its descendant doesn\'t call parent::onAfterPersist().');
 		$e->___event($e, 'afterPersist', $this->r);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EventEntityFragment', '___event');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

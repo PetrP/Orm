@@ -38,4 +38,13 @@ class ValueEntityFragment_onLoad_Test extends TestCase
 		$e->___event($e, 'load', $this->r, array('id' => 0));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'onLoad');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -20,4 +20,13 @@ class ManyToMany_isMappedByParent_Test extends ManyToMany_Test
 		$this->assertFalse($this->m2m->isMappedByParent());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ManyToMany', 'isMappedByParent');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

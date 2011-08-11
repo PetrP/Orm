@@ -58,4 +58,14 @@ class Repository_remove_Test extends TestCase
 		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
 		$this->r->remove($e);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\Repository', 'remove');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

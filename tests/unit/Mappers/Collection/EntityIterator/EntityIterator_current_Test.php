@@ -24,4 +24,13 @@ class EntityIterator_current_Test extends EntityIterator_Base_Test
 		$this->assertSame(false, $this->i->valid());
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EntityIterator', 'current');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

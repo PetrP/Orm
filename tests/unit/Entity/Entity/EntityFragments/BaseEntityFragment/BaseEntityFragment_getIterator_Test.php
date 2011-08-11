@@ -21,4 +21,13 @@ class BaseEntityFragment_getIterator_Test extends TestCase
 		$this->assertSame($this->e->toArray(), iterator_to_array($this->e));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseEntityFragment', 'getIterator');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

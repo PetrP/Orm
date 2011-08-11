@@ -31,4 +31,13 @@ class MetaData_construct_Test extends TestCase
 		new MetaData('Nette\Utils\Html');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', '__construct');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

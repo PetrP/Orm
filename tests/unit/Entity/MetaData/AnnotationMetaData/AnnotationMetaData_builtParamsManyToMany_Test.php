@@ -46,4 +46,13 @@ class AnnotationMetaData_builtParamsManyToMany_Test extends TestCase
 		$this->assertSame(array('repositoryName', 'param', true), $this->p->builtParamsManyToMany('repositoryName param mapped'));
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\AnnotationMetaData', 'builtParamsManyToMany');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

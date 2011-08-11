@@ -345,4 +345,13 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t((float) 100000000000000, false); // 1.0E+14
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ValidationHelper', 'isValid');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

@@ -57,6 +57,16 @@ class OneToMany_getChildRepository_Test extends OneToMany_Test
 		$this->o2m = new MockOneToMany(new TestEntity, get_class($this->r), 'param');
 		$this->assertSame(NULL, $this->o2m->getCR(NULL));
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\BaseToMany', 'getChildRepository');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }
 
 class MockOneToMany extends OneToMany

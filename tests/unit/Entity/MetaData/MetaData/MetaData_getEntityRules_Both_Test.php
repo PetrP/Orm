@@ -58,4 +58,13 @@ class MetaData_getEntityRules_Both_Test extends TestCase
 		$this->assertSame(2, MetaData_Test_Entity::$count);
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\MetaData', 'getEntityRules');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

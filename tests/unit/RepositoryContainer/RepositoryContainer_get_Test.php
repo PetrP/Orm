@@ -39,4 +39,14 @@ class RepositoryContainer_get_Test extends TestCase
 		$this->setExpectedException('Nette\DeprecatedException', 'RepositoryContainer::get() is deprecated do not use it.');
 		RepositoryContainer::get(true);
 	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\RepositoryContainer', 'get');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }

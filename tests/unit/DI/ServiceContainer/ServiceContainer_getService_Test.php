@@ -111,4 +111,13 @@ class ServiceContainer_getService_Test extends TestCase
 		$this->c->getService('test', 'Orm\IMapperFactory');
 	}
 
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ServiceContainer', 'getService');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
 }
