@@ -95,6 +95,7 @@ class PhpParser extends Tokenizer
 		if ($orm)
 		{
 			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
+			$data = preg_replace('#namespace\s+HttpPHPUnit\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
 		}
 		$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
 
@@ -107,11 +108,11 @@ class PhpParser extends Tokenizer
 			{
 				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
 			}
-			if ($orm AND $inNamespace AND strpos($m[2], 'Orm') === 0)
+			if ($orm AND $inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
 			{
 				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
 			}
-			if (!$orm AND !$inNamespace AND strpos($m[2], 'Orm') === 0)
+			if (!$orm AND !$inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
 			{
 				return $m[0];
 			}
@@ -125,6 +126,7 @@ class PhpParser extends Tokenizer
 		if ($orm)
 		{
 			$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
+			$data = preg_replace('#\\\\?HttpPHPUnit\\\\\\\\?([a-z0-9_])#si', '$1', $data);
 		}
 		if ($nette)
 		{
