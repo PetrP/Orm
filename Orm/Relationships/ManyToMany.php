@@ -111,6 +111,31 @@ class ManyToMany extends BaseToMany implements IRelationship
 		return $entity;
 	}
 
+	/**
+	 * @param IEntity|scalar|array
+	 * @return bool
+	 */
+	final public function has($entity)
+	{
+		if ($entity = $this->createEntity($entity, false))
+		{
+			$hash = spl_object_hash($entity);
+			if (isset($this->add[$hash]))
+			{
+				return true;
+			}
+			if (isset($this->del[$hash]))
+			{
+				return false;
+			}
+			if (isset($entity->id))
+			{
+				return (bool) $this->getCollection()->getById($entity->id);
+			}
+		}
+		return false;
+	}
+
 	/** @return IEntityCollection */
 	final protected function getCollection()
 	{
@@ -241,14 +266,18 @@ class ManyToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * Vytvori / nacte / vrati entitu.
-	 * Vyprazdni get.
+	 * if invasive: Vyprazdni get.
 	 * @param IEntity|scalar|array
-	 * @return IEntity
+	 * @param bool
+	 * @return IEntity|NULL null only if not invasive
 	 */
-	final protected function createEntity($entity)
+	final protected function createEntity($entity, $invasive = true)
 	{
-		$entity = parent::createEntity($entity);
-		$this->get = NULL;
+		$entity = parent::createEntity($entity, $invasive);
+		if ($invasive)
+		{
+			$this->get = NULL;
+		}
 		return $entity;
 	}
 

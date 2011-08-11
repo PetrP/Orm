@@ -8,9 +8,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 {
 	private function tt($enter)
 	{
-		$e = $this->m2m->add($enter);
-		$this->m2m->remove($e);
-		return $e;
+		return $this->m2m->__createEntity($enter);
 	}
 
 	public function testEntity()

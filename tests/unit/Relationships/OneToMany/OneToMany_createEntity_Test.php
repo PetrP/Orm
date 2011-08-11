@@ -8,9 +8,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 {
 	private function tt($enter)
 	{
-		$e = $this->o2m->add($enter);
-		$this->o2m->remove($e);
-		return $e;
+		return $this->o2m->__createEntity($enter);
 	}
 
 	public function testEntity()

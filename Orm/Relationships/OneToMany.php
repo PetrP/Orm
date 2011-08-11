@@ -98,6 +98,24 @@ class OneToMany extends BaseToMany implements IRelationship
 		return $entity;
 	}
 
+	/**
+	 * @param IEntity|scalar|array
+	 * @return bool
+	 */
+	final public function has($entity)
+	{
+		if ($entity = $this->createEntity($entity, false))
+		{
+			if (isset($this->del[spl_object_hash($entity)]))
+			{
+				return false;
+			}
+			$param = $this->param;
+			return isset($entity->$param) AND $entity->$param === $this->parent;
+		}
+		return false;
+	}
+
 	/** @return IEntityCollection */
 	final protected function getCollection()
 	{
@@ -189,16 +207,20 @@ class OneToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * Vytvori / nacte / vrati entitu.
-	 * Smaze ji z poli edit, del a add. Vyprazdni get.
+	 * if invasive: Smaze ji z poli edit, del a add. Vyprazdni get.
 	 * @param IEntity|scalar|array
-	 * @return IEntity
+	 * @param bool
+	 * @return IEntity|NULL null only if not invasive
 	 */
-	final protected function createEntity($entity)
+	final protected function createEntity($entity, $invasive = true)
 	{
-		$entity = parent::createEntity($entity);
-		$hash = spl_object_hash($entity);
-		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
-		$this->get = NULL;
+		$entity = parent::createEntity($entity, $invasive);
+		if ($invasive)
+		{
+			$hash = spl_object_hash($entity);
+			unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
+			$this->get = NULL;
+		}
 		return $entity;
 	}
 

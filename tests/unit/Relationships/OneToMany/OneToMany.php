@@ -78,6 +78,12 @@ class OneToMany_OneToMany extends OneToMany
 	{
 		return $this->getCollection();
 	}
+
+	public function __createEntity($entity, $invasive = true)
+	{
+		if (func_num_args() > 1) return parent::createEntity($entity, $invasive);
+		return parent::createEntity($entity);
+	}
 }
 
 abstract class OneToMany_Test extends TestCase

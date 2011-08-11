@@ -93,11 +93,16 @@ abstract class BaseToMany extends Object
 	/**
 	 * Vytvori / nacte / vrati entitu.
 	 * @param IEntity|scalar|array
-	 * @return IEntity
+	 * @param bool
+	 * @return IEntity|NULL null only if not invasive
 	 */
-	protected function createEntity($entity)
+	protected function createEntity($entity, $invasive = true)
 	{
-		$repository = $this->getChildRepository(); // todo neni mozne kdyz parent neni pripojen na repo
+		$repository = $this->getChildRepository($invasive); // todo neni mozne kdyz parent neni pripojen na repo
+		if (!$repository)
+		{
+			return NULL;
+		}
 		if (!($entity instanceof IEntity) AND (is_array($entity) OR $entity instanceof Traversable))
 		{
 			$array = $entity instanceof Traversable ? iterator_to_array($entity) : $entity;
@@ -108,11 +113,18 @@ abstract class BaseToMany extends Object
 			}
 			if (!$entity)
 			{
+				if (!$invasive)
+				{
+					return NULL;
+				}
 				$entityName = $repository->getEntityClassName($array);
 				$entity = new $entityName; // todo construct pak nesmy mit povine parametry
 				$repository->attach($entity);
 			}
-			$entity->setValues($array);
+			if ($invasive)
+			{
+				$entity->setValues($array);
+			}
 		}
 		if (!($entity instanceof IEntity))
 		{
@@ -120,10 +132,21 @@ abstract class BaseToMany extends Object
 			$entity = $repository->getById($id);
 			if (!$entity)
 			{
+				if (!$invasive)
+				{
+					return NULL;
+				}
 				throw new UnexpectedValueException("Entity '$id' not found in `" . get_class($repository) . "`");
 			}
 		}
-		$repository->attach($entity);
+		if ($invasive)
+		{
+			$repository->attach($entity);
+		}
+		else if (!$repository->isAttachableEntity($entity))
+		{
+			return NULL;
+		}
 		return $entity;
 	}
 
