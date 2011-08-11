@@ -91,7 +91,7 @@ class DibiMapper_rollback_Test extends DibiMapper_Connected_Test
 	{
 		$r = new ReflectionMethod('Orm\DibiMapper', 'rollback');
 		$this->assertTrue($r->isPublic(), 'visibility');
-		$this->assertTrue($r->isFinal(), 'final');
+		$this->assertFalse($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}

@@ -118,7 +118,7 @@ class DibiMapper extends Mapper
 	 * @see IRepository::clean()
 	 * @return void
 	 */
-	final public function rollback()
+	public function rollback()
 	{
 		$connection = $this->getConnection();
 		$hash = spl_object_hash($connection);
@@ -222,7 +222,7 @@ class DibiMapper extends Mapper
 	 * @see self::persist()
 	 * @see self::remove()
 	 */
-	final protected function begin()
+	protected function begin()
 	{
 		$connection = $this->getConnection();
 		$hash = spl_object_hash($connection);
