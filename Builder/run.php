@@ -29,6 +29,7 @@ foreach (array(
 		'Orm',
 		'tests/unit',
 		'tests/boot.php',
+		'tests/TestCase.php',
 		'tests/libs/HttpPHPUnit',
 		'tests/libs/dump.php',
 	) as $p)
