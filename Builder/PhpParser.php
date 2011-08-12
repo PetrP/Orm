@@ -116,7 +116,7 @@ class PhpParser extends Tokenizer
 			{
 				return $m[0];
 			}
-			if (!$orm AND $inNamespace)
+			if ($inNamespace)
 			{
 				return $m[0];
 			}
