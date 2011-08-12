@@ -28,7 +28,7 @@ class ArrayMapper_unlock_Test extends TestCase
 
 	public function testNotEntered()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Critical section has not been initialized.');
+		$this->setExpectedException('Orm\ArrayMapperLockException', 'Critical section has not been initialized.');
 		$this->m1->_unlock();
 	}
 
@@ -43,7 +43,7 @@ class ArrayMapper_unlock_Test extends TestCase
 	{
 		$this->m1->_lock();
 		$this->m1->_unlock();
-		$this->setExpectedException('Nette\InvalidStateException', 'Critical section has not been initialized.');
+		$this->setExpectedException('Orm\ArrayMapperLockException', 'Critical section has not been initialized.');
 		$this->m1->_unlock();
 	}
 
@@ -51,7 +51,7 @@ class ArrayMapper_unlock_Test extends TestCase
 	{
 		$this->m1->_lock();
 		$this->m1->_unlock();
-		$this->setExpectedException('Nette\InvalidStateException', 'Critical section has not been initialized.');
+		$this->setExpectedException('Orm\ArrayMapperLockException', 'Critical section has not been initialized.');
 		$this->m2->_unlock();
 	}
 

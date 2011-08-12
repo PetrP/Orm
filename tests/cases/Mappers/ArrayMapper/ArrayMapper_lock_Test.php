@@ -29,7 +29,7 @@ class ArrayMapper_lock_Test extends TestCase
 	public function testEntered()
 	{
 		$this->m1->_lock();
-		$this->setExpectedException('Nette\InvalidStateException', 'Critical section has already been entered.');
+		$this->setExpectedException('Orm\ArrayMapperLockException', 'Critical section has already been entered.');
 		try {
 			$this->m1->_lock();
 		} catch (Exception $e) {
@@ -41,7 +41,7 @@ class ArrayMapper_lock_Test extends TestCase
 	public function testEnteredDiferentMapper()
 	{
 		$this->m1->_lock();
-		$this->setExpectedException('Nette\InvalidStateException', 'Critical section has already been entered.');
+		$this->setExpectedException('Orm\ArrayMapperLockException', 'Critical section has already been entered.');
 		try {
 			$this->m2->_lock();
 		} catch (Exception $e) {

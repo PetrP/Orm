@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\NotImplementedException;
-use Nette\InvalidStateException;
 use DateTime;
 use ArrayObject;
 use Exception;
@@ -245,7 +244,7 @@ abstract class ArrayMapper extends Mapper
 	{
 		if (self::$lock)
 		{
-			throw new InvalidStateException('Critical section has already been entered.');
+			throw new ArrayMapperLockException('Critical section has already been entered.');
 		}
 
 		static $handleParam;
@@ -263,7 +262,7 @@ abstract class ArrayMapper extends Mapper
 		if (!$handle)
 		{
 			// @codeCoverageIgnoreStart
-			throw new InvalidStateException("Unable initialize critical section.");
+			throw new ArrayMapperLockException("Unable initialize critical section.");
 		}	// @codeCoverageIgnoreEnd
 		flock(self::$lock = $handle, LOCK_EX);
 	}
@@ -276,7 +275,7 @@ abstract class ArrayMapper extends Mapper
 	{
 		if (!self::$lock)
 		{
-			throw new InvalidStateException('Critical section has not been initialized.');
+			throw new ArrayMapperLockException('Critical section has not been initialized.');
 		}
 		flock(self::$lock, LOCK_UN);
 		fclose(self::$lock);
