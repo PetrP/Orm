@@ -10,7 +10,7 @@ class EventEntityFragment_event_Base extends TestCase
 	{
 		$m = new RepositoryContainer;
 		$this->e = new EventEntityFragment_Entity;
-		$this->r = $m->EventEntityFragment;
+		$this->r = $m->EventEntityFragmentRepository;
 	}
 
 }
