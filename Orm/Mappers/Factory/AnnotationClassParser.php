@@ -154,7 +154,7 @@ class AnnotationClassParser extends Object
 				{
 					if ($dc = $this->defaultClassFallback($r, $class))
 					{
-						$dcReflection = new \ReflectionClass($dc);
+						$dcReflection = new ReflectionClass($dc);
 						if ($dcReflection->isInstantiable())
 						{
 							$defaultClass = $dcReflection->getName();

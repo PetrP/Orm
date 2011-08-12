@@ -2,7 +2,9 @@
 
 namespace AnnotationClassParser_get_ns;
 
-class ArrayObject implements \IteratorAggregate
+use IteratorAggregate;
+
+class ArrayObject implements IteratorAggregate
 {
 	function getIterator() {}
 }
