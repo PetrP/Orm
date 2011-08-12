@@ -27,12 +27,12 @@ try {
 $r = new RobotLoader;
 $r->setCacheStorage($storage);
 $r->addDirectory(__DIR__ . '/libs');
-$r->addDirectory(__DIR__ . '/unit');
+$r->addDirectory(__DIR__ . '/cases');
 $r->register();
 
 require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
-require_once __DIR__ . '/unit/Mappers/DibiMockEscapeMySqlDriver.php';
-require_once __DIR__ . '/unit/Mappers/DibiMockExpectedMySqlDriver.php';
+require_once __DIR__ . '/cases/Mappers/DibiMockEscapeMySqlDriver.php';
+require_once __DIR__ . '/cases/Mappers/DibiMockExpectedMySqlDriver.php';
 
 require_once __DIR__ . '/TestCase.php';
 

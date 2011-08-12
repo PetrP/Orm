@@ -27,7 +27,7 @@ foreach (array(
 	$b = new Builder($version, isset($_GET['dev']));
 	foreach (array(
 		'Orm',
-		'tests/unit',
+		'tests/cases',
 		'tests/boot.php',
 		'tests/TestCase.php',
 		'tests/libs/HttpPHPUnit',
