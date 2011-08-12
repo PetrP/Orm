@@ -1,8 +1,8 @@
 <?php
 
-use Nette\InvalidStateException;
 use Orm\MetaData;
 use Orm\RepositoryContainer;
+use Orm\RelationshipLoaderException;
 
 /**
  * @covers Orm\RelationshipLoader::check
@@ -22,31 +22,31 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_::$unexist neni asociace ktera by ukazovala zpet');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_::$unexist neni asociace ktera by ukazovala zpet');
 		$this->t('unexist');
 	}
 
 	public function testNotRelationship()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$id neni asociace ktera by ukazovala zpet');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$id neni asociace ktera by ukazovala zpet');
 		$this->t('id');
 	}
 
 	public function testParamEmpty()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyEmptyParam neni vyplnen param ktery by ukazoval zpet');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyEmptyParam neni vyplnen param ktery by ukazoval zpet');
 		$this->t('manyEmptyParam');
 	}
 
 	public function testAnotherParam()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherParam neukazuje zpet; ukazuje na jiny parametr (manyAnotherParam)');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherParam neukazuje zpet; ukazuje na jiny parametr (manyAnotherParam)');
 		$this->t('manyAnotherParam');
 	}
 
 	public function testAnotherRepo()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
 		$this->t('manyAnotherRepo');
 	}
 
@@ -61,8 +61,8 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		try {
 			$this->t('manyAnotherRepo');
 			throw new Exception;
-		} catch (InvalidStateException $e) {
-			$this->setExpectedException('Nette\InvalidStateException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
+		} catch (RelationshipLoaderException $e) {
+			$this->setExpectedException('Orm\RelationshipLoaderException', 'RelationshipLoader_ManyToMany1_Entity::$manyX {m:m} na druhe strane asociace RelationshipLoader_ManyToMany2_Entity::$manyAnotherRepo neukazuje zpet; ukazuje na jiny repository (RelationshipLoader_ManyToMany3_)');
 			$this->t('manyAnotherRepo');
 		}
 	}

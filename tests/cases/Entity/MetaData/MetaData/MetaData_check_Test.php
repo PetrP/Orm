@@ -21,7 +21,7 @@ class MetaData_check_Test extends TestCase
 		$m->addProperty('id', '')
 			->setManyToMany('xxx')
 		;
-		$this->setExpectedException('Nette\InvalidStateException', 'xxx isn\'t repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'xxx isn\'t repository in MetaData_Test_Entity::$id');
 		$m->check(new RepositoryContainer);
 	}
 

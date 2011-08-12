@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\InvalidStateException;
-
 require_once __DIR__ . '/IRelationship.php';
 require_once __DIR__ . '/BaseToMany.php';
 require_once __DIR__ . '/DibiManyToManyMapper.php';

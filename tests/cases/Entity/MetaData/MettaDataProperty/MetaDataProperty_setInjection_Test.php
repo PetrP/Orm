@@ -31,35 +31,35 @@ class MetaDataProperty_setInjection_Test extends TestCase
 	public function testTwice()
 	{
 		$this->p->setInjection();
-		$this->setExpectedException('Nette\InvalidStateException', 'Already has injection in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'Already has injection in MetaData_Test_Entity::$id');
 		$this->p->setInjection();
 	}
 
 	public function testMoreType()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'string|int');
-		$this->setExpectedException('Nette\InvalidStateException', "Injection expecte type as one class implements Orm\\IInjection, 'string|int' given in MetaData_Test_Entity::\$id");
+		$this->setExpectedException('Orm\MetaDataException', "Injection expecte type as one class implements Orm\\IInjection, 'string|int' given in MetaData_Test_Entity::\$id");
 		$this->p->setInjection();
 	}
 
 	public function testNotClass()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'FooBar');
-		$this->setExpectedException('Nette\InvalidStateException', "Injection expecte type as class implements Orm\\IInjection, 'FooBar' given in MetaData_Test_Entity::\$id");
+		$this->setExpectedException('Orm\MetaDataException', "Injection expecte type as class implements Orm\\IInjection, 'FooBar' given in MetaData_Test_Entity::\$id");
 		$this->p->setInjection();
 	}
 
 	public function testClassNotImplement()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'Nette\Utils\Html');
-		$this->setExpectedException('Nette\InvalidStateException', "Nette\\Utils\\Html does not implements Orm\\IEntityInjection in MetaData_Test_Entity::\$id");
+		$this->setExpectedException('Orm\MetaDataException', "Nette\\Utils\\Html does not implements Orm\\IEntityInjection in MetaData_Test_Entity::\$id");
 		$this->p->setInjection();
 	}
 
 	public function testClassNotInstantiable()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'Orm\Injection');
-		$this->setExpectedException('Nette\InvalidStateException', "Orm\\Injection is abstract or not instantiable in MetaData_Test_Entity::\$id");
+		$this->setExpectedException('Orm\MetaDataException', "Orm\\Injection is abstract or not instantiable in MetaData_Test_Entity::\$id");
 		$this->p->setInjection();
 	}
 
@@ -72,7 +72,7 @@ class MetaDataProperty_setInjection_Test extends TestCase
 	public function testJustInjection()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');
-		$this->setExpectedException('Nette\InvalidStateException', "There is not factory callback for injection in MetaData_Test_Entity::\$id, specify one or use Orm\\IEntityInjectionStaticLoader");
+		$this->setExpectedException('Orm\MetaDataException', "There is not factory callback for injection in MetaData_Test_Entity::\$id, specify one or use Orm\\IEntityInjectionStaticLoader");
 		$this->p->setInjection();
 	}
 
@@ -123,7 +123,7 @@ class MetaDataProperty_setInjection_Test extends TestCase
 	public function testCallbackBad()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');
-		$this->setExpectedException('Nette\InvalidStateException', "Injection expected valid callback, 'xyz' given in MetaData_Test_Entity::\$id, specify one or use Orm\\IEntityInjectionStaticLoader");
+		$this->setExpectedException('Orm\MetaDataException', "Injection expected valid callback, 'xyz' given in MetaData_Test_Entity::\$id, specify one or use Orm\\IEntityInjectionStaticLoader");
 		$this->p->setInjection('xyz');
 	}
 

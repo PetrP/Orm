@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 use Exception;
 
 require_once __DIR__ . '/IRelationship.php';
@@ -58,18 +57,18 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		$oldMainClass = $relationship === MetaData::ManyToMany ? 'Orm\OldManyToMany' : 'Orm\OldOneToMany';
 		if (!class_exists($class))
 		{
-			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} excepts $mainClass class as type, class '$class' doesn't exists");
+			throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} excepts $mainClass class as type, class '$class' doesn't exists");
 		}
 		$parents = class_parents($class);
 		if (strtolower($class) !== strtolower($mainClass) AND !isset($parents[$mainClass]))
 		{
-			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} Class '$class' isn't instanceof $mainClass");
+			throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} Class '$class' isn't instanceof $mainClass");
 		}
 		if (isset($parents[$oldMainClass]))
 		{
 			if ($repositoryName)
 			{
-				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You can't specify foreign repository for $oldMainClass");
+				throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} You can't specify foreign repository for $oldMainClass");
 			}
 		}
 		else
@@ -81,7 +80,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 			}
 			if (!$repositoryName)
 			{
-				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} You must specify foreign repository {{$relationship} repositoryName param}");
+				throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} You must specify foreign repository {{$relationship} repositoryName param}");
 			}
 			$this->checkParams = array($relationship, $entityName);
 		}
@@ -110,7 +109,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 
 		if (!$model->isRepository($this->repository))
 		{
-			throw new InvalidStateException("{$this->repository} isn't repository in {$entityName}::\${$parentParam}");
+			throw new RelationshipLoaderException("{$this->repository} isn't repository in {$entityName}::\${$parentParam}");
 		}
 
 		if ($relationship === MetaData::ManyToMany AND $param)
@@ -128,28 +127,28 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 					try {
 						if ($meta['relationship'] !== MetaData::ManyToMany)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neni asociace ktera by ukazovala zpet");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neni asociace ktera by ukazovala zpet");
 						}
 						$loader = $meta['relationshipParam'];
 						if (!$loader->param)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neni vyplnen param ktery by ukazoval zpet");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neni vyplnen param ktery by ukazoval zpet");
 						}
 						if (!isset($loader->canConnectWith[$lowerEntityName]))
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny repository ({$loader->repository})");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny repository ({$loader->repository})");
 						}
 						if ($loader->param !== $parentParam)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny parametr ({$loader->param})");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny parametr ({$loader->param})");
 						}
 						if ($this->mappedByThis === true AND $loader->mappedByThis === true)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
 						}
 						if ($this->mappedByThis === false AND $loader->mappedByThis === false)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
+							throw new RelationshipLoaderException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
 						}
 						continue;
 					} catch (Exception $e) {}
@@ -159,7 +158,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 			}
 			if (!$this->canConnectWith)
 			{
-				throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$this->repository}::\${$param} neni asociace ktera by ukazovala zpet");
+				throw new RelationshipLoaderException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$this->repository}::\${$param} neni asociace ktera by ukazovala zpet");
 			}
 		}
 	}
@@ -172,7 +171,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	 */
 	public function create($className, IEntity $parent, $value)
 	{
-		if ($this->class !== $className) throw new InvalidStateException();
+		if ($this->class !== $className) throw new RelationshipLoaderException();
 		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mappedByThis, $value);
 	}
 

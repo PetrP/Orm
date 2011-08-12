@@ -74,13 +74,13 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 
 	public function testInvalidCallback2()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "'MetaData_Test_Entity' '{enum AnnotationMetaData_builtParamsEnum_Test::invalidCallback()}': callback must return array, string given");
 		$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_Test::invalidCallback()');
 	}
 
 	public function testUnexistsConstant()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "'MetaData_Test_Entity' '{enum SameClass::UNEXISTS_CONSTANT}': Constant SameClass::UNEXISTS_CONSTANT not exists");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "'MetaData_Test_Entity' '{enum SameClass::UNEXISTS_CONSTANT}': Constant SameClass::UNEXISTS_CONSTANT not exists");
 		$this->p->builtParamsEnum('SameClass::UNEXISTS_CONSTANT');
 	}
 

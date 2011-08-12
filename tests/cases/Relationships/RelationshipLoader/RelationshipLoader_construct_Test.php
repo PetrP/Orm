@@ -14,7 +14,7 @@ class RelationshipLoader_construct_Test extends TestCase
 
 	public function testNoRepo()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Entity::$foo {1:m} You must specify foreign repository {1:m repositoryName param}');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'Entity::$foo {1:m} You must specify foreign repository {1:m repositoryName param}');
 		new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', '', 'param', 'Entity', 'foo');
 	}
 
@@ -26,7 +26,7 @@ class RelationshipLoader_construct_Test extends TestCase
 
 	public function testOldToMany()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Entity::$foo {1:m} You can\'t specify foreign repository for Orm\OldOneToMany');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'Entity::$foo {1:m} You can\'t specify foreign repository for Orm\OldOneToMany');
 		new RelationshipLoader(MetaData::OneToMany, 'RelationshipLoader_construct_OldOneToMany', 'repo', '', 'Entity', 'foo');
 	}
 

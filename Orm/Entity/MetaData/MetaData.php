@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 use Exception;
 use ReflectionClass;
 
@@ -53,10 +52,10 @@ class MetaData extends Object
 		}
 		else
 		{
-			if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
+			if (!class_exists($entityClass)) throw new MetaDataException("Class '$entityClass' doesn`t exists");
 			$r = new ReflectionClass($entityClass);
 			$entityClass = $r->getName();
-			if (!$r->implementsInterface('Orm\IEntity')) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
+			if (!$r->implementsInterface('Orm\IEntity')) throw new MetaDataException("'$entityClass' isn`t instance of Orm\\IEntity");
 		}
 		$this->entityClass = $entityClass;
 	}
@@ -75,11 +74,11 @@ class MetaData extends Object
 		{
 			if ($since === NULL)
 			{
-				throw new InvalidStateException($this->getEntityClass() . "::\$$name already defined (use param \$since to redefine)");
+				throw new MetaDataException($this->getEntityClass() . "::\$$name already defined (use param \$since to redefine)");
 			}
 			else if ($this->properties[$name]->getSince() === $since)
 			{
-				throw new InvalidStateException($this->getEntityClass() . "::\$$name is defined twice in $since");
+				throw new MetaDataException($this->getEntityClass() . "::\$$name is defined twice in $since");
 			}
 			$this->properties[$name] = new MetaDataProperty($this, $name, $types, $access, $since);
 		}

@@ -33,7 +33,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 
 	public function testWrite()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Neni mozne vytvaret write-only polozky: MetaData_Test_Entity::\$id");
+		$this->setExpectedException('Orm\MetaDataException', "Neni mozne vytvaret write-only polozky: MetaData_Test_Entity::\$id");
 		$this->setAccess(MetaData::WRITE);
 	}
 
@@ -55,7 +55,7 @@ class MetaDataProperty_setAccess_Test extends TestCase
 
 	public function testNonSense()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', 'Orm\MetaDataProperty access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
+		$this->setExpectedException('Orm\MetaDataException', 'Orm\MetaDataProperty access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
 		$this->setAccess('kukuk');
 	}
 

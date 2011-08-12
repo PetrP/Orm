@@ -8,8 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
-use Nette\InvalidArgumentException;
 use Nette\Callback;
 use Closure;
 use ReflectionClass;
@@ -56,7 +54,7 @@ class MetaDataProperty extends Object
 		$this->class = $meta->getEntityClass();
 		if (!preg_match('#^[a-zA-Z0-9_]+$#', $name))
 		{
-			throw new InvalidArgumentException("{$this->class} property name must be non-empty alphanumeric string, '$name' given");
+			throw new MetaDataException("{$this->class} property name must be non-empty alphanumeric string, '$name' given");
 		}
 		$this->name = $name;
 		$this->data['since'] = $since;
@@ -143,8 +141,8 @@ class MetaDataProperty extends Object
 	protected function setAccess($access, MetaData $meta)
 	{
 		if ($access === NULL) $access = MetaData::READWRITE;
-		if ($access === MetaData::WRITE) throw new InvalidStateException("Neni mozne vytvaret write-only polozky: {$this->class}::\${$this->name}");
-		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new InvalidArgumentException(__CLASS__ . ' access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
+		if ($access === MetaData::WRITE) throw new MetaDataException("Neni mozne vytvaret write-only polozky: {$this->class}::\${$this->name}");
+		if (!in_array($access, array(MetaData::READ, MetaData::READWRITE), true)) throw new MetaDataException(__CLASS__ . ' access is Orm\MetaData::READ or Orm\MetaData::READWRITE allowed');
 		$methods = $meta->getMethods($this->name);
 		if ($methods['is'] AND $this->data['types'] === array('bool' => 'bool'))
 		{
@@ -169,10 +167,10 @@ class MetaDataProperty extends Object
 	 */
 	public function setOneToOne($repositoryName)
 	{
-		if (isset($this->data['relationship'])) throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
+		if (isset($this->data['relationship'])) throw new MetaDataException("Already has relationship in {$this->class}::\${$this->name}");
 		if (!$repositoryName)
 		{
-			throw new InvalidStateException("You must specify foreign repository in {$this->class}::\${$this->name}");
+			throw new MetaDataException("You must specify foreign repository in {$this->class}::\${$this->name}");
 		}
 		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
@@ -214,7 +212,7 @@ class MetaDataProperty extends Object
 	{
 		if (isset($this->data['relationship']))
 		{
-			throw new InvalidStateException("Already has relationship in {$this->class}::\${$this->name}");
+			throw new MetaDataException("Already has relationship in {$this->class}::\${$this->name}");
 		}
 		$mainClass = $relationship === MetaData::ManyToMany ? 'Orm\ManyToMany' : 'Orm\OneToMany';
 		if (isset($this->data['types']['mixed']))
@@ -225,7 +223,7 @@ class MetaDataProperty extends Object
 
 		if (count($this->data['types']) != 1)
 		{
-			throw new InvalidStateException("{$this->class}::\${$this->name} {{$relationship}} excepts $mainClass class as type, '$class' given");
+			throw new MetaDataException("{$this->class}::\${$this->name} {{$relationship}} excepts $mainClass class as type, '$class' given");
 		}
 
 
@@ -336,28 +334,28 @@ class MetaDataProperty extends Object
 	{
 		if (isset($this->data['injection']))
 		{
-			throw new InvalidStateException("Already has injection in {$this->class}::\${$this->name}");
+			throw new MetaDataException("Already has injection in {$this->class}::\${$this->name}");
 		}
 
 		$class = $this->originalTypes;
 		if (count($this->data['types']) != 1)
 		{
-			throw new InvalidStateException("Injection expecte type as one class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
+			throw new MetaDataException("Injection expecte type as one class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
 		}
 		if (!class_exists($class))
 		{
-			throw new InvalidStateException("Injection expecte type as class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
+			throw new MetaDataException("Injection expecte type as class implements Orm\\IInjection, '{$class}' given in {$this->class}::\${$this->name}");
 		}
 		$reflection = new ReflectionClass($class);
 		$class = $reflection->getName();
 
 		if (!$reflection->implementsInterface('Orm\IEntityInjection'))
 		{
-			throw new InvalidStateException("$class does not implements Orm\\IEntityInjection in {$this->class}::\${$this->name}");
+			throw new MetaDataException("$class does not implements Orm\\IEntityInjection in {$this->class}::\${$this->name}");
 		}
 		if (!$reflection->isInstantiable())
 		{
-			throw new InvalidStateException("$class is abstract or not instantiable in {$this->class}::\${$this->name}");
+			throw new MetaDataException("$class is abstract or not instantiable in {$this->class}::\${$this->name}");
 		}
 
 		if ($factory instanceof IEntityInjectionLoader)
@@ -376,10 +374,10 @@ class MetaDataProperty extends Object
 		{
 			if (!$factory)
 			{
-				throw new InvalidStateException("There is not factory callback for injection in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
+				throw new MetaDataException("There is not factory callback for injection in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
 			}
 			$tmp = is_object($factory) ? get_class($factory) : (is_string($factory) ? $factory : gettype($factory));
-			throw new InvalidStateException("Injection expected valid callback, '$tmp' given in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
+			throw new MetaDataException("Injection expected valid callback, '$tmp' given in {$this->class}::\${$this->name}, specify one or use Orm\\IEntityInjectionStaticLoader");
 		}
 
 		$this->data['injection'] = InjectionFactory::create($factory, $class);
@@ -401,7 +399,7 @@ class MetaDataProperty extends Object
 			$repositoryName = $this->data['relationshipParam'];
 			if (!$model->isRepository($repositoryName))
 			{
-				throw new InvalidStateException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
+				throw new MetaDataException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
 			}
 		}
 		else if ($relationship === MetaData::OneToMany OR $relationship === MetaData::ManyToMany)

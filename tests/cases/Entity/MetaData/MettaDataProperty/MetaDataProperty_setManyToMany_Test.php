@@ -54,7 +54,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testTwice()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
 			->setManyToMany()
 			->setManyToMany()
@@ -63,7 +63,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testMultipleType()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, \'string|int\' given');
+		$this->setExpectedException('Orm\MetaDataException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
 			->setManyToMany()
 		;
@@ -71,7 +71,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testBadType_unexist()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, class \'BadClass\' doesn\'t exists');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
 			->setManyToMany()
 		;
@@ -79,7 +79,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testBadType()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test_Entity::$id {m:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\ManyToMany');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\ManyToMany');
 		$this->m->addProperty('id', 'Nette\Utils\Html')
 			->setManyToMany()
 		;
@@ -106,7 +106,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = true;
 		MetaData_Test4_Entity::$mapped = true;
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany');
 		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 
@@ -115,7 +115,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = false;
 		MetaData_Test4_Entity::$mapped = false;
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
 		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 
@@ -124,7 +124,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		MetaData::clean();
 		MetaData_Test3_Entity::$mapped = NULL;
 		MetaData_Test4_Entity::$mapped = NULL;
-		$this->setExpectedException('Nette\InvalidStateException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test4_Entity::$many a MetaData_Test3_Entity::$many {m:m} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m MetaData_Test3 many mapped}');
 		MetaData::getEntityRules('MetaData_Test3_Entity', new RepositoryContainer);
 	}
 

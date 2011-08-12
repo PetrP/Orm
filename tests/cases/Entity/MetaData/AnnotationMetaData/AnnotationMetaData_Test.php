@@ -54,37 +54,37 @@ class AnnotationMetaData_Test extends TestCase
 
 	public function testEmpty()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@property ' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@property ' in AnnotationMetaData_MockEntity");
 		$this->x('@property');
 	}
 
 	public function testInvalid()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@property blabla' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@property blabla' in AnnotationMetaData_MockEntity");
 		$this->x('@property blabla');
 	}
 
 	public function testInvalid2()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@property-read blabla' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@property-read blabla' in AnnotationMetaData_MockEntity");
 		$this->x('@property-read blabla');
 	}
 
 	public function testInvalid3()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@PrOPERTY ' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@PrOPERTY ' in AnnotationMetaData_MockEntity");
 		$this->x('@PrOPERTY');
 	}
 
 	public function testInvalid4()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@property-reed \$bla' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@property-reed \$bla' in AnnotationMetaData_MockEntity");
 		$this->x('@property-reed $bla');
 	}
 
 	public function testInvalid5()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format '@propurty \$bla' in AnnotationMetaData_MockEntity");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format '@propurty \$bla' in AnnotationMetaData_MockEntity");
 		$this->x('@propurty $bla');
 	}
 
@@ -103,37 +103,37 @@ class AnnotationMetaData_Test extends TestCase
 
 	public function testMacroInvalid()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Unknown annotation macro '{xyz}' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Unknown annotation macro '{xyz}' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property $bla {xyz}');
 	}
 
 	public function testMacroInvalid2()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format, extra curly bracket '{' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format, extra curly bracket '{' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property $bla {');
 	}
 
 	public function testMacroInvalid3()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format, extra curly bracket '}' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format, extra curly bracket '}' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property $bla }');
 	}
 
 	public function testMacroWithCurlyBracked()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format, extra curly bracket '{default {}' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format, extra curly bracket '{default {}' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property $bla {default {}');
 	}
 
 	public function testMacroMultiInvalid()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format, extra curly bracket 'default abc}' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format, extra curly bracket 'default abc}' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property mixed $bla default abc} {enum a,b,c}');
 	}
 
 	public function testMacroMultiInvalid2()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Invalid annotation format, extra curly bracket '{default abc' in AnnotationMetaData_MockEntity::\$bla");
+		$this->setExpectedException('Orm\AnnotationMetaDataException', "Invalid annotation format, extra curly bracket '{default abc' in AnnotationMetaData_MockEntity::\$bla");
 		$this->x('@property $bla {default abc {enum a,b,c}');
 	}
 

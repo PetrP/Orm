@@ -38,7 +38,7 @@ class MetaDataProperty_setManyToOne_Test extends TestCase
 
 	public function testTwice()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Already has relationship in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setManyToOne('MetaData_Test2')
 			->setManyToOne('MetaData_Test2')
@@ -47,7 +47,7 @@ class MetaDataProperty_setManyToOne_Test extends TestCase
 
 	public function testNoRepo()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'You must specify foreign repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'You must specify foreign repository in MetaData_Test_Entity::$id');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setManyToOne('')
 		;
@@ -58,7 +58,7 @@ class MetaDataProperty_setManyToOne_Test extends TestCase
 		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setManyToOne('BlaBlaBla')
 		;
-		$this->setExpectedException('Nette\InvalidStateException', 'BlaBlaBla isn\'t repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'BlaBlaBla isn\'t repository in MetaData_Test_Entity::$id');
 		$p->check($this->model);
 	}
 

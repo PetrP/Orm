@@ -42,7 +42,7 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 
 	public function testBadClass()
 	{
-		$this->setExpectedException('Nette\InvalidStateException');
+		$this->setExpectedException('Orm\RelationshipLoaderException');
 		$this->l->create('Orm\ManyToMany', $this->e, array(10,11,12,13));
 	}
 

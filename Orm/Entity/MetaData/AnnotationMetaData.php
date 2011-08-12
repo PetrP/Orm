@@ -9,8 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\Reflection\AnnotationsParser;
-use Nette\InvalidStateException;
-use Nette\InvalidArgumentException;
 use Exception;
 use ReflectionClass;
 
@@ -145,7 +143,7 @@ class AnnotationMetaData extends Object
 		else
 		{
 			$tmp = $mode === MetaData::READ ? '-read' : '';
-			throw new InvalidStateException("Invalid annotation format '@property$tmp $string' in $class");
+			throw new AnnotationMetaDataException("Invalid annotation format '@property$tmp $string' in $class");
 		}
 
 		$propertyName = $property;
@@ -157,7 +155,7 @@ class AnnotationMetaData extends Object
 		if (preg_match('#\{|\}#', $string))
 		{
 			$string = trim($string);
-			throw new InvalidStateException("Invalid annotation format, extra curly bracket '$string' in $class::\$$propertyName");
+			throw new AnnotationMetaDataException("Invalid annotation format, extra curly bracket '$string' in $class::\$$propertyName");
 		}
 	}
 
@@ -186,7 +184,7 @@ class AnnotationMetaData extends Object
 				if (strncasecmp($annotation, 'prop', 4) === 0)
 				{
 					$string = current($tmp);
-					throw new InvalidStateException("Invalid annotation format '@$annotation $string' in $class");
+					throw new AnnotationMetaDataException("Invalid annotation format '@$annotation $string' in $class");
 				}
 			}
 		}
@@ -209,7 +207,7 @@ class AnnotationMetaData extends Object
 		if (!method_exists($property, $method))
 		{
 			$class = $property->getSince();
-			throw new InvalidStateException("Unknown annotation macro '{{$match[1]}}' in $class::\$$propertyName");
+			throw new AnnotationMetaDataException("Unknown annotation macro '{{$match[1]}}' in $class::\$$propertyName");
 		}
 		$params = isset($match[2]) ? $match[2] : NULL;
 		$paramMethod = "builtParams{$name}";
@@ -285,7 +283,7 @@ class AnnotationMetaData extends Object
 		if (preg_match('#^([a-z0-9_\\\\]+::[a-z0-9_]+)\(\)$#si', trim($string), $tmp))
 		{
 			$enum = callback($this->parseSelf($tmp[1]))->invoke();
-			if (!is_array($enum)) throw new InvalidStateException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
+			if (!is_array($enum)) throw new AnnotationMetaDataException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
 			$original = $enum = array_keys($enum);
 		}
 		else
@@ -378,7 +376,7 @@ class AnnotationMetaData extends Object
 		}
 		else if (strpos($value, '::') !== false)
 		{
-			throw new InvalidArgumentException("'{$this->class}' '$errorMessage': Constant $value not exists");
+			throw new AnnotationMetaDataException("'{$this->class}' '$errorMessage': Constant $value not exists");
 		}
 		else
 		{

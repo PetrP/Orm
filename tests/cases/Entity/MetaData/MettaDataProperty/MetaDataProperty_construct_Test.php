@@ -50,43 +50,43 @@ class MetaDataProperty_construct_Test extends TestCase
 
 	public function testNonAsciiName1()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'ábč' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'ábč' given");
 		$this->t('ábč');
 	}
 
 	public function testNonAsciiNameEmpty()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '' given");
 		$this->t('');
 	}
 
 	public function testNonAsciiName2()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'ab-c' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'ab-c' given");
 		$this->t('ab-c');
 	}
 
 	public function testNonAsciiName3()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '");
 		$this->t("\0");
 	}
 
 	public function testNonAsciiName4()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'abc\tasd' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'abc\tasd' given");
 		$this->t("abc\tasd");
 	}
 
 	public function testNonAsciiName5()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'abc asd' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, 'abc asd' given");
 		$this->t("abc asd");
 	}
 
 	public function testNonAsciiName6()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '&' given");
+		$this->setExpectedException('Orm\MetaDataException', "MetaData_Test_Entity property name must be non-empty alphanumeric string, '&' given");
 		$this->t("&");
 	}
 
