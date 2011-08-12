@@ -8,7 +8,7 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\Environment;
+use ArrayAccess;
 
 /**
  * Pamatuje si ktere id byli na teto strance potreba a umoznuje je pak nacist najednou jednim dotazem.
@@ -39,14 +39,16 @@ class PerformanceHelper extends Object
 	/** @var array */
 	private static $toLoad;
 
-	/** @param IRepository */
-	public function __construct(IRepository $repository)
+	/**
+	 * @param IRepository
+	 * @param ArrayAccess
+	 */
+	public function __construct(IRepository $repository, ArrayAccess $cache)
 	{
 		if (!self::$keyCallback) return;
 		$this->repositoryClass = get_class($repository);
 		if (!isset(self::$toLoad))
 		{
-			$cache = $this->getCache();
 			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
 			if (strlen($key) > 50)
@@ -96,10 +98,10 @@ class PerformanceHelper extends Object
 		return $tmp;
 	}
 
-	/** @return Nette\Caching\Cache */
-	protected function getCache()
+	/** @deprecated */
+	final protected function getCache()
 	{
-		return Environment::getCache(__CLASS__);
+		throw new DeprecatedException(array(__CLASS__, 'getCache()', 'constructor injection'));
 	}
 
 	/**

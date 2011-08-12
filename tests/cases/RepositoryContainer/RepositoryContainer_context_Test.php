@@ -49,4 +49,12 @@ class RepositoryContainer_context_Test extends TestCase
 
 		$r->setValue(NULL);
 	}
+
+	public function testPerformanceHelperCache()
+	{
+		$cache = $this->c->getService('performanceHelperCache');
+		$this->assertInstanceOf('ArrayAccess', $cache);
+		$this->assertInstanceOf('Nette\Caching\Cache', $cache);
+		$this->assertSame('Orm\PerformanceHelper', $cache->getNamespace());
+	}
 }

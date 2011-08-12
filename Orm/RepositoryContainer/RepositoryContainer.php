@@ -80,6 +80,12 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		$this->container->addService('dibi', function () {
 			return dibi::getConnection();
 		});
+		if (class_exists('Nette\Environment'))
+		{
+			$this->container->addService('performanceHelperCache', function () {
+				return \Nette\Environment::getCache('Orm\PerformanceHelper');
+			});
+		}
 	}
 
 	/** @return IServiceContainer */

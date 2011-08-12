@@ -25,7 +25,7 @@ class PerformanceHelper_disable_Test extends TestCase
 		$this->originToLoad = $this->readAttribute('Orm\PerformanceHelper', 'toLoad');
 		PerformanceHelper::$keyCallback = NULL;
 		PerformanceHelper::$toSave = NULL;
-		$this->ph = new PerformanceHelper($this->r);
+		$this->ph = new PerformanceHelper($this->r, new ArrayObject);
 	}
 
 	protected function tearDown()

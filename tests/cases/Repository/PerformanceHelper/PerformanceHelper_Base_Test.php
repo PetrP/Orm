@@ -22,7 +22,6 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->wipe();
 		$this->originCb = PerformanceHelper::$keyCallback;
 		$this->cache = new PerformanceHelper_ArrayObject;
-		PerformanceHelper_Base_PerformanceHelper::$cache = $this->cache;
 		PerformanceHelper::$keyCallback = array($this , 'cb');
 	}
 
@@ -47,19 +46,19 @@ class PerformanceHelper_Base_Test extends TestCase
 
 	public function test()
 	{
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
-		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
-		$this->assertAttributeSame(array(), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'Orm\PerformanceHelper');
+		$this->assertAttributeSame(array(), 'toLoad', 'Orm\PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 
 		$h->access(1);
 		$h->access(2);
 
 		$this->assertAttributeSame(array(1 => 1, 2 => 2), 'access', $h);
-		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toSave', 'Orm\PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 	}
 
@@ -67,14 +66,14 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2);
 		$this->cache['*']['TestsRepository'] = array(3 => 3);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(), 'access', $h);
-		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
-		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array()), 'toSave', 'Orm\PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(1 => 1, 2 => 2)), 'toLoad', 'Orm\PerformanceHelper');
 		$this->assertSame(array(1 => 1, 2 => 2), $h->get());
-		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'Orm\PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 	}
 
@@ -83,18 +82,18 @@ class PerformanceHelper_Base_Test extends TestCase
 		$this->cb = NULL;
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2);
 		$this->cache['*']['TestsRepository'] = array(3 => 3);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('*', $this->cache->lastIndex);
 		$this->assertAttributeSame('TestsRepository', 'repositoryClass', $h);
 		$this->assertAttributeSame(array(3 => 3), 'access', $h);
-		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
-		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toSave', 'Orm\PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3)), 'toLoad', 'Orm\PerformanceHelper');
 		$this->assertSame(array(3 => 3), $h->get());
-		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => NULL), 'toLoad', 'Orm\PerformanceHelper');
 		$this->assertSame(NULL, $h->get());
 
 		$h->access(2);
-		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3, 2 => 2)), 'toSave', 'PerformanceHelper_Base_PerformanceHelper');
+		$this->assertAttributeSame(array('TestsRepository' => array(3 => 3, 2 => 2)), 'toSave', 'Orm\PerformanceHelper');
 	}
 
 	/**
@@ -103,7 +102,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	public function testGetById_IdNotPerformedNotExist()
 	{
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
@@ -128,7 +127,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	public function testGetById_IdNotPerformedExist()
 	{
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 4 => 4, 999 => 999);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
@@ -153,7 +152,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	public function testGetById_IdIsPerformedNotExist()
 	{
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
@@ -177,7 +176,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	public function testGetById_IdIsPerformedExist()
 	{
 		$this->cache[__CLASS__]['TestsRepository'] = array(1 => 1, 2 => 2, 4 => 4, 999 => 999);
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
 		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
@@ -201,7 +200,7 @@ class PerformanceHelper_Base_Test extends TestCase
 	{
 		PerformanceHelper::$keyCallback = function () { return str_repeat('a', 51); };
 		$this->assertSame(51, strlen(callback(PerformanceHelper::$keyCallback)->invoke()));
-		$h = new PerformanceHelper_Base_PerformanceHelper($this->r);
+		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('aaaaaaaaaaaaaaaaaaaa1bb77918e5695c944be02c16ae29b25e', $this->cache->lastIndex);
 	}
 

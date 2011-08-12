@@ -104,7 +104,7 @@ abstract class Repository extends Object implements IRepository
 	public function __construct(IRepositoryContainer $model)
 	{
 		$this->model = $model;
-		$this->performanceHelper = new PerformanceHelper($this);
+		$this->performanceHelper = new PerformanceHelper($this, $model->getContext()->getService('performanceHelperCache', 'ArrayAccess'));
 	}
 
 	/**
