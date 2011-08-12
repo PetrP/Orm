@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\InvalidStateException;
 use Exception;
 
 require_once __DIR__ . '/IEntity.php';
@@ -26,11 +25,14 @@ require_once __DIR__ . '/EntityHelper.php';
 abstract class Entity extends BaseEntityFragment implements IEntity
 {
 
-	/** @return scalar */
+	/**
+	 * @return scalar
+	 * @throws EntityNotPersistedException
+	 */
 	final public function getId()
 	{
 		$id = $this->getValue('id', false);
-		if (!$id) throw new InvalidStateException('You must persist entity first');
+		if (!$id) throw new EntityNotPersistedException(EntityHelper::toString($this) . ' is not persisted.');
 		return $id;
 	}
 

@@ -24,7 +24,7 @@ class Entity_getId_Test extends TestCase
 	public function testUnpersisted()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('Nette\InvalidStateException', 'You must persist entity first');
+		$this->setExpectedException('Orm\EntityNotPersistedException', 'TestEntity is not persisted.');
 		$e->id;
 	}
 

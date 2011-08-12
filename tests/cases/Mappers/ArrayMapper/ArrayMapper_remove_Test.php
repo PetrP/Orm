@@ -28,7 +28,7 @@ class ArrayMapper_remove_Test extends TestCase
 	public function testNew()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('Nette\InvalidStateException', 'You must persist entity first');
+		$this->setExpectedException('Orm\EntityNotPersistedException', 'TestEntity is not persisted.');
 		$this->m->remove($e);
 	}
 

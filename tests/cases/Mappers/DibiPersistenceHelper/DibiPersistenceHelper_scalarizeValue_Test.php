@@ -90,7 +90,7 @@ class DibiPersistenceHelper_scalarizeValue_Test extends DibiPersistenceHelper_Te
 
 	public function testEntityNotPersist()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'You must persist entity first');
+		$this->setExpectedException('Orm\EntityNotPersistedException', 'DibiPersistenceHelper_Entity is not persisted');
 		$this->h->call('scalarizeValue', array(new DibiPersistenceHelper_Entity, 'miXed', $this->e));
 	}
 
