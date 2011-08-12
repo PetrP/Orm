@@ -8,7 +8,7 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
+use Exception;
 use ReflectionClass;
 use Dibi;
 
@@ -117,7 +117,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		if (!isset(self::$instance))
 		{
-			throw new InvalidStateException('RepositoryContainer hasn\'t been instanced yet.');
+			throw new Exception('RepositoryContainer hasn\'t been instanced yet.');
 		}
 		if (func_num_args() === 0 OR func_get_arg(0) !== NULL)
 		{

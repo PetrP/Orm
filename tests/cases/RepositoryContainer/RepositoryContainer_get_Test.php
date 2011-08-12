@@ -22,7 +22,7 @@ class RepositoryContainer_get_Test extends TestCase
 		$p = new ReflectionProperty('Orm\RepositoryContainer', 'instance');
 		setAccessible($p);
 		$p->setValue(NULL);
-		$this->setExpectedException('Nette\InvalidStateException', 'RepositoryContainer hasn\'t been instanced yet.');
+		$this->setExpectedException('Exception', 'RepositoryContainer hasn\'t been instanced yet.');
 		RepositoryContainer::get();
 	}
 

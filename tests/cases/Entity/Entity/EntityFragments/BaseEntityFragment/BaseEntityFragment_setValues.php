@@ -1,6 +1,5 @@
 <?php
 
-use Nette\InvalidStateException;
 use Orm\Entity;
 
 /**
@@ -22,12 +21,12 @@ class BaseEntityFragment_setValues_Entity extends Entity
 
 	protected function setMethodPrivate($value)
 	{
-		throw new InvalidStateException();
+		throw new Exception;
 	}
 
 	private function setMethodPrivate2($value)
 	{
-		throw new InvalidStateException();
+		throw new Exception;
 	}
 
 }

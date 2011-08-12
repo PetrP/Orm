@@ -1,6 +1,5 @@
 <?php
 
-use Nette\InvalidStateException;
 use Orm\Entity;
 use Orm\Repository;
 use Orm\ArrayMapper;
@@ -125,7 +124,7 @@ class EventEntityFragment2_Entity extends Entity
 
 	protected function onUserDefined()
 	{
-		throw new InvalidStateException;
+		throw new Exception;
 	}
 
 }

@@ -1,6 +1,5 @@
 <?php
 
-use Nette\InvalidStateException;
 use Orm\Entity;
 
 /**
@@ -32,7 +31,7 @@ class ValueEntityFragment_default_Entity extends Entity
 
 	private function getDefaultTestMethod3()
 	{
-		throw new InvalidStateException;
+		throw Exception;
 	}
 
 	protected function getDefaultTestMethodAndMeta()

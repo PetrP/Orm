@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\UnexpectedValueException;
 use Exception;
 use ReflectionMethod;
 

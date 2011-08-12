@@ -8,8 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use InvalidArgumentException;
-use Nette\InvalidStateException;
 
 /**
  * Udalosti

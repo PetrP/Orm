@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 use Exception;
 
 require_once __DIR__ . '/IRepository.php';
