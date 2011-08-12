@@ -180,7 +180,7 @@ class PhpParser extends Tokenizer
 			}
 			if (!$tags)
 			{
-				if (!$isDev) throw new Exception;
+				if (!$isDev) throw new Exception('Add dev parametr to url: run.php?dev');
 				$tags = array(array('0.0.0.dev', '0000-00-00'));
 			}
 			if (count($tags) > 1) throw new Exception;
