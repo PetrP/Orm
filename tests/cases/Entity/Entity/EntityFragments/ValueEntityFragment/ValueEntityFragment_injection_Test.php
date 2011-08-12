@@ -29,13 +29,13 @@ class ValueEntityFragment_injection_Test extends TestCase
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);
 		$this->assertSame(NULL, $this->e->many->getInjectedValue());
-		$this->setExpectedException('Nette\InvalidStateException', 'ValueEntityFragment_injectionEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'ValueEntityFragment_injectionEntity is not attached to repository.');
 		$this->e->many->persist();
 	}
 
 	public function testNewWrite()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'ValueEntityFragment_injectionEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'ValueEntityFragment_injectionEntity is not attached to repository.');
 		$this->e->many = array(1,2,3);
 	}
 

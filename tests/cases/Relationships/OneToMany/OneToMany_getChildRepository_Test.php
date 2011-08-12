@@ -35,14 +35,14 @@ class OneToMany_getChildRepository_Test extends OneToMany_Test
 	public function testNotPersist_RepoName1()
 	{
 		$this->o2m = new MockOneToMany(new TestEntity, get_class($this->r), 'param');
-		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
 		$this->o2m->getCR();
 	}
 
 	public function testNotPersist_RepoName2()
 	{
 		$this->o2m = new MockOneToMany(new TestEntity, get_class($this->r), 'param');
-		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
 		$this->o2m->getCR(true);
 	}
 

@@ -14,7 +14,7 @@ class OneToMany_getModel_Test extends OneToMany_Test
 	public function testNotHas()
 	{
 		$this->e->___event($this->e, 'afterRemove', $this->e->repository);
-		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
 		$this->o2m->getModel();
 	}
 
@@ -43,7 +43,7 @@ class OneToMany_getModel_Test extends OneToMany_Test
 	public function testNeedNotHas()
 	{
 		$this->e->___event($this->e, 'afterRemove', $this->e->repository);
-		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
 		$this->o2m->getModel(true);
 	}
 

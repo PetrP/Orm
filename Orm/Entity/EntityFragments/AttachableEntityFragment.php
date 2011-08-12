@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 
 /**
@@ -60,14 +59,14 @@ class AttachableEntityFragment extends EventEntityFragment
 	 * Repository ktery se o tuto entitu stara.
 	 * Existuje jen kdyz entita byla persistovana.
 	 * @param bool
-	 * @throws InvalidStateException
 	 * @return IRepository |NULL
+	 * @throws EntityNotAttachedException
 	 */
 	final public function getRepository($need = true)
 	{
 		if (!$this->repository AND $need)
 		{
-			throw new InvalidStateException(EntityHelper::toString($this) . ' is not attached to repository.');
+			throw new EntityNotAttachedException(EntityHelper::toString($this) . ' is not attached to repository.');
 		}
 		return $this->repository;
 	}
@@ -75,6 +74,7 @@ class AttachableEntityFragment extends EventEntityFragment
 	/**
 	 * @param bool
 	 * @return IRepositoryContainer
+	 * @throws EntityNotAttachedException
 	 */
 	final public function getModel($need = true)
 	{

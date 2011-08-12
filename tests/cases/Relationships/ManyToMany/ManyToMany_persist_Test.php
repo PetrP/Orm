@@ -18,7 +18,7 @@ class ManyToMany_persist_Test extends ManyToMany_Test
 	public function testNotPersistedParent()
 	{
 		$this->e->getRepository()->remove($this->e);
-		$this->setExpectedException('Nette\InvalidStateException', 'ManyToMany_Entity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'ManyToMany_Entity is not attached to repository.');
 		$this->m2m->persist();
 	}
 

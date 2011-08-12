@@ -14,7 +14,7 @@ class ManyToMany_getModel_Test extends ManyToMany_Test
 	public function testNotHas()
 	{
 		$this->e->___event($this->e, 'afterRemove', $this->e->repository);
-		$this->setExpectedException('Nette\InvalidStateException', 'ManyToMany_Entity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'ManyToMany_Entity is not attached to repository.');
 		$this->m2m->getModel();
 	}
 
@@ -43,7 +43,7 @@ class ManyToMany_getModel_Test extends ManyToMany_Test
 	public function testNeedNotHas()
 	{
 		$this->e->___event($this->e, 'afterRemove', $this->e->repository);
-		$this->setExpectedException('Nette\InvalidStateException', 'ManyToMany_Entity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'ManyToMany_Entity is not attached to repository.');
 		$this->m2m->getModel(true);
 	}
 

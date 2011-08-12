@@ -33,7 +33,7 @@ class AttachableEntityFragment_getRepository_Test extends TestCase
 	public function testNeed2()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('Nette\InvalidStateException', 'TestEntity is not attached to repository.');
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
 		$e->getRepository(true);
 	}
 
