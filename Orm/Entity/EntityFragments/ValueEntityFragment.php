@@ -522,7 +522,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 				if (!$value AND !isset($rule['types']['null']))
 				{
 					$type = implode('|',$rule['types']);
-					throw new UnexpectedValueException("Entity($type) '$id' not found in `" . get_class($repo) . "` in ".get_class($this)."::\$$name");
+					throw new EntityNotFoundException("Entity($type) '$id' not found in `" . get_class($repo) . "` in ".get_class($this)."::\$$name");
 				}
 			}
 		}

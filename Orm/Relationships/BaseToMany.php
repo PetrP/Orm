@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use UnexpectedValueException;
 use Traversable;
 
 abstract class BaseToMany extends Object
@@ -136,7 +135,7 @@ abstract class BaseToMany extends Object
 				{
 					return NULL;
 				}
-				throw new UnexpectedValueException("Entity '$id' not found in `" . get_class($repository) . "`");
+				throw new EntityNotFoundException("Entity '$id' not found in `" . get_class($repository) . "`");
 			}
 		}
 		if ($invasive)

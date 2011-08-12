@@ -33,7 +33,7 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 
 	public function testIdNotFound()
 	{
-		$this->setExpectedException('UnexpectedValueException', 'Entity \'333\' not found in `OneToMany_Repository`');
+		$this->setExpectedException('Orm\EntityNotFoundException', 'Entity \'333\' not found in `OneToMany_Repository`');
 		$this->tt(333);
 	}
 

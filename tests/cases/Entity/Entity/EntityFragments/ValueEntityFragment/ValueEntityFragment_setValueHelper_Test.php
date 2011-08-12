@@ -35,25 +35,25 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 
 	public function testFkBadValue()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Entity(testentity) 'xxx' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
+		$this->setExpectedException('Orm\EntityNotFoundException', "Entity(testentity) 'xxx' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
 		$this->e->fk = 'xxx';
 	}
 
 	public function testFkBadValue2()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Entity(testentity) '0' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
+		$this->setExpectedException('Orm\EntityNotFoundException', "Entity(testentity) '0' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
 		$this->e->fk = 0;
 	}
 
 	public function testFkBadValue3()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Entity(testentity) '0' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
+		$this->setExpectedException('Orm\EntityNotFoundException', "Entity(testentity) '0' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
 		$this->e->fk = '0';
 	}
 
 	public function testFkBadValue4()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Entity(testentity) '' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
+		$this->setExpectedException('Orm\EntityNotFoundException', "Entity(testentity) '' not found in `TestEntityRepository` in ValueEntityFragment_getset_Entity::\$fk");
 		$this->e->fk = '';
 	}
 
