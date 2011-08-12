@@ -11,4 +11,4 @@ $c = $http->coverage(__DIR__ . '/../Orm', __DIR__ . '/report');
 $c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bc1m.php');
 $c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bcmm.php');
 
-$http->run(__DIR__ . '/unit');
+$http->run(__DIR__ . '/cases');
