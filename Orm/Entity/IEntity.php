@@ -178,7 +178,6 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * Nastavi hodnotu parametru, ale nepouzije setter
 	 * @param string
 	 * @param mixed
-	 * @param bool
 	 * @return Entity $this
 	 */
 	//protected function setValue($name, $value)
