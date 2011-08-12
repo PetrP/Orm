@@ -10,7 +10,6 @@ namespace Orm;
 use Nette\Object;
 use ArrayObject;
 use DateTime;
-use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use DibiException;
 use DibiConnection;
@@ -171,7 +170,7 @@ class DibiPersistenceHelper extends Object
 	 * @param string
 	 * @param IEntity
 	 * @return scalar|NULL|DateTime
-	 * @throws InvalidStateException
+	 * @throws MapperPersistenceException
 	 */
 	protected function scalarizeValue($value, $key, IEntity $entity)
 	{
@@ -194,7 +193,8 @@ class DibiPersistenceHelper extends Object
 		}
 		else if ($value !== NULL AND !($value instanceof DateTime) AND !is_scalar($value))
 		{
-			throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
+			$mapper = $entity->getRepository(false) ? $entity->getRepository()->getMapper() : $this;
+			throw new MapperPersistenceException(array($mapper, $entity, $key, $value));
 		}
 
 		return $value;

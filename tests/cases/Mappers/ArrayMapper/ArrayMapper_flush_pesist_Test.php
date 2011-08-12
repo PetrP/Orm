@@ -72,7 +72,7 @@ class ArrayMapper_flush_pesist_Test extends TestCase
 	public function testArrayObjectSubClass()
 	{
 		$this->e->mixed = new MyArrayObject(array('cow', 'boy'));
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `ArrayMapper_flush_Entity::$mixed` MyArrayObject');
+		$this->setExpectedException('Orm\MapperPersistenceException', "ArrayMapper_flush_Mapper: can't persist ArrayMapper_flush_Entity::\$mixed; it contains 'MyArrayObject'.");
 		$this->t(NULL);
 	}
 
@@ -98,7 +98,7 @@ class ArrayMapper_flush_pesist_Test extends TestCase
 	public function testBad()
 	{
 		$this->e->mixed = new ArrayIterator(array());
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `ArrayMapper_flush_Entity::$mixed` ArrayIterator');
+		$this->setExpectedException('Orm\MapperPersistenceException', "ArrayMapper_flush_Mapper: can't persist ArrayMapper_flush_Entity::\$mixed; it contains 'ArrayIterator'.");
 		$this->t(NULL);
 	}
 

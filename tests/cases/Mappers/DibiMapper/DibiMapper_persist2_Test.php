@@ -78,7 +78,7 @@ class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 	public function testArrayObjectSubClass()
 	{
 		$this->e->mixed = new MyArrayObject(array('cow', 'boy'));
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `DibiMapper_persist_Entity::$mixed` MyArrayObject');
+		$this->setExpectedException('Orm\MapperPersistenceException', "Orm\\DibiPersistenceHelper: can't persist DibiMapper_persist_Entity::\$mixed; it contains 'MyArrayObject'.");
 		$this->d->addExpected('begin', NULL, NULL);
 		$this->m->persist($this->e);
 	}
@@ -105,7 +105,7 @@ class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 	public function testBad()
 	{
 		$this->e->mixed = new ArrayIterator(array());
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `DibiMapper_persist_Entity::$mixed` ArrayIterator');
+		$this->setExpectedException('Orm\MapperPersistenceException', "Orm\\DibiPersistenceHelper: can't persist DibiMapper_persist_Entity::\$mixed; it contains 'ArrayIterator'.");
 		$this->d->addExpected('begin', NULL, NULL);
 		$this->m->persist($this->e);
 	}

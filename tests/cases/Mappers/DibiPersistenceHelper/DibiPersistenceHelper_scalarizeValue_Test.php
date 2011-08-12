@@ -78,7 +78,7 @@ class DibiPersistenceHelper_scalarizeValue_Test extends DibiPersistenceHelper_Te
 
 	public function testMyArrayObject()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `DibiPersistenceHelper_Entity::$miXed` MyArrayObject');
+		$this->setExpectedException('Orm\MapperPersistenceException', "DibiPersistenceHelper_DibiPersistenceHelper: can't persist DibiPersistenceHelper_Entity::\$miXed; it contains 'MyArrayObject'.");
 		$this->h->call('scalarizeValue', array(new MyArrayObject(array(1 => true, 'asd' => 'abc')), 'miXed', $this->e));
 	}
 
@@ -111,7 +111,7 @@ class DibiPersistenceHelper_scalarizeValue_Test extends DibiPersistenceHelper_Te
 
 	public function testBad()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', 'Neumim ulozit `DibiPersistenceHelper_Entity::$miXed` stdClass');
+		$this->setExpectedException('Orm\MapperPersistenceException', "DibiPersistenceHelper_DibiPersistenceHelper: can't persist DibiPersistenceHelper_Entity::\$miXed; it contains 'stdClass'.");
 		$this->h->call('scalarizeValue', array((object) array(), 'miXed', $this->e));
 	}
 

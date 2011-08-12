@@ -1,0 +1,25 @@
+<?php
+/**
+ * Orm
+ * @author Petr Procházka (petr@petrp.cz)
+ * @license "New" BSD License
+ */
+
+namespace Orm;
+
+use LogicException;
+
+class MapperPersistenceException extends LogicException
+{
+
+	/**
+	 * @param string|array
+	 * @param int
+	 * @param Exception
+	 */
+	public function __construct($message = NULL, $code = NULL, Exception $previous = NULL)
+	{
+		$message = ExceptionHelper::format($message, "%c1: can't persist %c2::\$%s3; it contains '%t4'.");
+		parent::__construct($message, $code, $previous);
+	}
+}
