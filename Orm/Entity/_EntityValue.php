@@ -139,7 +139,6 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 	 * Nastavi hodnotu parametru, ale nepouzije setter
 	 * @param string
 	 * @param mixed
-	 * @param bool
 	 * @return Entity $this
 	 */
 	final protected function setValue($name, $value)
