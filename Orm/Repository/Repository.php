@@ -86,7 +86,7 @@ abstract class Repository extends Object implements IRepository
 	/** @var array @todo refaktorovat */
 	private $entities = array();
 
-	/** @var PerformanceHelper */
+	/** @var PerformanceHelper|NULL */
 	private $performanceHelper;
 
 	/** @var array cache {@see self::checkAttachableEntity() */
@@ -104,7 +104,12 @@ abstract class Repository extends Object implements IRepository
 	public function __construct(IRepositoryContainer $model)
 	{
 		$this->model = $model;
-		$this->performanceHelper = new PerformanceHelper($this, $model->getContext()->getService('performanceHelperCache', 'ArrayAccess'));
+		$ph = $this->createPerformanceHelper();
+		if ($ph !== NULL AND !($ph instanceof PerformanceHelper))
+		{
+			throw new BadReturnException(array($this, 'createPerformanceHelper', 'Orm\PerformanceHelper or NULL', $ph));
+		}
+		$this->performanceHelper = $ph;
 	}
 
 	/**
@@ -125,7 +130,10 @@ abstract class Repository extends Object implements IRepository
 		{
 			throw new InvalidArgumentException("Id must be scalar, '" . (is_object($id) ? 'object ' . get_class($id) : gettype($id)) . "' given");
 		}
-		$this->performanceHelper->access($id);
+		if ($this->performanceHelper)
+		{
+			$this->performanceHelper->access($id);
+		}
 		if (isset($this->entities[$id]))
 		{
 			if ($this->entities[$id]) return $this->entities[$id];
@@ -133,7 +141,7 @@ abstract class Repository extends Object implements IRepository
 		}
 
 		// nactu vsechny ktere budu pravdepodobne potrebovat
-		if ($ids = $this->performanceHelper->get())
+		if ($this->performanceHelper AND $ids = $this->performanceHelper->get())
 		{
 			$this->getMapper()->findById($ids)->fetchAll();
 			foreach ($ids as $tmp)
@@ -441,6 +449,23 @@ abstract class Repository extends Object implements IRepository
 	final public function isAttachableEntity(IEntity $entity)
 	{
 		return $this->checkAttachableEntity(get_class($entity), $entity, false);
+	}
+
+	/**
+	 * @return PerformanceHelper|NULL
+	 * @see self::__construct()
+	 */
+	protected function createPerformanceHelper()
+	{
+		if (PerformanceHelper::$keyCallback)
+		{
+			$context = $this->model->getContext();
+			if ($context->hasService('performanceHelperCache'))
+			{
+				return new PerformanceHelper($this, $context->getService('performanceHelperCache', 'ArrayAccess'));
+			}
+		}
+		return NULL;
 	}
 
 	/**
