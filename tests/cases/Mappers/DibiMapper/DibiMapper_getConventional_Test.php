@@ -27,14 +27,14 @@ class DibiMapper_getConventional_Test extends TestCase
 	public function testBad()
 	{
 		$this->m->c = new Html;
-		$this->setExpectedException('Nette\InvalidStateException', 'DibiMapper_getConventional_DibiMapper::createConventional() must return Orm\IDatabaseConventional');
+		$this->setExpectedException('Orm\BadReturnException', 'DibiMapper_getConventional_DibiMapper::createConventional() must return Orm\IDatabaseConventional');
 		$this->m->getConventional();
 	}
 
 	public function testJustIConventional()
 	{
 		$this->m->c = new Mapper_getConventional_Conventional;
-		$this->setExpectedException('Nette\InvalidStateException', 'DibiMapper_getConventional_DibiMapper::createConventional() must return Orm\IDatabaseConventional');
+		$this->setExpectedException('Orm\BadReturnException', 'DibiMapper_getConventional_DibiMapper::createConventional() must return Orm\IDatabaseConventional');
 		$this->m->getConventional();
 	}
 

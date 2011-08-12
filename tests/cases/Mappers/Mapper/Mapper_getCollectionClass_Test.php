@@ -65,28 +65,28 @@ class Mapper_getCollectionClass_Test extends TestCase
 	public function testNotExists()
 	{
 		$this->m->cc = 'XyzClassNotExists';
-		$this->setExpectedException('Nette\InvalidStateException', "Collection 'XyzClassNotExists' doesn't exists");
+		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'XyzClassNotExists' doesn't exists");
 		$this->m->mockGetCollectionClass();
 	}
 
 	public function testNotCollection()
 	{
 		$this->m->cc = 'Nette\Utils\Html';
-		$this->setExpectedException('Nette\InvalidStateException', "Collection 'Nette\\Utils\\Html' must implement Orm\\IEntityCollection");
+		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'Nette\\Utils\\Html' must implement Orm\\IEntityCollection");
 		$this->m->mockGetCollectionClass();
 	}
 
 	public function testAbstract()
 	{
 		$this->m->cc = 'Mapper_getCollectionClass_Collection';
-		$this->setExpectedException('Nette\InvalidStateException', "Collection 'Mapper_getCollectionClass_Collection' is abstract.");
+		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'Mapper_getCollectionClass_Collection' is abstract.");
 		$this->m->mockGetCollectionClass();
 	}
 
 	public function testNotInstantiable()
 	{
 		$this->m->cc = 'Mapper_getCollectionClass_BadCollection';
-		$this->setExpectedException('Nette\InvalidStateException', "Collection 'Mapper_getCollectionClass_BadCollection' isn't instantiable");
+		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'Mapper_getCollectionClass_BadCollection' isn't instantiable");
 		$this->m->mockGetCollectionClass();
 	}
 

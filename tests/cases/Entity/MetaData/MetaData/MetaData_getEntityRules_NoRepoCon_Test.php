@@ -38,7 +38,7 @@ class MetaData_getEntityRules_NoRepoCon_Test extends TestCase
 
 	public function testBadReturn()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
+		$this->setExpectedException('Orm\BadReturnException', "MetaData_Test_Entity::createMetaData() must return Orm\\MetaData, 'Nette\\Utils\\Html' given.");
 		MetaData_Test_Entity::$metaData = new Html;
 		MetaData::getEntityRules('MetaData_Test_Entity');
 	}

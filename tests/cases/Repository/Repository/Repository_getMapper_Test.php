@@ -17,14 +17,14 @@ class Repository_getMapper_Test extends TestCase
 	public function testBadMapper()
 	{
 		$r = new Repository_getMapper_BadMapper_Repository($this->m);
-		$this->setExpectedException('Nette\InvalidStateException', 'Mapper Repository_getMapper_BadMapper_Mapper must implement Orm\IMapper');
+		$this->setExpectedException('Orm\BadReturnException', 'Mapper Repository_getMapper_BadMapper_Mapper must implement Orm\IMapper');
 		$r->getMapper();
 	}
 
 	public function testBadMapper2()
 	{
 		$r = new Repository_getMapper_BadMapper2_Repository($this->m);
-		$this->setExpectedException('Nette\InvalidStateException', "Repository_getMapper_BadMapper2_Repository::createMapper() must return Orm\\IMapper, 'string' given");
+		$this->setExpectedException('Orm\BadReturnException', "Repository_getMapper_BadMapper2_Repository::createMapper() must return Orm\\IMapper, 'string' given");
 		$r->getMapper();
 	}
 

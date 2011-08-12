@@ -23,7 +23,7 @@ class DibiMapper_getConnection_Test extends TestCase
 	public function testBad()
 	{
 		$this->m->con = new Html;
-		$this->setExpectedException('Nette\InvalidStateException', "DibiMapper_getConnection_DibiMapper::createConnection() must return DibiConnection, 'Nette\\Utils\\Html' given");
+		$this->setExpectedException('Orm\BadReturnException', "DibiMapper_getConnection_DibiMapper::createConnection() must return DibiConnection, 'Nette\\Utils\\Html' given");
 		$this->m->getConnection();
 	}
 

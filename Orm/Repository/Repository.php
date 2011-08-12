@@ -253,7 +253,7 @@ abstract class Repository extends Object implements IRepository
 				unset($recurcion[$hash]);
 				return $entity;
 			}
-			throw new InvalidStateException('Something wrong with mapper.');
+			throw new BadReturnException(array($this->getMapper(), 'persist', 'TRUE', NULL, '; something wrong with mapper'));
 
 		} catch (Exception $e) {
 			unset($recurcion[$hash]);
@@ -286,7 +286,7 @@ abstract class Repository extends Object implements IRepository
 			}
 			else
 			{
-				throw new InvalidStateException('Something wrong with mapper.');
+				throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
 			}
 		}
 		$entity->___event($entity, 'afterRemove', $this);
@@ -348,9 +348,9 @@ abstract class Repository extends Object implements IRepository
 			{
 				if (is_object($mapper))
 				{
-					throw new InvalidStateException('Mapper ' . get_class($mapper) . ' must implement Orm\IMapper');
+					throw new BadReturnException('Mapper ' . get_class($mapper) . ' must implement Orm\IMapper');
 				}
-				throw new InvalidStateException(get_class($this) . "::createMapper() must return Orm\\IMapper, '" . gettype($mapper) . "' given");
+				throw new BadReturnException(array($this, 'createMapper', 'Orm\IMapper', $mapper));
 			}
 			$this->mapper = $mapper;
 		}
@@ -473,7 +473,7 @@ abstract class Repository extends Object implements IRepository
 		$id = isset($data[$this->primaryKey]) ? $data[$this->primaryKey] : NULL;
 		if (!$id)
 		{
-			throw new InvalidStateException("Data, that is returned from storage, doesn't contain id.");
+			throw new BadReturnException("Data, that is returned from storage, doesn't contain id.");
 		}
 		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{

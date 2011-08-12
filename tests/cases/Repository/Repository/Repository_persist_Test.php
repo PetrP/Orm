@@ -51,7 +51,7 @@ class Repository_persist_Test extends TestCase
 	public function testMapperError()
 	{
 		$this->r->mapper->returnNull = true;
-		$this->setExpectedException('Nette\InvalidStateException', "Something wrong with mapper.");
+		$this->setExpectedException('Orm\BadReturnException', "Repository_persist_Mapper::persist() must return TRUE; something wrong with mapper.");
 		$this->r->persist(new TestEntity);
 	}
 

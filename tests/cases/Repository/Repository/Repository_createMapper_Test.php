@@ -61,7 +61,7 @@ class Repository_createMapper_Test extends TestCase
 		$this->m->getContext()->removeService('mapperFactory')->addService('mapperFactory', $factory);
 		$r = new Repository_DefaultMapper_Repository($this->m);
 		$factory->class = '';
-		$this->setExpectedException('Nette\InvalidStateException', "Repository_DefaultMapper_Repository::createMapper() must return Orm\\IMapper, 'string' given");
+		$this->setExpectedException('Orm\BadReturnException', "Repository_DefaultMapper_Repository::createMapper() must return Orm\\IMapper, 'string' given");
 		$r->getMapper();
 	}
 

@@ -26,13 +26,13 @@ class Repository_hydrateEntity_Test extends TestCase
 
 	public function testNoId()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
+		$this->setExpectedException('Orm\BadReturnException', "Data, that is returned from storage, doesn't contain id.");
 		$this->r->hydrateEntity(array());
 	}
 
 	public function testEmptyId()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Data, that is returned from storage, doesn't contain id.");
+		$this->setExpectedException('Orm\BadReturnException', "Data, that is returned from storage, doesn't contain id.");
 		$this->r->hydrateEntity(array('id' => ''));
 	}
 

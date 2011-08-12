@@ -233,7 +233,7 @@ class MetaData extends Object
 		$implements = class_implements($entityClass);
 		if (!isset($implements['Orm\IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
 		$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
-		if (!($meta instanceof MetaData)) throw new InvalidStateException("It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
+		if (!($meta instanceof MetaData)) throw new BadReturnException(array($entityClass, 'createMetaData', 'Orm\MetaData', $meta));
 		return $meta;
 	}
 

@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 use ReflectionClass;
 
 require_once __DIR__ . '/IMapper.php';
@@ -83,11 +82,11 @@ abstract class Mapper extends Object implements IMapper
 			$interface = func_num_args() ? func_get_arg(0) : NULL;
 			if ($interface !== NULL AND !($conventional instanceof $interface))
 			{
-				throw new InvalidStateException(get_class($this) . '::createConventional() must return ' . $interface);
+				throw new BadReturnException(array($this, 'createConventional', $interface, $conventional));
 			}
 			if (!($conventional instanceof IConventional))
 			{
-				throw new InvalidStateException(get_class($this) . '::createConventional() must return Orm\IConventional');
+				throw new BadReturnException(array($this, 'createConventional', 'Orm\IConventional', $conventional));
 			}
 			$this->conventional = $conventional;
 		}
@@ -148,7 +147,7 @@ abstract class Mapper extends Object implements IMapper
 	 * @see DibiMapper::dataSource()
 	 * @param bool true mean more info (array), false mean just classname
 	 * @return array|string array('ClassName', 'dibi|datasource|array') | 'ClassName'
-	 * @throws InvalidStateException
+	 * @throws BadReturnException
 	 */
 	final protected function getCollectionClass($info = false)
 	{
@@ -157,20 +156,20 @@ abstract class Mapper extends Object implements IMapper
 			$class = $this->createCollectionClass();
 			if (!class_exists($class))
 			{
-				throw new InvalidStateException("Collection '{$class}' doesn't exists");
+				throw new BadReturnException(array($this, 'createCollectionClass', 'Orm\IEntityCollection class name', NULL, "; '{$class}' doesn't exists"));
 			}
 			$reflection = new ReflectionClass($class);
 			if (!$reflection->implementsInterface('Orm\IEntityCollection'))
 			{
-				throw new InvalidStateException("Collection '{$class}' must implement Orm\\IEntityCollection");
+				throw new BadReturnException(array($this, 'createCollectionClass', 'Orm\IEntityCollection class name', NULL, "; '{$class}' must implement Orm\\IEntityCollection"));
 			}
 			else if ($reflection->isAbstract())
 			{
-				throw new InvalidStateException("Collection '{$class}' is abstract.");
+				throw new BadReturnException(array($this, 'createCollectionClass', 'Orm\IEntityCollection class name', NULL, "; '{$class}' is abstract."));
 			}
 			else if (!$reflection->isInstantiable())
 			{
-				throw new InvalidStateException("Collection '{$class}' isn't instantiable");
+				throw new BadReturnException(array($this, 'createCollectionClass', 'Orm\IEntityCollection class name', NULL, "; '{$class}' isn't instantiable."));
 			}
 			$this->collectionClass = array($class, NULL);
 
