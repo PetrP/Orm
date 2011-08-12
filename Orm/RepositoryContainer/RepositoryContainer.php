@@ -12,6 +12,7 @@ use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use ReflectionClass;
 
+require_once __DIR__ . '/../Orm.php';
 require_once __DIR__ . '/IRepositoryContainer.php';
 require_once __DIR__ . '/../Entity/Entity.php';
 require_once __DIR__ . '/../Repository/Repository.php';
