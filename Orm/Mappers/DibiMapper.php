@@ -408,7 +408,7 @@ class DibiMapper extends Mapper
 			}
 			if (!isset($this->joinInfoCache['fk'][$sourceKey]))
 			{
-				throw new InvalidStateException(get_class($this->getRepository()) . ": neni zadna vazba na `$sourceKey`");
+				throw new MapperJoinException(get_class($this->getRepository()) . ": neni zadna vazba na `$sourceKey`");
 			}
 			static $format;
 			if ($format === NULL) $format = function (array $key, IDatabaseConventional $conventional, $default = NULL) {
@@ -429,7 +429,7 @@ class DibiMapper extends Mapper
 			$tmp['mapper'] = $joinRepository->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
 			}
 			$tmp['conventional'] = $tmp['mapper']->getConventional();
 
@@ -451,7 +451,7 @@ class DibiMapper extends Mapper
 			if ($tmp['mapper']->getConnection() !== $this->getConnection())
 			{
 				// todo porovnavat connection na collection?
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
 			$tmp['xConventionalKey'] = $format($this->joinInfoCache['fk'][$sourceKey][1], $conventional, $sourceKey);
@@ -461,12 +461,12 @@ class DibiMapper extends Mapper
 			$collection = $tmp['mapper']->findAll();
 			if (!($collection instanceof DibiCollection))
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiCollection, data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiCollection, data nelze propojit.");
 			}
 			$collectionArray = (array) $collection; // hack
 			if ($collectionArray["\0*\0where"])
 			{
-				throw new InvalidStateException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection pouziva where(), data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection pouziva where(), data nelze propojit.");
 			}
 			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
 
