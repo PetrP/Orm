@@ -41,7 +41,7 @@ class PhpParser extends Tokenizer
 				$parser->fetch(')');
 				if ($use = $parser->fetch(T_USE)) {
 					$parser->fetch('(');
-					$token .= 'extract(NClosureFix::$vars[\'.NClosureFix::uses(array('
+					$token .= 'extract(OrmClosureFix::$vars[\'.OrmClosureFix::uses(array('
 						. preg_replace('#&?\s*\$([^,\s]+)#', "'\$1'=>\$0", $parser->fetchUntil(')'))
 						. ')).\'], EXTR_REFS);';
 					$parser->fetch(')');
@@ -223,5 +223,20 @@ class PhpParser extends Tokenizer
 		}, $data);
 
 		return $data;
+	}
+
+	/**
+	 * @param string
+	 * @return string
+	 */
+	public static function versionFix($s, $php52)
+	{
+		$s = preg_replace_callback('#\s?/\*php52(.*)php52\*/\s?#s', function ($m) use ($php52) {
+			if ($php52)
+			{
+				return str_replace('* /', '*/', $m[1]);
+			}
+		}, $s);
+		return $s;
 	}
 }

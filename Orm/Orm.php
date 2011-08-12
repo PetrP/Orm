@@ -26,3 +26,17 @@ final class Orm
 	const PACKAGE = '<build::orm> for Nette <build::nette>';
 
 }
+
+/*php52
+/** @internal * /
+class OrmClosureFix
+{
+	static $vars = array();
+
+	static function uses($args)
+	{
+		self::$vars[] = $args;
+		return count(self::$vars)-1;
+	}
+}
+php52*/

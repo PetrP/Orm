@@ -151,33 +151,38 @@ class Builder extends Object
 
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
+			$data = PhpParser::versionFix($data, true);
 			$data = PhpParser::removeNamespace($data, true, true);
 			$data = PhpParser::replaceClosures($data);
 			$data = PhpParser::replaceDirConstant($data);
 		}
-		else if ($this->version & self::NONNS AND $this->version & self::NS_NETTE)
-		{
-			$data = PhpParser::removeNamespace($data, true, false);
-		}
-		else if ($this->version & self::NONNS AND $this->version & self::PREFIXED_NETTE)
-		{
-			throw new NotImplementedException();
-		}
-		else if ($this->version & self::NS AND $this->version & self::NONNS_NETTE)
-		{
-			$data = PhpParser::removeNamespace($data, false, true);
-		}
-		else if ($this->version & self::NS AND $this->version & self::NS_NETTE)
-		{
-
-		}
-		else if ($this->version & self::NS AND $this->version & self::PREFIXED_NETTE)
-		{
-			throw new NotImplementedException();
-		}
 		else
 		{
-			throw new InvalidArgumentException;
+			$data = PhpParser::versionFix($data, false);
+			if ($this->version & self::NONNS AND $this->version & self::NS_NETTE)
+			{
+				$data = PhpParser::removeNamespace($data, true, false);
+			}
+			else if ($this->version & self::NONNS AND $this->version & self::PREFIXED_NETTE)
+			{
+				throw new NotImplementedException();
+			}
+			else if ($this->version & self::NS AND $this->version & self::NONNS_NETTE)
+			{
+				$data = PhpParser::removeNamespace($data, false, true);
+			}
+			else if ($this->version & self::NS AND $this->version & self::NS_NETTE)
+			{
+
+			}
+			else if ($this->version & self::NS AND $this->version & self::PREFIXED_NETTE)
+			{
+				throw new NotImplementedException();
+			}
+			else
+			{
+				throw new InvalidArgumentException;
+			}
 		}
 		return $data;
 	}
