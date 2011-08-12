@@ -9,9 +9,10 @@ use Nette\Diagnostics\Debugger as Debug;
 use Nette\Environment;
 use Nette\Loaders\RobotLoader;
 use Nette\InvalidStateException;
+use HttpPHPUnit\NetteDebug;
 
-Debug::enable(false);
-Debug::$strictMode = true;
+NetteDebug::get()->enable(false);
+NetteDebug::get()->strictMode = true;
 
 date_default_timezone_set('Europe/Prague');
 
