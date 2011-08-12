@@ -18,19 +18,19 @@ class ArrayManyToManyMapper_deprecated_Test extends TestCase
 
 	public function testSetParams()
 	{
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\ArrayManyToManyMapper::setParams() is deprecated; use Orm\ArrayManyToManyMapper::attach() instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\ArrayManyToManyMapper::setParams() is deprecated; use Orm\ArrayManyToManyMapper::attach() instead');
 		$this->mm->setParams(false);
 	}
 
 	public function testSetValue()
 	{
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\ArrayManyToManyMapper::setValue() is deprecated; use Orm\ArrayManyToManyMapper::setInjectedValue() instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\ArrayManyToManyMapper::setValue() is deprecated; use Orm\ArrayManyToManyMapper::setInjectedValue() instead');
 		$this->mm->setValue(array());
 	}
 
 	public function testGetValue()
 	{
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\ArrayManyToManyMapper::getValue() is deprecated; use Orm\ArrayManyToManyMapper::getInjectedValue() instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\ArrayManyToManyMapper::getValue() is deprecated; use Orm\ArrayManyToManyMapper::getInjectedValue() instead');
 		$this->mm->getValue();
 	}
 

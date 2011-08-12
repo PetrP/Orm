@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\UnexpectedValueException;
-use Nette\DeprecatedException;
 use Exception;
 use ReflectionMethod;
 
@@ -196,7 +195,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		if (func_num_args() > 0 AND func_get_arg(0) === true)
 		{
-			throw new DeprecatedException('Orm\Entity::isChanged(TRUE) is deprecated; use Orm\Repository::markAsChanged() instead');
+			throw new DeprecatedException(array('Orm\Entity', 'isChanged(TRUE)', 'Orm\Entity', 'markAsChanged()'));
 		}
 		if ($name === NULL)
 		{

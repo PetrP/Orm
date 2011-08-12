@@ -11,7 +11,7 @@ class DibiPersistenceHelper_mapper_Test extends DibiPersistenceHelper_Test
 	{
 		$h = new DibiPersistenceHelper_DibiPersistenceHelper($this->h->connection, $this->h->conventional, 'table');
 
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\DibiPersistenceHelper::$mapper is depreacted');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\DibiPersistenceHelper::$mapper is deprecated');
 		$h->mapper;
 	}
 
@@ -19,7 +19,7 @@ class DibiPersistenceHelper_mapper_Test extends DibiPersistenceHelper_Test
 	{
 		$h = new DibiPersistenceHelper_DibiPersistenceHelper($this->h->connection, $this->h->conventional, 'table');
 
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\DibiPersistenceHelper::$mapper is depreacted');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\DibiPersistenceHelper::$mapper is deprecated');
 		$h->mapper = 'x';
 	}
 

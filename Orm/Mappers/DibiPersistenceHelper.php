@@ -10,7 +10,6 @@ namespace Orm;
 use Nette\Object;
 use ArrayObject;
 use DateTime;
-use Nette\DeprecatedException;
 use DibiException;
 use DibiConnection;
 
@@ -242,12 +241,27 @@ class DibiPersistenceHelper extends Object
 	}
 
 	/** @deprecated */
-	final public function setConnection() { throw new DeprecatedException(__CLASS__ . '::$connection setter is depreacted; use constructor instead'); }
+	final public function setConnection()
+	{
+		throw new DeprecatedException(array(__CLASS__, '$connection setter', 'constructor'));
+	}
+
 	/** @deprecated */
-	final public function setConventional() { throw new DeprecatedException(__CLASS__ . '::$conventional setter is depreacted; use constructor instead'); }
+	final public function setConventional()
+	{
+		throw new DeprecatedException(array(__CLASS__, '$conventional setter', 'constructor'));
+	}
+
 	/** @deprecated */
-	final public function getMapper() { throw new DeprecatedException(__CLASS__ . '::$mapper is depreacted'); }
+	final public function getMapper()
+	{
+		throw new DeprecatedException(array(__CLASS__, '$mapper'));
+	}
+
 	/** @deprecated */
-	final public function setMapper() { throw new DeprecatedException(__CLASS__ . '::$mapper is depreacted'); }
+	final public function setMapper()
+	{
+		throw new DeprecatedException(array(__CLASS__, '$mapper'));
+	}
 
 }

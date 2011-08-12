@@ -9,7 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 use Exception;
 
 require_once __DIR__ . '/IRepository.php';
@@ -555,10 +554,21 @@ abstract class Repository extends Object implements IRepository
 	}
 
 	/** @deprecated */
-	final public function createEntity($data) { throw new DeprecatedException('Orm\Repository::createEntity() is deprecated; use Orm\Repository::hydrateEntity() instead'); }
+	final public function createEntity($data)
+	{
+		throw new DeprecatedException(array(__CLASS__, 'createEntity()', __CLASS__, 'hydrateEntity()'));
+	}
+
 	/** @deprecated */
-	final public function isEntity(IEntity $entity) { throw new DeprecatedException('Orm\Repository::isEntity() is deprecated; use Orm\Repository::isAttachableEntity() instead'); }
+	final public function isEntity(IEntity $entity)
+	{
+		throw new DeprecatedException(array(__CLASS__, 'isEntity()', __CLASS__, 'isAttachableEntity()'));
+	}
+
 	/** @deprecated */
-	final public function getRepositoryName(){ throw new DeprecatedException('Orm\Repository::getRepositoryName() is deprecated; use get_class($repository) instead'); }
+	final public function getRepositoryName()
+	{
+		throw new DeprecatedException(array(__CLASS__, 'getRepositoryName()', 'get_class($repository)'));
+	}
 
 }

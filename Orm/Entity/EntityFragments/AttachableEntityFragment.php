@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\DeprecatedException;
-
 /**
  * Uchovava stav o repository kde je entita attachnuta.
  * @see Entity
@@ -94,6 +92,9 @@ class AttachableEntityFragment extends EventEntityFragment
 	}
 
 	/** @deprecated */
-	final public function getGeneratingRepository($need = true) { throw new DeprecatedException('Orm\Entity::getGeneratingRepository() is deprecated; use Orm\Entity::getRepository() instead'); }
+	final public function getGeneratingRepository($need = true)
+	{
+		throw new DeprecatedException(array('Orm\Entity', 'getGeneratingRepository()', 'Orm\Entity', 'getRepository()'));
+	}
 
 }

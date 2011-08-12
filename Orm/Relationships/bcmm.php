@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Exception;
-use Nette\DeprecatedException;
 
 /**
  * @deprecated

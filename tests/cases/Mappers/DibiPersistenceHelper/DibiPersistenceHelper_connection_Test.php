@@ -20,7 +20,7 @@ class DibiPersistenceHelper_connection_Test extends DibiPersistenceHelper_Test
 	{
 		$h = new DibiPersistenceHelper_DibiPersistenceHelper($this->h->connection, $this->h->conventional, 'table');
 
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\DibiPersistenceHelper::$connection setter is depreacted; use constructor instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\DibiPersistenceHelper::$connection setter is deprecated; use constructor instead');
 		$h->connection = 'x';
 	}
 

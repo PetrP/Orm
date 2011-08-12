@@ -29,14 +29,14 @@ class RepositoryContainer_get_Test extends TestCase
 	public function testDeprecated1()
 	{
 		$m = new RepositoryContainer;
-		$this->setExpectedException('Nette\DeprecatedException', 'RepositoryContainer::get() is deprecated do not use it.');
+		$this->setExpectedException('Orm\DeprecatedException', 'RepositoryContainer::get() is deprecated do not use it.');
 		RepositoryContainer::get();
 	}
 
 	public function testDeprecated2()
 	{
 		$m = new RepositoryContainer;
-		$this->setExpectedException('Nette\DeprecatedException', 'RepositoryContainer::get() is deprecated do not use it.');
+		$this->setExpectedException('Orm\DeprecatedException', 'RepositoryContainer::get() is deprecated do not use it.');
 		RepositoryContainer::get(true);
 	}
 

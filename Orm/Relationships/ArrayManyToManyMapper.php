@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\DeprecatedException;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
 require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
@@ -75,19 +74,19 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	/** @deprecated */
 	final public function setValue($value)
 	{
-		throw new DeprecatedException(get_class($this) . '::setValue() is deprecated; use ' . get_class($this) . '::setInjectedValue() instead');
+		throw new DeprecatedException(array($this, 'setValue()', $this, 'setInjectedValue()'));
 	}
 
 	/** @deprecated */
 	final public function getValue()
 	{
-		throw new DeprecatedException(get_class($this) . '::getValue() is deprecated; use ' . get_class($this) . '::getInjectedValue() instead');
+		throw new DeprecatedException(array($this, 'getValue()', $this, 'getInjectedValue()'));
 	}
 
 	/** @deprecated */
 	final public function setParams($parentIsFirst)
 	{
-		throw new DeprecatedException(get_class($this) . '::setParams() is deprecated; use ' . get_class($this) . '::attach() instead');
+		throw new DeprecatedException(array($this, 'setParams()', $this, 'attach()'));
 	}
 
 }

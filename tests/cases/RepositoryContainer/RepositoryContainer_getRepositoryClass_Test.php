@@ -28,14 +28,14 @@ class RepositoryContainer_getRepositoryClass_Test extends TestCase
 	public function testDeprecated1()
 	{
 		$m = new RepositoryContainer_getRepositoryClass;
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
 		$m->__getRepositoryClass('xxx');
 	}
 
 	public function testDeprecated2()
 	{
 		$m = new RepositoryContainer_getRepositoryClass;
-		$this->setExpectedException('Nette\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
 		$m->__getRepositoryClass('xxx', false);
 	}
 

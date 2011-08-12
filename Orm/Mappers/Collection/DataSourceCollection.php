@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\DeprecatedException;
 use DibiDataSourceX;
 use DibiDataSource;
 use DibiConnection;
@@ -145,12 +144,12 @@ class DataSourceCollection extends BaseDibiCollection
 	/** @deprecated */
 	final public function fetchSingle()
 	{
-		throw new DeprecatedException('DataSourceCollection::fetchSingle() is deprecated; use DataSourceCollection->getDataSource()->fetchSingle() instead');
+		throw new DeprecatedException(array(__CLASS__, 'fetchSingle()', __CLASS__ . '->getDataSource()->fetchSingle()'));
 	}
 
 	/** @deprecated */
 	final public function select($col, $as = NULL)
 	{
-		throw new DeprecatedException('DataSourceCollection::select() is deprecated; use DataSourceCollection->getDataSource()->select() instead');
+		throw new DeprecatedException(array(__CLASS__, 'select()', __CLASS__ . '->getDataSource()->select()'));
 	}
 }

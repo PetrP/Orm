@@ -8,7 +8,7 @@ class DataSourceCollection_fetchSingle_Test extends DataSourceCollection_Base_Te
 
 	public function test()
 	{
-		$this->setExpectedException('Nette\DeprecatedException', 'DataSourceCollection::fetchSingle() is deprecated; use DataSourceCollection->getDataSource()->fetchSingle() instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\DataSourceCollection::fetchSingle() is deprecated; use Orm\DataSourceCollection->getDataSource()->fetchSingle() instead');
 		$this->c->fetchSingle();
 	}
 

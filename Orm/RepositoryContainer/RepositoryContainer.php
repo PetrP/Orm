@@ -9,7 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\InvalidStateException;
-use Nette\DeprecatedException;
 use ReflectionClass;
 use Dibi;
 
@@ -122,7 +121,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		}
 		if (func_num_args() === 0 OR func_get_arg(0) !== NULL)
 		{
-			throw new DeprecatedException('RepositoryContainer::get() is deprecated do not use it.');
+			throw new DeprecatedException(__CLASS__ . '::get() is deprecated do not use it.');
 		}
 		return self::$instance;
 	}
@@ -253,7 +252,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		if (func_num_args() < 2 OR func_get_arg(1) !== true)
 		{
-			throw new DeprecatedException('Orm\RepositoryContainer::getRepositoryClass() is deprecated; repositoryName is deprecated; use class name instead');
+			throw new DeprecatedException(array(__CLASS__, 'getRepositoryClass() is deprecated; repositoryName', 'class name'));
 		}
 		if (!$name) return NULL;
 		$class = $name . 'Repository';

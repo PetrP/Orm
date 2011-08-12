@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\DeprecatedException;
 use DibiConnection;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
@@ -108,31 +107,31 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/** @deprecated */
 	final public function getFirstParam()
 	{
-		throw new DeprecatedException(get_class($this) . '::$firstParam is deprecated; use ' . get_class($this) . '::$childParam instead');
+		throw new DeprecatedException(array($this, '$firstParam', $this, '$childParam'));
 	}
 
 	/** @deprecated */
 	final public function getSecondParam()
 	{
-		throw new DeprecatedException(get_class($this) . '::$secondParam is deprecated; use ' . get_class($this) . '::$parentParam instead');
+		throw new DeprecatedException(array($this, '$secondParam', $this, '$parentParam'));
 	}
 
 	/** @deprecated */
 	final public function setFirstParam($v)
 	{
-		throw new DeprecatedException(get_class($this) . '::$firstParam is deprecated; use ' . get_class($this) . '::$childParam instead');
+		throw new DeprecatedException(array($this, '$firstParam', $this, '$childParam'));
 	}
 
 	/** @deprecated */
 	final public function setSecondParam($v)
 	{
-		throw new DeprecatedException(get_class($this) . '::$secondParam is deprecated; use ' . get_class($this) . '::$parentParam instead');
+		throw new DeprecatedException(array($this, '$secondParam', $this, '$parentParam'));
 	}
 
 	/** @deprecated */
 	final public function setParams($parentIsFirst)
 	{
-		throw new DeprecatedException(get_class($this) . '::setParams() is deprecated; use ' . get_class($this) . '::attach() instead');
+		throw new DeprecatedException(array($this, 'setParams()', $this, 'attach()'));
 	}
 
 }

@@ -8,7 +8,7 @@ class DataSourceCollection_select_Test extends DataSourceCollection_Base_Test
 
 	public function test()
 	{
-		$this->setExpectedException('Nette\DeprecatedException', 'DataSourceCollection::select() is deprecated; use DataSourceCollection->getDataSource()->select() instead');
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\DataSourceCollection::select() is deprecated; use Orm\DataSourceCollection->getDataSource()->select() instead');
 		$this->c->select('foo');
 	}
 
