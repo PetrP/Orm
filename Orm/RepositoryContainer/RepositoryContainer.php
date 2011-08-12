@@ -131,6 +131,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * Dej mi instanci repository.
 	 * @var string repositoryClassName|alias
 	 * @return Repository |IRepository
+	 * @throws RepositoryNotFoundException
 	 */
 	public function getRepository($name)
 	{
@@ -209,14 +210,14 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * @param bool
 	 * @param string origin class name
 	 * @return true or throw exception
-	 * @throws InvalidStateException
+	 * @throws RepositoryNotFoundException
 	 */
 	final private function checkRepositoryClass($class, $name, $throw = true, & $originClass = NULL)
 	{
 		if (!class_exists($class))
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$name}' doesn't exists");
+			throw new RepositoryNotFoundException("Repository '{$name}' doesn't exists");
 		}
 
 		$reflection = new ReflectionClass($class);
@@ -225,17 +226,17 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		if (!$reflection->implementsInterface('Orm\IRepository'))
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$originClass}' must implement Orm\\IRepository");
+			throw new RepositoryNotFoundException("Repository '{$originClass}' must implement Orm\\IRepository");
 		}
 		else if ($reflection->isAbstract())
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$originClass}' is abstract.");
+			throw new RepositoryNotFoundException("Repository '{$originClass}' is abstract.");
 		}
 		else if (!$reflection->isInstantiable())
 		{
 			if (!$throw) return false;
-			throw new InvalidStateException("Repository '{$originClass}' isn't instantiable");
+			throw new RepositoryNotFoundException("Repository '{$originClass}' isn't instantiable");
 		}
 
 		return true;
@@ -266,6 +267,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * Do not call directly.
 	 * @param string repositoryClassName|alias
 	 * @return IRepository
+	 * @throws RepositoryNotFoundException
 	 */
 	public function & __get($name)
 	{

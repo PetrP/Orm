@@ -30,7 +30,7 @@ class OneToMany_construct_Test extends OneToMany_Test
 	public function testBadRepo()
 	{
 		$this->o2m = new OneToMany_OneToMany($this->e, 'unexists', 'param');
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'unexists' doesn't exists");
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'unexists' doesn't exists");
 		$this->o2m->_getCollection();
 	}
 

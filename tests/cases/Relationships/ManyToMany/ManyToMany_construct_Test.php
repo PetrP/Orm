@@ -22,7 +22,7 @@ class ManyToMany_construct_Test extends ManyToMany_Test
 	public function testBadRepo()
 	{
 		$this->m2m = new ManyToMany_ManyToMany($this->e, 'unexists', 'param', 'param', true);
-		$this->setExpectedException('Nette\InvalidStateException', "Repository 'unexists' doesn't exists");
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'unexists' doesn't exists");
 		$this->m2m->_getCollection();
 	}
 
