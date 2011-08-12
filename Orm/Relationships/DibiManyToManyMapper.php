@@ -63,14 +63,17 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function add(IEntity $parent, array $ids)
 	{
-		$parentId = $parent->id;
-		foreach ($ids as $childId)
+		if ($ids)
 		{
-			// todo jeden dotaz
-			$this->connection->insert($this->table, array(
-				$this->parentParam => $parentId,
-				$this->childParam => $childId,
-			))->execute();
+			$f = $this->connection->command()->insert()
+				->into('%n', $this->table, '(%n)', array($this->parentParam, $this->childParam))
+			;
+			$parentId = $parent->id;
+			foreach ($ids as $childId)
+			{
+				$f->values(array($parentId, $childId));
+			}
+			$f->execute();
 		}
 	}
 
