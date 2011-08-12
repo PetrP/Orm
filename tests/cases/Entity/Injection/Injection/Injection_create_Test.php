@@ -41,7 +41,7 @@ class Injection_create_Test extends TestCase
 
 	public function testHasConstructorWithParams()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Injection_create_Injection_ConstructorWithParams has required parameters in constructor, use custom factory");
+		$this->setExpectedException('Orm\RequiredArgumentException', "Injection_create_Injection_ConstructorWithParams has required parameters in constructor, use custom factory");
 		Injection_create_Injection_ConstructorWithParams::create('Injection_create_Injection_ConstructorWithParams', new TestEntity, NULL);
 	}
 

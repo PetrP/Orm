@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use DibiConnection;
 
@@ -39,15 +38,15 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	{
 		if (!$this->parentParam)
 		{
-			throw new InvalidStateException(get_class($this) . '::$parentParam is required');
+			throw new RequiredArgumentException(get_class($this) . '::$parentParam is required');
 		}
 		if (!$this->childParam)
 		{
-			throw new InvalidStateException(get_class($this) . '::$childParam is required');
+			throw new RequiredArgumentException(get_class($this) . '::$childParam is required');
 		}
 		if (!$this->table)
 		{
-			throw new InvalidStateException(get_class($this) . '::$table is required');
+			throw new RequiredArgumentException(get_class($this) . '::$table is required');
 		}
 		if (!$manyToMany->isMappedByParent())
 		{

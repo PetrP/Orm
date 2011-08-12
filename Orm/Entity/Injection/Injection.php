@@ -39,7 +39,7 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 			$construct = new ReflectionMethod($className, '__construct');
 			if ($construct->getNumberOfRequiredParameters())
 			{
-				throw new InvalidStateException("$className has required parameters in constructor, use custom factory");
+				throw new RequiredArgumentException("$className has required parameters in constructor, use custom factory");
 			}
 		}
 		$injection = new $className;

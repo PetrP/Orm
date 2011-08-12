@@ -37,7 +37,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->parentParam = 'y';
 		$this->mm->table = 't';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$childParam is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$childParam is required');
 		$this->mm->attach($this->m);
 	}
 
@@ -45,7 +45,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->childParam = 'x';
 		$this->mm->table = 't';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$parentParam is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$parentParam is required');
 		$this->mm->attach($this->m);
 	}
 
@@ -53,7 +53,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->childParam = 'x';
 		$this->mm->parentParam = 'y';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$table is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$table is required');
 		$this->mm->attach($this->m);
 	}
 
@@ -72,7 +72,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->parentParam = 'y';
 		$this->mm->table = 't';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$childParam is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$childParam is required');
 		$this->mm->attach($this->m2);
 	}
 
@@ -80,7 +80,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->childParam = 'x';
 		$this->mm->table = 't';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$parentParam is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$parentParam is required');
 		$this->mm->attach($this->m2);
 	}
 
@@ -88,7 +88,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$this->mm->childParam = 'x';
 		$this->mm->parentParam = 'y';
-		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$table is required');
+		$this->setExpectedException('Orm\RequiredArgumentException', 'Orm\DibiManyToManyMapper::$table is required');
 		$this->mm->attach($this->m2);
 	}
 
