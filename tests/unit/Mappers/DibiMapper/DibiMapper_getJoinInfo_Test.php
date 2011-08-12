@@ -39,7 +39,6 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 			'join',
 		)), $c1->info);
 		$this->assertSame(array('storageFormat' => array(
-			'id',
 			'name',
 		)), $c2->info);
 	}
