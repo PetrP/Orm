@@ -30,28 +30,28 @@ class EventEntityFragment_event_Test extends EventEntityFragment_event_Base
 	public function testBadEvent()
 	{
 		$e = new EventEntityFragment2_Entity;
-		$this->setExpectedException('InvalidArgumentException', 'Call to undefined event EventEntityFragment2_Entity::onBad().');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Call to undefined event EventEntityFragment2_Entity::onBad().');
 		$e->___event($e, 'bad');
 	}
 
 	public function testUserDefined()
 	{
 		$e = new EventEntityFragment2_Entity;
-		$this->setExpectedException('InvalidArgumentException', 'Call to undefined event EventEntityFragment2_Entity::onUserDefined().');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Call to undefined event EventEntityFragment2_Entity::onUserDefined().');
 		$e->___event($e, 'userDefined');
 	}
 
 	public function testNoParent()
 	{
 		$e = new EventEntityFragment2_Entity;
-		$this->setExpectedException('Nette\InvalidStateException', 'Method EventEntityFragment2_Entity::onBeforePersist() or its descendant doesn\'t call parent::onBeforePersist().');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Method EventEntityFragment2_Entity::onBeforePersist() or its descendant doesn\'t call parent::onBeforePersist().');
 		$e->___event($e, 'beforePersist', $this->r);
 	}
 
 	public function testBadParent()
 	{
 		$e = new EventEntityFragment2_Entity;
-		$this->setExpectedException('Nette\InvalidStateException', 'Method EventEntityFragment2_Entity::onAfterPersist() or its descendant doesn\'t call parent::onAfterPersist().');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Method EventEntityFragment2_Entity::onAfterPersist() or its descendant doesn\'t call parent::onAfterPersist().');
 		$e->___event($e, 'afterPersist', $this->r);
 	}
 

@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Exception;
-use UnexpectedValueException;
 use Nette\DeprecatedException;
 
 /**
@@ -32,7 +31,7 @@ abstract class OldOneToMany extends OneToMany
 		$entityName = $this->getFirstEntityName();
 		if (!($parent instanceof $entityName))
 		{
-			throw new UnexpectedValueException($this->name . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
+			throw new InvalidEntityException($this->name . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
 		}
 		$this->parent = $parent;
 		parent::__construct($parent, $this->getSecondRepository(), $this->getSecondParamName());

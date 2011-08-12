@@ -29,13 +29,13 @@ class MetaData_getEntityRules_WithRepoCon_Test extends TestCase
 
 	public function testNotExists()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Class 'Xxxasdsad' doesn`t exists");
+		$this->setExpectedException('Orm\InvalidEntityException', "Class 'Xxxasdsad' doesn`t exists");
 		MetaData::getEntityRules('Xxxasdsad', $this->m);
 	}
 
 	public function testNotEntity()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
+		$this->setExpectedException('Orm\InvalidEntityException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
 		MetaData::getEntityRules('Nette\Utils\Html', $this->m);
 	}
 

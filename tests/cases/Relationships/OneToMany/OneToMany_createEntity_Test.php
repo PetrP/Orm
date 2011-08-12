@@ -20,7 +20,7 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('UnexpectedValueException', "OneToMany_Repository can't work with entity 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "OneToMany_Repository can't work with entity 'TestEntity'");
 		$this->tt(new TestEntity);
 	}
 

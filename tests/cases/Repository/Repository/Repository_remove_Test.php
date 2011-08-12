@@ -41,7 +41,7 @@ class Repository_remove_Test extends TestCase
 
 	public function testBadEntity()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Repository_remove_Repository can't work with entity 'Repository_persist_Entity', only with 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "Repository_remove_Repository can't work with entity 'Repository_persist_Entity', only with 'TestEntity'");
 		$this->r->remove(new Repository_persist_Entity);
 	}
 
@@ -55,7 +55,7 @@ class Repository_remove_Test extends TestCase
 	public function testRightEntityFromAnotherRepository()
 	{
 		$e = $this->r->model->tests->getById(1);
-		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
+		$this->setExpectedException('Orm\InvalidEntityException', "TestEntity#1 is attached to another repository.");
 		$this->r->remove($e);
 	}
 

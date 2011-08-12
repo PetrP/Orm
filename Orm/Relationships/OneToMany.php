@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use UnexpectedValueException;
 use Exception;
 
 require_once __DIR__ . '/IRelationship.php';
@@ -69,7 +68,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		if ($this->ignore($entity)) return NULL;
 		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $this->parent)
 		{
-			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
+			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
 		}
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
@@ -86,7 +85,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		$entity = $this->createEntity($entity);
 		if (!isset($entity->$param) OR $entity->$param !== $this->parent)
 		{
-			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
+			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
 		try {
 			$entity->$param = NULL;

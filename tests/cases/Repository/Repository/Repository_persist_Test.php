@@ -44,7 +44,7 @@ class Repository_persist_Test extends TestCase
 
 	public function testBadEntity()
 	{
-		$this->setExpectedException('UnexpectedValueException', "Repository_persist_Repository can't work with entity 'Repository_persist_Entity', only with 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "Repository_persist_Repository can't work with entity 'Repository_persist_Entity', only with 'TestEntity'");
 		$this->r->persist(new Repository_persist_Entity);
 	}
 
@@ -58,7 +58,7 @@ class Repository_persist_Test extends TestCase
 	public function testRightEntityFromAnotherRepository()
 	{
 		$e = $this->r->model->tests->getById(1);
-		$this->setExpectedException('UnexpectedValueException', "TestEntity#1 is attached to another repository.");
+		$this->setExpectedException('Orm\InvalidEntityException', "TestEntity#1 is attached to another repository.");
 		$this->r->persist($e);
 	}
 

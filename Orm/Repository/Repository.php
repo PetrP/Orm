@@ -210,7 +210,7 @@ abstract class Repository extends Object implements IRepository
 			static $recurcion = array();
 			if (isset($recurcion[$hash]) AND $recurcion[$hash] > 1)
 			{
-				throw new InvalidStateException("There is an infinite recursion during persist in " . EntityHelper::toString($entity));
+				throw new InvalidEntityException("There is an infinite recursion during persist in " . EntityHelper::toString($entity));
 			}
 			if (!isset($recurcion[$hash])) $recurcion[$hash] = 0;
 			$recurcion[$hash]++;
@@ -480,7 +480,7 @@ abstract class Repository extends Object implements IRepository
 			$entityName = $this->getEntityClassName($data);
 			$this->checkAttachableEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
-			if (!($entity instanceof IEntity)) throw new InvalidStateException();
+			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
 			$entity->___event($entity, 'load', $this, $data);
 			$this->entities[$id] = $entity;
 		}
@@ -491,7 +491,7 @@ abstract class Repository extends Object implements IRepository
 	 * Kontroluje jestli je nazev entity spravny.
 	 * @param string
 	 * @return void
-	 * @throws UnexpectedValueException
+	 * @throws InvalidEntityException
 	 * @see self::isAttachableEntity()
 	 * @see self::getEntityClassName()
 	 */
@@ -504,7 +504,7 @@ abstract class Repository extends Object implements IRepository
 			{
 				if (!class_exists($en))
 				{
-					throw new UnexpectedValueException(get_class($this) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
+					throw new InvalidEntityException(get_class($this) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
 				}
 				$allowedEntities[strtolower($en)] = true;
 			}
@@ -518,7 +518,7 @@ abstract class Repository extends Object implements IRepository
 				$tmp = (array) $this->getEntityClassName();
 				$tmpLast = array_pop($tmp);
 				$tmp = $tmp ? "'" . implode("', '", $tmp) . "' or '$tmpLast'" : "'$tmpLast'";
-				throw new UnexpectedValueException(get_class($this) . " can't work with entity '$entityName', only with $tmp");
+				throw new InvalidEntityException(get_class($this) . " can't work with entity '$entityName', only with $tmp");
 			}
 			return false;
 		}
@@ -526,7 +526,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			if ($throw)
 			{
-				throw new UnexpectedValueException(EntityHelper::toString($entity) . ' is attached to another repository.');
+				throw new InvalidEntityException(EntityHelper::toString($entity) . ' is attached to another repository.');
 			}
 			return false;
 		}

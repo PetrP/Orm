@@ -229,9 +229,9 @@ class MetaData extends Object
 	 */
 	private static function createEntityRules($entityClass)
 	{
-		if (!class_exists($entityClass)) throw new InvalidStateException("Class '$entityClass' doesn`t exists");
+		if (!class_exists($entityClass)) throw new InvalidEntityException("Class '$entityClass' doesn`t exists");
 		$implements = class_implements($entityClass);
-		if (!isset($implements['Orm\IEntity'])) throw new InvalidStateException("'$entityClass' isn`t instance of Orm\\IEntity");
+		if (!isset($implements['Orm\IEntity'])) throw new InvalidEntityException("'$entityClass' isn`t instance of Orm\\IEntity");
 		$meta = call_user_func(array($entityClass, 'createMetaData'), $entityClass);
 		if (!($meta instanceof MetaData)) throw new BadReturnException(array($entityClass, 'createMetaData', 'Orm\MetaData', $meta));
 		return $meta;

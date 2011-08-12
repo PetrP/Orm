@@ -42,7 +42,7 @@ class ManyToMany_remove_Test extends ManyToMany_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('UnexpectedValueException', "OneToMany_Repository can't work with entity 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "OneToMany_Repository can't work with entity 'TestEntity'");
 		$this->m2m->remove(new TestEntity);
 	}
 

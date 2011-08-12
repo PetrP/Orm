@@ -151,7 +151,7 @@ abstract class EventEntityFragment extends Object
 		if (!method_exists(__CLASS__, $method))
 		{
 			$class= get_class($entity);
-			throw new InvalidArgumentException("Call to undefined event $class::$method().");
+			throw new InvalidEntityException("Call to undefined event $class::$method().");
 		}
 
 		$entity->checkEvent = NULL;
@@ -167,7 +167,7 @@ abstract class EventEntityFragment extends Object
 		if ($entity->checkEvent !== $method)
 		{
 			$class = get_class($entity);
-			throw new InvalidStateException("Method $class::$method() or its descendant doesn't call parent::$method().");
+			throw new InvalidEntityException("Method $class::$method() or its descendant doesn't call parent::$method().");
 		}
 		$entity->checkEvent = NULL;
 	}

@@ -51,13 +51,13 @@ class OneToMany_remove_Test extends OneToMany_Test
 		$this->assertSame($this->e, $e->param);
 		$this->o2m->remove($e);
 		$this->assertSame(NULL, $e->param);
-		$this->setExpectedException('UnexpectedValueException', 'Entity OneToMany_Entity2 is not asociated with this entity.');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Entity OneToMany_Entity2 is not asociated with this entity.');
 		$this->o2m->remove($e);
 	}
 
 	public function testBad()
 	{
-		$this->setExpectedException('UnexpectedValueException', "OneToMany_Repository can't work with entity 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "OneToMany_Repository can't work with entity 'TestEntity'");
 		$this->o2m->remove(new TestEntity);
 	}
 
@@ -65,7 +65,7 @@ class OneToMany_remove_Test extends OneToMany_Test
 	{
 		$e = $this->o2m->_getCollection()->getById(11);
 		$e->param = new TestEntity;
-		$this->setExpectedException('UnexpectedValueException', 'Entity OneToMany_Entity#11 is not asociated with this entity.');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Entity OneToMany_Entity#11 is not asociated with this entity.');
 		$this->o2m->remove($e);
 	}
 

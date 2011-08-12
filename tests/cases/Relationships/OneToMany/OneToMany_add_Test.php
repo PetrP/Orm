@@ -40,7 +40,7 @@ class OneToMany_add_Test extends OneToMany_Test
 
 	public function testBad()
 	{
-		$this->setExpectedException('UnexpectedValueException', "OneToMany_Repository can't work with entity 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "OneToMany_Repository can't work with entity 'TestEntity'");
 		$this->o2m->add(new TestEntity);
 	}
 
@@ -48,7 +48,7 @@ class OneToMany_add_Test extends OneToMany_Test
 	{
 		$e = new OneToMany_Entity;
 		$e->param = new TestEntity;
-		$this->setExpectedException('UnexpectedValueException', 'Entity OneToMany_Entity is already asociated with another entity.');
+		$this->setExpectedException('Orm\InvalidEntityException', 'Entity OneToMany_Entity is already asociated with another entity.');
 		$this->o2m->add($e);
 	}
 

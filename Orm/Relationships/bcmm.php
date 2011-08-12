@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Exception;
-use UnexpectedValueException;
 use Nette\DeprecatedException;
 
 /**
@@ -45,7 +44,7 @@ abstract class OldManyToMany extends ManyToMany
 		}
 		else
 		{
-			throw new UnexpectedValueException();
+			throw new InvalidEntityException;
 		}
 
 		parent::__construct($parent, $this->childRepository, $childParam, $parentParam, $mappedByParent, $value);
