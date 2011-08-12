@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\InvalidStateException;
 
 /**
  * Entity prevadi na array, je monze nastavit co udelat z asociacemi
@@ -77,7 +76,7 @@ class EntityToArray extends Object
 					}
 					else
 					{
-						throw new InvalidStateException('No mode for entity');
+						throw new EntityToArrayNoModeException(array($entity, true, false));
 					}
 				}
 				else if ($result[$name] instanceof IRelationship AND !($mode & self::RELATIONSHIP_AS_IS))
@@ -101,7 +100,7 @@ class EntityToArray extends Object
 							}
 							else
 							{
-								throw new InvalidStateException('No mode for relationship');
+								throw new EntityToArrayNoModeException(array($entity, false, true));
 							}
 						}
 						$result[$name] = $arr;
