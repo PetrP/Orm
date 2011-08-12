@@ -13,6 +13,7 @@ use Nette\DeprecatedException;
 use ReflectionClass;
 use Dibi;
 
+require_once __DIR__ . '/../Orm.php';
 require_once __DIR__ . '/IRepositoryContainer.php';
 require_once __DIR__ . '/../Entity/Entity.php';
 require_once __DIR__ . '/../Repository/Repository.php';
