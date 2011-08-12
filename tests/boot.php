@@ -34,9 +34,6 @@ require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockExpectedMySqlDriver.php';
 
-require_once __DIR__ . '/TestCase.php';
-require_once __DIR__ . '/InterfaceTestCase.php';
-
 use Orm\PerformanceHelper;
 
 PerformanceHelper::$keyCallback = NULL;
