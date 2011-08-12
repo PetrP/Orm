@@ -90,14 +90,19 @@ class AnnotationMetaData extends Object
 	/** @param array */
 	private function getClasses()
 	{
-		$class = $this->class;
-		$classes = array();
-		while (class_exists($class))
+		$classes = array($class = $this->class);
+		while ($class = get_parent_class($class))
 		{
-			if ($class === 'Nette\Object') break;
+			$i = class_implements($class);
+			if (!isset($i['Orm\IEntity']))
+			{
+				break;
+			}
 			$classes[] = $class;
-			if ($class === 'Orm\Entity') break; // todo neumoznuje pouzit vlastni IEntity
-			$class = get_parent_class($class);
+			if ($class === 'Orm\Entity') // speedup
+			{
+				break;
+			}
 		}
 		return array_reverse($classes);
 	}
