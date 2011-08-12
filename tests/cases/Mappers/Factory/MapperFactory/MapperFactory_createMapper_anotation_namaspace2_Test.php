@@ -10,6 +10,10 @@ class MapperFactory_createMapper_anotation_namaspace2_Test extends TestCase
 
 	private function t($c, $m)
 	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
 		$c = "MapperFactory_createMapper_anotation_namespace2\\Mfcmans2_{$c}_Repository";
 		if (is_numeric($m)) $m = "MapperFactory_createMapper_anotation_namespace\\Mfcmans_Mapper{$m}";
 		$r = new $c(new RepositoryContainer);
