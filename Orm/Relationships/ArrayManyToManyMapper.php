@@ -9,9 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once __DIR__ . '/IManyToManyMapper.php';
-require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
-
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {
 	/** @var array id => id */

@@ -10,8 +10,6 @@ namespace Orm;
 use Nette\Object;
 use DibiConnection;
 
-require_once __DIR__ . '/IManyToManyMapper.php';
-
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
 	/** @var string */

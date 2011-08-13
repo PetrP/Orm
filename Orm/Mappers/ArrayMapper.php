@@ -11,9 +11,6 @@ use DateTime;
 use ArrayObject;
 use Exception;
 
-require_once __DIR__ . '/Mapper.php';
-require_once __DIR__ . '/Collection/ArrayCollection.php';
-
 abstract class ArrayMapper extends Mapper
 {
 

@@ -10,9 +10,6 @@ namespace Orm;
 use Nette\Object;
 use ReflectionClass;
 
-require_once __DIR__ . '/IMapper.php';
-require_once __DIR__ . '/Conventional/NoConventional.php';
-
 /**
  * @property-read IRepository $repository
  * @property-read IConventional $conventional

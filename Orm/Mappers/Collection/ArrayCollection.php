@@ -11,10 +11,6 @@ use Nette\Object;
 use DateTime;
 use ArrayIterator;
 
-require_once __DIR__ . '/IEntityCollection.php';
-require_once __DIR__ . '/Helpers/FetchAssoc.php';
-require_once __DIR__ . '/Helpers/FindByHelper.php';
-
 class ArrayCollection extends Object implements IEntityCollection
 {
 

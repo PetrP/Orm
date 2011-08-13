@@ -10,11 +10,6 @@ namespace Orm;
 use Nette\Object;
 use Exception;
 
-require_once __DIR__ . '/IRepository.php';
-require_once __DIR__ . '/PerformanceHelper.php';
-require_once __DIR__ . '/../Entity/EntityHelper.php';
-require_once __DIR__ . '/RepositoryHelper.php';
-
 /**
  * Pracuje z entitamy, nezavisle na konretnim ulozisti.
  * Ukladani, mazani, nacitani entit.

@@ -12,15 +12,6 @@ use Exception;
 use ReflectionClass;
 use Dibi;
 
-require_once __DIR__ . '/../Orm.php';
-require_once __DIR__ . '/IRepositoryContainer.php';
-require_once __DIR__ . '/../Entity/Entity.php';
-require_once __DIR__ . '/../Repository/Repository.php';
-require_once __DIR__ . '/../Mappers/Mapper.php';
-require_once __DIR__ . '/../DI/ServiceContainer.php';
-require_once __DIR__ . '/../Mappers/Factory/AnnotationClassParser.php';
-require_once __DIR__ . '/../Mappers/Factory/MapperFactory.php';
-
 /**
  * Kolekce Repository.
  * Stara se o jejich vytvareni.

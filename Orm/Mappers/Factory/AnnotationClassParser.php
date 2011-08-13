@@ -13,10 +13,6 @@ use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 use stdClass;
 
-require_once __DIR__ . '/AnnotationClassParserException.php';
-require_once __DIR__ . '/AnnotationClassParserNoClassFoundException.php';
-require_once __DIR__ . '/AnnotationClassParserMorePossibleClassesException.php';
-
 class AnnotationClassParser extends Object
 {
 

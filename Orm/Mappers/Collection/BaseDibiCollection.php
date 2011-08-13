@@ -10,11 +10,6 @@ namespace Orm;
 use Nette\Object;
 use DibiConnection;
 
-require_once __DIR__ . '/IEntityCollection.php';
-require_once __DIR__ . '/Helpers/EntityIterator.php';
-require_once __DIR__ . '/Helpers/FetchAssoc.php';
-require_once __DIR__ . '/Helpers/FindByHelper.php';
-
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {
 

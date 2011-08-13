@@ -9,8 +9,6 @@ namespace Orm;
 
 use DibiConnection;
 
-require_once __DIR__ . '/BaseDibiCollection.php';
-
 class DibiCollection extends BaseDibiCollection
 {
 

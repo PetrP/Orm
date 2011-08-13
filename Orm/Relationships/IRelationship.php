@@ -10,8 +10,6 @@ namespace Orm;
 use IteratorAggregate;
 use Countable;
 
-require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
-
 interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 

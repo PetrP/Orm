@@ -11,8 +11,6 @@ use DibiDataSourceX;
 use DibiDataSource;
 use DibiConnection;
 
-require_once __DIR__ . '/BaseDibiCollection.php';
-
 class DataSourceCollection extends BaseDibiCollection
 {
 

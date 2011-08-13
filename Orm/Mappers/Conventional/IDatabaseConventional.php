@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-require_once __DIR__ . '/IConventional.php';
-
 /** Konvence pojmenovani v databazi. */
 interface IDatabaseConventional extends IConventional
 {

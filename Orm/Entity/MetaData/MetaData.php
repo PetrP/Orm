@@ -11,8 +11,6 @@ use Nette\Object;
 use Exception;
 use ReflectionClass;
 
-require_once __DIR__ . '/MetaDataProperty.php';
-
 /**
  * Informace o parametrech entity.
  */

@@ -12,9 +12,6 @@ use Nette\Callback;
 use Closure;
 use ReflectionClass;
 
-require_once __DIR__ . '/../../Relationships/RelationshipLoader.php';
-require_once __DIR__ . '/../Injection/InjectionFactory.php';
-
 /**
  * Informace o jednom parametru
  * @see MetaData

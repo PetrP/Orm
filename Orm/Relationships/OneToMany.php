@@ -9,10 +9,6 @@ namespace Orm;
 
 use Exception;
 
-require_once __DIR__ . '/IRelationship.php';
-require_once __DIR__ . '/BaseToMany.php';
-require_once __DIR__ . '/../Entity/EntityHelper.php';
-
 class OneToMany extends BaseToMany implements IRelationship
 {
 	/** @var Entity */
@@ -224,5 +220,3 @@ class OneToMany extends BaseToMany implements IRelationship
 	}
 
 }
-
-require_once __DIR__ . '/bc1m.php';

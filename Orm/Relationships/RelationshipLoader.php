@@ -10,9 +10,6 @@ namespace Orm;
 use Nette\Object;
 use Exception;
 
-require_once __DIR__ . '/IRelationship.php';
-require_once __DIR__ . '/../Entity/Injection/IEntityInjectionLoader.php';
-
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {
 	/** @var string */

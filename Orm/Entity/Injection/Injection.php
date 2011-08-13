@@ -11,9 +11,6 @@ use Nette\Object;
 use Exception;
 use ReflectionMethod;
 
-require_once __DIR__ . '/IEntityInjection.php';
-require_once __DIR__ . '/IEntityInjectionStaticLoader.php';
-
 /**
  * Obecna implementace IEntityInjection
  * @see IEntityInjection

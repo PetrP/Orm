@@ -9,8 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once __DIR__ . '/NoConventional.php';
-
 /**
  * Rozdily nazvu klicu v entite a v ulozisti.
  * V entite camelCase

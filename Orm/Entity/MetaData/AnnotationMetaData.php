@@ -11,8 +11,6 @@ use Nette\Object;
 use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 
-require_once __DIR__ . '/MetaData.php';
-
 /**
  * Ziskava meta data z enotaci.
  *

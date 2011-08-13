@@ -7,6 +7,8 @@
 
 namespace Orm;
 
+require_once __DIR__ . '/../Orm.php';
+
 /**
  * Kolekce Repository.
  * Stara se o jejich vytvareni.

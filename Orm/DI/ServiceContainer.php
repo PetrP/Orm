@@ -11,13 +11,6 @@ use Nette\Object;
 use Nette\Callback;
 use Closure;
 
-require_once __DIR__ . '/IServiceContainer.php';
-require_once __DIR__ . '/InvalidServiceFactoryException.php';
-require_once __DIR__ . '/ServiceAlreadyExistsException.php';
-require_once __DIR__ . '/ServiceNotFoundException.php';
-require_once __DIR__ . '/ServiceNotInstanceOfException.php';
-require_once __DIR__ . '/FrozenContainerException.php';
-
 /** DI Container */
 class ServiceContainer extends Object implements IServiceContainer
 {

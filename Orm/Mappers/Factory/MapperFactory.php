@@ -9,9 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 
-require_once __DIR__ . '/IMapperFactory.php';
-require_once __DIR__ . '/AnnotationClassParser.php';
-
 class MapperFactory extends Object implements IMapperFactory
 {
 	/** @var AnnotationClassParser */

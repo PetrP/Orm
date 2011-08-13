@@ -7,11 +7,6 @@
 
 namespace Orm;
 
-require_once __DIR__ . '/IRelationship.php';
-require_once __DIR__ . '/BaseToMany.php';
-require_once __DIR__ . '/DibiManyToManyMapper.php';
-require_once __DIR__ . '/ArrayManyToManyMapper.php';
-
 // todo rict parent entity ze se zmenila
 class ManyToMany extends BaseToMany implements IRelationship
 {
@@ -280,5 +275,3 @@ class ManyToMany extends BaseToMany implements IRelationship
 	}
 
 }
-
-require_once __DIR__ . '/bcmm.php';

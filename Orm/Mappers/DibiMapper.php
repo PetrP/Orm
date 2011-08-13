@@ -13,11 +13,6 @@ use DibiTranslator;
 use ReflectionMethod;
 use stdClass;
 
-require_once __DIR__ . '/Mapper.php';
-require_once __DIR__ . '/DibiPersistenceHelper.php';
-require_once __DIR__ . '/Conventional/SqlConventional.php';
-require_once __DIR__ . '/Collection/DibiCollection.php';
-
 /**
  * @property-read DibiConnection $connection
  * @property-read IDatabaseConventional $conventional

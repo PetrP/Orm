@@ -10,6 +10,8 @@ namespace Orm;
 use ArrayAccess;
 use IteratorAggregate;
 
+require_once __DIR__ . '/../Orm.php';
+
 interface IEntity extends ArrayAccess, IteratorAggregate
 {
 
