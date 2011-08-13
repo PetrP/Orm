@@ -531,10 +531,6 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 			{
 				$xValues = isset($this->values[$name]) ? $this->values[$name] : NULL;
 				$tmp = $rule['injection']->invoke($this, $xValues);
-				if (!($tmp instanceof IEntityInjection))
-				{
-					throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be 'Orm\\IEntityInjection', '" . (is_object($tmp) ? 'object ' . get_class($tmp) : (is_scalar($tmp) ? $tmp : gettype($tmp))) . "' given");
-				}
 				if ($xValues !== $value) $tmp->setInjectedValue($value);
 			}
 			else

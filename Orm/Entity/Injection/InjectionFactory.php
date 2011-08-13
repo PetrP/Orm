@@ -26,7 +26,17 @@ class InjectionFactory
 
 	public function call(IEntity $entity, $value)
 	{
-		return call_user_func($this->callback, $this->className, $entity, $value);
+		$result = call_user_func($this->callback, $this->className, $entity, $value);
+		if (!($result instanceof IEntityInjection))
+		{
+			$tmp = array(NULL, $this->className . ' factory');
+			if (is_array($this->callback) AND count($this->callback) === 2)
+			{
+				$tmp = $this->callback;
+			}
+			throw new BadReturnException(array($tmp[0], $tmp[1], 'Orm\IEntityInjection', $result));
+		}
+		return $result;
 	}
 
 }

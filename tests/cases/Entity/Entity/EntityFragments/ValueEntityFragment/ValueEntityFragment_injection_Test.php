@@ -122,7 +122,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 	public function testBad()
 	{
 		$e = new ValueEntityFragment_injectionBadEntity;
-		$this->setExpectedException('Nette\UnexpectedValueException', "Param ValueEntityFragment_injectionBadEntity::\$i must be 'Orm\\IEntityInjection', 'object Nette\\Utils\\Html' given");
+		$this->setExpectedException('Orm\BadReturnException', "ValueEntityFragment_injectionBadEntity::createInjection() must return Orm\\IEntityInjection, 'Nette\\Utils\\Html' given.");
 		$e->i;
 	}
 }
