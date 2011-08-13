@@ -1,6 +1,6 @@
 <?php
 
-use Nette\UnexpectedValueException;
+use Orm\NotValidException;
 use Orm\RepositoryContainer;
 
 /**
@@ -63,7 +63,7 @@ class ValueEntityFragment_getValue_Test extends TestCase
 		try {
 			$e->__getValue('foo2', true);
 			$this->fail();
-		} catch (UnexpectedValueException $ex) {}
+		} catch (NotValidException $ex) {}
 
 		$this->assertFalse($e->isChanged());
 	}

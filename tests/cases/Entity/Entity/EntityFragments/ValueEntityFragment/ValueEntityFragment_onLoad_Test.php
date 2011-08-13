@@ -34,7 +34,7 @@ class ValueEntityFragment_onLoad_Test extends TestCase
 	public function testBadId()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('UnexpectedValueException', "Param TestEntity::\$id must be 'id', 'integer' given");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '0' given");
 		$e->___event($e, 'load', $this->r, array('id' => 0));
 	}
 

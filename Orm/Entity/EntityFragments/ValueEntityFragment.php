@@ -122,7 +122,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 				}
 			} catch (Exception $e) {
 				$this->changed = $tmpChanged;
-				if (!($e instanceof UnexpectedValueException) OR $need)
+				if (!($e instanceof NotValidException) OR $need)
 				{
 					throw $e;
 				}
@@ -349,7 +349,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param mixed
 	 * @return Entity $this
 	 * @throws MemberAccessException
-	 * @throws UnexpectedValueException
+	 * @throws NotValidException
 	 */
 	final public function __set($name, $value)
 	{
@@ -401,7 +401,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param array
 	 * @return mixed
 	 * @throws MemberAccessException
-	 * @throws UnexpectedValueException
+	 * @throws NotValidException
 	 */
 	final public function __call($name, $args)
 	{
@@ -505,7 +505,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param string
 	 * @param mixed
 	 * @return void
-	 * @throws UnexpectedValueException
+	 * @throws NotValidException
 	 */
 	final private function setValueHelper($name, $value, $rule)
 	{
@@ -561,13 +561,12 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 			}
 			else
 			{
-				throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '{$rule['enum']['original']}', '" . (is_object($value) ? 'object ' . get_class($value) : (is_scalar($value) ? $value : gettype($value))) . "' given");
+				throw new NotValidException(array($this, $name, $rule['enum']['original'], $value));
 			}
 		}
 		if (!ValidationHelper::isValid($rule['types'], $value))
 		{
-			$type = implode('|',$rule['types']);
-			throw new UnexpectedValueException("Param ".get_class($this)."::\$$name must be '$type', '" . (is_object($value) ? get_class($value) : gettype($value)) . "' given");
+			throw new NotValidException(array($this, $name, implode('|',$rule['types']), $value));
 		}
 
 		$this->values[$name] = $value;

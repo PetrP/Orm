@@ -73,4 +73,13 @@ class ExceptionHelper
 		return is_object($type) ? get_class($type) : gettype($type);
 	}
 
+	/**
+	 * @param mixed
+	 * @return string
+	 */
+	public static function v($value)
+	{
+		return (is_scalar($value) AND !is_bool($value)) ? $value : self::t($value);
+	}
+
 }

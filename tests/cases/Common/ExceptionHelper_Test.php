@@ -32,6 +32,19 @@ class ExceptionHelper_Test extends TestCase
 		$this->assertSame('NULL', ExceptionHelper::format(array(NULL), '%t1'));
 	}
 
+	public function testValue()
+	{
+		$this->assertSame('ss', ExceptionHelper::format(array('ss'), '%v1'));
+		$this->assertSame('123', ExceptionHelper::format(array(123), '%v1'));
+		$this->assertSame('123.58', ExceptionHelper::format(array(123.58), '%v1'));
+		$this->assertSame('ArrayObject', ExceptionHelper::format(array(new ArrayObject), '%v1'));
+		$this->assertSame('array', ExceptionHelper::format(array(array()), '%v1'));
+		$this->assertSame('NULL', ExceptionHelper::format(array(NULL), '%v1'));
+		$this->assertSame('boolean', ExceptionHelper::format(array(true), '%v1'));
+		$this->assertSame('boolean', ExceptionHelper::format(array(false), '%v1'));
+		$this->assertSame('', ExceptionHelper::format(array(''), '%v1'));
+	}
+
 	public function testMore()
 	{
 		$this->assertSame('a b c', ExceptionHelper::format(array('a', 'b', 'c'), '%s1 %s2 %s3'));
