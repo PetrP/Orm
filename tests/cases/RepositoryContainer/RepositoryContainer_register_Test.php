@@ -16,13 +16,13 @@ class RepositoryContainer_register_Test extends TestCase
 
 	public function testOld1()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository alias 'tests' is already registered");
+		$this->setExpectedException('Orm\RepositoryAlreadyRegisteredException', "Repository alias 'tests' is already registered");
 		$this->m->register('tests', 'TestsRepository');
 	}
 
 	public function testOld2()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Repository alias 'testsrepository' is already registered");
+		$this->setExpectedException('Orm\RepositoryAlreadyRegisteredException', "Repository alias 'testsrepository' is already registered");
 		$this->m->register('TestsRepository', 'TestsRepository');
 	}
 
@@ -104,7 +104,7 @@ class RepositoryContainer_register_Test extends TestCase
 	public function testExists()
 	{
 		$this->m->register('xyz', 'TestsRepository');
-		$this->setExpectedException('Nette\InvalidStateException', "Repository alias 'xyz' is already registered");
+		$this->setExpectedException('Orm\RepositoryAlreadyRegisteredException', "Repository alias 'xyz' is already registered");
 		$this->m->register('xyz', 'TestsRepository');
 	}
 

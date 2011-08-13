@@ -167,6 +167,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * @param string
 	 * @param string
 	 * @return IRepositoryContainer
+	 * @throws RepositoryAlreadyRegisteredException
 	 */
 	public function register($alias, $repositoryClass)
 	{
@@ -174,7 +175,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		$alias = strtolower($alias);
 		if ($this->isRepository($alias))
 		{
-			throw new InvalidStateException("Repository alias '{$alias}' is already registered");
+			throw new RepositoryAlreadyRegisteredException("Repository alias '{$alias}' is already registered");
 		}
 		$this->aliases[$alias] = $originClass;
 		return $this;
