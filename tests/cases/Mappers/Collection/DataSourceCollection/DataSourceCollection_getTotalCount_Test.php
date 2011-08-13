@@ -8,7 +8,7 @@ class DataSourceCollection_getTotalCount_Test extends DataSourceCollection_Base_
 
 	public function test()
 	{
-		$this->setExpectedException('Nette\NotImplementedException');
+		$this->setExpectedException('Orm\NotImplementedException');
 		$this->c->getTotalCount();
 	}
 

@@ -15,7 +15,7 @@ class ArrayMapper_loadData_Test extends TestCase
 
 	public function testReturn()
 	{
-		$this->setExpectedException('Nette\NotImplementedException', 'ArrayMapper_loadData_ArrayMapper::loadData() is not implement, you must override and implement that method');
+		$this->setExpectedException('Orm\NotImplementedException', 'ArrayMapper_loadData_ArrayMapper::loadData() is not implement, you must override and implement that method');
 		$this->m->findAll();
 	}
 

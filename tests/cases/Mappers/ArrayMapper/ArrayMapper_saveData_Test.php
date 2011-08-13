@@ -15,7 +15,7 @@ class ArrayMapper_saveData_Test extends TestCase
 
 	public function testReturn()
 	{
-		$this->setExpectedException('Nette\NotImplementedException', 'ArrayMapper_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
+		$this->setExpectedException('Orm\NotImplementedException', 'ArrayMapper_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
 		$this->m->persist(new TestEntity);
 	}
 

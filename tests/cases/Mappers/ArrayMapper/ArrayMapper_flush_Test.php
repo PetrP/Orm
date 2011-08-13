@@ -2,7 +2,6 @@
 
 use Orm\RepositoryContainer;
 use Orm\ValidationHelper;
-use Nette\NotImplementedException;
 
 /**
  * @covers Orm\ArrayMapper::flush
@@ -63,7 +62,7 @@ class ArrayMapper_flush_Test extends TestCase
 	{
 		$m = new ArrayMapper_flush_saveData_ArrayMapper($this->m->repository);
 		$m->persist(new TestEntity);
-		$this->setExpectedException('Nette\NotImplementedException', 'ArrayMapper_flush_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
+		$this->setExpectedException('Orm\NotImplementedException', 'ArrayMapper_flush_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
 		$m->flush();
 	}
 

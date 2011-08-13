@@ -3,7 +3,7 @@
 use Orm\IEntity;
 use Orm\EntityToArray;
 use Orm\IRepository;
-use Nette\NotImplementedException;
+use Orm\NotImplementedException;
 
 /**
  * @property $a1

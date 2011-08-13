@@ -36,7 +36,7 @@ class DibiMapper_findAll_Test extends TestCase
 	public function testArray()
 	{
 		$this->m->collectionClass = 'Orm\ArrayCollection';
-		$this->setExpectedException('Nette\NotImplementedException');
+		$this->setExpectedException('Orm\NotImplementedException');
 		$this->m->findAll();
 	}
 

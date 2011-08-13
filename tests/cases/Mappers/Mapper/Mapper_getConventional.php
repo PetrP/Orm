@@ -4,7 +4,7 @@ use Orm\Mapper;
 use Orm\IEntity;
 use Orm\IRepository;
 use Orm\IConventional;
-use Nette\NotImplementedException;
+use Orm\NotImplementedException;
 
 class Mapper_getConventional_Mapper extends Mapper
 {

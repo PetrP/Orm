@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use Nette\NotImplementedException;
 use DateTime;
 use ArrayIterator;
 

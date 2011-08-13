@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\NotImplementedException;
 use DateTime;
 use ArrayObject;
 use Exception;

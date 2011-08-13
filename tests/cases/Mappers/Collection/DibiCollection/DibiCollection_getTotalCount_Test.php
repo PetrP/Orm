@@ -8,7 +8,7 @@ class DibiCollection_getTotalCount_Test extends DibiCollection_Base_Test
 
 	public function test()
 	{
-		$this->setExpectedException('Nette\NotImplementedException');
+		$this->setExpectedException('Orm\NotImplementedException');
 		$this->c->getTotalCount();
 	}
 

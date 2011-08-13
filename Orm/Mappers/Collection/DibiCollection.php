@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\NotImplementedException;
 use DibiConnection;
 
 require_once __DIR__ . '/BaseDibiCollection.php';

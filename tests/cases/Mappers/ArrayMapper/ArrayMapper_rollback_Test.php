@@ -2,7 +2,6 @@
 
 use Orm\RepositoryContainer;
 use Orm\ValidationHelper;
-use Nette\NotImplementedException;
 
 /**
  * @covers Orm\ArrayMapper::rollback

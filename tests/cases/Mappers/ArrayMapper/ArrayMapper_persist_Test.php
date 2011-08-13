@@ -1,7 +1,7 @@
 <?php
 
 use Orm\RepositoryContainer;
-use Nette\NotImplementedException;
+use Orm\NotImplementedException;
 
 /**
  * @covers Orm\ArrayMapper::persist
@@ -47,7 +47,7 @@ class ArrayMapper_persist_Test extends TestCase
 		} catch (NotImplementedException $e) {}
 		$data = $this->readAttribute($this->m, 'data');
 		$this->assertFalse(isset($data[3]));
-		$this->setExpectedException('Nette\NotImplementedException', 'ArrayMapper_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
+		$this->setExpectedException('Orm\NotImplementedException', 'ArrayMapper_saveData_ArrayMapper::saveData() is not implement, you must override and implement that method');
 		throw $e;
 	}
 

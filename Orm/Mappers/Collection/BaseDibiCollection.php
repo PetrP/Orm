@@ -9,7 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 use DibiConnection;
-use Nette\NotImplementedException;
 
 require_once __DIR__ . '/IEntityCollection.php';
 require_once __DIR__ . '/Helpers/EntityIterator.php';
