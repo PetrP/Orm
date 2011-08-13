@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\NotImplementedException;
-use Nette\NotSupportedException;
 use Nette\InvalidStateException;
 use Dibi;
 use DibiConnection;

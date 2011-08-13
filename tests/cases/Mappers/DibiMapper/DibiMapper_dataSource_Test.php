@@ -38,21 +38,21 @@ class DibiMapper_dataSource_Test extends TestCase
 	public function testDibiCollectionCustom()
 	{
 		$this->m->collectionClass = 'DibiMapper_dataSource_DibiCollection';
-		$this->setExpectedException('Nette\NotSupportedException');
+		$this->setExpectedException('Orm\NotSupportedException');
 		$this->m->ds('table');
 	}
 
 	public function testArrayCollection()
 	{
 		$this->m->collectionClass = 'Orm\ArrayCollection';
-		$this->setExpectedException('Nette\NotSupportedException');
+		$this->setExpectedException('Orm\NotSupportedException');
 		$this->m->ds('table');
 	}
 
 	public function testArrayCollectionCustom()
 	{
 		$this->m->collectionClass = 'DibiMapper_dataSource_ArrayCollection';
-		$this->setExpectedException('Nette\NotSupportedException');
+		$this->setExpectedException('Orm\NotSupportedException');
 		$this->m->ds('table');
 	}
 

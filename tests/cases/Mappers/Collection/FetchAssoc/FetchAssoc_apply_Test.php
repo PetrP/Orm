@@ -47,7 +47,7 @@ class FetchAssoc_apply_Test extends FetchAssoc_Base_Test
 
 	public function testObjectNode()
 	{
-		$this->setExpectedException('Nette\NotSupportedException', 'FetchAssoc "object" node (->) is not supported');
+		$this->setExpectedException('Orm\NotSupportedException', 'FetchAssoc "object" node (->) is not supported');
 		FetchAssoc::apply($this->e, '->string');
 	}
 

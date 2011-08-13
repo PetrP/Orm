@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\NotSupportedException;
 use Nette\NotImplementedException;
 use Nette\DeprecatedException;
 use DibiDataSourceX;

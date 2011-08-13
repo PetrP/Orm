@@ -8,7 +8,6 @@
 namespace Orm;
 
 use ArrayIterator;
-use Nette\NotSupportedException;
 
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),

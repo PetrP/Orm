@@ -69,7 +69,7 @@ class BaseEntityFragment_ArrayAccess_Test extends TestCase
 
 	public function testOffsetUnset()
 	{
-		$this->setExpectedException('Nette\NotSupportedException');
+		$this->setExpectedException('Orm\NotSupportedException');
 		unset($this->e['string']);
 	}
 }

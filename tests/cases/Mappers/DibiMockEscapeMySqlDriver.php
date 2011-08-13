@@ -1,6 +1,6 @@
 <?php
 
-use Nette\NotSupportedException;
+use Orm\NotSupportedException;
 
 class DibiMockEscapeMySqlDriver extends DibiMySqlDriver
 {

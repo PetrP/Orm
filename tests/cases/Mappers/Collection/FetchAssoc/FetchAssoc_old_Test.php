@@ -33,13 +33,13 @@ class FetchAssoc_old_Test extends FetchAssoc_Base_Test
 
 	public function testArrayNode()
 	{
-		$this->setExpectedException('Nette\NotSupportedException', 'FetchAssoc "record" node (=) is not supported');
+		$this->setExpectedException('Orm\NotSupportedException', 'FetchAssoc "record" node (=) is not supported');
 		FetchAssoc::apply($this->e, 'string,=,string');
 	}
 
 	public function testObjectNode()
 	{
-		$this->setExpectedException('Nette\NotSupportedException', 'FetchAssoc "object" node (@) is not supported');
+		$this->setExpectedException('Orm\NotSupportedException', 'FetchAssoc "object" node (@) is not supported');
 		FetchAssoc::apply($this->e, 'string,@,string');
 	}
 
