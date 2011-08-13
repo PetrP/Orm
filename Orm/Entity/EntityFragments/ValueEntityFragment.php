@@ -8,7 +8,6 @@
 namespace Orm;
 
 use InvalidArgumentException;
-use Nette\MemberAccessException;
 use Nette\UnexpectedValueException;
 use Nette\DeprecatedException;
 use Exception;
@@ -66,7 +65,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		if (!isset($this->rules[$name]))
 		{
-			throw new MemberAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot read an undeclared property ".get_class($this)."::\$$name.");
 		}
 		unset($this->overwriteMethodTemp['get'][$name]);
 
@@ -74,7 +73,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		if (!isset($rule['get']))
 		{
-			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = IEntity::DEFAULT_VALUE;
@@ -146,7 +145,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		if (!isset($this->rules[$name]))
 		{
-			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
 		unset($this->overwriteMethodTemp['set'][$name]);
 
@@ -154,7 +153,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		if (!isset($rule['set']))
 		{
-			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 
 		$this->setValueHelper($name, $value, $rule);
@@ -172,14 +171,14 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		if (!isset($this->rules[$name]))
 		{
-			throw new MemberAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot write to an undeclared property ".get_class($this)."::\$$name.");
 		}
 
 		$rule = $this->rules[$name];
 
 		if (isset($rule['set']))
 		{
-			throw new MemberAccessException("Property ".get_class($this)."::\$$name is not read-only.");
+			throw new PropertyAccessException("Property ".get_class($this)."::\$$name is not read-only.");
 		}
 
 		$this->setValueHelper($name, $value, $rule);
@@ -206,7 +205,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		}
 		if (!isset($this->rules[$name]))
 		{
-			throw new MemberAccessException("Cannot check an undeclared property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot check an undeclared property ".get_class($this)."::\$$name.");
 		}
 		return isset($this->changed[NULL]) OR isset($this->changed[$name]);
 	}
@@ -222,7 +221,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	{
 		if ($name !== NULL AND !isset($this->rules[$name]))
 		{
-			throw new MemberAccessException("Cannot mark as changed an undeclared property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot mark as changed an undeclared property ".get_class($this)."::\$$name.");
 		}
 		$this->changed[$name] = true;
 		return $this;
@@ -298,7 +297,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * Pristup k parametru jako k property.
 	 * @param string
 	 * @return mixed
-	 * @throws MemberAccessException
+	 * @throws PropertyAccessException
 	 */
 	final public function & __get($name)
 	{
@@ -312,7 +311,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		if (!isset($rule['get']))
 		{
-			throw new MemberAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot read to a write-only property ".get_class($this)."::\$$name.");
 		}
 
 		$value = NULL;
@@ -348,7 +347,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param string
 	 * @param mixed
 	 * @return Entity $this
-	 * @throws MemberAccessException
+	 * @throws PropertyAccessException
 	 * @throws NotValidException
 	 */
 	final public function __set($name, $value)
@@ -362,7 +361,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		if (!isset($rule['set']))
 		{
-			throw new MemberAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
+			throw new PropertyAccessException("Cannot write to a read-only property ".get_class($this)."::\$$name.");
 		}
 		if ($rule['set']['method'])
 		{
@@ -400,7 +399,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param string
 	 * @param array
 	 * @return mixed
-	 * @throws MemberAccessException
+	 * @throws PropertyAccessException
 	 * @throws NotValidException
 	 */
 	final public function __call($name, $args)
@@ -579,7 +578,6 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 * @param string
 	 * @param array
 	 * @return mixed
-	 * @throws MemberAccessException
 	 */
 	public static function __callStatic($name, $args)
 	{

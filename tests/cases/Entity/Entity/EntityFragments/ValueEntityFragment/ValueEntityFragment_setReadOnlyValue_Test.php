@@ -16,13 +16,13 @@ class ValueEntityFragment_setReadOnlyValue_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
 		$this->e->srov('unexists', 123);
 	}
 
 	public function test()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Property ValueEntityFragment_getset_Entity::$string is not read-only.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Property ValueEntityFragment_getset_Entity::$string is not read-only.');
 		$this->e->srov('string', 'xyz');
 	}
 

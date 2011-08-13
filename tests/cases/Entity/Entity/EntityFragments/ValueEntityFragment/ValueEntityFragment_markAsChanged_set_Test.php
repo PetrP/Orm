@@ -63,7 +63,7 @@ class ValueEntityFragment_markAsChanged_set_Test extends TestCase
 	public function testUnknown()
 	{
 		$e = $this->r->getById(1);
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot mark as changed an undeclared property TestEntity::$unknown.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot mark as changed an undeclared property TestEntity::$unknown.');
 		$e->markAsChanged('unknown');
 	}
 

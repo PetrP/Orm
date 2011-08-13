@@ -33,7 +33,7 @@ class ValueEntityFragment_get_Test extends TestCase
 		$rules = $p->getValue($this->e);
 		$rules['id']['get'] = NULL;
 		$p->setValue($this->e, $rules);
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read to a write-only property ValueEntityFragment_getset_Entity::$id.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot read to a write-only property ValueEntityFragment_getset_Entity::$id.');
 		$this->e->id;
 	}
 

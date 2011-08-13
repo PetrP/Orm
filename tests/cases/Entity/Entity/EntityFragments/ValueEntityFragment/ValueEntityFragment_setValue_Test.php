@@ -15,7 +15,7 @@ class ValueEntityFragment_setValue_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
 		$this->e->sv('unexists', 123);
 	}
 
@@ -27,7 +27,7 @@ class ValueEntityFragment_setValue_Test extends TestCase
 
 	public function testReadOnly()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to a read-only property ValueEntityFragment_getset_Entity::$readOnly.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot write to a read-only property ValueEntityFragment_getset_Entity::$readOnly.');
 		$this->e->sv('readOnly', 'xyz');
 	}
 

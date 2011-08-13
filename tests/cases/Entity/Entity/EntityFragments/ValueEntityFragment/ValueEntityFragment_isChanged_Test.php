@@ -80,7 +80,7 @@ class ValueEntityFragment_isChanged_Test extends TestCase
 	public function testUnknown()
 	{
 		$e = $this->r->getById(1);
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot check an undeclared property TestEntity::$unknown.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot check an undeclared property TestEntity::$unknown.');
 		$e->isChanged('unknown');
 	}
 

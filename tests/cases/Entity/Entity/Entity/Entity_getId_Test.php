@@ -31,7 +31,7 @@ class Entity_getId_Test extends TestCase
 	public function testReadOnly()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to a read-only property TestEntity::$id.');
+		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot write to a read-only property TestEntity::$id.');
 		$e->id = 2;
 	}
 
