@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\InvalidArgumentException;
 use Nette\NotSupportedException;
 
 class FetchAssoc

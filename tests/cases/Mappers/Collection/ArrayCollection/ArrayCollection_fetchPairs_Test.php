@@ -38,25 +38,25 @@ class ArrayCollection_fetchPairs_Test extends ArrayCollection_Base_Test
 
 	public function testBad1()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', 'Value or both columns must be specified.');
+		$this->setExpectedException('Orm\InvalidArgumentException', 'Value or both columns must be specified.');
 		$this->c->fetchPairs(NULL, NULL);
 	}
 
 	public function testBad2()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', 'Value or both columns must be specified.');
+		$this->setExpectedException('Orm\InvalidArgumentException', 'Value or both columns must be specified.');
 		$this->c->fetchPairs('string');
 	}
 
 	public function testUnexistKey()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Unknown key column 'unexist'.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Unknown key column 'unexist'.");
 		$this->c->fetchPairs('unexist', 'string');
 	}
 
 	public function testUnexistValue()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Unknown value column 'unexist'.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Unknown value column 'unexist'.");
 		$this->c->fetchPairs('string', 'unexist');
 	}
 

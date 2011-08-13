@@ -9,7 +9,6 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\NotImplementedException;
-use Nette\InvalidArgumentException;
 use DateTime;
 use ArrayIterator;
 

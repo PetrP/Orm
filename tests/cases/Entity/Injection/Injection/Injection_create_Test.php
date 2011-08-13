@@ -29,7 +29,7 @@ class Injection_create_Test extends TestCase
 
 	public function testBadClass()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Nette\\Utils\\Html is't subclass of Orm\\Injection");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Nette\\Utils\\Html is't subclass of Orm\\Injection");
 		Injection_create_Injection::create('Nette\Utils\Html', new TestEntity, NULL);
 	}
 

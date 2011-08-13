@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\InvalidArgumentException;
 use DateTime;
 
 class FindByHelper

@@ -40,13 +40,13 @@ class FindByHelper_parse_Test extends TestCase
 
 	public function testExtraParam()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "There is extra value in 'findByFoo'.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "There is extra value in 'findByFoo'.");
 		$this->t('findByFoo', array('bar', 'foo'));
 	}
 
 	public function testMissingParam()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "There is no value for 'bar' in 'findByFooAndBar'.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "There is no value for 'bar' in 'findByFooAndBar'.");
 		$this->t('findByFooAndBar', array('bar'));
 	}
 

@@ -139,7 +139,7 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 	public function testBadKey()
 	{
 		$this->c->orderBy('unexist');
-		$this->setExpectedException('Nette\InvalidArgumentException', "'unexist' is not key");
+		$this->setExpectedException('Orm\InvalidArgumentException', "'unexist' is not key");
 		$this->c->getResult();
 	}
 
@@ -148,7 +148,7 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$this->e[0]->mixed = new ArrayIterator(array());
 		$this->e[1]->mixed = new ArrayIterator(array());
 		$this->c->orderBy('mixed');
-		$this->setExpectedException('Nette\InvalidArgumentException', "ArrayCollection_Entity::\$mixed contains non-sortable value, ArrayIterator");
+		$this->setExpectedException('Orm\InvalidArgumentException', "ArrayCollection_Entity::\$mixed contains non-sortable value, ArrayIterator");
 		$this->c->getResult();
 	}
 
@@ -181,7 +181,7 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$this->e[0]->mixed = $this->e[2];
 		$this->e[1]->mixed = $this->e[3];
 		$this->c->orderBy('mixed->bad');
-		$this->setExpectedException('Nette\InvalidArgumentException', "'bad' is not key in 'mixed->bad'");
+		$this->setExpectedException('Orm\InvalidArgumentException', "'bad' is not key in 'mixed->bad'");
 		$this->c->getResult();
 	}
 
@@ -190,7 +190,7 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$this->e[0]->mixed = $this->e[2];
 		$c = new ArrayCollection(array(new TestEntity, $this->e[0]));
 		$c->orderBy('mixed->string');
-		$this->setExpectedException('Nette\InvalidArgumentException', "'mixed' is not key in 'mixed->string'");
+		$this->setExpectedException('Orm\InvalidArgumentException', "'mixed' is not key in 'mixed->string'");
 		$c->getResult();
 	}
 

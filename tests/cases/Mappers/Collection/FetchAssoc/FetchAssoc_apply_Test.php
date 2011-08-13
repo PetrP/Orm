@@ -53,7 +53,7 @@ class FetchAssoc_apply_Test extends FetchAssoc_Base_Test
 
 	public function testUnknown()
 	{
-		$this->setExpectedException('Nette\InvalidArgumentException', "Unknown column 'unknown' in associative descriptor.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Unknown column 'unknown' in associative descriptor.");
 		$r = FetchAssoc::apply($this->e, 'unknown');
 	}
 

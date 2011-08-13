@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use InvalidArgumentException;
 use Nette\UnexpectedValueException;
 use Nette\DeprecatedException;
 use Exception;

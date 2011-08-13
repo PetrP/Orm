@@ -8,7 +8,6 @@
 namespace Orm;
 
 use Nette\Object;
-use UnexpectedValueException;
 use Nette\InvalidStateException;
 use Nette\DeprecatedException;
 use Exception;
@@ -131,7 +130,7 @@ abstract class Repository extends Object implements IRepository
 		}
 		else if (!is_scalar($id))
 		{
-			throw new UnexpectedValueException("Id must be scalar, '" . (is_object($id) ? 'object ' . get_class($id) : gettype($id)) . "' given");
+			throw new InvalidArgumentException("Id must be scalar, '" . (is_object($id) ? 'object ' . get_class($id) : gettype($id)) . "' given");
 		}
 		$this->performanceHelper->access($id);
 		if (isset($this->entities[$id]))
