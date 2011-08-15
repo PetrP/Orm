@@ -39,7 +39,7 @@ abstract class ArrayMapper extends Mapper
 	 */
 	public function getById($id)
 	{
-		if (!$id) return NULL;
+		if ($id === NULL) return NULL;
 		$data = $this->getData();
 		return isset($data[$id]) ? $data[$id] : NULL;
 	}

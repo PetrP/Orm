@@ -32,8 +32,20 @@ class Repository_hydrateEntity_Test extends TestCase
 
 	public function testEmptyId()
 	{
-		$this->setExpectedException('Orm\BadReturnException', "Data, that is returned from storage, doesn't contain id.");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '' given.");
 		$this->r->hydrateEntity(array('id' => ''));
+	}
+
+	public function testEmptyIdZero()
+	{
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '0' given.");
+		$this->r->hydrateEntity(array('id' => '0'));
+	}
+
+	public function testEmptyIdNull()
+	{
+		$this->setExpectedException('Orm\BadReturnException', "Data, that is returned from storage, doesn't contain id.");
+		$this->r->hydrateEntity(array('id' => NULL));
 	}
 
 	public function testPrimaryKey()

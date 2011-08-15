@@ -487,11 +487,11 @@ abstract class Repository extends Object implements IRepository
 			$this->conventional = $this->getMapper()->getConventional(); // speedup
 			$this->primaryKey = $this->conventional->getPrimaryKey();
 		}
-		$id = isset($data[$this->primaryKey]) ? $data[$this->primaryKey] : NULL;
-		if (!$id)
+		if (!isset($data[$this->primaryKey]))
 		{
 			throw new BadReturnException("Data, that is returned from storage, doesn't contain id.");
 		}
+		$id = $data[$this->primaryKey];
 		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{
 			$data = (array) $this->conventional->formatStorageToEntity($data);

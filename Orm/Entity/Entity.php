@@ -22,7 +22,7 @@ abstract class Entity extends BaseEntityFragment implements IEntity
 	final public function getId()
 	{
 		$id = $this->getValue('id', false);
-		if (!$id) throw new EntityNotPersistedException(EntityHelper::toString($this) . ' is not persisted.');
+		if ($id === NULL) throw new EntityNotPersistedException(EntityHelper::toString($this) . ' is not persisted.');
 		return $id;
 	}
 
