@@ -133,6 +133,8 @@ require_once __DIR__ . '/Relationships/bcmm.php';
 
 require_once __DIR__ . '/DI/IServiceContainer.php';
 require_once __DIR__ . '/DI/ServiceContainer.php';
+require_once __DIR__ . '/DI/IServiceContainerFactory.php';
+require_once __DIR__ . '/DI/ServiceContainerFactory.php';
 require_once __DIR__ . '/DI/FrozenContainerException.php';
 require_once __DIR__ . '/DI/InvalidServiceFactoryException.php';
 require_once __DIR__ . '/DI/ServiceAlreadyExistsException.php';

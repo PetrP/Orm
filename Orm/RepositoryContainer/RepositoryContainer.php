@@ -10,7 +10,6 @@ namespace Orm;
 use Nette\Object;
 use Exception;
 use ReflectionClass;
-use Dibi;
 
 /**
  * Kolekce Repository.
@@ -68,24 +67,12 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	/** @var IServiceContainer */
 	private $container;
 
-	public function __construct()
+	/** @param IServiceContainerFactory|NULL */
+	public function __construct(IServiceContainerFactory $containerFactory = NULL)
 	{
 		self::$instance = $this;
-		$this->container = new ServiceContainer;
-		$this->container->addService('annotationClassParser', 'Orm\AnnotationClassParser');
-		$this->container->addService('mapperFactory', function (\Orm\IServiceContainer $container) {
-			return new \Orm\MapperFactory($container->getService('annotationClassParser', 'Orm\AnnotationClassParser'));
-		});
-		$this->container->addService('repositoryHelper', 'Orm\RepositoryHelper');
-		$this->container->addService('dibi', function () {
-			return dibi::getConnection();
-		});
-		if (class_exists('Nette\Environment'))
-		{
-			$this->container->addService('performanceHelperCache', function () {
-				return \Nette\Environment::getCache('Orm\PerformanceHelper');
-			});
-		}
+		if (!$containerFactory) $containerFactory = new ServiceContainerFactory;
+		$this->container = $containerFactory->getContainer();
 	}
 
 	/** @return IServiceContainer */

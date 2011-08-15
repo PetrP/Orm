@@ -23,4 +23,21 @@ class RepositoryContainer_construct_Test extends TestCase
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}
 
+	public function testNull()
+	{
+		$rc = new RepositoryContainer;
+		$this->assertInstanceOf('Orm\ServiceContainer', $rc->getContext());
+		$this->assertTrue($rc->getContext()->hasService('dibi'));
+		$this->assertFalse($rc->getContext()->hasService('bubu'));
+	}
+
+	public function testFactory()
+	{
+		$cf = new RepositoryContainer_construct_ServiceContainerFactory;
+		$rc = new RepositoryContainer($cf);
+		$this->assertInstanceOf('Orm\ServiceContainer', $rc->getContext());
+		$this->assertSame($cf->getContainer(), $rc->getContext());
+		$this->assertFalse($rc->getContext()->hasService('dibi'));
+		$this->assertTrue($rc->getContext()->hasService('bubu'));
+	}
 }
