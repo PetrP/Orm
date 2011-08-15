@@ -191,7 +191,7 @@ class MetaDataProperty extends Object
 	 */
 	public function setManyToOne($repositoryName)
 	{
-		$this->setOnetoOne($repositoryName);
+		$this->setOneToOne($repositoryName);
 		$this->data['relationship'] = MetaData::ManyToOne;
 
 		return $this;
@@ -294,7 +294,6 @@ class MetaDataProperty extends Object
 	{
 		$this->data['enum'] = array('constants' => array_unique($values), 'original' => $original ? $original : implode(', ', $values));
 		// todo original zrusit
-
 		return $this;
 	}
 

@@ -12,6 +12,12 @@ use Exception;
 
 class NotValidException extends RuntimeException
 {
+
+	/**
+	 * @param string|array
+	 * @param int
+	 * @param Exception
+	 */
 	public function __construct($message = NULL, $code = NULL, Exception $previous = NULL)
 	{
 		$message = ExceptionHelper::format($message, "Param %c1::\$%s2 must be '%s3', '%v4' given.");
