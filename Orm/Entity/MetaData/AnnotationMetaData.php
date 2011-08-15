@@ -29,7 +29,7 @@ class AnnotationMetaData extends Object
 {
 
 	/** @var array mozne aliasy method */
-	static private $aliases = array(
+	static protected $aliases = array(
 		'1:1' => 'onetoone',
 		'm:1' => 'manytoone',
 		'n:1' => 'manytoone',
@@ -198,7 +198,7 @@ class AnnotationMetaData extends Object
 		list($propertyName, $property) = $this->property;
 
 		$name = strtolower($match[1]);
-		if (isset(self::$aliases[$name])) $name = self::$aliases[$name];
+		if (isset(static::$aliases[$name])) $name = static::$aliases[$name];
 		$method = "set{$name}";
 		if (!method_exists($property, $method))
 		{
@@ -338,7 +338,7 @@ class AnnotationMetaData extends Object
 	 * @see self::builtParamsDefault()
 	 * @see self::builtParamsInjection()
 	 */
-	private function parseSelf($string)
+	protected function parseSelf($string)
 	{
 		$string = trim($string);
 		if (substr($string, 0, 6) === 'self::')
@@ -355,7 +355,7 @@ class AnnotationMetaData extends Object
 	 * @see self::builtParamsEnum()
 	 * @see self::builtParamsDefault()
 	 */
-	private function parseString($value, $errorMessage)
+	protected function parseString($value, $errorMessage)
 	{
 		if (is_numeric($value))
 		{
