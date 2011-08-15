@@ -45,11 +45,11 @@ class PerformanceHelper extends Object
 	 */
 	public function __construct(IRepository $repository, ArrayAccess $cache)
 	{
-		if (!self::$keyCallback) return;
+		if (!static::$keyCallback) return;
 		$this->repositoryClass = get_class($repository);
 		if (!isset(self::$toLoad))
 		{
-			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;
+			$key = static::$keyCallback ? (string) callback(static::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
 			if (strlen($key) > 50)
 			{

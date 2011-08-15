@@ -52,7 +52,7 @@ class ValidationHelper
 				else if ($type === 'datetime' AND $value !== '' AND (is_string($value) OR is_int($value) OR is_float($value)))
 				{
 					try {
-						$_value = self::createDateTime($value);
+						$_value = static::createDateTime($value);
 					} catch (Exception $e) {
 						$_e = $e;
 					}

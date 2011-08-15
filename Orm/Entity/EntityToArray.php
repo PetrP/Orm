@@ -72,7 +72,7 @@ class EntityToArray extends Object
 					}
 					else if ($mode & self::ENTITY_AS_ARRAY)
 					{
-						$result[$name] = $deep > self::$maxDeep ? NULL : EntityToArray::toArray($result[$name], $mode, $deep+1);
+						$result[$name] = $deep > static::$maxDeep ? NULL : EntityToArray::toArray($result[$name], $mode, $deep+1);
 					}
 					else
 					{
@@ -81,7 +81,7 @@ class EntityToArray extends Object
 				}
 				else if ($result[$name] instanceof IRelationship AND !($mode & self::RELATIONSHIP_AS_IS))
 				{
-					if ($deep > self::$maxDeep)
+					if ($deep > static::$maxDeep)
 					{
 						$result[$name] = NULL;
 					}
