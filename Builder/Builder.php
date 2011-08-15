@@ -154,6 +154,7 @@ class Builder extends Object
 			$data = PhpParser::versionFix($data, true);
 			$data = PhpParser::removeNamespace($data, true, true);
 			$data = PhpParser::replaceClosures($data);
+			$data = PhpParser::replaceLateStaticBinding($data);
 			$data = PhpParser::replaceDirConstant($data);
 		}
 		else

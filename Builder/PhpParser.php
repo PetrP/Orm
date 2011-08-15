@@ -72,6 +72,18 @@ class PhpParser extends Tokenizer
 	}
 
 	/**
+	 * @param string
+	 * @return string
+	 */
+	public static function replaceLateStaticBinding($s)
+	{
+		$s = str_replace('new static', 'new self', $s);
+		$s = str_replace('static::', 'self::', $s);
+		$s = str_replace('get_called_class()', '__CLASS__', $s);
+		return $s;
+	}
+
+	/**
 	 * Standardize line endings to unix-like
 	 * @param string
 	 * @return string
