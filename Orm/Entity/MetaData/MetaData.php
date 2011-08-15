@@ -32,6 +32,9 @@ class MetaData extends Object
 	/** @see MetaDataProperty::setOneToOne() */
 	const OneToOne = '1:1';
 
+	/** @var string */
+	private $propertyClass = 'Orm\MetaDataProperty';
+
 	/** @var string Nazev entity ke ktere patri informace */
 	private $entityClass;
 
@@ -41,8 +44,11 @@ class MetaData extends Object
 	/** @var array of MetaDataProperty Jednotlive parametry */
 	private $properties = array();
 
-	/** @param string string|IEntity class name or object */
-	public function __construct($entityClass)
+	/**
+	 * @param string|IEntity class name or object
+	 * @param string|NULL null means default Orm\MetaDataProperty
+	 */
+	public function __construct($entityClass, $propertyClass = NULL)
 	{
 		if ($entityClass instanceof IEntity)
 		{
@@ -56,6 +62,14 @@ class MetaData extends Object
 			if (!$r->implementsInterface('Orm\IEntity')) throw new MetaDataException("'$entityClass' isn`t instance of Orm\\IEntity");
 		}
 		$this->entityClass = $entityClass;
+		if ($propertyClass !== NULL)
+		{
+			if (!is_subclass_of($propertyClass, 'Orm\MetaDataProperty') AND strcasecmp($propertyClass, 'Orm\MetaDataProperty') !== 0)
+			{
+				throw new InvalidArgumentException(array($this, '$propertyClass', 'subclass of Orm\MetaDataProperty', $propertyClass));
+			}
+			$this->propertyClass = $propertyClass;
+		}
 	}
 
 	/**
@@ -78,12 +92,8 @@ class MetaData extends Object
 			{
 				throw new MetaDataException($this->getEntityClass() . "::\$$name is defined twice in $since");
 			}
-			$this->properties[$name] = new MetaDataProperty($this, $name, $types, $access, $since);
 		}
-		else
-		{
-			$this->properties[$name] = new MetaDataProperty($this, $name, $types, $access, $since);
-		}
+		$this->properties[$name] = new $this->propertyClass($this, $name, $types, $access, $since);
 
 		return $this->properties[$name];
 	}
