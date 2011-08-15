@@ -56,10 +56,16 @@ class MetaData extends Object
 		}
 		else
 		{
-			if (!class_exists($entityClass)) throw new MetaDataException("Class '$entityClass' doesn`t exists");
+			if (!class_exists($entityClass))
+			{
+				throw new InvalidArgumentException(array($this, '$entityClass', 'instance of Orm\IEntity', '', "; class '$entityClass' doesn't exists"));
+			}
 			$r = new ReflectionClass($entityClass);
 			$entityClass = $r->getName();
-			if (!$r->implementsInterface('Orm\IEntity')) throw new MetaDataException("'$entityClass' isn`t instance of Orm\\IEntity");
+			if (!$r->implementsInterface('Orm\IEntity'))
+			{
+				throw new InvalidArgumentException(array($this, '$entityClass', 'instance of Orm\IEntity', $entityClass));
+			}
 		}
 		$this->entityClass = $entityClass;
 		if ($propertyClass !== NULL)
