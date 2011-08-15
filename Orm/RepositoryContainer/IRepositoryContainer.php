@@ -54,10 +54,4 @@ interface IRepositoryContainer
 	/** @return IServiceContainer */
 	public function getContext();
 
-	/**
-	 * @param IServiceContainer
-	 * @return IRepositoryContainer
-	 */
-	public function setContext(IServiceContainer $container);
-
 }

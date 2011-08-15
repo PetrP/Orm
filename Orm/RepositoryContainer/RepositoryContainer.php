@@ -67,28 +67,33 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	/** @var IServiceContainer */
 	private $container;
 
-	/** @param IServiceContainerFactory|NULL */
-	public function __construct(IServiceContainerFactory $containerFactory = NULL)
+	/** @param IServiceContainerFactory|IServiceContainer|NULL */
+	public function __construct($containerFactory = NULL)
 	{
 		self::$instance = $this;
-		if (!$containerFactory) $containerFactory = new ServiceContainerFactory;
-		$this->container = $containerFactory->getContainer();
+
+		if ($containerFactory === NULL)
+		{
+			$containerFactory = new ServiceContainerFactory;
+		}
+		if ($containerFactory instanceof IServiceContainerFactory)
+		{
+			$this->container = $containerFactory->getContainer();
+		}
+		else if ($containerFactory instanceof IServiceContainer)
+		{
+			$this->container = $containerFactory;
+		}
+		else
+		{
+			throw new InvalidArgumentException(array($this, '__construct() first param', 'Orm\IServiceContainerFactory, Orm\IServiceContainer or NULL', $containerFactory));
+		}
 	}
 
 	/** @return IServiceContainer */
 	public function getContext()
 	{
 		return $this->container;
-	}
-
-	/**
-	 * @param IServiceContainer
-	 * @return IRepositoryContainer
-	 */
-	public function setContext(IServiceContainer $container)
-	{
-		$this->container = $container;
-		return $this;
 	}
 
 	/**
@@ -288,4 +293,9 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		}
 	}
 
+	/** @deprecated */
+	final public function setContext()
+	{
+		throw new DeprecatedException(array($this, 'setContext()', $this, '__construct()'));
+	}
 }
