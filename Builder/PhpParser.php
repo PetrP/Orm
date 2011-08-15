@@ -68,7 +68,7 @@ class PhpParser extends Tokenizer
 	 */
 	public static function replaceDirConstant($s)
 	{
-		return preg_replace('#__DIR__#', 'dirname(__FILE__)', $s);
+		return str_replace('__DIR__', 'dirname(__FILE__)', $s);
 	}
 
 	/**
