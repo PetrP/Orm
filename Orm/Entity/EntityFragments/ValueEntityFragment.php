@@ -48,7 +48,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		if ($mode === MetaData::READWRITE) return isset($rule['get']) AND isset($rule['set']);
 		else if ($mode === MetaData::READ) return isset($rule['get']);
 		else if ($mode === MetaData::WRITE) return isset($rule['set']);
-		throw new InvalidArgumentException('Unknown mode');
+		throw new InvalidArgumentException(array('Orm\Entity', 'hasParam() $mode', 'Orm\MetaData::READWRITE, READ or WRITE', $mode));
 	}
 
 	/**

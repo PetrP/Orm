@@ -28,7 +28,7 @@ class Repository_getById_Test extends TestCase
 
 	public function testNotScalar()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Id must be scalar, 'array' given");
+		$this->setExpectedException('Orm\InvalidArgumentException', "TestsRepository::getById() \$id must be scalar; 'array' given.");
 		$this->assertNull($this->r->getById(array()));
 	}
 

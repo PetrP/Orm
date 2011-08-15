@@ -34,13 +34,13 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 			$construct = new ReflectionMethod($className, '__construct');
 			if ($construct->getNumberOfRequiredParameters())
 			{
-				throw new RequiredArgumentException("$className has required parameters in constructor, use custom factory");
+				throw new RequiredArgumentException(get_class($entity) . " injection '$className' loaded via " . __CLASS__ . '::create() has required parameters in constructor, use custom factory.');
 			}
 		}
 		$injection = new $className;
 		if (!($injection instanceof self))
 		{
-			throw new InvalidArgumentException(get_class($injection) . " is't subclass of " . __CLASS__);
+			throw new InvalidArgumentException(array('', get_class($entity) . ' injection loaded via ' . __CLASS__ . '::create()', 'subclass of ' . __CLASS__, $className));
 		}
 
 		$injection->setInjectedValue($value);

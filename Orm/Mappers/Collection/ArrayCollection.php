@@ -62,7 +62,7 @@ class ArrayCollection extends Object implements IEntityCollection
 			if ($direction !== self::ASC AND $direction !== self::DESC)
 			{
 				$direction = func_get_arg(1);
-				throw new InvalidArgumentException(__CLASS__ . "::orderBy() Direction expected Orm\\IEntityCollection::ASC or Orm\\IEntityCollection::DESC, '$direction' given");
+				throw new InvalidArgumentException(array($this, 'orderBy() $direction', 'Orm\IEntityCollection::ASC or DESC', $direction));
 			}
 
 			$this->sorting[] = array($key, $direction);

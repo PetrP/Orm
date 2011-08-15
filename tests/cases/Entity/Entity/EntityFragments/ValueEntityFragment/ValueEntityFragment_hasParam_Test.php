@@ -43,7 +43,7 @@ class ValueEntityFragment_hasParam_Test extends TestCase
 	public function testBadMode()
 	{
 		$e = new ValueEntityFragment_hasParam_Entity;
-		$this->setExpectedException('Orm\InvalidArgumentException', 'Unknown mode');
+		$this->setExpectedException('Orm\InvalidArgumentException', 'Orm\Entity::hasParam() $mode must be Orm\MetaData::READWRITE, READ or WRITE; \'xyz\' given.');
 		$e->hasParam('read', 'xyz');
 	}
 

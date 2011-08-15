@@ -29,7 +29,7 @@ class Injection_create_Test extends TestCase
 
 	public function testBadClass()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Nette\\Utils\\Html is't subclass of Orm\\Injection");
+		$this->setExpectedException('Orm\InvalidArgumentException', 'TestEntity injection loaded via Orm\Injection::create() must be subclass of Orm\Injection; \'Nette\Utils\Html\' given.');
 		Injection_create_Injection::create('Nette\Utils\Html', new TestEntity, NULL);
 	}
 
@@ -41,7 +41,7 @@ class Injection_create_Test extends TestCase
 
 	public function testHasConstructorWithParams()
 	{
-		$this->setExpectedException('Orm\RequiredArgumentException', "Injection_create_Injection_ConstructorWithParams has required parameters in constructor, use custom factory");
+		$this->setExpectedException('Orm\RequiredArgumentException', "TestEntity injection 'Injection_create_Injection_ConstructorWithParams' loaded via Orm\\Injection::create() has required parameters in constructor, use custom factory.");
 		Injection_create_Injection_ConstructorWithParams::create('Injection_create_Injection_ConstructorWithParams', new TestEntity, NULL);
 	}
 

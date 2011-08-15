@@ -128,7 +128,7 @@ abstract class Repository extends Object implements IRepository
 		}
 		else if (!is_scalar($id))
 		{
-			throw new InvalidArgumentException("Id must be scalar, '" . (is_object($id) ? 'object ' . get_class($id) : gettype($id)) . "' given");
+			throw new InvalidArgumentException(array($this, 'getById() $id', 'scalar', $id));
 		}
 		if ($this->performanceHelper)
 		{
