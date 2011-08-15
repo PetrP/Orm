@@ -5,6 +5,7 @@ use Orm\AnnotationMetaData;
 use Orm\Entity;
 use Orm\OldManyToMany;
 use Orm\OldOneToMany;
+use Orm\MetaData;
 
 class MockAnnotationMetaData extends AnnotationMetaData
 {
@@ -12,8 +13,9 @@ class MockAnnotationMetaData extends AnnotationMetaData
 
 	public static function getMetaData($class)
 	{
-		$a = new self($class);
-		return $a->metaData;
+		$m = new MetaData($class);
+		new self($m);
+		return $m;
 	}
 
 	protected function getAnnotation($class)
@@ -24,7 +26,7 @@ class MockAnnotationMetaData extends AnnotationMetaData
 
 	public static function mockConstruct($class)
 	{
-		return new AnnotationMetaData($class);
+		return new AnnotationMetaData(new MetaData($class));
 	}
 }
 

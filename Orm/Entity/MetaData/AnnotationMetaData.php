@@ -41,8 +41,11 @@ class AnnotationMetaData extends Object
 		'1:n' => 'onetomany',
 	);
 
-	/** @var MetaData */
-	protected $metaData;
+	static private $modes = array(
+		'property' => MetaData::READWRITE,
+		'property-read' => MetaData::READ,
+		'property-write' => MetaData::WRITE,
+	);
 
 	/** @var string */
 	private $class;
@@ -51,26 +54,49 @@ class AnnotationMetaData extends Object
 	 * temporary save
 	 * @internal
 	 * @var array|NULL array(string, MetaDataProperty)
-	 * @see self::callOnProperty()
+	 * @see self::callOnMacro()
 	 */
 	private $property;
 
 	/**
-	 * @param string|IEntity class name or object
+	 * @param MetaData|string|IEntity class name or object
 	 * @return MetaData
 	 */
-	public static function getMetaData($class)
+	public static function getMetaData($metaData)
 	{
-		$a = new self($class);
-		return $a->metaData;
+		if (!($metaData instanceof MetaData))
+		{
+			$metaData = new MetaData($metaData);
+		}
+		new static($metaData);
+		return $metaData;
 	}
 
-	/** @param string */
-	protected function __construct($class)
+	/** @param MetaData */
+	protected function __construct(MetaData $metaData)
 	{
-		$this->metaData = new MetaData($class);
-		$this->class = $this->metaData->getEntityClass();
-		$this->process();
+		$this->class = $metaData->getEntityClass();
+
+		foreach ($this->getClasses($this->class) as $class)
+		{
+			foreach ($this->getAnnotation($class) as $annotation => $tmp)
+			{
+				if (isset(self::$modes[$annotation]))
+				{
+					foreach ($tmp as $string)
+					{
+						$this->addProperty($metaData, $string, self::$modes[$annotation], $class);
+					}
+					continue;
+				}
+
+				if (strncasecmp($annotation, 'prop', 4) === 0)
+				{
+					$string = current($tmp);
+					throw new AnnotationMetaDataException("Invalid annotation format '@$annotation $string' in $class");
+				}
+			}
+		}
 	}
 
 	/**
@@ -82,10 +108,13 @@ class AnnotationMetaData extends Object
 		return AnnotationsParser::getAll(new ReflectionClass($class));
 	}
 
-	/** @param array */
-	private function getClasses()
+	/**
+	 * @param string
+	 * @return array
+	 */
+	private function getClasses($class)
 	{
-		$classes = array($class = $this->class);
+		$classes = array($class);
 		while ($class = get_parent_class($class))
 		{
 			$i = class_implements($class);
@@ -103,11 +132,12 @@ class AnnotationMetaData extends Object
 	}
 
 	/**
+	 * @param MetaData
 	 * @param string
 	 * @param MetaData::READWRITE|MetaData::READ|MetaData::WRITE
 	 * @param string
 	 */
-	private function addProperty($string, $mode, $class)
+	private function addProperty(MetaData $metaData, $string, $mode, $class)
 	{
 		if ($mode === MetaData::READWRITE) // bc; drive AnnotationsParser na pomlcce zkoncil
 		{
@@ -144,46 +174,15 @@ class AnnotationMetaData extends Object
 		}
 
 		$propertyName = $property;
-		$property = $this->metaData->addProperty($propertyName, $type, $mode, $class);
+		$property = $metaData->addProperty($propertyName, $type, $mode, $class);
 		$this->property = array($propertyName, $property);
-		$string = preg_replace_callback('#\{\s*([^\s\}\{]+)(?:\s+([^\}\{]*))?\s*\}#si', array($this, 'callOnProperty'), $string);
+		$string = preg_replace_callback('#\{\s*([^\s\}\{]+)(?:\s+([^\}\{]*))?\s*\}#si', array($this, 'callOnMacro'), $string);
 		$this->property = NULL;
 
 		if (preg_match('#\{|\}#', $string))
 		{
 			$string = trim($string);
 			throw new AnnotationMetaDataException("Invalid annotation format, extra curly bracket '$string' in $class::\$$propertyName");
-		}
-	}
-
-
-	private function process()
-	{
-		static $modes = array(
-			'property' => MetaData::READWRITE,
-			'property-read' => MetaData::READ,
-			'property-write' => MetaData::WRITE,
-		);
-
-		foreach ($this->getClasses() as $class)
-		{
-			foreach ($this->getAnnotation($class) as $annotation => $tmp)
-			{
-				if (isset($modes[$annotation]))
-				{
-					foreach ($tmp as $string)
-					{
-						$this->addProperty($string, $modes[$annotation], $class);
-					}
-					continue;
-				}
-
-				if (strncasecmp($annotation, 'prop', 4) === 0)
-				{
-					$string = current($tmp);
-					throw new AnnotationMetaDataException("Invalid annotation format '@$annotation $string' in $class");
-				}
-			}
 		}
 	}
 
@@ -194,7 +193,7 @@ class AnnotationMetaData extends Object
 	 * @param array
 	 * @see MetaDataProperty::$property
 	 */
-	private function callOnProperty($match)
+	private function callOnMacro($match)
 	{
 		list($propertyName, $property) = $this->property;
 
