@@ -38,8 +38,9 @@ class ExceptionHelper
 				}
 				return $m[2];
 			}, $format);
-			$format = preg_replace_callback('#%(.)([0-9])#si', function ($m) use ($data) {
-				return call_user_func(array('Orm\ExceptionHelper', $m[1]), isset($data[$m[2]]) ? $data[$m[2]] : NULL);
+			$class = get_called_class();
+			$format = preg_replace_callback('#%(.)([0-9])#si', function ($m) use ($data, $class) {
+				return call_user_func(array($class, $m[1]), isset($data[$m[2]]) ? $data[$m[2]] : NULL);
 			}, $format);
 			$message = $format;
 		}
@@ -79,7 +80,7 @@ class ExceptionHelper
 	 */
 	public static function v($value)
 	{
-		return (is_scalar($value) AND !is_bool($value)) ? $value : self::t($value);
+		return (is_scalar($value) AND !is_bool($value)) ? $value : static::t($value);
 	}
 
 }
