@@ -42,6 +42,15 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		$this->assertSame(1, $e->id);
 	}
 
+	public function testUnexists()
+	{
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '666') LIMIT 1");
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->d->addExpected('fetch', false, true);
+		$e = $this->m->getById(666);
+		$this->assertSame(NULL, $e);
+	}
+
 	public function testPrimaryKey()
 	{
 		setAccessible(new ReflectionProperty('Orm\Mapper', 'conventional'))
