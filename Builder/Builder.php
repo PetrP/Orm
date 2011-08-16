@@ -152,6 +152,7 @@ class Builder extends Object
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
 			$data = PhpParser::versionFix($data, true);
+			$data = PhpParser::replaceGlobalScopeRenames($data);
 			$data = PhpParser::removeNamespace($data, true, true);
 			$data = PhpParser::replaceClosures($data);
 			$data = PhpParser::replaceLateStaticBinding($data);
@@ -162,6 +163,7 @@ class Builder extends Object
 			$data = PhpParser::versionFix($data, false);
 			if ($this->version & self::NONNS AND $this->version & self::NS_NETTE)
 			{
+				$data = PhpParser::replaceGlobalScopeRenames($data);
 				$data = PhpParser::removeNamespace($data, true, false);
 			}
 			else if ($this->version & self::NONNS AND $this->version & self::PREFIXED_NETTE)

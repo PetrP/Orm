@@ -84,6 +84,35 @@ class PhpParser extends Tokenizer
 	}
 
 	/**
+	 * @param string
+	 * @return string
+	 */
+	public static function replaceGlobalScopeRenames($s)
+	{
+		static $classes;
+		if ($classes === NULL)
+		{
+			$classes = array();
+			foreach (array(
+				'DeprecatedException',
+				'InvalidArgumentException',
+				'NotImplementedException',
+				'NotSupportedException',
+			) as $class)
+			{
+				$classes[" $class "] = " Orm$class ";
+				$classes[" $class::"] = " Orm$class::";
+				$classes[" $class;"] = " Orm$class;";
+				$classes[" $class("] = " Orm$class(";
+				$classes["($class "] = "(Orm$class ";
+				$classes[", $class "] = ", Orm$class ";
+				$classes["Orm\\$class"] = "Orm\\Orm$class";
+			}
+		}
+		return strtr($s, $classes);
+	}
+
+	/**
 	 * Standardize line endings to unix-like
 	 * @param string
 	 * @return string
