@@ -14,9 +14,7 @@ use ArrayAccess;
  * Pamatuje si ktere id byli na teto strance potreba a umoznuje je pak nacist najednou jednim dotazem.
  * @see Repository::getById
  * @todo refactoring
- * @todo umoznit vypnout
  * @todo neumoznuje nekolik stranek najednou (premazava se)
- * @todo Environment
  */
 class PerformanceHelper extends Object
 {

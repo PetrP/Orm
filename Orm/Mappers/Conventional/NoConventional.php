@@ -61,7 +61,6 @@ class NoConventional extends Object implements IDatabaseConventional
 	}
 
 	/**
-	 * @todo
 	 * @param IRepository
 	 * @return string
 	 */
@@ -72,7 +71,6 @@ class NoConventional extends Object implements IDatabaseConventional
 	}
 
 	/**
-	 * @todo
 	 * @param IRepository
 	 * @param IRepository
 	 * @return string
@@ -83,7 +81,6 @@ class NoConventional extends Object implements IDatabaseConventional
 	}
 
 	/**
-	 * @todo
 	 * @param string
 	 * @return string
 	 */

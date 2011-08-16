@@ -121,7 +121,6 @@ class SqlConventional extends NoConventional
 	}
 
 	/**
-	 * @todo
 	 * @param string
 	 * @return string
 	 */

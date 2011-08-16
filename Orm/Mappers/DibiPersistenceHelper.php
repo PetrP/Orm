@@ -112,7 +112,7 @@ class DibiPersistenceHelper extends Object
 	protected function toArray(IEntity $entity, $id)
 	{
 		$values = $entity->toArray();
-		if ($id !== NULL) $values['id'] = $id; // todo je to potreba?
+		if ($id !== NULL) $values['id'] = $id;
 
 		$params = array('id' => isset($values['id'])) + (array) $this->params;
 		$params += array_fill_keys(array_keys($values), true);
