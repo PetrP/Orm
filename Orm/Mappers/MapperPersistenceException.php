@@ -17,9 +17,9 @@ class MapperPersistenceException extends LogicException
 	 * @param int
 	 * @param Exception
 	 */
-	public function __construct($message = NULL, $code = NULL, Exception $previous = NULL)
+	public function __construct($message = NULL, $code = NULL/*§php53*/, Exception $previous = NULL/*php53§*/)
 	{
 		$message = ExceptionHelper::format($message, "%c1: can't persist %c2::\$%s3; it contains '%t4'.");
-		parent::__construct($message, $code, $previous);
+		parent::__construct($message, $code/*§php53*/, $previous/*php53§*/);
 	}
 }

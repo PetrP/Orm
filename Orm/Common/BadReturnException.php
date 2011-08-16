@@ -18,9 +18,9 @@ class BadReturnException extends LogicException
 	 * @param int
 	 * @param Exception
 	 */
-	public function __construct($message = NULL, $code = NULL, Exception $previous = NULL)
+	public function __construct($message = NULL, $code = NULL/*§php53*/, Exception $previous = NULL/*php53§*/)
 	{
 		$message = ExceptionHelper::format($message, "%c1<%1&2%::>%s2<%1&2%()> must return %s3<%!5%, '%t4' given>%s5.");
-		parent::__construct($message, $code, $previous);
+		parent::__construct($message, $code/*§php53*/, $previous/*php53§*/);
 	}
 }
