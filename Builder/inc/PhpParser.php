@@ -200,8 +200,14 @@ class PhpParser extends Tokenizer
 	 */
 	public static function versionFix($s, $php52)
 	{
-		$s = preg_replace_callback('#\s?/\*php52(.*)php52\*/\s?#s', function ($m) use ($php52) {
+		$s = preg_replace_callback('#\s?/\*§php52([^§]*)php52§\*/\s?#s', function ($m) use ($php52) {
 			if ($php52)
+			{
+				return str_replace('* /', '*/', $m[1]);
+			}
+		}, $s);
+		$s = preg_replace_callback('#\s?/\*§php53\*/([^§]*)/\*php53§\*/\s?#s', function ($m) use ($php52) {
+			if (!$php52)
 			{
 				return str_replace('* /', '*/', $m[1]);
 			}
