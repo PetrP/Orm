@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use LogicException;
 
-class AnnotationClassParserException extends Exception
+class AnnotationClassParserException extends LogicException
 {
 
 }
