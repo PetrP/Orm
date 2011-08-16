@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use RuntimeException;
 
-class ServiceAlreadyExistsException extends Exception
+class ServiceAlreadyExistsException extends RuntimeException
 {
 
 }

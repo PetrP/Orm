@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use RuntimeException;
 
-class FrozenContainerException extends Exception
+class FrozenContainerException extends RuntimeException
 {
 
 }

@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use LogicException;
 
-class InvalidServiceFactoryException extends Exception
+class InvalidServiceFactoryException extends LogicException
 {
 
 }

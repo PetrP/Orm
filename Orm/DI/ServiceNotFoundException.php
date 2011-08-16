@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use RuntimeException;
 
-class ServiceNotFoundException extends Exception
+class ServiceNotFoundException extends RuntimeException
 {
 
 }

@@ -7,9 +7,9 @@
 
 namespace Orm;
 
-use Exception;
+use RuntimeException;
 
-class ServiceNotInstanceOfException extends Exception
+class ServiceNotInstanceOfException extends RuntimeException
 {
 
 }
