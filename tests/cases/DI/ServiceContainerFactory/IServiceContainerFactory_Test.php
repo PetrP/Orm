@@ -3,7 +3,7 @@
 /**
  * @covers Orm\IServiceContainerFactory
  */
-class IServiceContainerFactory extends InterfaceTestCase
+class IServiceContainerFactory_Test extends InterfaceTestCase
 {
 	protected $interface = 'Orm\IServiceContainerFactory';
 	protected $methodCounts = 1;
