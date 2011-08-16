@@ -20,7 +20,7 @@ final class Orm
 
 }
 
-/*php52
+/*§php52
 /** @internal * /
 class OrmClosureFix
 {
@@ -39,7 +39,7 @@ if (!defined('PHP_VERSION_ID'))
 	$tmp = explode('.', PHP_VERSION);
 	define('PHP_VERSION_ID', ($tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2]));
 }
-php52*/
+php52§*/
 
 require_once __DIR__ . '/Common/ExceptionHelper.php';
 require_once __DIR__ . '/Common/BadReturnException.php';
