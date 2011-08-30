@@ -49,38 +49,38 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 		), $r);
 	}
 
-	public function testWitchParamsId()
+	public function testWhichParamsId()
 	{
 		$this->h->primaryKey = 'foo_bar';
-		$this->h->witchParams = array('id');
+		$this->h->whichParams = array('id');
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'foo_bar' => 35,
 		), $r);
 	}
 
-	public function testWitchParamsIdFooBar()
+	public function testWhichParamsIdFooBar()
 	{
 		$this->h->primaryKey = 'foo_bar';
-		$this->h->witchParams = array('foo_bar');
+		$this->h->whichParams = array('foo_bar');
 		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
 		$this->h->call('toArray', array($this->e, 35));
 	}
 
-	public function testWitchParamsIdNot()
+	public function testWhichParamsIdNot()
 	{
 		$this->h->primaryKey = 'foo_bar';
-		$this->h->witchParams = array();
+		$this->h->whichParams = array();
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'foo_bar' => 35,
 		), $r);
 	}
 
-	public function testWitchParamsNotId()
+	public function testWhichParamsNotId()
 	{
 		$this->h->primaryKey = 'foo_bar';
-		$this->h->witchParamsNot = array('id');
+		$this->h->whichParamsNot = array('id');
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'foo_bar' => 35,
@@ -90,10 +90,10 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 		), $r);
 	}
 
-	public function testWitchParamsNotIdFooBar()
+	public function testWhichParamsNotIdFooBar()
 	{
 		$this->h->primaryKey = 'foo_bar';
-		$this->h->witchParamsNot = array('foo_bar');
+		$this->h->whichParamsNot = array('foo_bar');
 		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
 		$this->h->call('toArray', array($this->e, 35));
 	}

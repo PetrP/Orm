@@ -32,6 +32,7 @@ abstract class DibiPersistenceHelper_Test extends TestCase
 	/** @var DibiPersistenceHelper_Entity */
 	protected $e;
 	protected $r;
+	/** @var DibiPersistenceHelper_DibiPersistenceHelper */
 	protected $h;
 	protected $model;
 

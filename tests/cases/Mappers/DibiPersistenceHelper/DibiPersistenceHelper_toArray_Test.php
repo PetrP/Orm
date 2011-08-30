@@ -127,9 +127,9 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		), $r);
 	}
 
-	public function testWitchParams()
+	public function testWhichParams()
 	{
-		$this->h->witchParams = array('miXed', 'miXed3');
+		$this->h->whichParams = array('miXed', 'miXed3');
 		$r = $this->h->call('toArray', array($this->e, NULL));
 		$this->assertSame(array(
 			'mi_xed' => 1,
@@ -137,46 +137,46 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		), $r);
 	}
 
-	public function testWitchParamsNot()
+	public function testWhichParamsNot()
 	{
-		$this->h->witchParamsNot = array('miXed', 'miXed3');
+		$this->h->whichParamsNot = array('miXed', 'miXed3');
 		$r = $this->h->call('toArray', array($this->e, NULL));
 		$this->assertSame(array(
 			'mi_xed2' => 2,
 		), $r);
 	}
 
-	public function testWitchParamsAndWitchParamsNot()
+	public function testWhichParamsAndWhichParamsNot()
 	{
-		$this->h->witchParams = array('miXed', 'miXed2');
-		$this->h->witchParamsNot = array('miXed');
+		$this->h->whichParams = array('miXed', 'miXed2');
+		$this->h->whichParamsNot = array('miXed');
 		$r = $this->h->call('toArray', array($this->e, NULL));
 		$this->assertSame(array(
 			'mi_xed2' => 2,
 		), $r);
 	}
 
-	public function testWitchParamsId()
+	public function testWhichParamsId()
 	{
-		$this->h->witchParams = array('id');
+		$this->h->whichParams = array('id');
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'id' => 35,
 		), $r);
 	}
 
-	public function testWitchParamsIdNot()
+	public function testWhichParamsIdNot()
 	{
-		$this->h->witchParams = array();
+		$this->h->whichParams = array();
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'id' => 35,
 		), $r);
 	}
 
-	public function testWitchParamsNotId()
+	public function testWhichParamsNotId()
 	{
-		$this->h->witchParamsNot = array('id');
+		$this->h->whichParamsNot = array('id');
 		$r = $this->h->call('toArray', array($this->e, 35));
 		$this->assertSame(array(
 			'id' => 35,

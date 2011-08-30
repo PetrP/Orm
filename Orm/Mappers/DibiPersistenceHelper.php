@@ -48,10 +48,10 @@ class DibiPersistenceHelper extends Object
 	public $params = array();
 
 	/** @var array|NULL */
-	public $witchParams = NULL; // deprecated
+	public $whichParams = NULL; // deprecated
 
 	/** @var array|NULL */
-	public $witchParamsNot = NULL; // deprecated
+	public $whichParamsNot = NULL; // deprecated
 
 	/** @var DibiConnection */
 	private $connection;
@@ -117,14 +117,13 @@ class DibiPersistenceHelper extends Object
 		$params = array('id' => isset($values['id'])) + (array) $this->params;
 		$params += array_fill_keys(array_keys($values), true);
 
-		if ($this->witchParams !== NULL) // bc, deprecated
+		if ($this->whichParams !== NULL) // bc, deprecated
 		{
-			$params = array('id' => $params['id']) + array_fill_keys($this->witchParams, true);
-			// todo witchParams mozna zrusit
+			$params = array('id' => $params['id']) + array_fill_keys($this->whichParams, true);
 		}
-		if ($this->witchParamsNot !== NULL) // bc, deprecated
+		if ($this->whichParamsNot !== NULL) // bc, deprecated
 		{
-			$tmp = array_fill_keys($this->witchParamsNot, false);
+			$tmp = array_fill_keys($this->whichParamsNot, false);
 			unset($tmp['id']);
 			$params = $tmp + $params;
 		}
@@ -238,6 +237,30 @@ class DibiPersistenceHelper extends Object
 			}
 		}
 		return $id;
+	}
+
+	/** @deprecated */
+	final public function getWitchParams()
+	{
+		return $this->whichParams;
+	}
+
+	/** @deprecated */
+	final public function setWitchParams($p)
+	{
+		$this->whichParams = $p;
+	}
+
+	/** @deprecated */
+	final public function getWitchParamsNot()
+	{
+		return $this->whichParamsNot;
+	}
+
+	/** @deprecated */
+	final public function setWitchParamsNot($p)
+	{
+		$this->whichParamsNot = $p;
 	}
 
 	/** @deprecated */
