@@ -26,7 +26,7 @@ class MapperFactory extends Object implements IMapperFactory
 	 */
 	public function createMapper(IRepository $repository)
 	{
-		$class = $this->parser->get('mapper', $repository);
+		$class = $this->getMapperClass($repository);
 		return new $class($repository);
 	}
 
@@ -43,6 +43,15 @@ class MapperFactory extends Object implements IMapperFactory
 			$tmp = substr($tmp, 0, strlen($tmp) - 10);
 		}
 		return $tmp . 'Mapper';
+	}
+
+	/**
+	 * @param IRepository
+	 * @return string
+	 */
+	protected function getMapperClass(IRepository $repository)
+	{
+		return $this->parser->get('mapper', $repository);
 	}
 
 }
