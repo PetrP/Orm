@@ -34,41 +34,41 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->assertSame(3, $r);
 	}
 
-	public function testWitchParams()
+	public function testWhichParams()
 	{
 		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed`, `mixed3`) VALUES (1, 3)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
-		$this->h->witchParams = array('mixed', 'mixed3');
+		$this->h->whichParams = array('mixed', 'mixed3');
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
 
-	public function testWitchParamsNot()
+	public function testWhichParamsNot()
 	{
 		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed2`) VALUES (2)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
-		$this->h->witchParamsNot = array('mixed', 'mixed3');
+		$this->h->whichParamsNot = array('mixed', 'mixed3');
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
 
-	public function testWitchParamsAndWitchParamsNot()
+	public function testWhichParamsAndWhichParamsNot()
 	{
 		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`mixed2`) VALUES (2)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
-		$this->h->witchParams = array('mixed', 'mixed2');
-		$this->h->witchParamsNot = array('mixed');
+		$this->h->whichParams = array('mixed', 'mixed2');
+		$this->h->whichParamsNot = array('mixed');
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
 
-	public function testWitchParamsId()
+	public function testWhichParamsId()
 	{
 		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
@@ -76,13 +76,13 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('fetch', array('id' => 3), true);
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3 WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->h->witchParams = array('id');
+		$this->h->whichParams = array('id');
 		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
 
-	public function testWitchParamsNotId()
+	public function testWhichParamsNotId()
 	{
 		$this->d->addExpected('getColumns', array(array('name' => 'id'), array('name' => 'mixed'), array('name' => 'mixed2'), array('name' => 'mixed3')), 'table');
 		$this->d->addExpected('query', true, "SELECT `id` FROM `table` WHERE `id` = '3'");
@@ -90,7 +90,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('fetch', array('id' => 3), true);
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3, `mixed`=NULL, `mixed2`=NULL, `mixed3`=NULL WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->h->witchParamsNot = array('id');
+		$this->h->whichParamsNot = array('id');
 		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);

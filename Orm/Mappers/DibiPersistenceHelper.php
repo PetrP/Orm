@@ -30,10 +30,10 @@ class DibiPersistenceHelper extends Object
 	public $mapper;
 
 	/** @var array|NULL */
-	public $witchParams = NULL;
+	public $whichParams = NULL;
 
 	/** @var array|NULL */
-	public $witchParamsNot = NULL;
+	public $whichParamsNot = NULL;
 
 	/**
 	 * @param IEntity
@@ -48,7 +48,7 @@ class DibiPersistenceHelper extends Object
 
 		foreach ($values as $key => $value)
 		{
-			if ($key !== 'id' AND (($this->witchParams !== NULL AND !in_array($key, $this->witchParams)) OR ($this->witchParamsNot !== NULL AND in_array($key, $this->witchParamsNot))))
+			if ($key !== 'id' AND (($this->whichParams !== NULL AND !in_array($key, $this->whichParams)) OR ($this->whichParamsNot !== NULL AND in_array($key, $this->whichParamsNot))))
 			{
 				unset($values[$key]);
 				continue;
@@ -127,6 +127,30 @@ class DibiPersistenceHelper extends Object
 		}
 
 		return $id;
+	}
+
+	/** @deprecated */
+	final public function getWitchParams()
+	{
+		return $this->whichParams;
+	}
+
+	/** @deprecated */
+	final public function setWitchParams($p)
+	{
+		$this->whichParams = $p;
+	}
+
+	/** @deprecated */
+	final public function getWitchParamsNot()
+	{
+		return $this->whichParamsNot;
+	}
+
+	/** @deprecated */
+	final public function setWitchParamsNot($p)
+	{
+		$this->whichParamsNot = $p;
 	}
 
 }
