@@ -143,13 +143,20 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 						{
 							throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} na druhe strane asociace {$en}::\${$param} neukazuje zpet; ukazuje na jiny parametr ({$loader->param})");
 						}
-						if ($this->mappedByThis === true AND $loader->mappedByThis === true)
+						if ($this === $loader)
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
+							$this->mappedByThis = true;
 						}
-						if ($this->mappedByThis === false AND $loader->mappedByThis === false)
+						else
 						{
-							throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
+							if ($this->mappedByThis === true AND $loader->mappedByThis === true)
+							{
+								throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
+							}
+							if ($this->mappedByThis === false AND $loader->mappedByThis === false)
+							{
+								throw new InvalidStateException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
+							}
 						}
 						continue;
 					} catch (Exception $e) {}
