@@ -103,6 +103,12 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		;
 	}
 
+	/** @return DibiConnection */
+	final protected function getConnection()
+	{
+		return $this->connection;
+	}
+
 	/** @deprecated */
 	final public function getFirstParam()
 	{
