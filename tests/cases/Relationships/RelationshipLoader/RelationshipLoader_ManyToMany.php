@@ -6,6 +6,8 @@ use Orm\Repository;
 /**
  * @property $manyAnotherParam {m:m RelationshipLoader_ManyToMany2_ manyAnotherParam}
  * @property $many {m:m RelationshipLoader_ManyToMany2_ many mapped}
+ * @property $same1 {m:m RelationshipLoader_ManyToMany1_ same1 mapped}
+ * @property $same2 {m:m RelationshipLoader_ManyToMany1_ same2}
  */
 class RelationshipLoader_ManyToMany1_Entity extends Entity
 {

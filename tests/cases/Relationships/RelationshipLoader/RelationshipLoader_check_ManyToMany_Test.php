@@ -56,6 +56,28 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		$this->assertInstanceOf('Orm\RelationshipLoader', $loader);
 	}
 
+	public function testSameMapped()
+	{
+		$many = MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity', new RepositoryContainer);
+		$loader = $many['same1']['relationshipParam'];
+		$this->assertInstanceOf('Orm\RelationshipLoader', $loader);
+		$this->assertAttributeSame('RelationshipLoader_ManyToMany1_', 'repository', $loader);
+		$this->assertAttributeSame('same1', 'param', $loader);
+		$this->assertAttributeSame('same1', 'parentParam', $loader);
+		$this->assertAttributeSame(true, 'mappedByThis', $loader);
+	}
+
+	public function testSameNotMapped()
+	{
+		$many = MetaData::getEntityRules('RelationshipLoader_ManyToMany1_Entity', new RepositoryContainer);
+		$loader = $many['same2']['relationshipParam'];
+		$this->assertInstanceOf('Orm\RelationshipLoader', $loader);
+		$this->assertAttributeSame('RelationshipLoader_ManyToMany1_', 'repository', $loader);
+		$this->assertAttributeSame('same2', 'param', $loader);
+		$this->assertAttributeSame('same2', 'parentParam', $loader);
+		$this->assertAttributeSame(true, 'mappedByThis', $loader);
+	}
+
 	public function testClearCache()
 	{
 		try {
