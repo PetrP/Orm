@@ -4,6 +4,10 @@ use Orm\DibiPersistenceHelper;
 use Orm\Entity;
 use Orm\SqlConventional;
 use Orm\RepositoryContainer;
+use Orm\Repository;
+use Orm\ArrayMapper;
+use Orm\ArrayManyToManyMapper;
+use Orm\DibiManyToManyMapper;
 
 class DibiPersistenceHelper_DibiPersistenceHelper extends DibiPersistenceHelper
 {
@@ -26,11 +30,40 @@ class DibiPersistenceHelper_Entity extends Entity
 	}
 }
 
+class DibiPersistenceHelper_Repository extends Repository
+{
+	protected $entityClassName = 'DibiPersistenceHelper_Entity';
+}
+class DibiPersistenceHelper_Mapper extends ArrayMapper
+{
+	public function createManyToManyMapper($param, Orm\IRepository $targetRepository, $targetParam)
+	{
+		if ($param === 'array')
+		{
+			$mapper = new ArrayManyToManyMapper;
+		}
+		else if ($param === 'dibi')
+		{
+			$mapper = new DibiManyToManyMapper(new DibiConnection(array('lazy' => true)));
+			$mapper->parentParam = 'aaa';
+			$mapper->childParam = 'bbb';
+			$mapper->table = 'ccc';
+		}
+		else
+		{
+			$mapper = parent::createManyToManyMapper($param, $targetRepository, $targetParam);
+		}
+		return $mapper;
+	}
+}
+
 abstract class DibiPersistenceHelper_Test extends TestCase
 {
 
 	/** @var DibiPersistenceHelper_Entity */
 	protected $e;
+	/** @var DibiPersistenceHelper_Entity */
+	protected $ee;
 	protected $r;
 	/** @var DibiPersistenceHelper_DibiPersistenceHelper */
 	protected $h;
@@ -47,6 +80,7 @@ abstract class DibiPersistenceHelper_Test extends TestCase
 		$this->d = $m->getConnection()->getDriver();
 		$this->h = new DibiPersistenceHelper_DibiPersistenceHelper($m->getConnection(), $m->conventional, 'table');
 		$this->e = new DibiPersistenceHelper_Entity;
+		$this->ee = $this->model->getRepository('DibiPersistenceHelper_Repository')->attach(new DibiPersistenceHelper_Entity);
 		$this->e->miXed = 1;
 		$this->e->miXed2 = 2;
 		$this->e->miXed3 = 3;

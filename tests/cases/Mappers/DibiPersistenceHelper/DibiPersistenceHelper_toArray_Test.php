@@ -195,4 +195,59 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}
 
+	public function testRelationshipTrue()
+	{
+		$this->h->params['miXed'] = true;
+		$this->h->params['miXed2'] = true;
+		$this->h->params['miXed3'] = true;
+		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo');
+		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
+		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
+		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$this->assertSame(array(
+			'mi_xed2' => 'a:3:{i:1;i:1;i:2;i:2;i:3;i:3;}',
+		), $r);
+	}
+
+	public function testRelationshipFalse()
+	{
+		$this->h->params['miXed'] = false;
+		$this->h->params['miXed2'] = false;
+		$this->h->params['miXed3'] = false;
+		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo');
+		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
+		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
+		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$this->assertSame(array(), $r);
+	}
+
+	public function testRelationshipCallback1()
+	{
+		$this->h->params['miXed'] = function () { return 'x';};
+		$this->h->params['miXed2'] = function () { return 'x';};
+		$this->h->params['miXed3'] = function () { return 'x';};
+		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo');
+		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
+		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
+		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$this->assertSame(array(
+			'mi_xed' => 'x',
+			'mi_xed2' => 'x',
+			'mi_xed3' => 'x',
+		), $r);
+	}
+
+	public function testRelationshipCallback2()
+	{
+		$this->h->params['miXed'] = function ($v) { return $v;};
+		$this->h->params['miXed2'] = function ($v) { return $v;};
+		$this->h->params['miXed3'] = function ($v) { return $v;};
+		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo');
+		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
+		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
+		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$this->assertSame(array(
+			'mi_xed2' => 'a:3:{i:1;i:1;i:2;i:2;i:3;i:3;}',
+		), $r);
+	}
 }

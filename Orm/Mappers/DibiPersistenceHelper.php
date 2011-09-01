@@ -150,6 +150,10 @@ class DibiPersistenceHelper extends Object
 			}
 
 			$result[$key] = $this->scalarizeValue($value, $key, $entity);
+			if ($value instanceof IRelationship AND $result[$key] === NULL)
+			{
+				unset($result[$key]);
+			}
 		}
 
 		$result = $this->conventional->formatEntityToStorage($result);
