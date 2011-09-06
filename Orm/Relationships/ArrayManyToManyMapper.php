@@ -9,6 +9,7 @@ namespace Orm;
 
 use Nette\Object;
 use Nette\DeprecatedException;
+use Nette\NotSupportedException;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
 require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
@@ -40,7 +41,10 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	/** @param ManyToMany */
 	public function attach(ManyToMany $manyToMany)
 	{
-
+		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_THERE)
+		{
+			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is realtionship mapped.');
+		}
 	}
 
 	/**
