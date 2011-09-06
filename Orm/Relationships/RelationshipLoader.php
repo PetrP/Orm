@@ -12,6 +12,15 @@ use Exception;
 
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {
+	/** Na teto strane */
+	const MAPPED_HERE = true;
+
+	/** Na druhe strane */
+	const MAPPED_THERE = false;
+
+	/** Relace ukazuje na sebe. Oba jsou stejny. Oba mapuji. */
+	const MAPPED_BOTH = 2;
+
 	/** @var string */
 	private $class;
 
@@ -24,8 +33,8 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	/** @var string */
 	private $parentParam;
 
-	/** @var bool */
-	private $mappedByThis;
+	/** @var RelationshipLoader::MAPPED_* */
+	private $mapped;
 
 	/**
 	 * @see self::check()
@@ -46,9 +55,9 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @param bool|NULL
+	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 */
-	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam, $mappedByThis = NULL)
+	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam, $mapped = NULL)
 	{
 		$mainClass = $relationship === MetaData::ManyToMany ? 'Orm\ManyToMany' : 'Orm\OneToMany';
 		$oldMainClass = $relationship === MetaData::ManyToMany ? 'Orm\OldManyToMany' : 'Orm\OldOneToMany';
@@ -83,14 +92,14 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		}
 		if ($relationship === MetaData::ManyToMany AND !$param)
 		{
-			$mappedByThis = true;
+			$mapped = self::MAPPED_HERE;
 		}
 
 		$this->class = $class;
 		$this->repository = $repositoryName;
 		$this->parentParam = $parentParam;
 		$this->param = $param;
-		$this->mappedByThis = (bool) $mappedByThis;
+		$this->mapped = (bool) $mapped;
 	}
 
 	/**
@@ -141,15 +150,15 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 						}
 						if ($this === $loader)
 						{
-							$this->mappedByThis = true;
+							$this->mapped = self::MAPPED_BOTH;
 						}
 						else
 						{
-							if ($this->mappedByThis === true AND $loader->mappedByThis === true)
+							if ($this->mapped === self::MAPPED_HERE AND $loader->mapped === self::MAPPED_HERE)
 							{
 								throw new RelationshipLoaderException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} u ubou je nastaveno ze se na jeho strane ma mapovat, je potreba vybrat a mapovat jen podle jedne strany");
 							}
-							if ($this->mappedByThis === false AND $loader->mappedByThis === false)
+							if ($this->mapped === self::MAPPED_THERE AND $loader->mapped === self::MAPPED_THERE)
 							{
 								throw new RelationshipLoaderException("{$entityName}::\${$parentParam} a {$en}::\${$param} {{$relationship}} ani u jednoho neni nastaveno ze se podle neho ma mapovat. např: {m:m {$this->repository} {$this->param} mapped}");
 							}
@@ -176,7 +185,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	public function create($className, IEntity $parent, $value)
 	{
 		if ($this->class !== $className) throw new RelationshipLoaderException();
-		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mappedByThis, $value);
+		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mapped, $value);
 	}
 
 }

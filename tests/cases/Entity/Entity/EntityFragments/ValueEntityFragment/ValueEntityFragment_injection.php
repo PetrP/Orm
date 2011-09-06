@@ -49,9 +49,9 @@ class ValueEntityFragment_injectionEntity_ManyToMany extends ManyToMany
 	}
 
 	public $create = 0;
-	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mappedByParent, $value = NULL)
+	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mapped, $value = NULL)
 	{
-		parent::__construct($parent, $repository, $childParam, $parentParam, $mappedByParent, $value);
+		parent::__construct($parent, $repository, $childParam, $parentParam, $mapped, $value);
 		$this->create++;
 	}
 

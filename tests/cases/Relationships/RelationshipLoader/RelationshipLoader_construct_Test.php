@@ -30,6 +30,25 @@ class RelationshipLoader_construct_Test extends TestCase
 		new RelationshipLoader(MetaData::OneToMany, 'RelationshipLoader_construct_OldOneToMany', 'repo', '', 'Entity', 'foo');
 	}
 
+	public function testMappedHere()
+	{
+		$rl = new RelationshipLoader(MetaData::ManyToMany, 'Orm\ManyToMany', 'repo', 'foo', 'Entity', 'foo', RelationshipLoader::MAPPED_HERE);
+		$this->assertAttributeSame(RelationshipLoader::MAPPED_HERE, 'mapped', $rl);
+	}
+
+	public function testMappedThere()
+	{
+		$rl = new RelationshipLoader(MetaData::ManyToMany, 'Orm\ManyToMany', 'repo', 'foo', 'Entity', 'foo', RelationshipLoader::MAPPED_THERE);
+		$this->assertAttributeSame(RelationshipLoader::MAPPED_THERE, 'mapped', $rl);
+	}
+
+	public function testMappedBoth()
+	{
+		$rl = new RelationshipLoader(MetaData::ManyToMany, 'Orm\ManyToMany', 'repo', 'foo', 'Entity', 'foo', RelationshipLoader::MAPPED_BOTH);
+		// both se neda nastavit, musi se netekovat v check
+		$this->assertAttributeSame(RelationshipLoader::MAPPED_HERE, 'mapped', $rl);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipLoader', '__construct');

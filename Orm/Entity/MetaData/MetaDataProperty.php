@@ -201,11 +201,12 @@ class MetaDataProperty extends Object
 	 * @param MetaData::OneToMany|MetaData::ManyToMany
 	 * @param string
 	 * @param string
+	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see self::setOneToMany()
 	 * @see self::setManyToMany()
 	 */
-	private function setToMany($relationship, $repositoryName, $param, $mappedByThis = NULL)
+	private function setToMany($relationship, $repositoryName, $param, $mapped = NULL)
 	{
 		if (isset($this->data['relationship']))
 		{
@@ -224,7 +225,7 @@ class MetaDataProperty extends Object
 		}
 
 
-		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name, $mappedByThis);
+		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name, $mapped);
 		$this->setInjection($loader);
 		$this->data['relationship'] = $relationship;
 		$this->data['relationshipParam'] = $loader;
@@ -273,13 +274,13 @@ class MetaDataProperty extends Object
 	 *
 	 * @param string
 	 * @param string|NULL parametr na child entitach (m:m)
-	 *
+	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */
-	public function setManyToMany($repositoryName = NULL, $param = NULL, $mappedByThis = NULL)
+	public function setManyToMany($repositoryName = NULL, $param = NULL, $mapped = NULL)
 	{
-		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param, $mappedByThis);
+		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param, $mapped);
 		return $this;
 	}
 
