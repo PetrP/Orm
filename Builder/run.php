@@ -7,6 +7,7 @@ require_once __DIR__ . '/../tests/libs/dump.php';
 require_once __DIR__ . '/PhpParser.php';
 require_once __DIR__ . '/Builder.php';
 require_once __DIR__ . '/Git.php';
+require_once __DIR__ . '/Zipper.php';
 
 use Nette\Diagnostics\Debugger;
 
@@ -14,6 +15,14 @@ Debugger::enable();
 Debugger::$strictMode = true;
 
 set_time_limit(0);
+
+$isDev = isset($_GET['dev']);
+
+$zip = new Zipper(__DIR__ . '/Orm.zip', __DIR__);
+if (!$isDev)
+{
+	$zip->addMatch(__DIR__ . '/../Orm');
+}
 
 foreach (array(
 	Builder::NS | Builder::NS_NETTE => 's namespace/pro Nette s namespace',
@@ -24,7 +33,7 @@ foreach (array(
 	//Builder::NS | Builder::PREFIXED_NETTE => 'bez namespace/pro Nette s prefixy',
 ) as $version => $dir)
 {
-	$b = new Builder($version, isset($_GET['dev']));
+	$b = new Builder($version, $isDev);
 	foreach (array(
 		'Orm',
 		'tests/cases',
@@ -35,6 +44,10 @@ foreach (array(
 	{
 		$b->build(__DIR__ . "/../$p", __DIR__ . "/../Builder/$dir/$p");
 	}
+
+	$zip->add($b);
 }
+
+$zip->save();
 
 echo '<h1>OK<h1>';

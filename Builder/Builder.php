@@ -27,6 +27,9 @@ class Builder extends Object
 	/** @var int */
 	private $version;
 
+	/** @var array fromPath => toPath */
+	private $files = array();
+
 	/** @var bool */
 	private $isDev;
 
@@ -93,8 +96,15 @@ class Builder extends Object
 				$data = file_get_contents($fromPath);
 				$data = $this->convert($data);
 				file_put_contents($toPath, $data);
+				$this->files[$fromPath] = $toPath;
 			}
 		}
+	}
+
+	/** @return array fromPath => toPath */
+	public function getFiles()
+	{
+		return $this->files;
 	}
 
 	/**
