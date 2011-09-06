@@ -360,7 +360,7 @@ class DibiMapper extends Mapper
 								$childRepository = $this->getModel()->getRepository($r);
 								$childParam = $loader["\0Orm\\RelationshipLoader\0param"];
 								$parentParam = $loader["\0Orm\\RelationshipLoader\0parentParam"];
-								if ($loader["\0Orm\\RelationshipLoader\0mappedByThis"])
+								if ($loader["\0Orm\\RelationshipLoader\0mapped"])
 								{
 									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
 									$parentParam = $manyToManyMapper->parentParam;

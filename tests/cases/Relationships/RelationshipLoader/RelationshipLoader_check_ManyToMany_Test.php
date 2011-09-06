@@ -3,6 +3,7 @@
 use Nette\InvalidStateException;
 use Orm\MetaData;
 use Orm\RepositoryContainer;
+use Orm\RelationshipLoader;
 
 /**
  * @covers Orm\RelationshipLoader::check
@@ -64,7 +65,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		$this->assertAttributeSame('RelationshipLoader_ManyToMany1_', 'repository', $loader);
 		$this->assertAttributeSame('same1', 'param', $loader);
 		$this->assertAttributeSame('same1', 'parentParam', $loader);
-		$this->assertAttributeSame(true, 'mappedByThis', $loader);
+		$this->assertAttributeSame(RelationshipLoader::MAPPED_BOTH, 'mapped', $loader);
 	}
 
 	public function testSameNotMapped()
@@ -75,7 +76,7 @@ class RelationshipLoader_check_ManyToMany_Test extends TestCase
 		$this->assertAttributeSame('RelationshipLoader_ManyToMany1_', 'repository', $loader);
 		$this->assertAttributeSame('same2', 'param', $loader);
 		$this->assertAttributeSame('same2', 'parentParam', $loader);
-		$this->assertAttributeSame(true, 'mappedByThis', $loader);
+		$this->assertAttributeSame(RelationshipLoader::MAPPED_BOTH, 'mapped', $loader);
 	}
 
 	public function testClearCache()

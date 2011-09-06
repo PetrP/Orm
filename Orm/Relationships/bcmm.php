@@ -24,7 +24,7 @@ abstract class OldManyToMany extends ManyToMany
 	/**
 	 * @param IEntity
 	 */
-	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mappedByParent, $value = NULL)
+	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mapped, $value = NULL)
 	{
 		if (!strpos(get_class($this), 'To')) throw new Exception(); // todo
 		$this->parent = $parent;
@@ -35,20 +35,20 @@ abstract class OldManyToMany extends ManyToMany
 		{
 			$this->parentRepository = $firstRepository;
 			$this->childRepository = $secondRepository;
-			$mappedByParent = true;
+			$mapped = RelationshipLoader::MAPPED_HERE;
 		}
 		else if ($this->getSecondRepository()->isEntity($parent))
 		{
 			$this->parentRepository = $secondRepository;
 			$this->childRepository = $firstRepository;
-			$mappedByParent = false;
+			$mapped = RelationshipLoader::MAPPED_THERE;
 		}
 		else
 		{
 			throw new UnexpectedValueException();
 		}
 
-		parent::__construct($parent, $this->childRepository, $childParam, $parentParam, $mappedByParent, $value);
+		parent::__construct($parent, $this->childRepository, $childParam, $parentParam, $mapped, $value);
 	}
 
 	public function getModel()
