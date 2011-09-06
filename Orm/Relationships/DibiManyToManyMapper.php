@@ -24,6 +24,9 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/** @var DibiConnection */
 	private $connection;
 
+	/** @var bool */
+	private $both = false;
+
 	/** @param DibiConnection */
 	public function __construct(DibiConnection $connection)
 	{
@@ -50,6 +53,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 			$tmp = $this->childParam;
 			$this->childParam = $this->parentParam;
 			$this->parentParam = $tmp;
+		}
+		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_BOTH)
+		{
+			$this->both = true;
 		}
 	}
 
@@ -79,12 +86,19 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function remove(IEntity $parent, array $ids)
 	{
-		$this->connection->delete($this->table)
-			->where('%n = %s AND %n IN %in',
-				$this->parentParam, $parent->id,
-				$this->childParam, $ids
-			)->execute()
-		;
+		$sql = array('%n = %s AND %n IN %in',
+			$this->parentParam, $parent->id,
+			$this->childParam, $ids
+		);
+		if ($this->both)
+		{
+			$sql = array_merge(
+				array('('), $sql, array(') OR (%n = %s AND %n IN %in)',
+				$this->childParam, $parent->id,
+				$this->parentParam, $ids
+			));
+		}
+		$this->connection->delete($this->table)->where('%sql', $sql)->execute();
 	}
 
 	/**
@@ -94,12 +108,20 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	public function load(IEntity $parent)
 	{
 		if (!isset($parent->id)) return array();
-		return $this->connection->select($this->childParam)
+		$result = $this->connection->select($this->childParam)
 			->from($this->table)
-			->where('%n = %s',
-				$this->parentParam, $parent->id
-			)->fetchPairs()
+			->where('%n = %s', $this->parentParam, $parent->id)
+			->fetchPairs()
 		;
+		if ($this->both)
+		{
+			$result = array_unique(array_merge($result, $this->connection->select($this->parentParam)
+				->from($this->table)
+				->where('%n = %s', $this->childParam, $parent->id)
+				->fetchPairs()
+			));
+		}
+		return $result;
 	}
 
 	/** @return DibiConnection */
