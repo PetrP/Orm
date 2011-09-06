@@ -1,6 +1,8 @@
 <?php
 
 use Orm\DibiManyToManyMapper;
+use Orm\ManyToMany;
+use Orm\RelationshipLoader;
 
 /**
  * @covers Orm\DibiManyToManyMapper::load
@@ -38,5 +40,22 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->assertSame(array(), $this->mm->load($this->e));
 	}
 
+	public function testBoth()
+	{
+		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', RelationshipLoader::MAPPED_BOTH));
+		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->d->addExpected('fetch', array('y' => 9), true);
+		$this->d->addExpected('fetch', array('y' => 8), true);
+		$this->d->addExpected('fetch', NULL, true);
+		$this->d->addExpected('query', true, 'SELECT `x` FROM `t` WHERE `y` = \'1\'');
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->d->addExpected('fetch', array('x' => 10), true);
+		$this->d->addExpected('fetch', array('x' => 11), true);
+		$this->d->addExpected('fetch', array('x' => 9), true);
+		$this->d->addExpected('fetch', NULL, true);
+		$r = $this->mm->load($this->e);
+		$this->assertSame(array(9, 8, 10, 11), $r);
+	}
 
 }

@@ -3,6 +3,7 @@
 use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
 use Orm\RepositoryContainer;
+use Orm\RelationshipLoader;
 
 /**
  * @covers Orm\DibiManyToManyMapper::attach
@@ -12,6 +13,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	private $mm;
 	private $m;
 	private $m2;
+	private $m3;
 
 	protected function setUp()
 	{
@@ -19,6 +21,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->mm = new DibiManyToManyMapper($c);
 		$this->m = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', true);
 		$this->m2 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', false);
+		$this->m3 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', RelationshipLoader::MAPPED_BOTH);
 	}
 
 	public function test()
@@ -31,6 +34,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->assertSame('x', $this->mm->parentParam);
 		$this->assertSame('y', $this->mm->childParam);
 		$this->assertSame('t', $this->mm->table);
+		$this->assertAttributeSame(false, 'both', $this->mm);
 	}
 
 	public function testNoChildParam()
@@ -66,6 +70,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->assertSame('y', $this->mm->parentParam);
 		$this->assertSame('x', $this->mm->childParam);
 		$this->assertSame('t', $this->mm->table);
+		$this->assertAttributeSame(false, 'both', $this->mm);
 	}
 
 	public function testNoChildParamNotMappetByParent()
@@ -91,4 +96,17 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->setExpectedException('Nette\InvalidStateException', 'Orm\DibiManyToManyMapper::$table is required');
 		$this->mm->attach($this->m2);
 	}
+
+	public function testBoth()
+	{
+		$this->mm->parentParam = 'x';
+		$this->mm->childParam = 'y';
+		$this->mm->table = 't';
+		$this->mm->attach($this->m3);
+		$this->assertSame('x', $this->mm->parentParam);
+		$this->assertSame('y', $this->mm->childParam);
+		$this->assertSame('t', $this->mm->table);
+		$this->assertAttributeSame(true, 'both', $this->mm);
+	}
+
 }
