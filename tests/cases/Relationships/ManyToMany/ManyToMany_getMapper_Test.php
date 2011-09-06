@@ -69,6 +69,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testMappedBoth()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', RelationshipLoader::MAPPED_BOTH);
+		$this->setExpectedException('Nette\NotSupportedException', 'Orm\ArrayManyToManyMapper not support relationship to self.');
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
 
