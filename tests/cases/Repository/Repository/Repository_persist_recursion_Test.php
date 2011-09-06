@@ -52,6 +52,7 @@ class Repository_persist_recursion_Test extends TestCase
 		$this->r2->attach($e);
 		$e->mma->add($e);
 		$e->mmb->add($e);
+		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is realtionship mapped.');
 		$this->r2->persist($e);
 		$this->assertTrue(true); // mm se nezacykly
 	}

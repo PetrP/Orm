@@ -36,7 +36,10 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	/** @param ManyToMany */
 	public function attach(ManyToMany $manyToMany)
 	{
-
+		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_THERE)
+		{
+			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is realtionship mapped.');
+		}
 	}
 
 	/**
