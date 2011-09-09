@@ -6,6 +6,7 @@ use Orm\RepositoryContainer;
 /**
  * @covers Orm\DibiCollection::join
  * @covers Orm\DibiMapper::getJoinInfo
+ * @covers Orm\DibiJoinHelper
  * @covers Orm\DibiCollection::orderBy
  * @covers Orm\FindByHelper::dibiProcess
  */

@@ -5,6 +5,7 @@ use Orm\DibiMapper;
 
 /**
  * @covers Orm\DibiMapper::getJoinInfo
+ * @covers Orm\DibiJoinHelper
  * @see DibiCollection_join_ManyToMany_Test
  * @see DibiCollection_join_OneToMany_Test
  * @see DibiCollection_join_Test
@@ -77,8 +78,6 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 					'findBy' => array(),
 				),
 				1 => array(
-					0 => 'joins',
-					1 => 'name',
 					'mapper' => $m2,
 					'conventional' => $m2->conventional,
 					'table' => 'dibimapper_getjoininfo2_manytomany_',
@@ -112,8 +111,6 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 			'key' => 'joins.name',
 			'joins' => array(
 				0 => array(
-					0 => 'joins',
-					1 => 'name',
 					'mapper' => $m2,
 					'conventional' => $m2->conventional,
 					'table' => 'dibimapper_getjoininfo2_onetomany_',
@@ -147,8 +144,6 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 			'key' => 'join.name',
 			'joins' => array(
 				0 => array(
-					0 => 'join',
-					1 => 'name',
 					'mapper' => $m2,
 					'conventional' => $m2->conventional,
 					'table' => 'dibimapper_getjoininfo2_onetomany_',

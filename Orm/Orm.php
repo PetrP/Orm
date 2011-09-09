@@ -94,6 +94,7 @@ require_once __DIR__ . '/Mappers/DibiMapper.php';
 require_once __DIR__ . '/Mappers/ArrayMapper.php';
 require_once __DIR__ . '/Mappers/FileMapper.php';
 require_once __DIR__ . '/Mappers/DibiPersistenceHelper.php';
+require_once __DIR__ . '/Mappers/DibiJoinHelper.php';
 require_once __DIR__ . '/Mappers/MapperPersistenceException.php';
 require_once __DIR__ . '/Mappers/MapperJoinException.php';
 require_once __DIR__ . '/Mappers/ArrayMapperLockException.php';

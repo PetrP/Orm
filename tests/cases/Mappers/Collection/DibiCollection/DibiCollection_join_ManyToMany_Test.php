@@ -6,6 +6,7 @@ use Orm\RepositoryContainer;
 /**
  * @covers Orm\DibiCollection::join
  * @covers Orm\DibiMapper::getJoinInfo
+ * @covers Orm\DibiJoinHelper
  */
 class DibiCollection_join_ManyToMany_Test extends TestCase
 {

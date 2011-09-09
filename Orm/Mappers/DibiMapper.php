@@ -23,8 +23,8 @@ class DibiMapper extends Mapper
 	/** @var DibiConnection @see self::getConnection() */
 	private $connection;
 
-	/** @var array @see self::getJoinInfo() */
-	private $joinInfoCache = array('cache' => array(), 'fk' => NULL);
+	/** @var DibiJoinHelper @see self::getJoinInfo() */
+	private $joinHelper;
 
 	/** @var array @see self::begin() */
 	private static $transactions = array();
@@ -325,7 +325,6 @@ class DibiMapper extends Mapper
 	 * 	?	conventional => IDatabaseConventional
 	 * )
 	 * Work with all propel defined association.
-	 * @todo refactor
 	 */
 	public function getJoinInfo($key, stdClass $result = NULL)
 	{
@@ -333,157 +332,18 @@ class DibiMapper extends Mapper
 		{
 			return NULL;
 		}
-		if (!$result)
+		if ($this->joinHelper === NULL)
 		{
-			$result = (object) array('key' => NULL, 'joins' => array());
+			$this->joinHelper = new DibiJoinHelper($this);
 		}
-		$lastJoin = end($result->joins);
-
-		$tmp = explode('->', $key, 3);
-		$sourceKey = $tmp[0];
-		$targetKey = $tmp[1];
-		$next = isset($tmp[2]) ? $tmp[2] : NULL;
-
-		if (!isset($this->joinInfoCache['cache'][$sourceKey]))
+		$joinInfo = $this->joinHelper->get($key, $result);
+		foreach ($joinInfo->joins as & $join)
 		{
-			$mappper = $this;
-			$conventional = $this->getConventional();
-			$model = $this->getModel();
-			if ($this->joinInfoCache['fk'] === NULL)
+			if ($join['table'] === NULL)
 			{
-				foreach ((array) $this->getRepository()->getEntityClassName() as $entityName)
-				{
-					foreach (MetaData::getEntityRules($entityName, $this->getModel()) as $name => $rule)
-					{
-						if ($rule['relationship'] === MetaData::OneToMany)
-						{
-							$loader = (array) $rule['relationshipParam']; // hack
-							$r = $loader["\0Orm\\RelationshipLoader\0repository"];
-							$p = $loader["\0Orm\\RelationshipLoader\0param"];
-							if ($r AND $p)
-							{
-								$this->joinInfoCache['fk'][$name] = array($r, array('id', false), array($p, false));
-							}
-						}
-						else if ($rule['relationship'] === MetaData::ManyToMany)
-						{
-							$loader = (array) $rule['relationshipParam']; // hack
-							$r = $loader["\0Orm\\RelationshipLoader\0repository"];
-							$p = $loader["\0Orm\\RelationshipLoader\0param"];
-							if ($r AND $p)
-							{
-								$parentRepository = $this->getRepository();
-								$childRepository = $this->getModel()->getRepository($r);
-								$childParam = $loader["\0Orm\\RelationshipLoader\0param"];
-								$parentParam = $loader["\0Orm\\RelationshipLoader\0parentParam"];
-								if ($loader["\0Orm\\RelationshipLoader\0mapped"])
-								{
-									$manyToManyMapper = $this->createManyToManyMapper($parentParam, $childRepository, $childParam);
-									$parentParam = $manyToManyMapper->parentParam;
-									$childParam = $manyToManyMapper->childParam;
-								}
-								else
-								{
-									$manyToManyMapper = $childRepository->getMapper()->createManyToManyMapper($childParam, $parentRepository, $parentParam);
-									$parentParam = $manyToManyMapper->childParam;
-									$childParam = $manyToManyMapper->parentParam;
-								}
-								$this->joinInfoCache['fk'][$name] = array($r, array($childParam, true), array('id', false), array($manyToManyMapper->table, array('id', false), array($parentParam, true)));
-							}
-						}
-						else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
-						{
-							$this->joinInfoCache['fk'][$name] = array($rule['relationshipParam'], array(NULL, false), array('id', false));
-						}
-					}
-				}
+				$join['table'] = $join['mapper']->getTableName();
 			}
-			if (!isset($this->joinInfoCache['fk'][$sourceKey]))
-			{
-				throw new MapperJoinException(get_class($this->getRepository()) . ": neni zadna vazba na `$sourceKey`");
-			}
-			static $format;
-			if ($format === NULL) $format = function (array $key, IDatabaseConventional $conventional, $default = NULL) {
-				list($key, $wasFormated) = $key;
-				if ($key === NULL)
-				{
-					$key = $default;
-				}
-				if (!$wasFormated)
-				{
-					$tmp = $conventional->formatEntityToStorage(array($key => NULL));
-					$key = key($tmp);
-				}
-				return $key;
-			};
-
-			$joinRepository = $model->getRepository($this->joinInfoCache['fk'][$sourceKey][0]);
-			$tmp['mapper'] = $joinRepository->getMapper();
-			if (!($tmp['mapper'] instanceof DibiMapper))
-			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
-			}
-			$tmp['conventional'] = $tmp['mapper']->getConventional();
-
-			$manyToManyJoin = NULL;
-			if (isset($this->joinInfoCache['fk'][$sourceKey][3]))
-			{
-				$manyToManyJoin = $this->joinInfoCache['fk'][$sourceKey][3];
-				$manyToManyJoin = array(
-					'alias' => 'm2m__' . $sourceKey,
-					'xConventionalKey' => $format($manyToManyJoin[1], $conventional),
-					'yConventionalKey' => $format($manyToManyJoin[2], $tmp['conventional']),
-					'table' => $manyToManyJoin[0],
-					'findBy' => array(),
-				);
-			}
-
-			$tmp['table'] = $tmp['mapper']->getTableName();
-			// todo brat table z collection?
-			if ($tmp['mapper']->getConnection() !== $this->getConnection())
-			{
-				// todo porovnavat connection na collection?
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->getRepository()) . ", data nelze propojit.");
-			}
-			$tmp['sourceKey'] = $sourceKey;
-			$tmp['xConventionalKey'] = $format($this->joinInfoCache['fk'][$sourceKey][1], $conventional, $sourceKey);
-			$tmp['yConventionalKey'] = $format($this->joinInfoCache['fk'][$sourceKey][2], $tmp['conventional']);
-			$tmp['alias'] = $sourceKey;
-
-			$collection = $tmp['mapper']->findAll();
-			if (!($collection instanceof DibiCollection))
-			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiCollection, data nelze propojit.");
-			}
-			$collectionArray = (array) $collection; // hack
-			if ($collectionArray["\0*\0where"])
-			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection pouziva where(), data nelze propojit.");
-			}
-			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
-
-			$this->joinInfoCache['cache'][$sourceKey] = $manyToManyJoin ? array($manyToManyJoin, $tmp) : array($tmp);
 		}
-
-		foreach ($this->joinInfoCache['cache'][$sourceKey] as $join)
-		{
-			if ($lastJoin)
-			{
-				$join['alias'] = $lastJoin['alias'] . '->' . $join['alias'];
-			}
-			$result->joins[] = $join;
-		}
-
-		if ($next)
-		{
-			$result = $join['mapper']->getJoinInfo($targetKey . '->' . $next, $result);
-		}
-		else
-		{
-			$tmp = $join['conventional']->formatEntityToStorage(array($targetKey => NULL));
-			$targetConventionalKey = key($tmp);
-			$result->key = $join['alias'] . '.' . $targetConventionalKey;
-		}
-		return $result;
+		return $joinInfo;
 	}
 }
