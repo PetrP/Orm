@@ -17,6 +17,9 @@ class OneToMany extends BaseToMany implements IRelationship
 	/** @var string */
 	private $param;
 
+	/** @var string */
+	private $parentParam;
+
 	/** @var IEntityCollection @see self::getCollection() */
 	private $get;
 
@@ -46,10 +49,11 @@ class OneToMany extends BaseToMany implements IRelationship
 	 * @param IRepository|string repositoryName for lazy load
 	 * @param string m:1 param on child entity
 	 */
-	public function __construct(IEntity $parent, $repository, $param)
+	public function __construct(IEntity $parent, $repository, $param, $parentParam)
 	{
 		$this->parent = $parent;
 		$this->param = $param;
+		$this->parentParam = $parentParam;
 		parent::__construct($repository);
 	}
 
@@ -66,6 +70,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
 		}
+		$this->parent->markAsChanged($this->parentParam);
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
 		return $entity;
@@ -83,6 +88,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
+		$this->parent->markAsChanged($this->parentParam);
 		try {
 			$entity->$param = NULL;
 			$this->edit[spl_object_hash($entity)] = $entity;

@@ -52,12 +52,23 @@ class OneToMany_add_Test extends OneToMany_Test
 		$this->o2m->add($e);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('string'));
+		$this->o2m->add(11);
+		$this->assertTrue($this->e->isChanged());
+		$this->assertTrue($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('string'));
+	}
+
 	/**
 	 * @covers Orm\OneToMany::ignore
 	 */
 	public function testIgnore()
 	{
-		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param');
+		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param', 'id');
 		$this->o2m->set(array());
 		$this->o2m->ignore = true;
 		$this->assertSame(NULL, $this->o2m->add(new OneToMany_Entity));

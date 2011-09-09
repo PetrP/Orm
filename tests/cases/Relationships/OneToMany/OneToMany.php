@@ -97,7 +97,7 @@ abstract class OneToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->tests;
 		$this->e = $e = $r->getById(1);
-		$this->o2m = new OneToMany_OneToMany($e, 'OneToMany_', 'param');
+		$this->o2m = new OneToMany_OneToMany($e, 'OneToMany_', 'param', 'id');
 		$this->r = $m->OneToMany_;
 	}
 

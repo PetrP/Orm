@@ -23,7 +23,7 @@ abstract class OldOneToMany extends OneToMany
 	/**
 	 * @param IEntity
 	 */
-	public function __construct(IEntity $parent)
+	public function __construct(IEntity $parent, $foo1, $foo2, $parentParam)
 	{
 		$this->name = get_class($this);
 		if (!strpos($this->name, 'To')) throw new Exception(); // todo
@@ -33,7 +33,7 @@ abstract class OldOneToMany extends OneToMany
 			throw new InvalidEntityException($this->name . " expected '$entityName' as parent, " . get_class($parent) . ' given.');
 		}
 		$this->parent = $parent;
-		parent::__construct($parent, $this->getSecondRepository(), $this->getSecondParamName());
+		parent::__construct($parent, $this->getSecondRepository(), $this->getSecondParamName(), $parentParam);
 	}
 
 	/**

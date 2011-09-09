@@ -8,6 +8,9 @@ use Orm\IRepository;
 use Orm\RepositoryContainer;
 use Orm\IEntity;
 
+/**
+ * @property $foo
+ */
 class ManyToMany_Entity extends Entity
 {
 }
@@ -52,7 +55,7 @@ abstract class ManyToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->ManyToMany_;
 		$this->e = $e = $r->getById(1);
-		$this->m2m = new ManyToMany_ManyToMany($e, 'OneToMany_', 'param', 'param', true, array(10,11,12,13));
+		$this->m2m = new ManyToMany_ManyToMany($e, 'OneToMany_', 'param', 'id', true, array(10,11,12,13));
 		$this->r = $m->OneToMany_;
 	}
 

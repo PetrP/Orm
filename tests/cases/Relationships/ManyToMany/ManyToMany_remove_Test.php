@@ -46,6 +46,17 @@ class ManyToMany_remove_Test extends ManyToMany_Test
 		$this->m2m->remove(new TestEntity);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('foo'));
+		$this->m2m->remove(11);
+		$this->assertTrue($this->e->isChanged());
+		$this->assertTrue($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('foo'));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ManyToMany', 'remove');

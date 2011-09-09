@@ -79,6 +79,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		$entity = $this->createEntity($entity);
 		if ($this->ignore($entity)) return NULL;
 		// $entity->manytomany->add($this->parent); // todo kdyz existuje?
+		$this->parent->markAsChanged($this->parentParam);
 		$hash = spl_object_hash($entity);
 		$this->add[$hash] = $entity;
 		return $entity;
@@ -92,6 +93,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	{
 		$entity = $this->createEntity($entity);
 		// $entity->manytomany->remove($this->parent); // todo kdyz existuje?
+		$this->parent->markAsChanged($this->parentParam);
 		$hash = spl_object_hash($entity);
 		if (isset($this->add[$hash]))
 		{

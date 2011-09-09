@@ -9,19 +9,19 @@ class OneToMany_construct_Test extends OneToMany_Test
 
 	public function testWithRepoName()
 	{
-		$this->o2m = new OneToMany_OneToMany($this->e, get_class($this->r), 'param');
+		$this->o2m = new OneToMany_OneToMany($this->e, get_class($this->r), 'param', 'id');
 		$this->t(10,11,12,13);
 	}
 
 	public function testWithRepoObject()
 	{
-		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'param');
+		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'param', 'id');
 		$this->t(10,11,12,13);
 	}
 
 	public function testBadParam()
 	{
-		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'unexists');
+		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'unexists', 'id');
 		$this->setExpectedException('Nette\InvalidStateException', 'todo');
 		$this->markTestSkipped('Nema jednotnou chybu pro ruzne mappery, dibi haze DibiException error, array MemberAccessException. Je potreba sjednotit');
 		$this->o2m->_getCollection();
@@ -29,21 +29,21 @@ class OneToMany_construct_Test extends OneToMany_Test
 
 	public function testBadRepo()
 	{
-		$this->o2m = new OneToMany_OneToMany($this->e, 'unexists', 'param');
+		$this->o2m = new OneToMany_OneToMany($this->e, 'unexists', 'param', 'id');
 		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'unexists' doesn't exists");
 		$this->o2m->_getCollection();
 	}
 
 	public function testNoPersistedEntity_repo()
 	{
-		$this->o2m = new OneToMany_OneToMany(new TestEntity, $this->r, 'param');
+		$this->o2m = new OneToMany_OneToMany(new TestEntity, $this->r, 'param', 'id');
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
 		$this->t();
 	}
 
 	public function testNoPersistedEntity_repoName()
 	{
-		$this->o2m = new OneToMany_OneToMany(new TestEntity, get_class($this->r), 'param');
+		$this->o2m = new OneToMany_OneToMany(new TestEntity, get_class($this->r), 'param', 'id');
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
 		$this->t();
 	}
