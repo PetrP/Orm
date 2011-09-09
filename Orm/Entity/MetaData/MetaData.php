@@ -103,7 +103,7 @@ class MetaData extends Object
 	 */
 	public function getMethods($name)
 	{
-		if (!isset($this->methods))
+		if ($this->methods === NULL)
 		{
 			$methods = array_diff(get_class_methods($this->entityClass), get_class_methods('Orm\_EntityBase'));
 			// TODO neumoznuje pouzit vlastni IEntity
@@ -175,10 +175,10 @@ class MetaData extends Object
 		{
 			$hash = spl_object_hash($model);
 			$cache = & self::$cache[$hash][$lowerEntityClass];
-			if (!isset($cache))
+			if ($cache === NULL)
 			{
 				$cache2 = & self::$cache2[$hash][$lowerEntityClass];
-				if (isset($cache2))
+				if ($cache2 !== NULL)
 				{
 					$cache2[0]->check($model);
 					return $cache2[1];
@@ -207,7 +207,7 @@ class MetaData extends Object
 		else
 		{
 			$cache = & self::$cache[NULL][$lowerEntityClass];
-			if (!isset($cache))
+			if ($cache === NULL)
 			{
 				$meta = self::createEntityRules($entityClass);
 				$cache = array($meta, $meta->toArray());

@@ -51,7 +51,7 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  *  /** @return RepositoryContainer *⁄
  * 	public function getOrm()
  * 	{
- * 		if (!isset($this->orm))
+ * 		if ($this->orm === NULL)
  * 		{
  * 			$this->orm = $this->context->getService('orm');
  * 		}
@@ -84,7 +84,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public static function get()
 	{
-		if (!isset(self::$instance))
+		if (self::$instance === NULL)
 		{
 			throw new InvalidStateException('RepositoryContainer hasn\'t been instanced yet.');
 		}

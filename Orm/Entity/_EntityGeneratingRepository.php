@@ -77,7 +77,7 @@ class _EntityGeneratingRepository extends _EntityEvent
 	 */
 	final public function getModel($need = true)
 	{
-		if (!isset($this->model))
+		if ($this->model === NULL)
 		{
 			if ($need === NULL AND !$this->getGeneratingRepository(false)) // bc
 			{

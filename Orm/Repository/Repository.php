@@ -354,7 +354,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function getMapper()
 	{
-		if (!isset($this->mapper))
+		if ($this->mapper === NULL)
 		{
 			$mapper = $this->createMapper();
 			if (!($mapper instanceof IMapper))
@@ -481,7 +481,7 @@ abstract class Repository extends Object implements IRepository
 		}
 		if (!isset($this->entities[$id]) OR !$this->entities[$id])
 		{
-			if (!isset($this->conventional))
+			if ($this->conventional === NULL)
 			{
 				$this->conventional = $this->getMapper()->getConventional(); // speedup
 			}
@@ -506,7 +506,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final private function checkEntity($entityName, IEntity $entity = NULL, $throw = true)
 	{
-		if (!isset($this->allowedEntities))
+		if ($this->allowedEntities === NULL)
 		{
 			$allowedEntities = array();
 			foreach ((array) $this->getEntityClassName() as $en)

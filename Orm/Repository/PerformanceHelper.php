@@ -43,7 +43,7 @@ class PerformanceHelper extends Object
 	public function __construct(IRepository $repository)
 	{
 		$this->repositoryName = $repository->getRepositoryName();
-		if (!isset(self::$toLoad))
+		if (self::$toLoad === NULL)
 		{
 			$cache = $this->getCache();
 			$key = self::$keyCallback ? (string) callback(self::$keyCallback)->invoke() : NULL;

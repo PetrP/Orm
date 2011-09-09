@@ -76,7 +76,7 @@ abstract class Mapper extends Object implements IMapper
 	 */
 	final public function getConventional()
 	{
-		if (!isset($this->conventional))
+		if ($this->conventional === NULL)
 		{
 			$conventional = $this->createConventional();
 			if (!($conventional instanceof IConventional))
@@ -146,7 +146,7 @@ abstract class Mapper extends Object implements IMapper
 	 */
 	final protected function getCollectionClass($info = false)
 	{
-		if (!isset($this->collectionClass))
+		if ($this->collectionClass === NULL)
 		{
 			$class = $this->createCollectionClass();
 			if (!class_exists($class))

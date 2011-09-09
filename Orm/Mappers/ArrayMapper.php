@@ -206,7 +206,7 @@ abstract class ArrayMapper extends Mapper
 	 */
 	final protected function getData()
 	{
-		if (!isset($this->data))
+		if ($this->data === NULL)
 		{
 			$this->data = array();
 			$repository = $this->getRepository();
