@@ -69,4 +69,10 @@ class OneToMany_remove_Test extends OneToMany_Test
 		$this->o2m->remove($e);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->o2m->remove(11);
+		$this->assertTrue($this->e->isChanged());
+	}
 }

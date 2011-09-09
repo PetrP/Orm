@@ -52,6 +52,13 @@ class OneToMany_add_Test extends OneToMany_Test
 		$this->o2m->add($e);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->o2m->add(11);
+		$this->assertTrue($this->e->isChanged());
+	}
+
 	/**
 	 * @covers Orm\OneToMany::ignore
 	 */

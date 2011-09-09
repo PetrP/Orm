@@ -44,6 +44,13 @@ class ManyToMany_add_Test extends ManyToMany_Test
 		$this->m2m->add(new TestEntity);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->m2m->add(11);
+		$this->assertTrue($this->e->isChanged());
+	}
+
 	/**
 	 * @covers Orm\ManyToMany::ignore
 	 */

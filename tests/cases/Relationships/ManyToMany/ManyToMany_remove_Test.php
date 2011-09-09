@@ -46,4 +46,10 @@ class ManyToMany_remove_Test extends ManyToMany_Test
 		$this->m2m->remove(new TestEntity);
 	}
 
+	public function testChanged()
+	{
+		$this->assertFalse($this->e->isChanged());
+		$this->m2m->remove(11);
+		$this->assertTrue($this->e->isChanged());
+	}
 }

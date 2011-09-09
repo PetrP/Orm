@@ -71,6 +71,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
 		}
+		$this->parent->isChanged(true);
 		$entity->$param = $this->parent;
 		$this->add[spl_object_hash($entity)] = $entity;
 		return $entity;
@@ -88,6 +89,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			throw new UnexpectedValueException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
+		$this->parent->isChanged(true);
 		try {
 			$entity->$param = NULL;
 			$this->edit[spl_object_hash($entity)] = $entity;
