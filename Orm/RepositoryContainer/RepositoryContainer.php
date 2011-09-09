@@ -44,7 +44,7 @@ use ReflectionClass;
  *  /** @return RepositoryContainer *⁄
  * 	public function getOrm()
  * 	{
- * 		if (!isset($this->orm))
+ * 		if ($this->orm === NULL)
  * 		{
  * 			$this->orm = $this->context->getService('orm');
  * 		}
@@ -104,7 +104,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public static function get()
 	{
-		if (!isset(self::$instance))
+		if (self::$instance === NULL)
 		{
 			throw new Exception('RepositoryContainer hasn\'t been instanced yet.');
 		}

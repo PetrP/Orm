@@ -76,7 +76,7 @@ class AttachableEntityFragment extends EventEntityFragment
 	 */
 	final public function getModel($need = true)
 	{
-		if (!isset($this->model))
+		if ($this->model === NULL)
 		{
 			if ($need === NULL AND !$this->getRepository(false)) // bc
 			{

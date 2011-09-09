@@ -341,7 +341,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function getMapper()
 	{
-		if (!isset($this->mapper))
+		if ($this->mapper === NULL)
 		{
 			$mapper = $this->createMapper();
 			if (!($mapper instanceof IMapper))
@@ -482,7 +482,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function hydrateEntity($data)
 	{
-		if (!isset($this->conventional))
+		if ($this->conventional === NULL)
 		{
 			$this->conventional = $this->getMapper()->getConventional(); // speedup
 			$this->primaryKey = $this->conventional->getPrimaryKey();
@@ -515,7 +515,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final private function checkAttachableEntity($entityName, IEntity $entity = NULL, $throw = true)
 	{
-		if (!isset($this->allowedEntities))
+		if ($this->allowedEntities === NULL)
 		{
 			$allowedEntities = array();
 			foreach ((array) $this->getEntityClassName() as $en)

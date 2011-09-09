@@ -61,7 +61,7 @@ class ServiceContainer extends Object implements IServiceContainer
 	{
 		$this->hasService($name, true);
 		$s = $this->services[$name];
-		if (!isset($s->service))
+		if ($s->service === NULL)
 		{
 
 			if (is_string($s->factory) AND !(strpos($s->factory, '::') OR strncmp($s->factory, "\0lambda_", 8) === 0))

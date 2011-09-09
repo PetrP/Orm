@@ -114,7 +114,7 @@ class OneToMany extends BaseToMany implements IRelationship
 	/** @return IEntityCollection */
 	final protected function getCollection()
 	{
-		if (!isset($this->get))
+		if ($this->get === NULL)
 		{
 			if ($repository = $this->getChildRepository(false))
 			{

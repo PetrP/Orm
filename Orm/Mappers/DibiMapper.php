@@ -160,7 +160,7 @@ class DibiMapper extends Mapper
 	 */
 	final public function getConnection()
 	{
-		if (!isset($this->connection))
+		if ($this->connection === NULL)
 		{
 			$connection = $this->createConnection();
 			if (!($connection instanceof DibiConnection))
