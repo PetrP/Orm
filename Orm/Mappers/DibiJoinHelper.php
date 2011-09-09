@@ -34,26 +34,22 @@ class DibiJoinHelper extends Object
 			{
 				if ($rule['relationship'] === MetaData::OneToMany)
 				{
-					$loader = (array) $rule['relationshipParam']; // hack
-					$r = $loader["\0Orm\\RelationshipLoader\0repository"];
-					$p = $loader["\0Orm\\RelationshipLoader\0param"];
-					if ($r AND $p)
+					$loader = $rule['relationshipParam'];
+					if ($r = $loader->getRepository() AND $p = $loader->getParam())
 					{
 						$this->relationships[$name] = array($r, array('id', false), array($p, false));
 					}
 				}
 				else if ($rule['relationship'] === MetaData::ManyToMany)
 				{
-					$loader = (array) $rule['relationshipParam']; // hack
-					$r = $loader["\0Orm\\RelationshipLoader\0repository"];
-					$p = $loader["\0Orm\\RelationshipLoader\0param"];
-					if ($r AND $p)
+					$loader = $rule['relationshipParam'];
+					if ($r = $loader->getRepository() AND $childParam = $loader->getParam())
 					{
 						$parentRepository = $repository;
 						$childRepository = $model->getRepository($r);
-						$childParam = $loader["\0Orm\\RelationshipLoader\0param"];
-						$parentParam = $loader["\0Orm\\RelationshipLoader\0parentParam"];
-						if ($loader["\0Orm\\RelationshipLoader\0mapped"])
+						$parentParam = $loader->getParentParam();
+						$mapped = $loader->getWhereIsMapped();
+						if ($mapped === RelationshipLoader::MAPPED_HERE OR $mapped === RelationshipLoader::MAPPED_BOTH)
 						{
 							$manyToManyMapper = $this->mapper->createManyToManyMapper($parentParam, $childRepository, $childParam);
 							$parentParam = $manyToManyMapper->parentParam;

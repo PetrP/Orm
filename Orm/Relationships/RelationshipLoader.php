@@ -188,4 +188,27 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->mapped, $value);
 	}
 
+	/** @return string */
+	final public function getRepository()
+	{
+		return $this->repository;
+	}
+
+	/** @return string */
+	final public function getParam()
+	{
+		return $this->param;
+	}
+
+	/** @return string */
+	final public function getParentParam()
+	{
+		return $this->parentParam;
+	}
+
+	/** @return RelationshipLoader::MAPPED_* */
+	final public function getWhereIsMapped()
+	{
+		return $this->mapped;
+	}
 }
