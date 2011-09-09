@@ -182,11 +182,11 @@ abstract class ArrayMapper extends Mapper
 	 * Load data from storage
 	 * <pre>
 	 * 	return array(
-	 * 		1 => array('id' => 1),
-	 * 		2 => array('id' => 2),
+	 * 		array('id' => 1),
+	 * 		array('id' => 2),
 	 * 	);
 	 * </pre>
-	 * @return array id => array
+	 * @return array of array
 	 */
 	protected function loadData()
 	{
@@ -206,7 +206,6 @@ abstract class ArrayMapper extends Mapper
 	/**
 	 * Vrati / nacte vsechny entity
 	 * @return array id => IEntity
-	 * @todo $id brat az z vytvorene entity?
 	 */
 	final protected function getData()
 	{
@@ -214,9 +213,23 @@ abstract class ArrayMapper extends Mapper
 		{
 			$this->data = array();
 			$repository = $this->getRepository();
-			foreach ($this->loadData() as $id => $row)
+			$primaryKey = $this->getConventional()->getPrimaryKey();
+			foreach ($this->loadData() as $key => $value)
 			{
-				$this->data[$id] = $row ? $repository->hydrateEntity($row) : NULL;
+				if ($value !== NULL)
+				{
+					if (!isset($value[$primaryKey]))
+					{
+						$value[$primaryKey] = $key;
+					}
+					$value = $repository->hydrateEntity($value);
+					$key = $value->id;
+				}
+				if (array_key_exists($key, $this->data))
+				{
+					throw new BadReturnException(array($this, 'loadData', 'each id only once', NULL, "; id '$key' is contained twice."));
+				}
+				$this->data[$key] = $value;
 			}
 		}
 		return array_filter($this->data);
