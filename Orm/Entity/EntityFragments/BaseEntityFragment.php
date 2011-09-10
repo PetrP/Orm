@@ -8,6 +8,8 @@
 namespace Orm;
 
 use ArrayIterator;
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
@@ -51,7 +53,7 @@ abstract class BaseEntityFragment extends ValueEntityFragment
 			}
 			else if (method_exists($this, "set$name"))
 			{
-				$r = $this->getReflection()->getMethod("set$name");
+				$r = new ReflectionMethod($this, "set$name");
 				if ($r->isPublic())
 				{
 					$r->invoke($this, $value);
@@ -59,7 +61,7 @@ abstract class BaseEntityFragment extends ValueEntityFragment
 			}
 			else if (property_exists($this, $name))
 			{
-				$r = $this->getReflection()->getProperty($name);
+				$r = new ReflectionProperty($this, $name);
 				if ($r->isPublic())
 				{
 					$r->setValue($this, $value);
