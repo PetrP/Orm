@@ -149,6 +149,11 @@ abstract class BaseToMany extends Object
 		return $entity;
 	}
 
+	/**
+	 * Kdyz true tak se entita pri add tise ignoruje.
+	 * @param IEntity
+	 * @return bool
+	 */
 	protected function ignore(IEntity $entity)
 	{
 		return false;
