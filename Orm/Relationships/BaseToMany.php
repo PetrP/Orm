@@ -160,6 +160,34 @@ abstract class BaseToMany extends Object
 	}
 
 	/**
+	 * Kdyz false tak se entita pri add vyhodí chybu.
+	 * @param IEntity
+	 * @return bool
+	 */
+	protected function check(IEntity $entity)
+	{
+		return true;
+	}
+
+	/**
+	 * @param IEntity
+	 * @return bool
+	 * @throws BadEntityException
+	 */
+	final protected function handleCheckAndIgnore(IEntity $entity)
+	{
+		if ($this->ignore($entity))
+		{
+			return true;
+		}
+		if (!$this->check($entity))
+		{
+			throw new BadEntityException(get_class($this) . '::check() ' . EntityHelper::toString($entity) . ' is not allowed for that relationship.');
+		}
+		return false;
+	}
+
+	/**
 	 * @return IEntityCollection
 	 * @see self::get()
 	 */

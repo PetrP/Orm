@@ -129,6 +129,7 @@ require_once __DIR__ . '/Relationships/Mappers/ArrayManyToManyMapper.php';
 require_once __DIR__ . '/Relationships/Mappers/DibiManyToManyMapper.php';
 require_once __DIR__ . '/Relationships/Loader/RelationshipLoader.php';
 require_once __DIR__ . '/Relationships/Loader/RelationshipLoaderException.php';
+require_once __DIR__ . '/Relationships/Exceptions/BadEntityException.php';
 require_once __DIR__ . '/Relationships/bc1m.php';
 require_once __DIR__ . '/Relationships/bcmm.php';
 

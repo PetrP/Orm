@@ -2,6 +2,7 @@
 
 /**
  * @covers Orm\ManyToMany::ignore
+ * @covers Orm\ManyToMany::handleCheckAndIgnore
  */
 class ManyToMany_ignore_Test extends ManyToMany_Test
 {

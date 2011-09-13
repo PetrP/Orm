@@ -73,11 +73,12 @@ class ManyToMany extends BaseToMany implements IRelationship
 	/**
 	 * @param IEntity|scalar|array
 	 * @return IEntity|NULL
+	 * @throws BadEntityException
 	 */
 	final public function add($entity)
 	{
 		$entity = $this->createEntity($entity);
-		if ($this->ignore($entity)) return NULL;
+		if ($this->handleCheckAndIgnore($entity)) return NULL;
 		// $entity->manytomany->add($this->parent); // todo kdyz existuje?
 		$this->parent->markAsChanged($this->parentParam);
 		$hash = spl_object_hash($entity);

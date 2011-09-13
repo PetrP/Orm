@@ -2,6 +2,7 @@
 
 /**
  * @covers Orm\OneToMany::ignore
+ * @covers Orm\OneToMany::handleCheckAndIgnore
  */
 class OneToMany_ignore_Test extends OneToMany_Test
 {

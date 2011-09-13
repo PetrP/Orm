@@ -88,4 +88,14 @@ class IgnoreManyToMany extends ManyToMany
 		}
 		return parent::ignore($entity);
 	}
+
+	public $check;
+	protected function check(IEntity $entity)
+	{
+		if ($this->check !== NULL)
+		{
+			return $this->check;
+		}
+		return parent::check($entity);
+	}
 }

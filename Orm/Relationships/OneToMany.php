@@ -60,12 +60,13 @@ class OneToMany extends BaseToMany implements IRelationship
 	/**
 	 * @param IEntity|scalar|array
 	 * @return IEntity|NULL
+	 * @throws BadEntityException
 	 */
 	final public function add($entity)
 	{
 		$param = $this->param;
 		$entity = $this->createEntity($entity);
-		if ($this->ignore($entity)) return NULL;
+		if ($this->handleCheckAndIgnore($entity)) return NULL;
 		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $this->parent)
 		{
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
