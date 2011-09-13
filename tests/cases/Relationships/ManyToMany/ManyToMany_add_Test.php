@@ -51,25 +51,4 @@ class ManyToMany_add_Test extends ManyToMany_Test
 		$this->assertTrue($this->e->isChanged());
 	}
 
-	/**
-	 * @covers Orm\ManyToMany::ignore
-	 */
-	public function testIgnore()
-	{
-		$this->m2m = new IgnoreManyToMany($this->e, 'OneToMany_', 'param', 'param', true);
-		$this->m2m->ignore = true;
-		$this->assertSame(NULL, $this->m2m->add(new OneToMany_Entity));
-		$this->assertSame(0, count($this->m2m));
-		$this->assertSame(NULL, $this->m2m->add(new OneToMany_Entity));
-		$this->assertSame(0, count($this->m2m));
-		$this->m2m->ignore = false;
-		$this->m2m->add(new OneToMany_Entity);
-		$this->assertSame(1, count($this->m2m));
-		$this->m2m->add(new OneToMany_Entity);
-		$this->assertSame(2, count($this->m2m));
-		$this->m2m->ignore = true;
-		$this->assertSame(NULL, $this->m2m->add(new OneToMany_Entity));
-		$this->assertSame(2, count($this->m2m));
-	}
-
 }

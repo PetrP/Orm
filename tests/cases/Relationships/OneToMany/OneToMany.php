@@ -118,9 +118,9 @@ class IgnoreOneToMany extends OneToMany
 	public $ignore;
 	protected function ignore(IEntity $entity)
 	{
-		if ($this->ignore)
+		if ($this->ignore !== NULL)
 		{
-			return true;
+			return $this->ignore;
 		}
 		return parent::ignore($entity);
 	}
