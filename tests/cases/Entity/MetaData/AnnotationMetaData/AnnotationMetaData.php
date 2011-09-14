@@ -1,6 +1,6 @@
 <?php
 
-use Nette\Reflection\AnnotationsParser;
+use Orm\AnnotationsParser;
 use Orm\AnnotationMetaData;
 use Orm\Entity;
 use Orm\OldManyToMany;
@@ -11,22 +11,20 @@ class MockAnnotationMetaData extends AnnotationMetaData
 {
 	public static $mock;
 
-	public static function getMetaData($class)
+	public static function getMetaData($class, AnnotationsParser $parser = NULL)
 	{
 		$m = new MetaData($class);
-		new self($m);
+		new self($m, new AnnotationsParser(function (ReflectionClass $class) {
+			if ($class->getName() === 'AnnotationMetaData_MockEntity') return MockAnnotationMetaData::$mock;
+			$p = new AnnotationsParser;
+			return $p->getByReflection($class);
+		}));
 		return $m;
 	}
 
-	protected function getAnnotation($class)
+	public static function mockConstruct($class, AnnotationsParser $p = NULL)
 	{
-		if ($class === 'AnnotationMetaData_MockEntity') return self::$mock;
-		return AnnotationsParser::getAll(new ReflectionClass($class));
-	}
-
-	public static function mockConstruct($class)
-	{
-		return new AnnotationMetaData(new MetaData($class));
+		return new AnnotationMetaData(new MetaData($class), $p === NULL ? new AnnotationsParser: $p);
 	}
 }
 

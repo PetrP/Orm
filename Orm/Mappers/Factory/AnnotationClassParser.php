@@ -7,15 +7,21 @@
 
 namespace Orm;
 
-use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 use stdClass;
 
 class AnnotationClassParser extends Object
 {
+	/** @var AnnotationsParser */
+	private $parser;
 
 	/** @var array of name => stdClass */
 	private $registered = array();
+
+	public function __construct(AnnotationsParser $parser = NULL)
+	{
+		$this->parser = $parser === NULL ? new AnnotationsParser : $parser;
+	}
 
 	/**
 	 * <pre>
@@ -102,11 +108,11 @@ class AnnotationClassParser extends Object
 	/**
 	 * @param ReflectionClass
 	 * @return array of annotation => array
-	 * @see Nette\Reflection\AnnotationsParser
+	 * @see AnnotationsParser
 	 */
 	protected function getAnnotations(ReflectionClass $reflection)
 	{
-		return AnnotationsParser::getAll($reflection);
+		return $this->parser->getByReflection($reflection);
 	}
 
 	/**

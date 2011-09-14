@@ -98,6 +98,7 @@ class PhpParser extends Tokenizer
 			'ObjectMixin',
 			'Object',
 			'Callback',
+			'AnnotationsParser',
 		);
 		static $tmp1;
 		static $tmp2;

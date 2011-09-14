@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 
 /**
@@ -46,6 +45,9 @@ class AnnotationMetaData extends Object
 		'property-write' => MetaData::WRITE,
 	);
 
+	/** @var AnnotationsParser */
+	private $parser;
+
 	/** @var string */
 	private $class;
 
@@ -59,21 +61,27 @@ class AnnotationMetaData extends Object
 
 	/**
 	 * @param MetaData|string|IEntity class name or object
+	 * @param AnnotationsParser|NULL
 	 * @return MetaData
 	 */
-	public static function getMetaData($metaData)
+	public static function getMetaData($metaData, AnnotationsParser $parser = NULL)
 	{
 		if (!($metaData instanceof MetaData))
 		{
 			$metaData = new MetaData($metaData);
 		}
-		new static($metaData);
+		if ($parser === NULL)
+		{
+			$parser = new AnnotationsParser();
+		}
+		new static($metaData, $parser);
 		return $metaData;
 	}
 
 	/** @param MetaData */
-	protected function __construct(MetaData $metaData)
+	protected function __construct(MetaData $metaData, AnnotationsParser $parser)
 	{
+		$this->parser = $parser;
 		$this->class = $metaData->getEntityClass();
 
 		foreach ($this->getClasses($this->class) as $class)
@@ -104,7 +112,7 @@ class AnnotationMetaData extends Object
 	 */
 	protected function getAnnotation($class)
 	{
-		return AnnotationsParser::getAll(new ReflectionClass($class));
+		return $this->parser->getByReflection(new ReflectionClass($class));
 	}
 
 	/**

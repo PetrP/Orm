@@ -2,6 +2,7 @@
 
 use Orm\MetaData;
 use Orm\AnnotationMetaData;
+use Orm\AnnotationsParser;
 
 /**
  * @covers Orm\AnnotationMetaData::getMetaData
@@ -30,6 +31,15 @@ class AnnotationMetaData_getMetaData_Test extends TestCase
 		$this->assertInstanceOf('Orm\MetaData', $m2);
 		$this->assertSame($m1, $m2);
 		$this->assertSame('AnnotationMetaData_MockEntity', $m2->getEntityClass());
+	}
+
+	public function testParserSet()
+	{
+		$p = new AnnotationsParser(function () {
+			throw new Exception('AnnotationsParser');
+		});
+		$this->setExpectedException('Exception', 'AnnotationsParser');
+		AnnotationMetaData::getMetaData('AnnotationMetaData_MockEntity', $p);
 	}
 
 	public function testReflection()

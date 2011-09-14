@@ -34,6 +34,7 @@ require_once __DIR__ . '/Common/Object.php';
 require_once __DIR__ . '/Common/ObjectMixin.php';
 require_once __DIR__ . '/Common/Callback.php';
 require_once __DIR__ . '/Common/Inflector.php';
+require_once __DIR__ . '/Common/AnnotationsParser.php';
 require_once __DIR__ . '/Common/Exceptions/ExceptionHelper.php';
 require_once __DIR__ . '/Common/Exceptions/BadReturnException.php';
 require_once __DIR__ . '/Common/Exceptions/DeprecatedException.php';
