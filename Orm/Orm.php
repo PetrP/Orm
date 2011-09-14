@@ -16,7 +16,7 @@ final class Orm
 
 	const REVISION = '<build::revision> released on <build::date>';
 
-	const PACKAGE = '<build::orm> for Nette <build::nette>';
+	const PACKAGE = '<build::orm>';
 
 }
 

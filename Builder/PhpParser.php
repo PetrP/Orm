@@ -159,46 +159,53 @@ class PhpParser extends Tokenizer
 	 */
 	public static function removeNamespace($data, $orm, $nette)
 	{
-		if ($orm)
+		if ($orm OR $nette)
 		{
-			$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
-			$data = preg_replace('#namespace\s+HttpPHPUnit\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
-		}
-		$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
+			$inNamespaceOrm = (bool) preg_match('#namespace\s+Orm([a-z0-9_\\\\\s]*);#si', $data);
+			if ($orm)
+			{
+				$data = preg_replace('#namespace\s+Orm\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
+				$data = preg_replace('#namespace\s+HttpPHPUnit\\\\?[a-z0-9_\\\\\s]*;\n\n#si', '', $data);
+			}
+			$inNamespace = (bool) preg_match('#namespace\s+([a-z0-9_\\\\\s]+);#si', $data);
 
-		$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace, $orm, $nette) {
-			if (!$nette AND strpos($m[2], 'Nette') === 0)
-			{
-				return $m[0];
-			}
-			if ($nette AND $inNamespace AND strpos($m[2], 'Nette') === 0)
-			{
-				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
-			}
-			if ($orm AND $inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
-			{
-				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
-			}
-			if (!$orm AND !$inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
-			{
-				return $m[0];
-			}
-			if ($inNamespace)
-			{
-				return $m[0];
-			}
-			return NULL;
-		}, $data);
+			$data = preg_replace_callback('#(use\s+)([a-z0-9_\\\\\s]+)(;\n\n?)#si', function (array $m) use ($inNamespace, $inNamespaceOrm, $orm, $nette) {
+				if (!$inNamespaceOrm)
+				{
+					if (!$nette AND strpos($m[2], 'Nette') === 0)
+					{
+						return $m[0];
+					}
+					if ($nette AND $inNamespace AND strpos($m[2], 'Nette') === 0)
+					{
+						return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
+					}
+					if ($orm AND $inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
+					{
+						return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
+					}
+					if (!$orm AND !$inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
+					{
+						return $m[0];
+					}
+				}
+				if ($inNamespace)
+				{
+					return $m[0];
+				}
+				return NULL;
+			}, $data);
 
-		if ($orm)
-		{
-			$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
-			$data = preg_replace('#\\\\?HttpPHPUnit\\\\\\\\?([a-z0-9_])#si', '$1', $data);
-		}
-		if ($nette)
-		{
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
-			$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
+			if ($orm)
+			{
+				$data = preg_replace('#\\\\?Orm\\\\\\\\?([a-z0-9_])#si', '$1', $data);
+				$data = preg_replace('#\\\\?HttpPHPUnit\\\\\\\\?([a-z0-9_])#si', '$1', $data);
+			}
+			if (!$inNamespaceOrm AND $nette)
+			{
+				$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
+				$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
+			}
 		}
 		return $data;
 	}
@@ -262,12 +269,6 @@ class PhpParser extends Tokenizer
 			if ($m === 'orm')
 			{
 				return $version & Builder::NS ? '5.3' : '5.2';
-			}
-			else if ($m === 'nette')
-			{
-				if ($version & Builder::PREFIXED_NETTE) return '5.2 prefixed';
-				if ($version & Builder::NONNS_NETTE) return '5.2 without prefixes';
-				if ($version & Builder::NS_NETTE) return '5.3';
 			}
 			else if ($m === 'date')
 			{

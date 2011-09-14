@@ -4,7 +4,6 @@ namespace Orm\Builder;
 
 use Nette\Utils\Strings;
 use Nette\Utils\Finder;
-use Nette\InvalidArgumentException;
 use Nette\NotImplementedException;
 use Nette\Object;
 use SplFileInfo;
@@ -159,43 +158,33 @@ class Builder extends Object
 		$data = PhpParser::standardizeLineEndings($data);
 		$data = PhpParser::buildInfo($data, $this->version, $this->isDev);
 
-		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
+		if ($this->version & self::NONNS) // php52
 		{
-			$data = PhpParser::versionFix($data, true);
 			$data = PhpParser::replaceGlobalScopeRenames($data);
-			$data = PhpParser::removeNamespace($data, true, true);
+			$data = PhpParser::versionFix($data, true);
+			$inNamespaceOrm = (bool) preg_match('#namespace\s+Orm([a-z0-9_\\\\\s]*);#si', $data);
+		}
+		else if ($this->version & self::NS) // php53
+		{
+			$data = PhpParser::versionFix($data, false);
+		}
+		else throw new Exception;
+
+		$data = PhpParser::removeNamespace($data, $this->version & self::NONNS, $this->version & self::NONNS_NETTE);
+		if ($this->version & self::PREFIXED_NETTE)
+		{
+			throw new NotImplementedException;
+		}
+		else if (!($this->version & self::NONNS_NETTE) AND !($this->version & self::NS_NETTE))
+		{
+			throw new Exception;
+		}
+
+		if ($this->version & self::NONNS AND ($inNamespaceOrm OR $this->version & self::NONNS_NETTE)) // php52
+		{
 			$data = PhpParser::replaceClosures($data);
 			$data = PhpParser::replaceLateStaticBinding($data);
 			$data = PhpParser::replaceDirConstant($data);
-		}
-		else
-		{
-			$data = PhpParser::versionFix($data, false);
-			if ($this->version & self::NONNS AND $this->version & self::NS_NETTE)
-			{
-				$data = PhpParser::replaceGlobalScopeRenames($data);
-				$data = PhpParser::removeNamespace($data, true, false);
-			}
-			else if ($this->version & self::NONNS AND $this->version & self::PREFIXED_NETTE)
-			{
-				throw new NotImplementedException();
-			}
-			else if ($this->version & self::NS AND $this->version & self::NONNS_NETTE)
-			{
-				$data = PhpParser::removeNamespace($data, false, true);
-			}
-			else if ($this->version & self::NS AND $this->version & self::NS_NETTE)
-			{
-
-			}
-			else if ($this->version & self::NS AND $this->version & self::PREFIXED_NETTE)
-			{
-				throw new NotImplementedException();
-			}
-			else
-			{
-				throw new InvalidArgumentException;
-			}
 		}
 		return $data;
 	}
