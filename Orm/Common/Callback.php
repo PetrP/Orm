@@ -164,5 +164,17 @@ final class Callback extends Object
 		is_callable($this->cb, TRUE, $textual);
 		return $textual;
 	}
+/*§php52
+
+	/** @internal * /
+	static $vars = array();
+
+	/** @internal * /
+	static function uses($args)
+	{
+		self::$vars[] = $args;
+		return count(self::$vars)-1;
+	}
+php52§*/
 
 }

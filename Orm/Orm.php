@@ -22,17 +22,6 @@ final class Orm
 
 /*§php52
 /** @internal * /
-class OrmClosureFix
-{
-	static $vars = array();
-
-	static function uses($args)
-	{
-		self::$vars[] = $args;
-		return count(self::$vars)-1;
-	}
-}
-
 if (!defined('PHP_VERSION_ID'))
 {
 	// php < 5.2.7

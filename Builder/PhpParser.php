@@ -41,7 +41,7 @@ class PhpParser extends Tokenizer
 				$parser->fetch(')');
 				if ($use = $parser->fetch(T_USE)) {
 					$parser->fetch('(');
-					$token .= 'extract(OrmClosureFix::$vars[\'.OrmClosureFix::uses(array('
+					$token .= 'extract(OrmCallback::$vars[\'.OrmCallback::uses(array('
 						. preg_replace('#&?\s*\$([^,\s]+)#', "'\$1'=>\$0", $parser->fetchUntil(')'))
 						. ')).\'], EXTR_REFS);';
 					$parser->fetch(')');
