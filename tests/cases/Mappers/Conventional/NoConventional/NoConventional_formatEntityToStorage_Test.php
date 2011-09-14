@@ -1,7 +1,6 @@
 <?php
 
 use Orm\NoConventional;
-use Nette\Utils\Html;
 
 /**
  * @covers Orm\NoConventional::formatEntityToStorage
@@ -13,7 +12,7 @@ class NoConventional_formatEntityToStorage_Test extends TestCase
 	private $a;
 	protected function setUp()
 	{
-		$this->a = array('x' => new Html, 'y' => 'asdasd');;
+		$this->a = array('x' => new Directory, 'y' => 'asdasd');;
 		$this->c = new NoConventional;
 	}
 

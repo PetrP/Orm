@@ -27,8 +27,8 @@ class MetaData_construct_Test extends TestCase
 
 	public function testNotEntity()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
-		new MetaData('Nette\Utils\Html');
+		$this->setExpectedException('Nette\InvalidStateException', "'Directory' isn`t instance of Orm\\IEntity");
+		new MetaData('Directory');
 	}
 
 }

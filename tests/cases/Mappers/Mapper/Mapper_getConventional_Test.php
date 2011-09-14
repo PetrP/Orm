@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\RepositoryContainer;
 
 /**
@@ -26,7 +25,7 @@ class Mapper_getConventional_Test extends TestCase
 
 	public function testBad()
 	{
-		$this->m->c = new Html;
+		$this->m->c = new Directory;
 		$this->setExpectedException('Nette\InvalidStateException', 'Mapper_getConventional_Mapper::createConventional() must return Orm\IConventional');
 		$this->m->getConventional();
 	}

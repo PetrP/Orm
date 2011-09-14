@@ -1,7 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
-
 /**
  * @covers Orm\OneToMany::get
  */
@@ -25,14 +23,14 @@ class OneToMany_get_Test extends OneToMany_Test
 
 		$all = $cc->fetchAll();
 		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
-		$html = array(new Html, new Html);
-		$r->setValue($cc, $html);
+		$directory = array(new Directory, new Directory);
+		$r->setValue($cc, $directory);
 
 		$c = $this->o2m->get();
 		$this->assertInstanceOf('Orm\ArrayCollection', $c);
 
-		$this->assertAttributeSame($html, 'source', $c);
-		$this->assertAttributeSame($html, 'result', $cc);
+		$this->assertAttributeSame($directory, 'source', $c);
+		$this->assertAttributeSame($directory, 'result', $cc);
 	}
 
 	public function testCloneHasResultLate()
@@ -45,11 +43,11 @@ class OneToMany_get_Test extends OneToMany_Test
 
 		$all = $cc->fetchAll();
 		$r = setAccessible(new ReflectionProperty('Orm\ArrayCollection', 'result'));
-		$html = array(new Html, new Html);
-		$r->setValue($cc, $html);
+		$directory = array(new Directory, new Directory);
+		$r->setValue($cc, $directory);
 
 		$this->assertAttributeSame($all, 'source', $c);
-		$this->assertAttributeSame($html, 'result', $cc);
+		$this->assertAttributeSame($directory, 'result', $cc);
 	}
 
 	public function testSameData()

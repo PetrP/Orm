@@ -51,8 +51,8 @@ class MetaDataProperty_setInjection_Test extends TestCase
 
 	public function testClassNotImplement()
 	{
-		$this->p = new MetaDataProperty($this->m, 'id', 'Nette\Utils\Html');
-		$this->setExpectedException('Nette\InvalidStateException', "Nette\\Utils\\Html does not implements Orm\\IEntityInjection in MetaData_Test_Entity::\$id");
+		$this->p = new MetaDataProperty($this->m, 'id', 'Directory');
+		$this->setExpectedException('Nette\InvalidStateException', "Directory does not implements Orm\\IEntityInjection in MetaData_Test_Entity::\$id");
 		$this->p->setInjection();
 	}
 

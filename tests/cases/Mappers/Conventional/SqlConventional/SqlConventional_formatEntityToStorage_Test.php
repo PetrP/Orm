@@ -1,7 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
-
 /**
  * @covers Orm\SqlConventional::formatEntityToStorage
  * @covers Orm\SqlConventional::storageFormat
@@ -54,7 +52,7 @@ class SqlConventional_formatEntityToStorage_Test extends TestCase
 		$this->tt(array(
 			'id' => 123,
 			'text' => 'string',
-			'blaBla' => $object = new Html,
+			'blaBla' => $object = new Directory,
 			'XxX' => NULL,
 			'True' => false,
 		), array(

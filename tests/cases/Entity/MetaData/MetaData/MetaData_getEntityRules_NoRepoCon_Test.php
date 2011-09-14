@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\MetaData;
 
 /**
@@ -32,14 +31,14 @@ class MetaData_getEntityRules_NoRepoCon_Test extends TestCase
 
 	public function testNotEntity()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "'Nette\\Utils\\Html' isn`t instance of Orm\\IEntity");
-		MetaData::getEntityRules('Nette\Utils\Html');
+		$this->setExpectedException('Nette\InvalidStateException', "'Directory' isn`t instance of Orm\\IEntity");
+		MetaData::getEntityRules('Directory');
 	}
 
 	public function testBadReturn()
 	{
 		$this->setExpectedException('Nette\InvalidStateException', "It`s expected that 'Orm\\IEntity::createMetaData' will return 'Orm\\MetaData'.");
-		MetaData_Test_Entity::$metaData = new Html;
+		MetaData_Test_Entity::$metaData = new Directory;
 		MetaData::getEntityRules('MetaData_Test_Entity');
 	}
 

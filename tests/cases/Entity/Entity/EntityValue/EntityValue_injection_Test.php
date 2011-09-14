@@ -122,7 +122,7 @@ class EntityValue_injection_Test extends TestCase
 	public function testBad()
 	{
 		$e = new EntityValue_injectionBadEntity;
-		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_injectionBadEntity::\$i must be 'Orm\\IEntityInjection', 'object Nette\\Utils\\Html' given");
+		$this->setExpectedException('Nette\UnexpectedValueException', "Param EntityValue_injectionBadEntity::\$i must be 'Orm\\IEntityInjection', 'object Directory' given");
 		$e->i;
 	}
 }
