@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\ValidationHelper;
 
 /**
@@ -41,7 +40,7 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 
 		$this->type = 'object|null';
 		$this->t(NULL, true);
-		$this->t(new Html, true);
+		$this->t(new Directory, true);
 		$this->t(array(), true, (object) array(), false);
 		$this->t('', false);
 
@@ -60,9 +59,9 @@ class ValidationHelper_isValid_Multiple_Test extends ValidationHelper_isValid_Ba
 		$this->t(NULL, true);
 		$this->t('xxx', true);
 
-		$this->type = 'nette\utils\html|null';
+		$this->type = 'directory|null';
 		$this->t(NULL, true);
-		$this->t(new Html, true);
+		$this->t(new Directory, true);
 		$this->t('', false);
 		$this->t(new DateTime, false);
 	}

@@ -72,14 +72,14 @@ class AnnotationClassParser_register_Test extends TestCase
 
 	public function testNoInterface2()
 	{
-		$this->setExpectedException('Orm\AnnotationClassParserException', "'Nette\\Utils\\Html' is not valid interface");
-		$this->t('test', 'Nette\Utils\Html', NULL);
+		$this->setExpectedException('Orm\AnnotationClassParserException', "'Directory' is not valid interface");
+		$this->t('test', 'Directory', NULL);
 	}
 
 	public function testNoInterface3()
 	{
-		$this->setExpectedException('Orm\AnnotationClassParserException', "'Nette\\Utils\\Html' is not valid interface");
-		$this->t('test', 'Nette\Utils\Html', NULL);
+		$this->setExpectedException('Orm\AnnotationClassParserException', "'Directory' is not valid interface");
+		$this->t('test', 'Directory', NULL);
 	}
 
 	public function testNoValidCallback1()

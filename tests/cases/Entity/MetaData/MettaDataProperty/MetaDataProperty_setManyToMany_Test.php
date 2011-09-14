@@ -79,8 +79,8 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testBadType()
 	{
-		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\ManyToMany');
-		$this->m->addProperty('id', 'Nette\Utils\Html')
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} Class \'Directory\' isn\'t instanceof Orm\ManyToMany');
+		$this->m->addProperty('id', 'Directory')
 			->setManyToMany()
 		;
 	}

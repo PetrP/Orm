@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\ManyToMany;
 use Orm\RelationshipLoader;
 
@@ -27,8 +26,8 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testBad()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', true);
-		$this->e->repository->mapper->mmm = new Html;
-		$this->setExpectedException('Orm\BadReturnException', "ManyToMany_Mapper::createManyToManyMapper() must return Orm\\IManyToManyMapper, 'Nette\\Utils\\Html' given");
+		$this->e->repository->mapper->mmm = new Directory;
+		$this->setExpectedException('Orm\BadReturnException', "ManyToMany_Mapper::createManyToManyMapper() must return Orm\\IManyToManyMapper, 'Directory' given");
 		$this->m2m->gm();
 	}
 

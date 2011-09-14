@@ -2,8 +2,6 @@
 
 use Orm\RepositoryContainer;
 
-use Nette\Utils\Html;
-
 /**
  * @covers Orm\DibiMapper::getConnection
  */
@@ -22,15 +20,15 @@ class DibiMapper_getConnection_Test extends TestCase
 
 	public function testBad()
 	{
-		$this->m->con = new Html;
-		$this->setExpectedException('Orm\BadReturnException', "DibiMapper_getConnection_DibiMapper::createConnection() must return DibiConnection, 'Nette\\Utils\\Html' given");
+		$this->m->con = new Directory;
+		$this->setExpectedException('Orm\BadReturnException', "DibiMapper_getConnection_DibiMapper::createConnection() must return DibiConnection, 'Directory' given");
 		$this->m->getConnection();
 	}
 
 	public function testSame()
 	{
 		$c = $this->m->getConnection();
-		$this->m->con = new Html;
+		$this->m->con = new Directory;
 		$this->assertSame($c, $this->m->getConnection());
 
 	}

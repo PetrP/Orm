@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\RepositoryContainer;
 
 /**
@@ -26,7 +25,7 @@ class DibiMapper_getConventional_Test extends TestCase
 
 	public function testBad()
 	{
-		$this->m->c = new Html;
+		$this->m->c = new Directory;
 		$this->setExpectedException('Orm\BadReturnException', 'DibiMapper_getConventional_DibiMapper::createConventional() must return Orm\IDatabaseConventional');
 		$this->m->getConventional();
 	}

@@ -1,7 +1,6 @@
 <?php
 
 use Orm\ServiceContainer;
-use Nette\Utils\Html;
 
 /**
  * @covers Orm\ServiceContainer::getService
@@ -23,7 +22,7 @@ class ServiceContainer_getService_Test extends TestCase
 
 	public function testObject()
 	{
-		$h = new Html;
+		$h = new Directory;
 		$this->c->addService('test', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 		$this->assertSame($h, $this->c->getService('test'));
@@ -31,38 +30,38 @@ class ServiceContainer_getService_Test extends TestCase
 
 	public function testClassName()
 	{
-		$this->c->addService('test', 'Nette\Utils\Html');
+		$this->c->addService('test', 'Directory');
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
 	public function testClosure()
 	{
-		$this->c->addService('test', function () { return new Nette\Utils\Html; });
+		$this->c->addService('test', function () { return new Directory; });
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
 	public function testCreateFunction()
 	{
-		$this->c->addService('test', create_function('', 'return new Nette\Utils\Html;'));
+		$this->c->addService('test', create_function('', 'return new Directory;'));
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
 	public static function callback()
 	{
-		return new Html;
+		return new Directory;
 	}
 
 	public function testStringCallback()
 	{
 		$this->c->addService('test', __CLASS__ . '::callback');
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
@@ -70,7 +69,7 @@ class ServiceContainer_getService_Test extends TestCase
 	{
 		$this->c->addService('test', array(__CLASS__, 'callback'));
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
@@ -78,7 +77,7 @@ class ServiceContainer_getService_Test extends TestCase
 	{
 		$this->c->addService('test', callback($this, 'callback'));
 		$h = $this->c->getService('test');
-		$this->assertInstanceOf('Nette\Utils\Html', $h);
+		$this->assertInstanceOf('Directory', $h);
 		$this->assertSame($h, $this->c->getService('test'));
 	}
 
@@ -98,15 +97,15 @@ class ServiceContainer_getService_Test extends TestCase
 
 	public function testInstanceOf()
 	{
-		$this->c->addService('test', 'Nette\Utils\Html');
-		$this->assertInstanceOf('Nette\Utils\Html', $x1 = $this->c->getService('test', 'Nette\Utils\Html'));
-		$this->assertInstanceOf('Nette\Utils\Html', $x2 = $this->c->getService('test', 'Countable'));
+		$this->c->addService('test', 'ArrayObject');
+		$this->assertInstanceOf('ArrayObject', $x1 = $this->c->getService('test', 'ArrayObject'));
+		$this->assertInstanceOf('ArrayObject', $x2 = $this->c->getService('test', 'Traversable'));
 		$this->assertSame($x1, $x2);
 	}
 
 	public function testInstanceOfBad()
 	{
-		$this->c->addService('test', 'Nette\Utils\Html');
+		$this->c->addService('test', 'Directory');
 		$this->setExpectedException('Orm\ServiceNotInstanceOfException', "Service 'test' is not instance of 'Orm\\IMapperFactory'.");
 		$this->c->getService('test', 'Orm\IMapperFactory');
 	}

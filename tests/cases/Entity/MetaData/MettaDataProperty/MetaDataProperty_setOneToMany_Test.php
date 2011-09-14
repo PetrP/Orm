@@ -79,8 +79,8 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 
 	public function testBadType()
 	{
-		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {1:m} Class \'Nette\Utils\Html\' isn\'t instanceof Orm\OneToMany');
-		$this->m->addProperty('id', 'Nette\Utils\Html')
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {1:m} Class \'Directory\' isn\'t instanceof Orm\OneToMany');
+		$this->m->addProperty('id', 'Directory')
 			->setOneToMany()
 		;
 	}

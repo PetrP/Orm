@@ -97,8 +97,8 @@ class RepositoryContainer_register_Test extends TestCase
 
 	public function testBad()
 	{
-		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'Nette\\Utils\\Html' must implement Orm\\IRepository");
-		$this->m->register('xyz', 'Nette\Utils\Html');
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'Directory' must implement Orm\\IRepository");
+		$this->m->register('xyz', 'Directory');
 	}
 
 	public function testExists()

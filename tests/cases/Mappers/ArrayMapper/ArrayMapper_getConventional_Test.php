@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\RepositoryContainer;
 
 /**
@@ -26,7 +25,7 @@ class ArrayMapper_getConventional_Test extends TestCase
 
 	public function testBad()
 	{
-		$this->m->c = new Html;
+		$this->m->c = new Directory;
 		$this->setExpectedException('Orm\BadReturnException', 'ArrayMapper_getConventional_ArrayMapper::createConventional() must return Orm\IConventional');
 		$this->m->getConventional();
 	}

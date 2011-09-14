@@ -29,8 +29,8 @@ class Injection_create_Test extends TestCase
 
 	public function testBadClass()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', 'TestEntity injection loaded via Orm\Injection::create() must be subclass of Orm\Injection; \'Nette\Utils\Html\' given.');
-		Injection_create_Injection::create('Nette\Utils\Html', new TestEntity, NULL);
+		$this->setExpectedException('Orm\InvalidArgumentException', 'TestEntity injection loaded via Orm\Injection::create() must be subclass of Orm\Injection; \'Directory\' given.');
+		Injection_create_Injection::create('Directory', new TestEntity, NULL);
 	}
 
 	public function testHasConstructor()

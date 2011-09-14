@@ -71,8 +71,8 @@ class Mapper_getCollectionClass_Test extends TestCase
 
 	public function testNotCollection()
 	{
-		$this->m->cc = 'Nette\Utils\Html';
-		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'Nette\\Utils\\Html' must implement Orm\\IEntityCollection");
+		$this->m->cc = 'Directory';
+		$this->setExpectedException('Orm\BadReturnException', "Mapper_getCollectionClass_Mapper::createCollectionClass() must return Orm\\IEntityCollection class name; 'Directory' must implement Orm\\IEntityCollection");
 		$this->m->mockGetCollectionClass();
 	}
 

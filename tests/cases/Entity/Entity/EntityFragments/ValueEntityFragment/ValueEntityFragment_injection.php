@@ -7,7 +7,6 @@ use Orm\ManyToMany;
 use Orm\ArrayManyToManyMapper;
 use Orm\IRepository;
 use Orm\IEntity;
-use Nette\Utils\Html;
 
 /**
  * @property ValueEntityFragment_injectionEntity_ManyToMany $many {m:m ValueEntityFragment_injection}
@@ -87,6 +86,6 @@ class ValueEntityFragment_injectionBadEntity extends Entity
 {
 	public static function createInjection()
 	{
-		return new Nette\Utils\Html;
+		return new Directory;
 	}
 }

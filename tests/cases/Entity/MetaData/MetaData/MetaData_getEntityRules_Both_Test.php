@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\MetaData;
 use Orm\RepositoryContainer;
 

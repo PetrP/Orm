@@ -27,8 +27,8 @@ class MetaData_construct_Test extends TestCase
 
 	public function testNotEntity()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\MetaData::\$entityClass must be instance of Orm\\IEntity; 'Nette\\Utils\\Html' given.");
-		new MetaData('Nette\Utils\Html');
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\MetaData::\$entityClass must be instance of Orm\\IEntity; 'Directory' given.");
+		new MetaData('Directory');
 	}
 
 	public function testReflection()

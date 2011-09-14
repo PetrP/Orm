@@ -1,6 +1,5 @@
 <?php
 
-use Nette\Utils\Html;
 use Orm\ValidationHelper;
 
 /**
@@ -169,7 +168,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(new ArrayObject(array('xx' => 'aa')), true);
 		$this->t(serialize((object) array('xx' => 'aa')), false); // todo
 
-		$this->t(Html::el(), true);
+		$this->t(new Directory, true);
 	}
 
 	public function testDateTime()
@@ -270,7 +269,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 
 	public function testInstanceof()
 	{
-		$this->type = 'nette\utils\html';
+		$this->type = 'directory';
 		$this->t(NULL, false);
 		$this->t(false, false);
 		$this->t(true, false);
@@ -288,7 +287,7 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t((object) array(), false);
 		$this->t(new ArrayObject, false);
 
-		$this->t(new Html, true);
+		$this->t(new Directory, true);
 	}
 
 	public function testScalar()
