@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Callback;
 use Closure;
 
 /** DI Container */
@@ -68,9 +67,9 @@ class ServiceContainer extends Object implements IServiceContainer
 				$s->service = new $s->factory;
 				unset($s->factory);
 			}
-			else if ($s->factory instanceof Callback OR $s->factory instanceof Closure OR is_string($s->factory) OR is_array($s->factory))
+			else if (Callback::is($s->factory) OR $s->factory instanceof Closure OR is_string($s->factory) OR is_array($s->factory))
 			{
-				$tmp = callback($s->factory)->invoke($this);
+				$tmp = Callback::create($s->factory)->invoke($this);
 				if (!is_object($tmp))
 				{
 					$tmp = gettype($tmp);

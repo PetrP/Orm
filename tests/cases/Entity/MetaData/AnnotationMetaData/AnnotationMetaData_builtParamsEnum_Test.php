@@ -68,7 +68,7 @@ class AnnotationMetaData_builtParamsEnum_Test extends TestCase
 
 	public function testInvalidCallback1()
 	{
-		$this->setExpectedException('Nette\InvalidStateException', "Callback 'AnnotationMetaData_builtParamsEnum_TestX::xyz' is not callable.");
+		$this->setExpectedException('Orm\NotCallableException', "Callback 'AnnotationMetaData_builtParamsEnum_TestX::xyz' is not callable.");
 		$this->p->builtParamsEnum('AnnotationMetaData_builtParamsEnum_TestX::xyz()');
 	}
 

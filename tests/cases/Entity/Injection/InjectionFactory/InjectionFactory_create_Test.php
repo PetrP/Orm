@@ -1,6 +1,7 @@
 <?php
 
 use Orm\InjectionFactory;
+use Orm\Callback;
 
 /**
  * @covers Orm\InjectionFactory::create
@@ -12,8 +13,8 @@ class InjectionFactory_create_Test extends TestCase
 	public function test()
 	{
 		$closure = function () {};
-		$callback = InjectionFactory::create(callback($closure), 'class');
-		$this->assertInstanceOf('Nette\Callback', $callback);
+		$callback = InjectionFactory::create(Callback::create($closure), 'class');
+		$this->assertInstanceOf('Orm\Callback', $callback);
 		$nativeCb = $callback->getNative();
 		$this->assertInstanceOf('Orm\InjectionFactory', $nativeCb[0]);
 		$this->assertSame('call', $nativeCb[1]);

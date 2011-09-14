@@ -277,7 +277,7 @@ class AnnotationMetaData extends Object
 	{
 		if (preg_match('#^([a-z0-9_\\\\]+::[a-z0-9_]+)\(\)$#si', trim($string), $tmp))
 		{
-			$enum = callback($this->parseSelf($tmp[1]))->invoke();
+			$enum = Callback::create($this->parseSelf($tmp[1]))->invoke();
 			if (!is_array($enum)) throw new AnnotationMetaDataException("'{$this->class}' '{enum {$string}}': callback must return array, " . (is_object($enum) ? get_class($enum) : gettype($enum)) . ' given');
 			$original = $enum = array_keys($enum);
 		}

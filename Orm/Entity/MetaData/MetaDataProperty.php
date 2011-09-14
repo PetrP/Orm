@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Callback;
 use Closure;
 use ReflectionClass;
 
@@ -356,15 +355,15 @@ class MetaDataProperty extends Object
 
 		if ($factory instanceof IEntityInjectionLoader)
 		{
-			$factory = callback($factory, 'create');
+			$factory = Callback::create($factory, 'create');
 		}
-		else if ($factory instanceof Callback OR $factory instanceof Closure OR (is_string($factory) AND (strpos($factory, '::') OR strncmp($factory, "\0lambda_", 8) === 0)))
+		else if (Callback::is($factory) OR $factory instanceof Closure OR (is_string($factory) AND (strpos($factory, '::') OR strncmp($factory, "\0lambda_", 8) === 0)))
 		{
-			$factory = callback($factory);
+			$factory = Callback::create($factory);
 		}
 		else if (!$factory AND $reflection->implementsInterface('Orm\IEntityInjectionStaticLoader'))
 		{
-			$factory = callback($class, 'create');
+			$factory = Callback::create($class, 'create');
 		}
 		else
 		{

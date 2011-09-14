@@ -97,6 +97,7 @@ class PhpParser extends Tokenizer
 			'MemberAccessException',
 			'ObjectMixin',
 			'Object',
+			'Callback',
 		);
 		static $tmp1;
 		static $tmp2;

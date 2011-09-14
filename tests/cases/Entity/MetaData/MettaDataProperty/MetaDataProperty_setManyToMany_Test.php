@@ -31,7 +31,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$this->assertSame(MetaData::ManyToMany, $this->get($p));
 
 		$i = $this->get($p, 'injection');
-		$this->assertInstanceOf('Nette\Callback', $i);
+		$this->assertInstanceOf('Orm\Callback', $i);
 
 		$ii = $i->getNative();
 		$this->assertInstanceOf('Orm\InjectionFactory', $ii[0]);

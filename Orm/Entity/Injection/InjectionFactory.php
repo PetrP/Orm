@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Callback;
-
 class InjectionFactory
 {
 	private $className;
@@ -21,7 +19,7 @@ class InjectionFactory
 		$factory = new self;
 		$factory->callback = $callback->getNative();
 		$factory->className = $className;
-		return callback($factory, 'call');
+		return Callback::create($factory, 'call');
 	}
 
 	public function call(IEntity $entity, $value)

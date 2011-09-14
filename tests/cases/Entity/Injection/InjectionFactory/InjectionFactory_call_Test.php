@@ -2,6 +2,7 @@
 
 use Orm\InjectionFactory;
 use Orm\IEntity;
+use Orm\Callback;
 
 /**
  * @covers Orm\InjectionFactory::call
@@ -12,7 +13,7 @@ class InjectionFactory_call_Test extends TestCase
 	public function test()
 	{
 		$use = (object) array();
-		$callback = InjectionFactory::create(callback(function ($class, IEntity $entity, $value = NULL) use ($use) {
+		$callback = InjectionFactory::create(Callback::create(function ($class, IEntity $entity, $value = NULL) use ($use) {
 			$use->data = array($class, $entity, $value);
 			return new Injection_create_Injection;
 		}), 'class');
@@ -37,7 +38,7 @@ class InjectionFactory_call_Test extends TestCase
 
 	public function testBad1()
 	{
-		$callback = InjectionFactory::create(callback(function ($class, IEntity $entity, $value = NULL) {
+		$callback = InjectionFactory::create(Callback::create(function ($class, IEntity $entity, $value = NULL) {
 			return array($class, $entity, $value);
 		}), 'class');
 		$this->setExpectedException('Orm\BadReturnException', "class factory must return Orm\\IEntityInjection, 'array' given.");
@@ -50,7 +51,7 @@ class InjectionFactory_call_Test extends TestCase
 
 	public function testBad2()
 	{
-		$callback = InjectionFactory::create(callback($this, 'cb'), 'class');
+		$callback = InjectionFactory::create(Callback::create($this, 'cb'), 'class');
 		$this->setExpectedException('Orm\BadReturnException', "InjectionFactory_call_Test::cb() must return Orm\\IEntityInjection, 'NULL' given.");
 		$callback->invoke(new TestEntity, NULL);
 	}

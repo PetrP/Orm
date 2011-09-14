@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Callback;
 use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 use stdClass;
@@ -41,7 +40,7 @@ class AnnotationClassParser extends Object
 		{
 			throw new AnnotationClassParserException("'$interface' is not valid interface");
 		}
-		if ($defaultClassFallback !== NULL AND !is_callable($defaultClassFallback) AND !($defaultClassFallback instanceof Callback))
+		if ($defaultClassFallback !== NULL AND !is_callable($defaultClassFallback) AND !Callback::is($defaultClassFallback))
 		{
 			$tmp = is_string($defaultClassFallback) ? $defaultClassFallback : (is_object($defaultClassFallback) ? get_class($defaultClassFallback) : gettype($defaultClassFallback));
 			throw new AnnotationClassParserException("'$tmp' is not valid callback");

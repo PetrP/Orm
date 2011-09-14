@@ -145,7 +145,7 @@ class DibiPersistenceHelper extends Object
 			}
 			if ($do !== true)
 			{
-				$value = callback($do)->invoke($value, $entity);
+				$value = Callback::create($do)->invoke($value, $entity);
 			}
 
 			$result[$key] = $this->scalarizeValue($value, $key, $entity);

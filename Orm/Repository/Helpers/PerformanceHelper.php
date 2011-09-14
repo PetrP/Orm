@@ -46,7 +46,7 @@ class PerformanceHelper extends Object
 		$this->repositoryClass = get_class($repository);
 		if (self::$toLoad === NULL)
 		{
-			$key = static::$keyCallback ? (string) callback(static::$keyCallback)->invoke() : NULL;
+			$key = static::$keyCallback ? (string) Callback::create(static::$keyCallback)->invoke() : NULL;
 			$key = $key ? $key : '*';
 			if (strlen($key) > 50)
 			{

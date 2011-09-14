@@ -54,7 +54,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testParamsBad()
 	{
 		$this->h->params['miXed2'] = 'foo';
-		$this->setExpectedException('Nette\InvalidStateException', "Callback 'foo' is not callable.");
+		$this->setExpectedException('Orm\NotCallableException', "Callback 'foo' is not callable.");
 		$this->h->call('toArray', array($this->e, NULL));
 	}
 
