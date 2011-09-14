@@ -87,29 +87,50 @@ class PhpParser extends Tokenizer
 	 * @param string
 	 * @return string
 	 */
-	public static function replaceGlobalScopeRenames($s)
+	public static function replaceGlobalScopeRenames($data)
 	{
-		static $classes;
-		if ($classes === NULL)
+		static $classes = array(
+			'DeprecatedException',
+			'InvalidArgumentException',
+			'NotImplementedException',
+			'NotSupportedException',
+		);
+		static $tmp1;
+		static $tmp2;
+		if ($tmp1 === NULL)
 		{
-			$classes = array();
-			foreach (array(
-				'DeprecatedException',
-				'InvalidArgumentException',
-				'NotImplementedException',
-				'NotSupportedException',
-			) as $class)
+			$tmp1 = $tmp2 = array();
+			foreach ($classes as $class)
 			{
-				$classes[" $class "] = " Orm$class ";
-				$classes[" $class::"] = " Orm$class::";
-				$classes[" $class;"] = " Orm$class;";
-				$classes[" $class("] = " Orm$class(";
-				$classes["($class "] = "(Orm$class ";
-				$classes[", $class "] = ", Orm$class ";
-				$classes["Orm\\$class"] = "Orm\\Orm$class";
+				$tmp2[$class] = $tmp = "Orm$class";
+				$tmp1[" $class "] = " $tmp ";
+				$tmp1[" $class\n"] = " $tmp\n";
+				$tmp1[" $class::"] = " $tmp::";
+				$tmp1["Orm\\$class"] = "Orm\\$tmp";
 			}
 		}
-		return strtr($s, $classes);
+
+		$parser = new PhpParser($data);
+		$s = '';
+		$last = false;
+		while (($token = $parser->fetch()) !== FALSE) {
+
+			if ($parser->isCurrent(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE))
+			{
+				$token = strtr($token, $tmp1);
+			}
+			if (!$parser->isCurrent(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE))
+			{
+				if ($parser->isCurrent(T_STRING) AND isset($tmp2[$token]) AND ($last OR $parser->isNext(T_DOUBLE_COLON)))
+				{
+					$token = $tmp2[$token];
+				}
+				$last = $parser->isCurrent(T_NEW, T_CLASS, T_EXTENDS, T_INSTANCEOF, '(', ',');
+			}
+			$s .= $token;
+		}
+
+		return $s;
 	}
 
 	/**
