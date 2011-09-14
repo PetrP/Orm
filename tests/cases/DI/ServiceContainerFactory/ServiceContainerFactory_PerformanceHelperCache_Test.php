@@ -4,7 +4,7 @@ use Orm\ServiceContainerFactory;
 
 /**
  * @covers Orm\ServiceContainerFactory::__construct
- * @covers Orm\ServiceContainerFactory::createPerformanceHelperCache
+ * @covers Orm\ServiceContainerFactory::getPerformanceHelperCacheFactory
  */
 class ServiceContainerFactory_PerformanceHelperCache_Test extends TestCase
 {
@@ -19,4 +19,21 @@ class ServiceContainerFactory_PerformanceHelperCache_Test extends TestCase
 		$this->assertSame('Orm\PerformanceHelper', $cache->getNamespace());
 	}
 
+	public function testNoEnvironment()
+	{
+		$f = new ServiceContainerFactory_PerformanceHelperCache_ServiceContainerFactory;
+		$f->phc = false;
+		$f->__construct();
+		$c = $f->getContainer();
+		$this->assertFalse($c->hasService('performanceHelperCache'));
+	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\ServiceContainerFactory', 'getPerformanceHelperCacheFactory');
+		$this->assertTrue($r->isProtected(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
 }

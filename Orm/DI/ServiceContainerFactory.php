@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Environment;
 use Dibi;
 
 /** DI Container Factory */
@@ -22,9 +21,9 @@ class ServiceContainerFactory extends Object implements IServiceContainerFactory
 		$container->addService('mapperFactory', array($this, 'createMapperFactory'));
 		$container->addService('repositoryHelper', 'Orm\RepositoryHelper');
 		$container->addService('dibi', array($this, 'createDibi'));
-		if (class_exists('Nette\Environment'))
+		if ($performanceHelperCache = $this->getPerformanceHelperCacheFactory())
 		{
-			$container->addService('performanceHelperCache', array($this, 'createPerformanceHelperCache'));
+			$container->addService('performanceHelperCache', $performanceHelperCache);
 		}
 		$this->container = $container;
 	}
@@ -50,10 +49,16 @@ class ServiceContainerFactory extends Object implements IServiceContainerFactory
 		return dibi::getConnection();
 	}
 
-	/** @return ArrayAccess */
-	public function createPerformanceHelperCache()
+	/** @return Closure */
+	protected function getPerformanceHelperCacheFactory()
 	{
-		return Environment::getCache('Orm\PerformanceHelper');
-	}
+		foreach (array('Nette\Environment', 'NEnvironment', 'Environment') as $class)
+		{
+			if (class_exists($class))
+			{
+				return function () use ($class) { return call_user_func(array($class, 'getCache'), 'Orm\PerformanceHelper'); };
+			}	// @codeCoverageIgnoreStart
+		}
+	}			// @codeCoverageIgnoreEnd
 
 }
