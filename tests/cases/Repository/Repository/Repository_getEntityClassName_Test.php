@@ -40,6 +40,19 @@ class Repository_getEntityClassName_Test extends TestCase
 		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName(array()));
 	}
 
+	public function testInflector()
+	{
+		$this->r->entityClassName = NULL;
+		$h = new Repository_getEntityClassNames_RepositoryHelper;
+		$this->r->getModel()->getContext()
+			->removeService('repositoryHelper')
+			->addService('repositoryHelper', $h)
+		;
+		$h->name = 'cities';
+		$this->assertSame('city', $this->r->getEntityClassName());
+		$this->assertSame('city', $this->r->getEntityClassName(array()));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\Repository', 'getEntityClassName');

@@ -403,7 +403,7 @@ abstract class Repository extends Object implements IRepository
 		if ($this->entityClassName === NULL)
 		{
 			$helper = $this->getModel()->getContext()->getService('repositoryHelper', 'Orm\RepositoryHelper');
-			$this->entityClassName = rtrim($helper->normalizeRepository($this), 's');
+			$this->entityClassName = Inflector::singularize($helper->normalizeRepository($this));
 		}
 		return $this->entityClassName;
 	}
