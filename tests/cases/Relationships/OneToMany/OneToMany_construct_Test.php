@@ -22,7 +22,7 @@ class OneToMany_construct_Test extends OneToMany_Test
 	public function testBadParam()
 	{
 		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'unexists', 'id');
-		$this->setExpectedException('Nette\InvalidStateException', 'todo');
+		$this->setExpectedException('Exception', 'todo');
 		$this->markTestSkipped('Nema jednotnou chybu pro ruzne mappery, dibi haze DibiException error, array MemberAccessException. Je potreba sjednotit');
 		$this->o2m->_getCollection();
 	}

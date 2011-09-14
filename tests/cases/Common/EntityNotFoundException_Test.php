@@ -5,7 +5,7 @@ use Orm\EntityNotFoundException;
 /**
  * @covers Orm\EntityNotFoundException
  */
-class IEntityNotFoundException_Test extends TestCase
+class EntityNotFoundException_Test extends TestCase
 {
 
 	public function test()

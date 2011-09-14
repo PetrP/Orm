@@ -59,7 +59,7 @@ class AnnotationClassParser extends Object
 
 	/**
 	 * @param string
-	 * @param Object
+	 * @param object
 	 * @return string class name
 	 * @throws AnnotationClassParserException
 	 * @throws AnnotationClassParserNoClassFoundException

@@ -52,7 +52,7 @@ class ServiceContainer extends Object implements IServiceContainer
 	/**
 	 * @param string
 	 * @param string|NULL
-	 * @return Object
+	 * @return object
 	 * @throws ServiceNotFoundException
 	 * @throws InvalidServiceFactoryException
 	 * @throws ServiceNotInstanceOfException if $instanceof not match with service
@@ -100,7 +100,7 @@ class ServiceContainer extends Object implements IServiceContainer
 
 	/**
 	 * @param string
-	 * @return Object
+	 * @return object
 	 * @throws ServiceNotFoundException
 	 * @throws FrozenContainerException
 	 */

@@ -5,10 +5,8 @@ require_once __DIR__ . '/libs/dump.php';
 require_once __DIR__ . '/libs/dibi/dibi.php';
 require_once __DIR__ . '/../Orm/Orm.php';
 
-use Nette\Diagnostics\Debugger as Debug;
 use Nette\Environment;
 use Nette\Loaders\RobotLoader;
-use Nette\InvalidStateException;
 use HttpPHPUnit\NetteDebug;
 
 NetteDebug::get()->enable(false);
@@ -20,7 +18,7 @@ Environment::setVariable('tempDir', __DIR__ . '/tmp');
 
 try {
 	$storage = Environment::getService(str_replace('-', '\\', 'Nette-Caching-ICacheStorage'));
-} catch (InvalidStateException $e) {
+} catch (Exception $e) {
 	unset($e);
 	$storage = Environment::getContext()->cacheStorage;
 }
@@ -32,7 +30,6 @@ $r->addDirectory(__DIR__ . '/cases');
 $r->register();
 unset($r, $storage);
 
-require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockExpectedMySqlDriver.php';
 

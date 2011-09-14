@@ -28,7 +28,7 @@ interface IServiceContainer
 	/**
 	 * @param string
 	 * @param string|NULL
-	 * @return Object
+	 * @return object
 	 * @throws ServiceNotFoundException
 	 * @throws InvalidServiceFactoryException
 	 * @throws ServiceNotInstanceOfException if $instanceof not match with service
@@ -37,7 +37,7 @@ interface IServiceContainer
 
 	/**
 	 * @param string
-	 * @return Object
+	 * @return object
 	 * @throws ServiceNotFoundException
 	 */
 	public function removeService($name);
