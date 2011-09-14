@@ -30,6 +30,12 @@ class NoConventional_getManyToManyParam_Test extends TestCase
 		$this->assertSame('', $this->c->getManyToManyParam(''));
 	}
 
+	public function testInflector()
+	{
+		$this->assertSame('city', $this->c->getManyToManyParam('cities'));
+		$this->assertSame('fix', $this->c->getManyToManyParam('fixes'));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\NoConventional', 'getManyToManyParam');

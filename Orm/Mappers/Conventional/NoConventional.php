@@ -86,11 +86,7 @@ class NoConventional extends Object implements IDatabaseConventional
 	 */
 	public function getManyToManyParam($param)
 	{
-		if ($param AND substr_compare($param, 's', -1) === 0)
-		{
-			$param = substr_replace($param, '', -1);
-		}
-		return $param;
+		return Inflector::singularize($param);
 	}
 
 	/**

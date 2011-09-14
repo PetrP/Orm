@@ -34,6 +34,12 @@ class SqlConventional_getManyToManyParam_Test extends TestCase
 		$this->assertSame('_id', $this->c->getManyToManyParam(''));
 	}
 
+	public function testInflector()
+	{
+		$this->assertSame('city_id', $this->c->getManyToManyParam('cities'));
+		$this->assertSame('fix_id', $this->c->getManyToManyParam('fixes'));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\SqlConventional', 'getManyToManyParam');
