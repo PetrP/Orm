@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Utils\SafeStream;
-
 abstract class FileMapper extends ArrayMapper
 {
 
@@ -22,11 +20,10 @@ abstract class FileMapper extends ArrayMapper
 		if (!self::$isStreamRegistered)
 		{
 			$wrapers = stream_get_wrappers();
-			if (!in_array(SafeStream::PROTOCOL, $wrapers, true))
+			if (!in_array('safe', $wrapers, true))
 			{
-				// @codeCoverageIgnoreStart
-				SafeStream::register();
-			}	// @codeCoverageIgnoreEnd
+				throw new NotSupportedException("Stream 'safe' is not registered; use Nette\\Utils\\SafeStream::register().");
+			}
 			self::$isStreamRegistered = true;
 		}
 	}

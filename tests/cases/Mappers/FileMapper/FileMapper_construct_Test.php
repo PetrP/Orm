@@ -8,15 +8,49 @@ use Nette\Utils\SafeStream;
  */
 class FileMapper_construct_Test extends TestCase
 {
+	protected function tearDown()
+	{
+		$wrapers = stream_get_wrappers();
+		if (in_array(SafeStream::PROTOCOL, $wrapers, true))
+		{
+			stream_wrapper_unregister(SafeStream::PROTOCOL);
+		}
+		SafeStream::register();
+	}
+
 	public function test()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
+		stream_wrapper_unregister(SafeStream::PROTOCOL);
+		SafeStream::register();
+
+		$this->assertContains(SafeStream::PROTOCOL, stream_get_wrappers());
 		$this->assertAttributeSame(false, 'isStreamRegistered', 'Orm\FileMapper');
 		new FileMapper_FileMapper($r);
 		$this->assertAttributeSame(true, 'isStreamRegistered', 'Orm\FileMapper');
+		$this->assertContains(SafeStream::PROTOCOL, stream_get_wrappers());
 		new FileMapper_FileMapper($r);
 		$this->assertAttributeSame(true, 'isStreamRegistered', 'Orm\FileMapper');
 		$this->assertContains(SafeStream::PROTOCOL, stream_get_wrappers());
+	}
+
+	public function testConstant()
+	{
+		$this->assertSame('safe', SafeStream::PROTOCOL);
+	}
+
+	public function testDisabled()
+	{
+		$r = new TestsRepository(new RepositoryContainer);
+		stream_wrapper_unregister(SafeStream::PROTOCOL);
+		$this->assertNotContains(SafeStream::PROTOCOL, stream_get_wrappers());
+		if ($this->readAttribute('Orm\FileMapper', 'isStreamRegistered')) // php52 projde pri samostanem testu
+		{
+			setAccessible(new ReflectionProperty('Orm\FileMapper', 'isStreamRegistered'))->setValue(false);
+		}
+		$this->assertAttributeSame(false, 'isStreamRegistered', 'Orm\FileMapper');
+		$this->setExpectedException('Orm\NotSupportedException', "Stream 'safe' is not registered; use Nette\\Utils\\SafeStream::register().");
+		new FileMapper_FileMapper($r);
 	}
 
 	public function testReflection()
