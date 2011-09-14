@@ -3,7 +3,7 @@
 require_once __DIR__ . '/libs/Nette/loader.php';
 require_once __DIR__ . '/libs/dump.php';
 require_once __DIR__ . '/libs/dibi/dibi.php';
-require_once __DIR__ . '/../Orm/Orm.php';
+if (!class_exists('Orm\Orm')) require_once __DIR__ . '/../Orm/Orm.php';
 
 use Nette\Environment;
 use Nette\Loaders\RobotLoader;
