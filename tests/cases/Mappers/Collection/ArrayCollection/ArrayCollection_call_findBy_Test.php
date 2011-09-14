@@ -22,7 +22,7 @@ class ArrayCollection_call_findBy_Test extends ArrayCollection_Base_Test
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Orm\ArrayCollection::findXyz()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method Orm\ArrayCollection::findXyz()');
 		$this->c->findXyz('abc');
 	}
 

@@ -30,7 +30,7 @@ class DibiCollection_DibiCollection extends DibiCollection
 {
 	public static function set(DibiCollection $c, $property, $value)
 	{
-		$p = $c->getReflection()->getProperty($property);
+		$p = new ReflectionProperty($c, $property);
 		setAccessible($p);
 		$p->setValue($c, $value);
 	}

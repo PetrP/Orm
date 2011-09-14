@@ -45,7 +45,7 @@ class BaseEntityFragment_ArrayAccess_Test extends TestCase
 
 	public function testOffsetGet_unexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property BaseEntityFragment_ArrayAccess_Entity::$unexists.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property BaseEntityFragment_ArrayAccess_Entity::$unexists.');
 		$this->e['unexists'];
 	}
 
@@ -63,7 +63,7 @@ class BaseEntityFragment_ArrayAccess_Test extends TestCase
 
 	public function testOffsetSet_unexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property BaseEntityFragment_ArrayAccess_Entity::$unexists.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot write to an undeclared property BaseEntityFragment_ArrayAccess_Entity::$unexists.');
 		$this->e['unexists'] = 'xyz';
 	}
 

@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 /**
  * Udalosti
  * @see Entity

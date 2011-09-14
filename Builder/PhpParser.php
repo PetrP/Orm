@@ -94,6 +94,9 @@ class PhpParser extends Tokenizer
 			'InvalidArgumentException',
 			'NotImplementedException',
 			'NotSupportedException',
+			'MemberAccessException',
+			'ObjectMixin',
+			'Object',
 		);
 		static $tmp1;
 		static $tmp2;

@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 class RepositoryHelper extends Object
 {
 

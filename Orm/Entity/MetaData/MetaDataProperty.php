@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use Nette\Callback;
 use Closure;
 use ReflectionClass;

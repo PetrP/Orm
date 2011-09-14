@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use DibiConnection;
 
 abstract class BaseDibiCollection extends Object implements IEntityCollection

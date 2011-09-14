@@ -33,7 +33,7 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 	{
 		$this->h->primaryKey = 'foo_bar';
 		$this->h->params['foo_bar'] = function () { throw new Exception(); };
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
 		$this->h->call('toArray', array($this->e, NULL));
 	}
 
@@ -63,7 +63,7 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 	{
 		$this->h->primaryKey = 'foo_bar';
 		$this->h->whichParams = array('foo_bar');
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
 		$this->h->call('toArray', array($this->e, 35));
 	}
 
@@ -94,7 +94,7 @@ class DibiPersistenceHelper_toArray_primaryKey_Test extends DibiPersistenceHelpe
 	{
 		$this->h->primaryKey = 'foo_bar';
 		$this->h->whichParamsNot = array('foo_bar');
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo_bar.');
 		$this->h->call('toArray', array($this->e, 35));
 	}
 

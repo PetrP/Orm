@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 /**
  * Entity prevadi na array, je monze nastavit co udelat z asociacemi
  * @see Entity::toArray()

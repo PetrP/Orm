@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use stdClass;
 
 class DibiJoinHelper extends Object

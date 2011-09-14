@@ -15,7 +15,7 @@ class ValueEntityFragment_set_Test extends TestCase
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot write to an undeclared property ValueEntityFragment_getset_Entity::$unexists.');
 		$this->e->unexists = 3;
 	}
 

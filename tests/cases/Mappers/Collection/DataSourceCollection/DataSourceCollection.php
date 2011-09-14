@@ -34,7 +34,7 @@ class DataSourceCollection_DataSourceCollection extends DataSourceCollection
 {
 	public static function set(DataSourceCollection $c, $property, $value)
 	{
-		$p = $c->getReflection()->getProperty($property);
+		$p = new ReflectionProperty($c, $property);
 		setAccessible($p);
 		$p->setValue($c, $value);
 	}

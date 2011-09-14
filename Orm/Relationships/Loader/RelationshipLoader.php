@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use Exception;
 
 class RelationshipLoader extends Object implements IEntityInjectionLoader

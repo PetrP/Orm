@@ -31,7 +31,7 @@ class DataSourceCollection_call_findBy_Test extends DataSourceCollection_Base_Te
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Orm\DataSourceCollection::findXyz()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method Orm\DataSourceCollection::findXyz()');
 		$this->c->findXyz('abc');
 	}
 

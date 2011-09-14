@@ -45,7 +45,7 @@ class FetchAssoc_old_Test extends FetchAssoc_Base_Test
 
 	public function testUnknown()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', "Cannot read an undeclared property ArrayCollection_Entity::\$unknown.");
+		$this->setExpectedException('Orm\MemberAccessException', "Cannot read an undeclared property ArrayCollection_Entity::\$unknown.");
 		$r = FetchAssoc::apply($this->e, 'unknown,unknown');
 	}
 

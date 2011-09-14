@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 /**
  * Rozdily nazvu klicu v entite a v ulozisti.
  * V entite camelCase

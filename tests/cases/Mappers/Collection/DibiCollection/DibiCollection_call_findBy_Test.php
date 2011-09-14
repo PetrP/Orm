@@ -31,7 +31,7 @@ class DibiCollection_call_findBy_Test extends DibiCollection_Base_Test
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method Orm\DibiCollection::findXyz()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method Orm\DibiCollection::findXyz()');
 		$this->c->findXyz('abc');
 	}
 

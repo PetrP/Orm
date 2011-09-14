@@ -41,6 +41,8 @@ if (!defined('PHP_VERSION_ID'))
 }
 php52§*/
 
+require_once __DIR__ . '/Common/Object.php';
+require_once __DIR__ . '/Common/ObjectMixin.php';
 require_once __DIR__ . '/Common/Inflector.php';
 require_once __DIR__ . '/Common/Exceptions/ExceptionHelper.php';
 require_once __DIR__ . '/Common/Exceptions/BadReturnException.php';
@@ -51,6 +53,7 @@ require_once __DIR__ . '/Common/Exceptions/InvalidEntityException.php';
 require_once __DIR__ . '/Common/Exceptions/NotImplementedException.php';
 require_once __DIR__ . '/Common/Exceptions/NotSupportedException.php';
 require_once __DIR__ . '/Common/Exceptions/RequiredArgumentException.php';
+require_once __DIR__ . '/Common/Exceptions/MemberAccessException.php';
 
 require_once __DIR__ . '/RepositoryContainer/IRepositoryContainer.php';
 require_once __DIR__ . '/RepositoryContainer/RepositoryContainer.php';

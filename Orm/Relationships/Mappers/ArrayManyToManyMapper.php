@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {
 	/** @var array id => id */

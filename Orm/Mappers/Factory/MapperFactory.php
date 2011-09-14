@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
-
 class MapperFactory extends Object implements IMapperFactory
 {
 	/** @var AnnotationClassParser */

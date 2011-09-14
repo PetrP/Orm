@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 

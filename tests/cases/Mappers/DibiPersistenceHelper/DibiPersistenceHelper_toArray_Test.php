@@ -71,7 +71,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testParamsFalseUnexists()
 	{
 		$this->h->params['foo'] = false;
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
 		$this->h->call('toArray', array($this->e, NULL));
 	}
 
@@ -111,7 +111,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testParamsUnexists()
 	{
 		$this->h->params['foo'] = function () { throw new Exception(); };
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
 		$this->h->call('toArray', array($this->e, NULL));
 	}
 

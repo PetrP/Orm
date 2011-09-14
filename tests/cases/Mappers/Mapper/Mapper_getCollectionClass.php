@@ -1,6 +1,6 @@
 <?php
 
-use Nette\Object;
+use Orm\Object;
 use Orm\IEntityCollection;
 use Orm\DibiCollection;
 use Orm\DataSourceCollection;

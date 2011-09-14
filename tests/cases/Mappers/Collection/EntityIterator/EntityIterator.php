@@ -2,7 +2,7 @@
 
 use Orm\EntityIterator;
 use Orm\RepositoryContainer;
-use Nette\Object;
+use Orm\Object;
 
 abstract class EntityIterator_Base_Test extends TestCase
 {

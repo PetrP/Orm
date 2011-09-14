@@ -24,26 +24,26 @@ class ValueEntityFragment_call_is_Test extends TestCase
 	public function testMoreType()
 	{
 		$this->assertTrue($this->e->getBbb());
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isBbb()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isBbb()');
 		$this->e->isBbb();
 	}
 
 	public function testNotBool()
 	{
 		$this->assertTrue($this->e->getCcc());
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isCcc()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isCcc()');
 		$this->e->isCcc();
 	}
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isDdd()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::isDdd()');
 		$this->e->isDdd();
 	}
 
 	public function testUnexists2()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::getDdd()');
+		$this->setExpectedException('Orm\MemberAccessException', 'Call to undefined method ValueEntityFragment_call_is_Entity::getDdd()');
 		$this->e->getDdd();
 	}
 

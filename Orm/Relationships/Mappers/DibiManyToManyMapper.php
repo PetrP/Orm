@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use DibiConnection;
 
 class DibiManyToManyMapper extends Object implements IManyToManyMapper

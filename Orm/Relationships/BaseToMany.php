@@ -7,7 +7,6 @@
 
 namespace Orm;
 
-use Nette\Object;
 use Traversable;
 
 abstract class BaseToMany extends Object

@@ -51,7 +51,7 @@ class ArrayCollection_findBy_Test extends ArrayCollection_Base_Test
 
 	public function testUnexists()
 	{
-		$this->setExpectedException('Nette\MemberAccessException', 'Cannot read an undeclared property ArrayCollection_Entity::$unexists.');
+		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property ArrayCollection_Entity::$unexists.');
 		$this->c->findBy(array('unexists' => 'a'));
 	}
 

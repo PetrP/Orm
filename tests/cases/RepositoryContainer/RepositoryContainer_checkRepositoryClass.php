@@ -1,6 +1,6 @@
 <?php
 
-use Nette\Object;
+use Orm\Object;
 use Orm\Repository;
 use Orm\IRepository;
 use Orm\IEntity;
