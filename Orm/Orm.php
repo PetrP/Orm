@@ -41,6 +41,7 @@ if (!defined('PHP_VERSION_ID'))
 }
 php52§*/
 
+require_once __DIR__ . '/Common/Inflector.php';
 require_once __DIR__ . '/Common/Exceptions/ExceptionHelper.php';
 require_once __DIR__ . '/Common/Exceptions/BadReturnException.php';
 require_once __DIR__ . '/Common/Exceptions/DeprecatedException.php';
