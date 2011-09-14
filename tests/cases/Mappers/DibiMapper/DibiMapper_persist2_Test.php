@@ -1,7 +1,7 @@
 <?php
 
 use Orm\RepositoryContainer;
-use Nette\Utils\Html;
+use Orm\Callback;
 
 /**
  * @covers Orm\DibiMapper::persist
@@ -85,8 +85,8 @@ class DibiMapper_persist2_Test extends DibiMapper_Connected_Test
 
 	public function testToString()
 	{
-		$this->e->mixed = Html::el('b', 'foo');
-		$this->t("'<b>foo</b>'");
+		$this->e->mixed = Callback::create($this, 'testToString');
+		$this->t("'DibiMapper_persist2_Test::testToString'");
 	}
 
 	public function testEntity()

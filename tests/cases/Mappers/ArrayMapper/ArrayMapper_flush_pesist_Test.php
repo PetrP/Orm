@@ -1,7 +1,7 @@
 <?php
 
 use Orm\RepositoryContainer;
-use Nette\Utils\Html;
+use Orm\Callback;
 
 /**
  * @covers Orm\ArrayMapper::flush
@@ -78,8 +78,8 @@ class ArrayMapper_flush_pesist_Test extends TestCase
 
 	public function testToString()
 	{
-		$this->e->mixed = Html::el('b', 'foo');
-		$this->t('<b>foo</b>');
+		$this->e->mixed = Callback::create($this, 'testToString');
+		$this->t('ArrayMapper_flush_pesist_Test::testToString');
 	}
 
 	public function testEntity()

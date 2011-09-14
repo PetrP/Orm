@@ -1,7 +1,7 @@
 <?php
 
 use Orm\ArrayManyToManyMapper;
-use Nette\Utils\Html;
+use Orm\Callback;
 
 /**
  * @covers Orm\DibiPersistenceHelper::scalarizeValue
@@ -35,9 +35,9 @@ class DibiPersistenceHelper_scalarizeValue_Test extends DibiPersistenceHelper_Te
 
 	public function testToString()
 	{
-		$h = Html::el('div', 'foo');
+		$h = Callback::create($this, 'testToString');;
 		$r = $this->h->call('scalarizeValue', array($h, 'miXed', $this->e));
-		$this->assertSame('<div>foo</div>', $r);
+		$this->assertSame('DibiPersistenceHelper_scalarizeValue_Test::testToString', $r);
 	}
 
 	public function testBool()
