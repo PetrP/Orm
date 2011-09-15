@@ -123,6 +123,7 @@ abstract class BaseEntityFragment extends ValueEntityFragment
 	}
 
 	/**
+	 * @param string
 	 * @throws NotSupportedException
 	 * @see ArrayAccess
 	 */

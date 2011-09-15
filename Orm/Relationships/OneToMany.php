@@ -48,6 +48,7 @@ class OneToMany extends BaseToMany implements IRelationship
 	 * @param IEntity
 	 * @param IRepository|string repositoryName for lazy load
 	 * @param string m:1 param on child entity
+	 * @param string m:1 param on parent entity
 	 */
 	public function __construct(IEntity $parent, $repository, $param, $parentParam)
 	{
@@ -163,6 +164,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		return $this->get;
 	}
 
+	/** @return void */
 	final public function persist()
 	{
 		$repository = $this->getChildRepository();

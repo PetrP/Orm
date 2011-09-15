@@ -12,16 +12,16 @@ use ReflectionClass;
 /**
  * Ziskava meta data z enotaci.
  *
- * <pre>
+ * <code>
  * /**
  *  * @property int $id
  *  * @property string $param
  *  * @property float|NULL $price
  *  * @property DateTime $date {default now}
  *  * @property Bar $bar {m:1 Bars}
- *  *⁄
+ *  * /
  * class Foo extends Entity
- * <pre>
+ * </code>
  */
 class AnnotationMetaData extends Object
 {
@@ -78,7 +78,10 @@ class AnnotationMetaData extends Object
 		return $metaData;
 	}
 
-	/** @param MetaData */
+	/**
+	 * @param MetaData
+	 * @param AnnotationsParser
+	 */
 	protected function __construct(MetaData $metaData, AnnotationsParser $parser)
 	{
 		$this->parser = $parser;
@@ -226,11 +229,12 @@ class AnnotationMetaData extends Object
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * repositoryName paramName
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
+	 * @param int internal
 	 * @return array
 	 * @see MetaDataProperty::setOneToMany()
 	 */
@@ -241,11 +245,11 @@ class AnnotationMetaData extends Object
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * repositoryName paramName
 	 * repositoryName paramName mappedByThis
 	 * repositoryName paramName map
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @return array
@@ -270,12 +274,12 @@ class AnnotationMetaData extends Object
 	 * Vytvori pole z hodnot rozdelenych carkou, umoznuje zapis konstant.
 	 * Nebo umoznuje zavolat statickou tridu ktera vrati pole hodnot (pouzijou se klice)
 	 *
-	 * <pre>
+	 * <code>
 	 * 1, 2, 3
 	 * bla1, 'bla2', "bla3"
 	 * TRUE, false, NULL, self::CONSTANT, Foo::CONSTANT
 	 * self::tadyZiskejHodnoty()
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @return array
@@ -307,13 +311,13 @@ class AnnotationMetaData extends Object
 	 * Upravi vstupni parametry pro default, kdyz jsou zadavany jako string (napr. v anotaci)
 	 * Umoznuje zapsat konstantu.
 	 *
-	 * <pre>
+	 * <code>
 	 * 568
 	 * bla1
 	 * TRUE
 	 * self::CONSTANT
 	 * Foo::CONSTANT
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @return array
@@ -357,6 +361,7 @@ class AnnotationMetaData extends Object
 
 	/**
 	 * Na hodnutu konstanty, cislo nebo string
+	 * @param string
 	 * @param string
 	 * @return scalar
 	 * @see self::builtParamsEnum()

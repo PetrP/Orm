@@ -18,17 +18,18 @@ class AnnotationClassParser extends Object
 	/** @var array of name => stdClass */
 	private $registered = array();
 
+	/** @param AnnotationsParser */
 	public function __construct(AnnotationsParser $parser = NULL)
 	{
 		$this->parser = $parser === NULL ? new AnnotationsParser : $parser;
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * 	$p->register('mapper', 'Orm\IRepository', function ($repositoryClass) {
 	 * 		return $repositoryClass . 'Mapper';
 	 * 	});
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @param string interface name

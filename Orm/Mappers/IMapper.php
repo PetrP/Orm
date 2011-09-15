@@ -21,6 +21,7 @@ interface IMapper
 	/**
 	 * Vraci kolekci entit dle kriterii.
 	 * @see IEntityCollection::findBy()
+	 * @param array
 	 * @return IEntityCollection
 	 */
 	public function findBy(array $where);
@@ -28,6 +29,7 @@ interface IMapper
 	/**
 	 * Vraci jednu entitu dle kriterii.
 	 * @see IEntityCollection::getBy()
+	 * @param array
 	 * @return IEntity|NULL
 	 */
 	public function getBy(array $where);

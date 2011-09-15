@@ -12,8 +12,10 @@ use Dibi;
 /** DI Container Factory */
 class ServiceContainerFactory extends Object implements IServiceContainerFactory
 {
+	/** @var IServiceContainer */
 	private $container;
 
+	/** @param IServiceContainer|NULL */
 	public function __construct(IServiceContainer $container = NULL)
 	{
 		if (!$container) $container = new ServiceContainer;

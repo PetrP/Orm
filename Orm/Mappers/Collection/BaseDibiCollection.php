@@ -57,7 +57,6 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 
 
 	/**
-	 * @param string
 	 * @param DibiConnection
 	 * @param IRepository
 	 */
@@ -240,7 +239,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 
 	/**
 	 * Vola automaticky findBy* a getBy*
-	 * <pre>
+	 * <code>
 	 * 	$collection->findByAuthor(3);
 	 * 	// stejne jako
 	 * 	$collection->findBy(array('author' => 3));
@@ -248,7 +247,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 * 	$collection->findByAuthorAndCategory(3, 'foo');
 	 * 	// stejne jako
 	 * 	$collection->findBy(array('author' => 3, 'category' => 'foo'));
-	 * </pre>
+	 * </code>
 	 * @see self::findBy();
 	 * @see self::getBy();
 	 * @param string

@@ -129,7 +129,7 @@ class DibiMapper extends Mapper
 	 * @param IRepository Repository na kterou asociace ukazuje
 	 * @param string Parametr na druhe strane kam asociace ukazuje
 	 * @return IManyToManyMapper
-	 * <pre>
+	 * <code>
 	 *
 	 *	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
 	 *	{
@@ -142,7 +142,7 @@ class DibiMapper extends Mapper
 	 *		return $mapper;
 	 *	}
 	 *
-	 * </pre>
+	 * </code>
 	 */
 	public function createManyToManyMapper($param, IRepository $targetRepository, $targetParam)
 	{
@@ -226,9 +226,9 @@ class DibiMapper extends Mapper
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * 	$mapper->dataSource('SELECT foo, bar FROM table WHERE [bar] = %i', 3);
-	 * </pre>
+	 * </code>
 	 * @param string
 	 * @return DataSourceCollection
 	 */

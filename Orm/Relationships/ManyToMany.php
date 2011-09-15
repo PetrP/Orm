@@ -57,7 +57,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 * @param IRepository|string repositoryName for lazy load
 	 * @param string m:1 param on child entity
 	 * @param string m:1 param on parent entity
-	 * @param RelationshipLoader::MAPPED_*
+	 * @param mixed RelationshipLoader::MAPPED_*
 	 * @param mixed
 	 */
 	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mapped, $value = NULL)
@@ -162,7 +162,10 @@ class ManyToMany extends BaseToMany implements IRelationship
 		return $this->get;
 	}
 
-	/** @see IManyToManyMapper */
+	/**
+	 * @see IManyToManyMapper
+	 * @return void
+	 */
 	final public function persist()
 	{
 		$repository = $this->getChildRepository();
@@ -214,7 +217,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		}
 	}
 
-	/** @return RelationshipLoader::MAPPED_* */
+	/** @return mixed RelationshipLoader::MAPPED_* */
 	final public function getWhereIsMapped()
 	{
 		return $this->mapped;

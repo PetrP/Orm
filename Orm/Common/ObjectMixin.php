@@ -20,9 +20,9 @@ final class ObjectMixin
 
 	/**
 	 * Call to undefined method.
-	 * @param  object
-	 * @param  string  method name
-	 * @param  array   arguments
+	 * @param object
+	 * @param string method name
+	 * @param array arguments
 	 * @return mixed
 	 * @throws MemberAccessException
 	 */
@@ -34,9 +34,9 @@ final class ObjectMixin
 
 	/**
 	 * Call to undefined static method.
-	 * @param  object
-	 * @param  string  method name
-	 * @param  array   arguments
+	 * @param object
+	 * @param string method name
+	 * @param array arguments
 	 * @return mixed
 	 * @throws MemberAccessException
 	 */
@@ -47,9 +47,9 @@ final class ObjectMixin
 
 	/**
 	 * Returns property value.
-	 * @param  object
-	 * @param  string  property name
-	 * @return mixed   property value
+	 * @param object
+	 * @param string property name
+	 * @return mixed property value
 	 * @throws MemberAccessException if the property is not defined.
 	 */
 	public static function & get($_this, $name)
@@ -93,9 +93,9 @@ final class ObjectMixin
 
 	/**
 	 * Sets value of a property.
-	 * @param  object
-	 * @param  string  property name
-	 * @param  mixed   property value
+	 * @param object
+	 * @param string property name
+	 * @param mixed property value
 	 * @return void
 	 * @throws MemberAccessException if the property is not defined or is read-only
 	 */
@@ -133,9 +133,9 @@ final class ObjectMixin
 
 	/**
 	 * Throws exception.
-	 * @param  object
-	 * @param  string  property name
-	 * @param  mixed   property value
+	 * @param object
+	 * @param string property name
+	 * @param mixed property value
 	 * @throws MemberAccessException
 	 */
 	public static function remove($_this, $name)
@@ -146,8 +146,8 @@ final class ObjectMixin
 
 	/**
 	 * Is property defined?
-	 * @param  object
-	 * @param  string  property name
+	 * @param object
+	 * @param string property name
 	 * @return bool
 	 */
 	public static function has($_this, $name)

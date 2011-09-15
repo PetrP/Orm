@@ -14,7 +14,7 @@ class AnnotationsParser extends Object
 	/** @var mixed */
 	private $callback;
 
-	/** @var callback|NULL null means autodetect nette  */
+	/** @param callback|NULL null means autodetect nette  */
 	public function __construct($callback = NULL)
 	{
 		if ($callback === NULL)

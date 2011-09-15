@@ -180,12 +180,12 @@ abstract class ArrayMapper extends Mapper
 
 	/**
 	 * Load data from storage
-	 * <pre>
+	 * <code>
 	 * 	return array(
 	 * 		array('id' => 1),
 	 * 		array('id' => 2),
 	 * 	);
-	 * </pre>
+	 * </code>
 	 * @return array of array
 	 */
 	protected function loadData()
@@ -195,7 +195,7 @@ abstract class ArrayMapper extends Mapper
 
 	/**
 	 * Save data to storage
-	 * @return array id => array
+	 * @param array id => array
 	 * @return void
 	 */
 	protected function saveData(array $data)

@@ -110,6 +110,7 @@ final class Callback extends Object
 	/**
 	 * Invokes callback. Do not call directly.
 	 * @return mixed
+	 * @throws NotCallableException
 	 */
 	public function __invoke()
 	{
@@ -119,6 +120,7 @@ final class Callback extends Object
 	/**
 	 * Invokes callback.
 	 * @return mixed
+	 * @throws NotCallableException
 	 */
 	public function invoke()
 	{
@@ -129,6 +131,7 @@ final class Callback extends Object
 	 * Invokes callback with an array of parameters.
 	 * @param array
 	 * @return mixed
+	 * @throws NotCallableException
 	 */
 	public function invokeArgs(array $args)
 	{
