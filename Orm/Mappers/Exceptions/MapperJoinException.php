@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Error establishing join between mappers.
+ */
 class MapperJoinException extends RuntimeException
 {
 

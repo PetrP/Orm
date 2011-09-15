@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Repository with this name is already exists.
+ */
 class RepositoryAlreadyRegisteredException extends RuntimeException
 {
 

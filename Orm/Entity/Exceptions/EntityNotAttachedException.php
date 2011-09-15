@@ -9,6 +9,13 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Entity is not attached to repository.
+ * Requested operation requires it.
+ * Call IRepository::attach() or IRepository::persist() first.
+ * @see IRepository::attach()
+ * @see IRepository::persist()
+ */
 class EntityNotAttachedException extends RuntimeException
 {
 

@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Factory for IMapper.
+ */
 class MapperFactory extends Object implements IMapperFactory
 {
 	/** @var AnnotationClassParser */

@@ -11,6 +11,17 @@ use DibiDataSourceX;
 use DibiDataSource;
 use DibiConnection;
 
+/**
+ * Collection of entities, represented as complex sql.
+ * @see DibiDataSource with subselects
+ * @see DibiDataSourceX without subselects
+ *
+ * For mysql is prefer DibiDataSourceX which works without subselects.
+ *
+ * <code>
+ * $collection = $dibiMapper->dataSource('SELECT * FROM [tableName] WHERE [foo] = %s', $foo);
+ * </code>
+ */
 class DataSourceCollection extends BaseDibiCollection
 {
 

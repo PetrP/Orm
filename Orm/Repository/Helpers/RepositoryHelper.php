@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Helper for repository.
+ */
 class RepositoryHelper extends Object
 {
 

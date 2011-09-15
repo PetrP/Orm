@@ -12,6 +12,9 @@ use IteratorAggregate;
 
 require_once __DIR__ . '/../Orm.php';
 
+/**
+ * Entity
+ */
 interface IEntity extends ArrayAccess, IteratorAggregate
 {
 

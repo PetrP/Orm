@@ -10,6 +10,9 @@ namespace Orm;
 use Exception;
 use RuntimeException;
 
+/**
+ * Entity is not allowed.
+ */
 class BadEntityException extends RuntimeException
 {
 

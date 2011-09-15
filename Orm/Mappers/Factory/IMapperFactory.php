@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Factory for IMapper.
+ */
 interface IMapperFactory
 {
 

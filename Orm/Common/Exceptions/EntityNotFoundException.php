@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * No Entity with the specified Key could be found.
+ */
 class EntityNotFoundException extends RuntimeException
 {
 

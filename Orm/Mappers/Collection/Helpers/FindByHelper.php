@@ -9,6 +9,9 @@ namespace Orm;
 
 use DateTime;
 
+/**
+ * Helper for findBy operations.
+ */
 class FindByHelper
 {
 

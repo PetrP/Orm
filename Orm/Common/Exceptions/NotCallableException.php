@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Callback is not callbable.
+ */
 class NotCallableException extends RuntimeException
 {
 

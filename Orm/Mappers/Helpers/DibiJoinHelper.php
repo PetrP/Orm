@@ -9,6 +9,10 @@ namespace Orm;
 
 use stdClass;
 
+/**
+ * Gets join info.
+ * @see DibiMapper::getJoinInfo()
+ */
 class DibiJoinHelper extends Object
 {
 	/** @var DibiMapper */

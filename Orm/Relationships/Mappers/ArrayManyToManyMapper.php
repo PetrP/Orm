@@ -7,6 +7,13 @@
 
 namespace Orm;
 
+/**
+ * Mapper for ManyToMany relationship.
+ * It saves array of id at parent entity.
+ *
+ * @see IMapper::createManyToManyMapper()
+ * @see ArrayMapper::createManyToManyMapper()
+ */
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {
 	/** @var array id => id */

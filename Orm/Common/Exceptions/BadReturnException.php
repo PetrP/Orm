@@ -10,6 +10,9 @@ namespace Orm;
 use Exception;
 use LogicException;
 
+/**
+ * Accepted value was not returned.
+ */
 class BadReturnException extends LogicException
 {
 

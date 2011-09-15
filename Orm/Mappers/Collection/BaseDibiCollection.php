@@ -9,6 +9,9 @@ namespace Orm;
 
 use DibiConnection;
 
+/**
+ * Common things for DibiCollection and DataSourceCollection.
+ */
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {
 

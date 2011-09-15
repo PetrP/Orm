@@ -7,6 +7,7 @@
 
 namespace Orm;
 
+/** Orm. */
 final class Orm
 {
 

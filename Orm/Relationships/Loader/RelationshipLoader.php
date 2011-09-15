@@ -9,6 +9,9 @@ namespace Orm;
 
 use Exception;
 
+/**
+ * Factory for IRelationship.
+ */
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {
 	/** Na teto strane */

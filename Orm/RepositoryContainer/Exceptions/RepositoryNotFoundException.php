@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Repository not found.
+ */
 class RepositoryNotFoundException extends RuntimeException
 {
 

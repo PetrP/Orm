@@ -9,6 +9,31 @@ namespace Orm;
 
 use Reflector;
 
+/**
+ * Wrapper over annotations parser.
+ * It can use custom callback or auto detect Nette\Reflection\AnnotationsParser.
+ *
+ * Custom callback can be registered like this:
+ * <code>
+ * $container = $repositoryContainer->getContext();
+ * $container->addService('AnnotationClassParser', function () {
+ * 	$parser = new AnnotationsParser(array('MyCustomAnnotationsParser', 'getAll'));
+ * 	return new AnnotationClassParser($parser);
+ * });
+ *
+ * abstract class BaseEntity extends Orm\Entity
+ * {
+ * 	public static function createMetaData($entityClass)
+ * 	{
+ * 		$parser = new AnnotationsParser(array('MyCustomAnnotationsParser', 'getAll'));
+ * 		return AnnotationMetaData::getMetaData($entityClass, $parser);
+ * 	}
+ * }
+ * </code>
+ *
+ * @see AnnotationMetaData
+ * @see AnnotationClassParser
+ */
 class AnnotationsParser extends Object
 {
 	/** @var mixed */

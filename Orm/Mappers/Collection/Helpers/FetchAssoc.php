@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Helper for create associative tree from array of entities.
+ */
 class FetchAssoc
 {
 

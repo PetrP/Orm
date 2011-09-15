@@ -14,6 +14,9 @@ use ReflectionMethod;
 use stdClass;
 
 /**
+ * Provides mapping between repository and storage.
+ * It maps to database table via DibiConnection.
+ *
  * @property-read DibiConnection $connection
  * @property-read IDatabaseConventional $conventional
  */

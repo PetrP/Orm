@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Argument is required.
+ */
 class RequiredArgumentException extends LogicException
 {
 

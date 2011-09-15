@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Entity annotation is invalid.
+ */
 class AnnotationMetaDataException extends MetaDataException
 {
 

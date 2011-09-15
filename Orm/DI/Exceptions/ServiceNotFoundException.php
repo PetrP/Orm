@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Service not found.
+ */
 class ServiceNotFoundException extends RuntimeException
 {
 

@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Inflection / modification of a word to express different grammatical categories.
+ */
 class Inflector
 {
 

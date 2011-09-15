@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Factory for IEntityInjection.
+ */
 class InjectionFactory
 {
 	private $className;

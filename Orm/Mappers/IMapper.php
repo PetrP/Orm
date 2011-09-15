@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Provides mapping between repository and storage.
+ */
 interface IMapper
 {
 
