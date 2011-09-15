@@ -22,11 +22,11 @@ class ServiceContainer extends Object implements IServiceContainer
 	private $frozen = false;
 
 	/**
-	 * <pre>
+	 * <code>
 	 * 	$c->addService('foo', function (Orm\IServiceContainer $c) { return new Foo; });
 	 * 	$c->addService('foo', 'Foo');
 	 * 	$c->addService('foo', new Foo);
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @param Callback|Closure|string|Object class name, callback or object

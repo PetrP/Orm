@@ -19,7 +19,7 @@ class RepositoryHelper extends Object
 	 * Lowercase nazev tridy bez sufixu Repository
 	 * Drive repositoryName.
 	 * @param IRepository
-	 * @param string
+	 * @return string
 	 */
 	public function normalizeRepository(IRepository $repository)
 	{

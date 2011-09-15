@@ -73,7 +73,9 @@ class DibiJoinHelper extends Object
 	}
 
 	/**
+	 * Work with all propel defined association.
 	 * @param string author->lastName or author->group->name
+	 * @param stdClass|NULL previos info
 	 * @return object
 	 * 	->key author.last_name
 	 *  ->joins[] array(
@@ -86,7 +88,6 @@ class DibiJoinHelper extends Object
 	 * 	?	mapper => DibiMapper
 	 * 	?	conventional => IDatabaseConventional
 	 * )
-	 * Work with all propel defined association.
 	 */
 	public function get($key, stdClass $result = NULL)
 	{

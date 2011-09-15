@@ -47,7 +47,7 @@ abstract class FileMapper extends ArrayMapper
 
 	/**
 	 * Save data to storage
-	 * @return array id => array
+	 * @param array id => array
 	 * @return void
 	 */
 	final protected function saveData(array $data)

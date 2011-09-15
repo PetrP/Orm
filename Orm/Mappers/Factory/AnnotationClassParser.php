@@ -20,11 +20,11 @@ class AnnotationClassParser extends Object
 	private $registered = array();
 
 	/**
-	 * <pre>
+	 * <code>
 	 * 	$p->register('mapper', 'Orm\IRepository', function ($repositoryClass) {
 	 * 		return $repositoryClass . 'Mapper';
 	 * 	});
-	 * </pre>
+	 * </code>
 	 *
 	 * @param string
 	 * @param string interface name

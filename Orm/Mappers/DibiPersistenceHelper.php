@@ -16,7 +16,7 @@ use DibiConnection;
 /**
  * Helps customize persist.
  *
- * <pre>
+ * <code>
  * // DibiMapper
  * public function persist(IEntity $entity)
  * {
@@ -33,7 +33,7 @@ use DibiConnection;
  * // ignore same param
  * $h->params['foo'] = false;
  *
- * </pre>
+ * </code>
  */
 class DibiPersistenceHelper extends Object
 {
@@ -62,6 +62,7 @@ class DibiPersistenceHelper extends Object
 	/**
 	 * @param DibiConnection
 	 * @param IDatabaseConventional
+	 * @param string
 	 */
 	public function __construct(DibiConnection $connection, IDatabaseConventional $conventional, $table)
 	{

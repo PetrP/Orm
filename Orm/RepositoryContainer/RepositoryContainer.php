@@ -17,7 +17,7 @@ use ReflectionClass;
  * Je to vstupni bod do modelu z jinych casti aplikace.
  *
  * Na repository se pristupuje jako k property:
- * <pre>
+ * <code>
  *
  * $orm = new RepositoryContainer;
  *
@@ -25,23 +25,23 @@ use ReflectionClass;
  *
  * $article = $orm->articles->getById(1); // instanceof Article
  *
- * </pre>
+ * </code>
  *
  * Do aplikace orm vsunete napriklad takto:
- * <pre>
+ * <code>
  * // config.ini
  * service.orm = RepositoryContainer
  *
  * // BasePresenter.php
  * /**
  *  * @property-read RepositoryContainer $orm
- *  *⁄
+ *  * /
  * abstract class BasePresenter extends Presenter
  * {
- * 	/** @var RepositoryContainer *⁄
+ * 	/** @var RepositoryContainer * /
  * 	private $orm;
  *
- *  /** @return RepositoryContainer *⁄
+ * 	/** @return RepositoryContainer * /
  * 	public function getOrm()
  * 	{
  * 		if ($this->orm === NULL)
@@ -51,7 +51,7 @@ use ReflectionClass;
  * 		return $this->orm;
  * 	}
  * }
- * </pre>
+ * </code>
  */
 class RepositoryContainer extends Object implements IRepositoryContainer
 {
@@ -117,7 +117,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 
 	/**
 	 * Dej mi instanci repository.
-	 * @var string repositoryClassName|alias
+	 * @param string repositoryClassName|alias
 	 * @return Repository |IRepository
 	 * @throws RepositoryNotFoundException
 	 */
@@ -250,9 +250,9 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * $orm->articles;
-	 * </pre>
+	 * </code>
 	 * Do not call directly.
 	 * @param string repositoryClassName|alias
 	 * @return IRepository

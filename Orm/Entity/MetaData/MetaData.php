@@ -16,19 +16,24 @@ use ReflectionClass;
  */
 class MetaData extends Object
 {
-	/**#@+ @see MetaDataProperty::setAccess() */
+	/** @see MetaDataProperty::setAccess() */
 	const READ = 1;
+
+	/** @see MetaDataProperty::setAccess() */
 	const WRITE = 2;
+
+	/** @see MetaDataProperty::setAccess() */
 	const READWRITE = 3;
-	/**#@-*/
 
 	/** @see MetaDataProperty::setManyToMany() */
 	const ManyToMany = 'm:m';
+
 	/** @see MetaDataProperty::setOneToMany() */
 	const OneToMany = '1:m';
 
 	/** @see MetaDataProperty::setManyToOne() */
 	const ManyToOne = 'm:1';
+
 	/** @see MetaDataProperty::setOneToOne() */
 	const OneToOne = '1:1';
 
