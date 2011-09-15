@@ -17,7 +17,7 @@ interface IRepositoryContainer
 
 	/**
 	 * Dej mi instanci repository.
-	 * @var string repositoryName
+	 * @param string repositoryName
 	 * @return IRepository
 	 */
 	public function getRepository($name);

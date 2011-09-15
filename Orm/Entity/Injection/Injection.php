@@ -65,6 +65,7 @@ abstract class Injection extends Object implements IEntityInjection, IEntityInje
 	/**
 	 * To co prijde od uzivatele nebo z uloziste.
 	 * @param mixed
+	 * @return Injection $this
 	 */
 	public function setInjectedValue($value)
 	{

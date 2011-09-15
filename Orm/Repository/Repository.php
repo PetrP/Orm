@@ -24,18 +24,15 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  *
  * Konvence je pojmenovavat repository mnoznym cisle, a entity jednotnim.
  *
- * <pre
+ * <code>
  * class ArticlesRepository extends Repository
- *  ...
- * </pre>
+ * </code>
  *
  * Repository se zizkava pres model {@see RepositoryContainer}
- * <pre>
- *
+ * <code>
  * $model; // instanceof RepositoryContainer
- * // instanceof ArticlesRepository
- * $model->articles;
- * </pre>
+ * $model->articles; // instanceof ArticlesRepository
+ * </code>
  *
  * Repository je NEZAVISLE NA KONKRETNIM ULOZISTI.
  * O uloziste se stara Mapper {@see DibiMapper} {@see IMapper}
@@ -47,7 +44,7 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  *
  * Na mapperu lze volat metody jako mapper->findByAuthorAndTag($author, $tag) atd
  * Ale na repository je potreba si vsechny vytahovaci metody vytvorit.
- * <pre>
+ * <code>
  * public function findByAuthor($author)
  * {
  * 	return $this->mapper->findByAuthor($author);
@@ -56,8 +53,7 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  * {
  * 	return $this->mapper->getByName($name);
  * }
- * </pre>
- *
+ * </code>
  *
  * Defaultne se vytvari entita podle repositoryName v jednotnem cisle ArticlesRepository > Article:
  * @see self::getEntityClassName()
@@ -384,13 +380,13 @@ abstract class Repository extends Object implements IRepository
 	 *
 	 * Defaultne vraci nazev repository v jednotem cisle, ale hloupe jen bez s na konci.
 	 * V pripade nepravidelnosti je mozne prepsat tuto metodu, nebo property entityClassName:
-	 * <pre>
+	 * <code>
 	 * // CitiesRepository
 	 * protected $entityClassName = 'City';
-	 * </pre>
+	 * </code>
 	 *
 	 * Repository muze vyrabet ruzne entity, muze se rozhodovat na zaklade nejake polozky kterou ma ulozenou v ulozisti, napr. $type
-	 * <pre>
+	 * <code>
 	 * // ProductsRepository
 	 * public function getEntityClassName(array $data = NULL)
 	 * {
@@ -405,7 +401,7 @@ abstract class Repository extends Object implements IRepository
 	 * 	else if (isset($entities[$data['type']])) return $entities[$data['type']];
 	 * }
 	 *
-	 * </pre>
+	 * </code>
 	 *
 	 * Do not call directly.
 	 * @param array|NULL

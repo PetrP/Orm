@@ -16,6 +16,11 @@ class InjectionFactory
 
 	private function __construct() {}
 
+	/**
+	 * @param Callback
+	 * @param string
+	 * @return Callback
+	 */
 	public static function create(Callback $callback, $className)
 	{
 		$factory = new self;
@@ -24,6 +29,11 @@ class InjectionFactory
 		return callback($factory, 'call');
 	}
 
+	/**
+	 * @param IEntity
+	 * @param mixed
+	 * @return IEntityInjection
+	 */
 	public function call(IEntity $entity, $value)
 	{
 		return call_user_func($this->callback, $this->className, $entity, $value);

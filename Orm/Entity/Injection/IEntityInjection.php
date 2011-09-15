@@ -10,23 +10,23 @@ namespace Orm;
 /**
  * Umoznuje obalit hodnotu v entite.
  *
- * <pre>
+ * <code>
  * /**
  *  * @property UrlInjection $url {injection}
- *  *⁄
+ *  * /
  * class Foo extends Entity
  *
  * class UrlInjection extends Nette\Http\Url implements IEntityInjection, IEntityInjectionStaticLoader
  * {
  * 	public function getInjectedValue()
- *  {
- *  	return $this->getAbsoluteUrl();
- *  }
+ * 	{
+ * 		return $this->getAbsoluteUrl();
+ * 	}
  *
  * 	public function setInjectedValue($value)
- *  {
- *  	$this->__construct($value); // little hack
- *  }
+ * 	{
+ * 		$this->__construct($value); // little hack
+ * 	}
  *
  * 	public static function create($className, IEntity $entity, $value = NULL)
  * 	{
@@ -39,7 +39,7 @@ namespace Orm;
  * $foo->url; // instanceof UrlInjection
  * $foo->url->getScheme(); // === http
  *
- * </pre>
+ * </code>
  */
 interface IEntityInjection
 {

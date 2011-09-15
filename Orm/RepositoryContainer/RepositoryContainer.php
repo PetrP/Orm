@@ -24,7 +24,7 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  * Je to vstupni bod do modelu z jinych casti aplikace.
  *
  * Na repository se pristupuje jako k property:
- * <pre>
+ * <code>
  *
  * $orm = new RepositoryContainer;
  *
@@ -32,23 +32,23 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  *
  * $article = $orm->articles->getById(1); // instanceof Article
  *
- * </pre>
+ * </code>
  *
  * Do aplikace orm vsunete napriklad takto:
- * <pre>
+ * <code>
  * // config.ini
  * service.orm = RepositoryContainer
  *
  * // BasePresenter.php
  * /**
  *  * @property-read RepositoryContainer $orm
- *  *⁄
+ *  * /
  * abstract class BasePresenter extends Presenter
  * {
- * 	/** @var RepositoryContainer *⁄
+ * 	/** @var RepositoryContainer * /
  * 	private $orm;
  *
- *  /** @return RepositoryContainer *⁄
+ * 	/** @return RepositoryContainer * /
  * 	public function getOrm()
  * 	{
  * 		if ($this->orm === NULL)
@@ -58,7 +58,7 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  * 		return $this->orm;
  * 	}
  * }
- * </pre>
+ * </code>
  */
 class RepositoryContainer extends Object implements IRepositoryContainer
 {
@@ -97,7 +97,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 
 	/**
 	 * Dej mi instanci repository.
-	 * @var string repositoryName
+	 * @param string repositoryName|alias
 	 * @return Repository |IRepository
 	 */
 	public function getRepository($name)
@@ -207,9 +207,9 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	}
 
 	/**
-	 * <pre>
+	 * <code>
 	 * $orm->articles;
-	 * </pre>
+	 * </code>
 	 * Do not call directly.
 	 * @param string repositoryName
 	 * @return IRepository

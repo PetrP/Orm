@@ -136,7 +136,7 @@ class MetaDataProperty extends Object
 
 	/**
 	 * Jestli je parametr ke cteni nebo jen pro zapis
-	 * @param MetaData::READ|MetaData::READWRITE
+	 * @param int MetaData::READ|MetaData::READWRITE
 	 * @param MetaData
 	 * @return MetaDataProperty $this
 	 */
@@ -206,7 +206,7 @@ class MetaDataProperty extends Object
 	 * @param MetaData::OneToMany|MetaData::ManyToMany
 	 * @param string
 	 * @param string
-	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
+	 * @param mixed RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see self::setOneToMany()
 	 * @see self::setManyToMany()
@@ -279,7 +279,7 @@ class MetaDataProperty extends Object
 	 *
 	 * @param string
 	 * @param string|NULL parametr na child entitach (m:m)
-	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
+	 * @param mixed RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */
@@ -320,12 +320,12 @@ class MetaDataProperty extends Object
 	/**
 	 * Inject same class around value in entity.
 	 *
-	 * <pre>
+	 * <code>
 	 * 	$entity->foo = array('bar'); // call ArrayInjection::setInjectedValue(array('bar'))
 	 * 	$entity->foo implements ArrayInjection;
 	 *
 	 * 	$repo->persist($entity) // call ArrayInjection::getInjectedValue()
-	 * </pre>
+	 * </code>
 	 *
 	 * Type must by class implements IEntityInjection.
 	 * @param Callback|Closure|string|IEntityInjectionLoader|NULL

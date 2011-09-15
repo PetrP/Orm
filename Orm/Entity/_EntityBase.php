@@ -124,6 +124,7 @@ abstract class _EntityBase extends _EntityValue
 	}
 
 	/**
+	 * @param string
 	 * @throws NotSupportedException
 	 * @see ArrayAccess
 	 */

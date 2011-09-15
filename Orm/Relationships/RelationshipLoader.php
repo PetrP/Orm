@@ -53,13 +53,13 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 	private $canConnectWith = array();
 
 	/**
-	 * @param MetaData::ManyToMany|MetaData::OneToMany
+	 * @param string MetaData::ManyToMany|MetaData::OneToMany
 	 * @param string
 	 * @param string
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @param RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
+	 * @param mixed RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
 	 */
 	public function __construct($relationship, $class, $repositoryName, $param, $entityName, $parentParam, $mapped = NULL)
 	{
@@ -108,6 +108,7 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 
 	/**
 	 * Kontroluje asociace z druhe strany
+	 * @param IRepositoryContainer
 	 */
 	public function check(IRepositoryContainer $model)
 	{

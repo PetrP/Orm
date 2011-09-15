@@ -13,7 +13,20 @@ use DateTime;
 use Nette\InvalidStateException;
 use DibiException;
 
-// todo refactor constructor
+/**
+ * Helps customize persist.
+ *
+ * <code>
+ * // DibiMapper
+ * public function persist(IEntity $entity)
+ * {
+ * 	$h = $this->getPersistenceHelper();
+ * 	...
+ * 	return $h->persist($entity);
+ * }
+ * </code>
+ * @todo refactor constructor
+ */
 class DibiPersistenceHelper extends Object
 {
 

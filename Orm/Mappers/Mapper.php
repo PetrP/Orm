@@ -90,7 +90,7 @@ abstract class Mapper extends Object implements IMapper
 
 	/**
 	 * Vola automaticky findBy* a getBy*
-	 * <pre>
+	 * <code>
 	 * 	$mapper->findByAuthor(3);
 	 * 	// stejne jako
 	 * 	$mapper->findBy(array('author' => 3));
@@ -98,7 +98,7 @@ abstract class Mapper extends Object implements IMapper
 	 * 	$mapper->findByAuthorAndCategory(3, 'foo');
 	 * 	// stejne jako
 	 * 	$mapper->findBy(array('author' => 3, 'category' => 'foo'));
-	 * </pre>
+	 * </code>
 	 * @see self::findBy();
 	 * @see self::getBy();
 	 * @param string

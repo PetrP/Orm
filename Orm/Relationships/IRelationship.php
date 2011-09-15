@@ -38,6 +38,7 @@ interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 	 */
 	function get();
 
+	/** @return void */
 	function persist();
 
 }

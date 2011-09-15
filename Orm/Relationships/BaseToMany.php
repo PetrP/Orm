@@ -41,9 +41,7 @@ abstract class BaseToMany extends Object
 		return $this->getCollection()->toCollection();
 	}
 
-	/**
-	 * @param IRepository|string repositoryName for lazy load
-	 */
+	/** @param IRepository|string repositoryName for lazy load */
 	public function __construct($repository)
 	{
 		$this->repository = $repository;
@@ -61,6 +59,7 @@ abstract class BaseToMany extends Object
 		return $this->getCollection()->getIterator();
 	}
 
+	/** @return NULL */
 	public function getInjectedValue()
 	{
 		return NULL;
@@ -89,6 +88,7 @@ abstract class BaseToMany extends Object
 	 * Vytvori / nacte / vrati entitu.
 	 * @param IEntity|scalar|array
 	 * @return IEntity
+	 * @throws UnexpectedValueException
 	 */
 	protected function createEntity($entity)
 	{
