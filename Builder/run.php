@@ -25,22 +25,22 @@ if (!$isDev)
 }
 
 $b = new Builder(Builder::NS | Builder::NS_NETTE, $isDev);
-$b->build(__DIR__ . "/../Orm", __DIR__ . "/../Builder/s namespace/Orm");
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Orm");
 $zip->add($b);
 
 $b = new Builder(Builder::NONNS | Builder::NONNS_NETTE, $isDev);
-$b->build(__DIR__ . "/../Orm", __DIR__ . "/../Builder/bez namespace/Orm");
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Orm");
 $zip->add($b);
 
 $zip->save();
 
 foreach (array(
-	Builder::NS | Builder::NS_NETTE => 's namespace/pro Nette s namespace',
-	Builder::NS | Builder::NONNS_NETTE => 's namespace/pro Nette bez namespace',
-	//Builder::NS | Builder::PREFIXED_NETTE => 's namespace/pro Nette s prefixy',
-	Builder::NONNS | Builder::NONNS_NETTE => 'bez namespace/pro Nette bez namespace',
-	Builder::NONNS | Builder::NS_NETTE => 'bez namespace/pro Nette s namespace',
-	//Builder::NS | Builder::PREFIXED_NETTE => 'bez namespace/pro Nette s prefixy',
+	Builder::NS | Builder::NS_NETTE => 'php53/Nette_with_namespaces',
+	Builder::NS | Builder::NONNS_NETTE => 'php53/Nette_without_namespaces',
+	//Builder::NS | Builder::PREFIXED_NETTE => 'php53/Nette_prefixed',
+	Builder::NONNS | Builder::NONNS_NETTE => 'php52/Nette_without_namespaces',
+	Builder::NONNS | Builder::NS_NETTE => 'php52/Nette_with_namespaces',
+	//Builder::NS | Builder::PREFIXED_NETTE => 'php52/Nette_prefixed',
 ) as $version => $dir)
 {
 	$b = new Builder($version, $isDev);
