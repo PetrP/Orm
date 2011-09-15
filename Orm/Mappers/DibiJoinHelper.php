@@ -10,6 +10,10 @@ namespace Orm;
 use Nette\Object;
 use stdClass;
 
+/**
+ * Gets join info.
+ * @see DibiMapper::getJoinInfo()
+ */
 class DibiJoinHelper extends Object
 {
 	/** @var DibiMapper */

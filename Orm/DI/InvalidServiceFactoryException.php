@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Service cannot be initialized. Factory is invalid.
+ */
 class InvalidServiceFactoryException extends LogicException
 {
 

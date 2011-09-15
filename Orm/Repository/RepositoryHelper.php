@@ -9,6 +9,9 @@ namespace Orm;
 
 use Nette\Object;
 
+/**
+ * Helper for repository.
+ */
 class RepositoryHelper extends Object
 {
 

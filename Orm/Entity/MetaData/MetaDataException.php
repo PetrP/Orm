@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * MetaData is invalid.
+ */
 class MetaDataException extends LogicException
 {
 

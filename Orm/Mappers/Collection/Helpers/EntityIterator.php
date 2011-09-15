@@ -11,6 +11,9 @@ use IteratorIterator;
 use Countable;
 use DibiResultIterator;
 
+/**
+ * Hydrate iterator for IEntityCollection.
+ */
 class EntityIterator extends IteratorIterator implements Countable
 {
 	/** @var IRepository */

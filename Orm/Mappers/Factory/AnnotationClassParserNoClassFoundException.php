@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Annotation not found.
+ */
 class AnnotationClassParserNoClassFoundException extends AnnotationClassParserException
 {
 

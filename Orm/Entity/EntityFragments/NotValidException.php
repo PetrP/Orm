@@ -10,6 +10,9 @@ namespace Orm;
 use RuntimeException;
 use Exception;
 
+/**
+ * Value is not valid for that property of entity.
+ */
 class NotValidException extends RuntimeException
 {
 

@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * No or invalid EntityToArray mode given.
+ */
 class EntityToArrayNoModeException extends RuntimeException
 {
 

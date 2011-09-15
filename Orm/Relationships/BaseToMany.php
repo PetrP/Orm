@@ -10,6 +10,9 @@ namespace Orm;
 use Nette\Object;
 use Traversable;
 
+/**
+ * Common things for OneToMany and ManyToMany.
+ */
 abstract class BaseToMany extends Object
 {
 

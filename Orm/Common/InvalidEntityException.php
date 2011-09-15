@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Entity is invalid or not supported.
+ */
 class InvalidEntityException extends LogicException
 {
 

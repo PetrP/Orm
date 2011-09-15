@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Entity contains some value, what mapper cannot save.
+ */
 class MapperPersistenceException extends LogicException
 {
 

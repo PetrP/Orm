@@ -11,6 +11,13 @@ use DateTime;
 use ArrayObject;
 use Exception;
 
+/**
+ * Provides mapping between repository and storage.
+ * All entities stored in one array.
+ *
+ * @see self::loadData()
+ * @see self::saveData()
+ */
 abstract class ArrayMapper extends Mapper
 {
 

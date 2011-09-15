@@ -10,6 +10,9 @@ namespace Orm;
 use Exception;
 use LogicException;
 
+/**
+ * Argument does not match with the expected value.
+ */
 class InvalidArgumentException extends LogicException
 {
 

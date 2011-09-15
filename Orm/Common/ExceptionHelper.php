@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Helper for easy creating exception messages.
+ */
 class ExceptionHelper
 {
 

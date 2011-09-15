@@ -10,6 +10,9 @@ namespace Orm;
 use LogicException;
 use Exception;
 
+/**
+ * Requested method or operation is deprecated.
+ */
 class DeprecatedException extends LogicException
 {
 

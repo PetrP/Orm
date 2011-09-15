@@ -10,6 +10,9 @@ namespace Orm;
 use Nette\Object;
 use DibiConnection;
 
+/**
+ * Common things for DibiCollection and DataSourceCollection.
+ */
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {
 

@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Requested method or operation is not supported.
+ */
 class NotSupportedException extends LogicException
 {
 

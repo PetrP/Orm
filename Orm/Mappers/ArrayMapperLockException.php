@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * ArrayMapper lock error occurs.
+ */
 class ArrayMapperLockException extends LogicException
 {
 

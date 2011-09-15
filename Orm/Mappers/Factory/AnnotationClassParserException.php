@@ -9,6 +9,9 @@ namespace Orm;
 
 use LogicException;
 
+/**
+ * Annotation is invalid.
+ */
 class AnnotationClassParserException extends LogicException
 {
 

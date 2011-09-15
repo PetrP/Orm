@@ -13,6 +13,22 @@ use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 use stdClass;
 
+/**
+ * Loads class name in annotations.
+ *
+ * Annotation is only for some interface.
+ * It support inheritance.
+ *
+ * <code>
+ * $parser = new AnnotationClassParser;
+ * $parser->register('foo', 'FooInterface');
+ *
+ * /** @foo BarClass * /
+ * class FooClass implements FooInterface {}
+ *
+ * $parser->get('foo', new FooClass); // returns BarClass
+ * </code>
+ */
 class AnnotationClassParser extends Object
 {
 

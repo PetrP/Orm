@@ -10,6 +10,9 @@ namespace Orm;
 use IteratorAggregate;
 use Countable;
 
+/**
+ * Relationship
+ */
 interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 

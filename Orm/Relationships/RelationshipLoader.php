@@ -10,6 +10,9 @@ namespace Orm;
 use Nette\Object;
 use Exception;
 
+/**
+ * Factory for IRelationship.
+ */
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {
 	/** Na teto strane */

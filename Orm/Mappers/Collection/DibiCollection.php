@@ -9,6 +9,13 @@ namespace Orm;
 
 use DibiConnection;
 
+/**
+ * Collection of entities, represented as basic sql.
+ *
+ * <code>
+ * $collection = $dibiMapper->findAll()->where('[foo] = %s', $foo);
+ * </code>
+ */
 class DibiCollection extends BaseDibiCollection
 {
 

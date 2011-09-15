@@ -11,6 +11,7 @@ use Nette\Object;
 use ReflectionClass;
 
 /**
+ * Provides mapping between repository and storage.
  * @property-read IRepository $repository
  * @property-read IConventional $conventional
  * @property-read IRepositoryContainer $model

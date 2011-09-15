@@ -10,6 +10,13 @@ namespace Orm;
 use Nette\Object;
 use DibiConnection;
 
+/**
+ * Mapper for ManyToMany relationship.
+ * It uses junction table.
+ *
+ * @see IMapper::createManyToManyMapper()
+ * @see DibiMapper::createManyToManyMapper()
+ */
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
 	/** @var string */

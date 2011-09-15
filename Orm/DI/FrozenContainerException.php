@@ -9,6 +9,9 @@ namespace Orm;
 
 use RuntimeException;
 
+/**
+ * Container is frozen. You can't add or remove his service.
+ */
 class FrozenContainerException extends RuntimeException
 {
 

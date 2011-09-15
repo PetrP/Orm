@@ -10,6 +10,9 @@ namespace Orm;
 use Countable;
 use IteratorAggregate;
 
+/**
+ * Collection of entities.
+ */
 interface IEntityCollection extends Countable, IteratorAggregate
 {
 

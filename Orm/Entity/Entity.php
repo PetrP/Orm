@@ -10,6 +10,8 @@ namespace Orm;
 use Exception;
 
 /**
+ * Entity
+ *
  * @property-read id $id
  */
 abstract class Entity extends BaseEntityFragment implements IEntity
