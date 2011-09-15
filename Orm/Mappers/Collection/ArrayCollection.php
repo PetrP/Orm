@@ -17,6 +17,18 @@ require_once __DIR__ . '/IEntityCollection.php';
 require_once __DIR__ . '/Helpers/FetchAssoc.php';
 require_once __DIR__ . '/Helpers/FindByHelper.php';
 
+/**
+ * Collection of entities which are already loaded in php memory.
+ *
+ * <code>
+ * $collection = new ArrayCollection(array(
+ * 	new FooEntity,
+ * 	new FooEntity,
+ * 	$repository->getById(123),
+ * 	$repository->getById(124),
+ * ));
+ * </code>
+ */
 class ArrayCollection extends Object implements IEntityCollection
 {
 

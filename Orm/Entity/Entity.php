@@ -21,6 +21,8 @@ require_once __DIR__ . '/_EntityBase.php';
 require_once __DIR__ . '/EntityHelper.php';
 
 /**
+ * Entity
+ *
  * @property-read id $id
  */
 abstract class Entity extends _EntityBase implements IEntity

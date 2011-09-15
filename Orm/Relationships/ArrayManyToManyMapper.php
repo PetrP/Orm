@@ -14,6 +14,13 @@ use Nette\NotSupportedException;
 require_once __DIR__ . '/IManyToManyMapper.php';
 require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
 
+/**
+ * Mapper for ManyToMany relationship.
+ * It saves array of id at parent entity.
+ *
+ * @see IMapper::createManyToManyMapper()
+ * @see ArrayMapper::createManyToManyMapper()
+ */
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {
 	/** @var array id => id */

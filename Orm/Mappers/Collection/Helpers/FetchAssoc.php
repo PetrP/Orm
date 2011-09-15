@@ -10,6 +10,9 @@ namespace Orm;
 use Nette\InvalidArgumentException;
 use Nette\NotSupportedException;
 
+/**
+ * Helper for create associative tree from array of entities.
+ */
 class FetchAssoc
 {
 

@@ -11,6 +11,12 @@ use Nette\Utils\SafeStream;
 
 require_once __DIR__ . '/ArrayMapper.php';
 
+/**
+ * Provides mapping between repository and storage.
+ * All entities are serialize to one file via Nette\Utils\SafeStream protocol.
+ *
+ * @see self::getFilePath()
+ */
 abstract class FileMapper extends ArrayMapper
 {
 

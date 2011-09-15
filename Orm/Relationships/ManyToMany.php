@@ -15,7 +15,33 @@ require_once __DIR__ . '/BaseToMany.php';
 require_once __DIR__ . '/DibiManyToManyMapper.php';
 require_once __DIR__ . '/ArrayManyToManyMapper.php';
 
-// todo rict parent entity ze se zmenila
+/**
+ * ManyToMany relationship.
+ *
+ * <code>
+ *
+ * /**
+ *  * @property Orm\ManyToMany $bars {m:m BarsRepository foos map}
+ *  * /
+ * class Foo extends Orm\Entity {}
+ *
+ * /**
+ *  * @property Orm\ManyToMany $foos {m:m FoosRepository bars}
+ *  * /
+ * class Bar extends Orm\Entity {}
+ *
+ * $foo->bars->add(new Bar);
+ * $foo->bars->add(123);
+ * $foo->bars->add(array('name' => 'xyz'));
+ *
+ * foreach ($foo->bars as $bar) {}
+ *
+ * $foo->bars->get()->getByName('xyz');
+ *
+ * $foo->bars->set(array(new Bar, new Bar));
+ *
+ * </code>
+ */
 class ManyToMany extends BaseToMany implements IRelationship
 {
 	/** @var Entity */

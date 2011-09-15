@@ -16,6 +16,13 @@ use Exception;
 require_once __DIR__ . '/Mapper.php';
 require_once __DIR__ . '/Collection/ArrayCollection.php';
 
+/**
+ * Provides mapping between repository and storage.
+ * All entities stored in one array.
+ *
+ * @see self::loadData()
+ * @see self::saveData()
+ */
 abstract class ArrayMapper extends Mapper
 {
 

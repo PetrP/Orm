@@ -9,6 +9,9 @@ namespace Orm;
 
 use Nette\Callback;
 
+/**
+ * Factory for IEntityInjection.
+ */
 class InjectionFactory
 {
 	private $className;

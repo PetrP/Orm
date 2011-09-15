@@ -15,6 +15,7 @@ require_once __DIR__ . '/IMapper.php';
 require_once __DIR__ . '/Conventional/NoConventional.php';
 
 /**
+ * Provides mapping between repository and storage.
  * @property-read IRepository $repository
  * @property-read IConventional $conventional
  * @property-read IRepositoryContainer $model

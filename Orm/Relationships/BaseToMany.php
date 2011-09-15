@@ -11,6 +11,9 @@ use Nette\Object;
 use UnexpectedValueException;
 use Traversable;
 
+/**
+ * Common things for OneToMany and ManyToMany.
+ */
 abstract class BaseToMany extends Object
 {
 

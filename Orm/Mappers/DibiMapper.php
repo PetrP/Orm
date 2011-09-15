@@ -22,6 +22,9 @@ require_once __DIR__ . '/Conventional/SqlConventional.php';
 require_once __DIR__ . '/Collection/DibiCollection.php';
 
 /**
+ * Provides mapping between repository and storage.
+ * It maps to database table via DibiConnection.
+ *
  * @property-read DibiConnection $connection
  */
 class DibiMapper extends Mapper

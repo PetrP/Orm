@@ -14,6 +14,33 @@ require_once __DIR__ . '/IRelationship.php';
 require_once __DIR__ . '/BaseToMany.php';
 require_once __DIR__ . '/../Entity/EntityHelper.php';
 
+/**
+ * OneToMany relationship.
+ *
+ * <code>
+ *
+ * /**
+ *  * @property Orm\OneToMany $bars {1:m BarsRepository foo}
+ *  * /
+ * class Foo extends Orm\Entity {}
+ *
+ * /**
+ *  * @property Foo $foo {m:1 FoosRepository}
+ *  * /
+ * class Bar extends Orm\Entity {}
+ *
+ * $foo->bars->add(new Bar);
+ * $foo->bars->add(123);
+ * $foo->bars->add(array('name' => 'xyz'));
+ *
+ * foreach ($foo->bars as $bar) {}
+ *
+ * $foo->bars->get()->getByName('xyz');
+ *
+ * $foo->bars->set(array(new Bar, new Bar));
+ *
+ * </code>
+ */
 class OneToMany extends BaseToMany implements IRelationship
 {
 	/** @var Entity */

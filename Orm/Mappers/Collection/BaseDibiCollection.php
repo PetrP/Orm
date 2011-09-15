@@ -17,6 +17,9 @@ require_once __DIR__ . '/Helpers/EntityIterator.php';
 require_once __DIR__ . '/Helpers/FetchAssoc.php';
 require_once __DIR__ . '/Helpers/FindByHelper.php';
 
+/**
+ * Common things for DibiCollection and DataSourceCollection.
+ */
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {
 

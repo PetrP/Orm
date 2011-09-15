@@ -12,6 +12,9 @@ use Countable;
 
 require_once __DIR__ . '/../Entity/Injection/IEntityInjection.php';
 
+/**
+ * Relationship
+ */
 interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {
 

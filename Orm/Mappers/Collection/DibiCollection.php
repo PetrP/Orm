@@ -12,6 +12,13 @@ use DibiConnection;
 
 require_once __DIR__ . '/BaseDibiCollection.php';
 
+/**
+ * Collection of entities, represented as basic sql.
+ *
+ * <code>
+ * $collection = $dibiMapper->findAll()->where('[foo] = %s', $foo);
+ * </code>
+ */
 class DibiCollection extends BaseDibiCollection
 {
 

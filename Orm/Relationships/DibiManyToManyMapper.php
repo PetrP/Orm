@@ -14,6 +14,13 @@ use DibiConnection;
 
 require_once __DIR__ . '/IManyToManyMapper.php';
 
+/**
+ * Mapper for ManyToMany relationship.
+ * It uses junction table.
+ *
+ * @see IMapper::createManyToManyMapper()
+ * @see DibiMapper::createManyToManyMapper()
+ */
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {
 	/** @var string */

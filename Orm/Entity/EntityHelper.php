@@ -7,6 +7,9 @@
 
 namespace Orm;
 
+/**
+ * Helper for entity.
+ */
 class EntityHelper
 {
 
