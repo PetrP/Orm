@@ -35,4 +35,9 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		ObjectMixin::remove($this, $name);
 	}
 
+	protected function prepareTemplate(Text_Template $template)
+	{
+		$template->setVar(array('constants' => ''));
+	}
+
 }

@@ -21,6 +21,7 @@ Environment::setVariable('tempDir', __DIR__ . '/tmp');
 try {
 	$storage = Environment::getService(str_replace('-', '\\', 'Nette-Caching-ICacheStorage'));
 } catch (InvalidStateException $e) {
+	unset($e);
 	$storage = Environment::getContext()->cacheStorage;
 }
 
@@ -29,6 +30,7 @@ $r->setCacheStorage($storage);
 $r->addDirectory(__DIR__ . '/libs');
 $r->addDirectory(__DIR__ . '/cases');
 $r->register();
+unset($r, $storage);
 
 require_once __DIR__ . '/../Orm/Mappers/Collection/DataSourceCollection.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockEscapeMySqlDriver.php';

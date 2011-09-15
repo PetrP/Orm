@@ -3,12 +3,16 @@
 require_once __DIR__ . '/libs/Nette/loader.php';
 require_once __DIR__ . '/libs/HttpPHPUnit/init.php';
 
-$http = new HttpPHPUnit;
+callback(function () {
 
-require_once __DIR__ . '/boot.php';
+	$http = new HttpPHPUnit;
 
-$c = $http->coverage(__DIR__ . '/../Orm', __DIR__ . '/report');
-$c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bc1m.php');
-$c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bcmm.php');
+	require_once __DIR__ . '/boot.php';
 
-$http->run(__DIR__ . '/cases');
+	$c = $http->coverage(__DIR__ . '/../Orm', __DIR__ . '/report');
+	$c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bc1m.php');
+	$c->filter()->removeFileFromWhitelist(__DIR__ . '/../Orm/Relationships/bcmm.php');
+
+	$http->run(__DIR__ . '/cases');
+
+})->invoke();
