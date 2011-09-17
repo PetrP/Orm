@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * Annotation is invalid.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Factory
  */
 class AnnotationClassParserException extends LogicException
 {

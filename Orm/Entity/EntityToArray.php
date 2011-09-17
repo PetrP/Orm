@@ -12,6 +12,9 @@ use Nette\Object;
 /**
  * Convert entity to array. It's possible set what do with asscoations.
  * @see Entity::toArray()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 class EntityToArray extends Object
 {

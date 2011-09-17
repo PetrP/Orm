@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * ArrayMapper lock error occurs.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class ArrayMapperLockException extends LogicException
 {

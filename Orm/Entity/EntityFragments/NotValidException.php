@@ -12,6 +12,9 @@ use Exception;
 
 /**
  * Value is not valid for that property of entity.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\EntityFragments
  */
 class NotValidException extends RuntimeException
 {

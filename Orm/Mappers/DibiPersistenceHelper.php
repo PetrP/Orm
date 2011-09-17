@@ -34,6 +34,9 @@ use DibiConnection;
  * $h->params['foo'] = false;
  *
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class DibiPersistenceHelper extends Object
 {

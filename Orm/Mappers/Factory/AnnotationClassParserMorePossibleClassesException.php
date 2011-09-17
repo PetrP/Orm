@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Annotation is invalid. More than one entries found.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Factory
  */
 class AnnotationClassParserMorePossibleClassesException extends AnnotationClassParserException
 {

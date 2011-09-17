@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Helper for entity.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 class EntityHelper
 {

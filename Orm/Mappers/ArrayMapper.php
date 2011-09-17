@@ -17,6 +17,9 @@ use Exception;
  *
  * @see self::loadData()
  * @see self::saveData()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 abstract class ArrayMapper extends Mapper
 {

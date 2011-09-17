@@ -13,6 +13,9 @@ use Exception;
  * Entity
  *
  * @property-read id $id
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 abstract class Entity extends BaseEntityFragment implements IEntity
 {

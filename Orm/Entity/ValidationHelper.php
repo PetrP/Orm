@@ -13,6 +13,9 @@ use Exception;
 
 /**
  * Helper, which uses entity to validation.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 class ValidationHelper
 {

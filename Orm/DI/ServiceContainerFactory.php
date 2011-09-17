@@ -11,7 +11,12 @@ use Nette\Object;
 use Nette\Environment;
 use Dibi;
 
-/** DI Container Factory */
+/**
+ * DI Container Factory.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
+ */
 class ServiceContainerFactory extends Object implements IServiceContainerFactory
 {
 	/** @var IServiceContainer */

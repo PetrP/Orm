@@ -15,6 +15,9 @@ use Nette\Object;
  *
  * @see IMapper::createManyToManyMapper()
  * @see ArrayMapper::createManyToManyMapper()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {

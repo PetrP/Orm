@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Service not found.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
  */
 class ServiceNotFoundException extends RuntimeException
 {

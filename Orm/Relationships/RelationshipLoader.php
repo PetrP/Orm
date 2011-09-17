@@ -12,6 +12,9 @@ use Exception;
 
 /**
  * Factory for IRelationship.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 class RelationshipLoader extends Object implements IEntityInjectionLoader
 {

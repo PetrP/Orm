@@ -21,6 +21,9 @@ use DibiConnection;
  * <code>
  * $collection = $dibiMapper->dataSource('SELECT * FROM [tableName] WHERE [foo] = %s', $foo);
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection
  */
 class DataSourceCollection extends BaseDibiCollection
 {

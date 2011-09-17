@@ -15,6 +15,9 @@ use RuntimeException;
  * Call IRepository::attach() or IRepository::persist() first.
  * @see IRepository::attach()
  * @see IRepository::persist()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\EntityFragments
  */
 class EntityNotAttachedException extends RuntimeException
 {

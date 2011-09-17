@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * No Entity with the specified Key could be found.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common
  */
 class EntityNotFoundException extends RuntimeException
 {

@@ -11,7 +11,12 @@ use Nette\Object;
 use Nette\Callback;
 use Closure;
 
-/** DI Container */
+/**
+ * DI Container.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
+ */
 class ServiceContainer extends Object implements IServiceContainer
 {
 

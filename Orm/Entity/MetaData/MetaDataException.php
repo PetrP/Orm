@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * MetaData is invalid.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class MetaDataException extends LogicException
 {

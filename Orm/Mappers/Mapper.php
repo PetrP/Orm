@@ -15,6 +15,9 @@ use ReflectionClass;
  * @property-read IRepository $repository
  * @property-read IConventional $conventional
  * @property-read IRepositoryContainer $model
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 abstract class Mapper extends Object implements IMapper
 {

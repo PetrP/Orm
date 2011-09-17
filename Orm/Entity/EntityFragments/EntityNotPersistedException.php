@@ -14,6 +14,9 @@ use RuntimeException;
  * Requested operation requires it.
  * Call IRepository::persist() first.
  * @see IRepository::persist()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\EntityFragments
  */
 class EntityNotPersistedException extends RuntimeException
 {

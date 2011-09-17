@@ -12,6 +12,9 @@ use IteratorAggregate;
 
 /**
  * Collection of entities.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection
  */
 interface IEntityCollection extends Countable, IteratorAggregate
 {

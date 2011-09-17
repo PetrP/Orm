@@ -12,6 +12,9 @@ use Nette\Object;
 /**
  * Events.
  * @see Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\EntityFragments
  */
 abstract class EventEntityFragment extends Object
 {

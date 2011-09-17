@@ -11,6 +11,9 @@ use Nette\Object;
 
 /**
  * Helper for repository.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Repository
  */
 class RepositoryHelper extends Object
 {

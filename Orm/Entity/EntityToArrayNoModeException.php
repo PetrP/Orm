@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * No or invalid EntityToArray mode given.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 class EntityToArrayNoModeException extends RuntimeException
 {

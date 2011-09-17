@@ -63,6 +63,9 @@ use Exception;
  *
  * @property-read IMapper $mapper
  * @property-read IRepositoryContainer $model
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Repository
  */
 abstract class Repository extends Object implements IRepository
 {

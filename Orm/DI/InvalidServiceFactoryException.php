@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * Service cannot be initialized. Factory is invalid.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
  */
 class InvalidServiceFactoryException extends LogicException
 {

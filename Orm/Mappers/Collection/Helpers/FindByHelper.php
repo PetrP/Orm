@@ -11,6 +11,9 @@ use DateTime;
 
 /**
  * Helper for findBy operations.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection\Helpers
  */
 class FindByHelper
 {

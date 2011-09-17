@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * Entity contains some value, what mapper cannot save.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class MapperPersistenceException extends LogicException
 {

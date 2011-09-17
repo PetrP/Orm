@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Service is not instance of expected class or interface.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
  */
 class ServiceNotInstanceOfException extends RuntimeException
 {

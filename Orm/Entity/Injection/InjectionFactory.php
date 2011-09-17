@@ -11,6 +11,9 @@ use Nette\Callback;
 
 /**
  * Factory for IEntityInjection.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Injection
  */
 class InjectionFactory
 {

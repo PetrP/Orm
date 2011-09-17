@@ -24,6 +24,9 @@ use ReflectionClass;
  *  * /
  * class Foo extends Entity
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class AnnotationMetaData extends Object
 {
