@@ -12,6 +12,9 @@ namespace Orm;
  *
  * @author David Grudl
  * @copyright Nette Framework
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common
  */
 final class ObjectMixin
 {

@@ -10,6 +10,9 @@ namespace Orm;
 /**
  * Injection loader.
  * @see MetaDataProperty::setInjection
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Injection
  */
 interface IEntityInjectionLoader
 {

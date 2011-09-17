@@ -11,6 +11,9 @@ use Traversable;
 
 /**
  * Common things for OneToMany and ManyToMany.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 abstract class BaseToMany extends Object
 {

@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Callback is not callbable.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class NotCallableException extends RuntimeException
 {

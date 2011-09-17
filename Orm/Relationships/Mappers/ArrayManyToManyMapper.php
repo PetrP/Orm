@@ -13,6 +13,9 @@ namespace Orm;
  *
  * @see IMapper::createManyToManyMapper()
  * @see ArrayMapper::createManyToManyMapper()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships\Mappers
  */
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
 {

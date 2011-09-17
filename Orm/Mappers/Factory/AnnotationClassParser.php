@@ -25,6 +25,9 @@ use stdClass;
  *
  * $parser->get('foo', new FooClass); // returns BarClass
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Factory
  */
 class AnnotationClassParser extends Object
 {

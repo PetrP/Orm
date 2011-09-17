@@ -40,6 +40,9 @@ namespace Orm;
  * $foo->url->getScheme(); // === http
  *
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Injection
  */
 interface IEntityInjection
 {

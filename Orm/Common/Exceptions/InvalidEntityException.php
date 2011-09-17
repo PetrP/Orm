@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * Entity is invalid or not supported.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class InvalidEntityException extends LogicException
 {

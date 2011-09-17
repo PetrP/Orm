@@ -33,6 +33,9 @@ use Reflector;
  *
  * @see AnnotationMetaData
  * @see AnnotationClassParser
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common
  */
 class AnnotationsParser extends Object
 {

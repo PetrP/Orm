@@ -10,6 +10,9 @@ namespace Orm;
 /**
  * Convert entity to array. It's possible set what do with asscoations.
  * @see Entity::toArray()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Helpers
  */
 class EntityToArray extends Object
 {

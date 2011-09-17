@@ -10,6 +10,9 @@ namespace Orm;
 /**
  * Naming conventions in database.
  * In entity camelCase and in storage underscore_separated.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Conventional
  * @todo Rename?
  */
 class SqlConventional extends NoConventional

@@ -12,6 +12,9 @@ use LogicException;
 
 /**
  * Accepted value was not returned.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class BadReturnException extends LogicException
 {

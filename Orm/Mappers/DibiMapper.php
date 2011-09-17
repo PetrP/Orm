@@ -19,6 +19,9 @@ use stdClass;
  *
  * @property-read DibiConnection $connection
  * @property-read IDatabaseConventional $conventional
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class DibiMapper extends Mapper
 {

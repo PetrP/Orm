@@ -15,6 +15,9 @@ use DibiConnection;
  * <code>
  * $collection = $dibiMapper->findAll()->where('[foo] = %s', $foo);
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection
  */
 class DibiCollection extends BaseDibiCollection
 {

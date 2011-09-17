@@ -14,6 +14,9 @@ require_once __DIR__ . '/../Orm.php';
 
 /**
  * Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 interface IEntity extends ArrayAccess, IteratorAggregate
 {

@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * MetaData relationship is invalid.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships\Loader
  */
 class RelationshipLoaderException extends MetaDataException
 {

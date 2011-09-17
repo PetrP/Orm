@@ -53,6 +53,9 @@ use ReflectionClass;
  * 	}
  * }
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage RepositoryContainer
  */
 class RepositoryContainer extends Object implements IRepositoryContainer
 {

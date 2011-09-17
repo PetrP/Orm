@@ -12,6 +12,9 @@ namespace Orm;
  * Different names of keys between entity and storage.
  * Table name and primary key convention.
  * ManyToMany mapper convention.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Conventional
  */
 interface IDatabaseConventional extends IConventional
 {

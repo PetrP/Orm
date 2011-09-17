@@ -13,6 +13,9 @@ use ReflectionClass;
 /**
  * Information about one property of entity.
  * @see MetaData
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class MetaDataProperty extends Object
 {

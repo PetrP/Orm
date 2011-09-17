@@ -12,6 +12,9 @@ use LogicException;
 
 /**
  * Accessing a class member (property or method) fails.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class MemberAccessException extends LogicException
 {

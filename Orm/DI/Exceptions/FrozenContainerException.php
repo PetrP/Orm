@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Container is frozen. You can't add or remove his service.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI\Exceptions
  */
 class FrozenContainerException extends RuntimeException
 {

@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Factory for IMapper.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Factory
  */
 interface IMapperFactory
 {

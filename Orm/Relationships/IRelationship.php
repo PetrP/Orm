@@ -12,6 +12,9 @@ use Countable;
 
 /**
  * Relationship
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 {

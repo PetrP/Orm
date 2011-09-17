@@ -13,6 +13,9 @@ use DibiResultIterator;
 
 /**
  * Hydrate iterator for IEntityCollection.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection\Helpers
  */
 class EntityIterator extends IteratorIterator implements Countable
 {

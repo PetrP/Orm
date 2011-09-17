@@ -7,7 +7,11 @@
 
 namespace Orm;
 
-/** Orm. */
+/**
+ * Orm.
+ * @author Petr Procházka
+ * @package Orm
+ */
 final class Orm
 {
 

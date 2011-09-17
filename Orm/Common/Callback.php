@@ -15,6 +15,9 @@ use NCallback;
  *
  * @author David Grudl
  * @copyright Nette Framework
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common
  */
 final class Callback extends Object
 {

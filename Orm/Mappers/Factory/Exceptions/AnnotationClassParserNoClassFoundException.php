@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Annotation not found.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Factory\Exceptions
  */
 class AnnotationClassParserNoClassFoundException extends AnnotationClassParserException
 {

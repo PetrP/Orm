@@ -12,6 +12,9 @@ use ArrayAccess;
 /**
  * Remembers used ids and then allows load all in one query.
  * @see Repository::getById
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Repository\Helpers
  * @todo refactoring
  * @todo neumoznuje nekolik stranek najednou (premazava se)
  */

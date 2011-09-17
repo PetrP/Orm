@@ -12,6 +12,9 @@ use Exception;
 
 /**
  * Requested method or operation is deprecated.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class DeprecatedException extends LogicException
 {

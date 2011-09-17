@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Repository with this name is already exists.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage RepositoryContainer\Exceptions
  */
 class RepositoryAlreadyRegisteredException extends RuntimeException
 {

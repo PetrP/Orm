@@ -12,6 +12,9 @@ use LogicException;
 
 /**
  * Argument does not match with the expected value.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class InvalidArgumentException extends LogicException
 {

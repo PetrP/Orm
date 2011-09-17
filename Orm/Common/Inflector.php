@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Inflection / modification of a word to express different grammatical categories.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common
  */
 class Inflector
 {

@@ -21,6 +21,9 @@ use ArrayIterator;
  * 	$repository->getById(124),
  * ));
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection
  */
 class ArrayCollection extends Object implements IEntityCollection
 {

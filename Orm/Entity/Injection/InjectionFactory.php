@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Factory for IEntityInjection.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Injection
  */
 class InjectionFactory
 {

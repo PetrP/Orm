@@ -12,6 +12,9 @@ use stdClass;
 /**
  * Gets join info.
  * @see DibiMapper::getJoinInfo()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Helpers
  */
 class DibiJoinHelper extends Object
 {

@@ -10,6 +10,9 @@ namespace Orm;
 /**
  * Mapper for ManyToMany relationship.
  * @see IMapper::createManyToManyMapper()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships\Mappers
  */
 interface IManyToManyMapper
 {

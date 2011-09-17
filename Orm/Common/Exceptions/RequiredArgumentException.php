@@ -11,6 +11,9 @@ use LogicException;
 
 /**
  * Argument is required.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class RequiredArgumentException extends LogicException
 {

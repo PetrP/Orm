@@ -11,6 +11,9 @@ use RuntimeException;
 
 /**
  * Repository not found.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage RepositoryContainer\Exceptions
  */
 class RepositoryNotFoundException extends RuntimeException
 {

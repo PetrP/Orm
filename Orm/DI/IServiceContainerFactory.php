@@ -7,7 +7,12 @@
 
 namespace Orm;
 
-/** DI Container Factory */
+/**
+ * DI Container Factory.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
+ */
 interface IServiceContainerFactory
 {
 

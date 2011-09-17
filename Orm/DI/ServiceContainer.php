@@ -9,7 +9,12 @@ namespace Orm;
 
 use Closure;
 
-/** DI Container */
+/**
+ * DI Container.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
+ */
 class ServiceContainer extends Object implements IServiceContainer
 {
 

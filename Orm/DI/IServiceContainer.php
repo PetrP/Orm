@@ -7,7 +7,12 @@
 
 namespace Orm;
 
-/** DI Container */
+/**
+ * DI Container.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage DI
+ */
 interface IServiceContainer
 {
 

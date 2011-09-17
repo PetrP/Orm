@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Helper for repository.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Repository\Helpers
  */
 class RepositoryHelper extends Object
 {

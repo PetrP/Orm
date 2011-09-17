@@ -11,6 +11,9 @@ use Exception;
 
 /**
  * @deprecated
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 abstract class OldManyToMany extends ManyToMany
 {

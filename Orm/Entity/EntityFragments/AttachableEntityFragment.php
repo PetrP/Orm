@@ -11,6 +11,9 @@ namespace Orm;
  * Maintaining state about repository where is entity attached.
  * @see Entity
  * @property-read IRepositoryContainer $model
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\EntityFragments
  * @todo zvazit jestli to neni spatny navrh
  */
 class AttachableEntityFragment extends EventEntityFragment

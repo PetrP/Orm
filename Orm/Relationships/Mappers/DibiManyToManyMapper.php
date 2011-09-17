@@ -15,6 +15,9 @@ use DibiConnection;
  *
  * @see IMapper::createManyToManyMapper()
  * @see DibiMapper::createManyToManyMapper()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships\Mappers
  */
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {

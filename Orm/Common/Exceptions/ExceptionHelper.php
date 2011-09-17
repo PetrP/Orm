@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Helper for easy creating exception messages.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Common\Exceptions
  */
 class ExceptionHelper
 {
