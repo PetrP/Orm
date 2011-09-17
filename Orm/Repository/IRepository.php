@@ -57,6 +57,9 @@ namespace Orm;
  * @see self::remove() Deleting.
  * @see self::flush() Make changes in storage.
  * @see self::clean() Clear changes in storage.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Repository
  */
 interface IRepository
 {

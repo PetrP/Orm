@@ -41,6 +41,9 @@ require_once __DIR__ . '/ArrayManyToManyMapper.php';
  * $foo->bars->set(array(new Bar, new Bar));
  *
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 class ManyToMany extends BaseToMany implements IRelationship
 {

@@ -19,6 +19,9 @@ require_once __DIR__ . '/IEntityInjectionStaticLoader.php';
 /**
  * Base implementation of IEntityInjection
  * @see IEntityInjection
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\Injection
  */
 abstract class Injection extends Object implements IEntityInjection, IEntityInjectionStaticLoader
 {

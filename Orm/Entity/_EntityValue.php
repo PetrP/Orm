@@ -16,6 +16,9 @@ use ReflectionMethod;
 /**
  * Performs all reading, checking, filling, setting and validation of data.
  * @see Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 abstract class _EntityValue extends _EntityGeneratingRepository
 {

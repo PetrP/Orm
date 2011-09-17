@@ -14,6 +14,9 @@ require_once __DIR__ . '/IConventional.php';
 /**
  * Naming conventions in storage.
  * Makes no difference. Stores same.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Conventional
  */
 class NoConventional extends Object implements IConventional
 {

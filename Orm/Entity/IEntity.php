@@ -12,6 +12,9 @@ use IteratorAggregate;
 
 /**
  * Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 interface IEntity extends ArrayAccess, IteratorAggregate
 {

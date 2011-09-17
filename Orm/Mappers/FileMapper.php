@@ -16,6 +16,9 @@ require_once __DIR__ . '/ArrayMapper.php';
  * All entities are serialize to one file via Nette\Utils\SafeStream protocol.
  *
  * @see self::getFilePath()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 abstract class FileMapper extends ArrayMapper
 {

@@ -24,6 +24,9 @@ require_once __DIR__ . '/EntityHelper.php';
  * Entity
  *
  * @property-read id $id
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 abstract class Entity extends _EntityBase implements IEntity
 {

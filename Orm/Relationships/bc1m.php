@@ -13,6 +13,9 @@ use Nette\DeprecatedException;
 
 /**
  * @deprecated
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 abstract class OldOneToMany extends OneToMany
 {

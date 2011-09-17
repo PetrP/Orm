@@ -13,6 +13,9 @@ namespace Orm;
  * Cares of initialisation repository.
  * It is entry point into model from other parts of application.
  * Stores container of services what other objects may need.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage RepositoryContainer
  */
 interface IRepositoryContainer
 {

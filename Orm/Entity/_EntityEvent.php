@@ -14,6 +14,9 @@ use Nette\InvalidStateException;
 /**
  * Events.
  * @see Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 abstract class _EntityEvent extends Object
 {

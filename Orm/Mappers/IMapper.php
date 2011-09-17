@@ -9,6 +9,9 @@ namespace Orm;
 
 /**
  * Provides mapping between repository and storage.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 interface IMapper
 {

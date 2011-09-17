@@ -20,6 +20,9 @@ require_once __DIR__ . '/IManyToManyMapper.php';
  *
  * @see IMapper::createManyToManyMapper()
  * @see DibiMapper::createManyToManyMapper()
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 class DibiManyToManyMapper extends Object implements IManyToManyMapper
 {

@@ -10,6 +10,9 @@ namespace Orm;
 /**
  * Naming conventions in storage.
  * Different names of keys between entity and storage.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Conventional
  */
 interface IConventional
 {

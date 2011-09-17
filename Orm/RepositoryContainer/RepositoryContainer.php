@@ -61,6 +61,9 @@ require_once __DIR__ . '/../Mappers/Mapper.php';
  * 	}
  * }
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage RepositoryContainer
  */
 class RepositoryContainer extends Object implements IRepositoryContainer
 {

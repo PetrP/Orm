@@ -29,6 +29,9 @@ require_once __DIR__ . '/MetaData.php';
  *  * /
  * class Foo extends Entity
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class AnnotationMetaData extends Object
 {

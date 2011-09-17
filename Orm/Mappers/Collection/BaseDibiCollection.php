@@ -19,6 +19,9 @@ require_once __DIR__ . '/Helpers/FindByHelper.php';
 
 /**
  * Common things for DibiCollection and DataSourceCollection.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection
  */
 abstract class BaseDibiCollection extends Object implements IEntityCollection
 {

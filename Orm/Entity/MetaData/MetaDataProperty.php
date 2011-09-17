@@ -20,6 +20,9 @@ require_once __DIR__ . '/../Injection/InjectionFactory.php';
 /**
  * Information about one property of entity.
  * @see MetaData
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class MetaDataProperty extends Object
 {

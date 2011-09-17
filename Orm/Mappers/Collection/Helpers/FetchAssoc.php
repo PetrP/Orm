@@ -12,6 +12,9 @@ use Nette\NotSupportedException;
 
 /**
  * Helper for create associative tree from array of entities.
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers\Collection\Helpers
  */
 class FetchAssoc
 {

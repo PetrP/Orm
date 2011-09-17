@@ -26,6 +26,9 @@ use DibiException;
  * }
  * </code>
  * @todo refactor constructor
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class DibiPersistenceHelper extends Object
 {

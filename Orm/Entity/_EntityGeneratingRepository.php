@@ -13,6 +13,9 @@ use Nette\InvalidStateException;
  * Maintaining state about repository where is entity attached.
  * @see Entity
  * @property-read IRepositoryContainer $model
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  * @todo zvazit jestli to neni spatny navrh
  */
 class _EntityGeneratingRepository extends _EntityEvent

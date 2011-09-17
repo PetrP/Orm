@@ -40,6 +40,9 @@ require_once __DIR__ . '/../Entity/EntityHelper.php';
  * $foo->bars->set(array(new Bar, new Bar));
  *
  * </code>
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Relationships
  */
 class OneToMany extends BaseToMany implements IRelationship
 {

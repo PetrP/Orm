@@ -22,6 +22,9 @@ use ReflectionProperty;
  * Loads MetaData - information about properties (createMetaData). Default from annotation {@see AnnotationMetaData}
  *
  * @see Entity
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity
  */
 abstract class _EntityBase extends _EntityValue
 {

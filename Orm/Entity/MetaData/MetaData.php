@@ -17,6 +17,9 @@ require_once __DIR__ . '/MetaDataProperty.php';
 /**
  * Information about properties of entity.
  * @see MetaDataProperty
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Entity\MetaData
  */
 class MetaData extends Object
 {

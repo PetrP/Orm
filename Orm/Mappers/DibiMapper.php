@@ -26,6 +26,9 @@ require_once __DIR__ . '/Collection/DibiCollection.php';
  * It maps to database table via DibiConnection.
  *
  * @property-read DibiConnection $connection
+ * @author Petr Procházka
+ * @package Orm
+ * @subpackage Mappers
  */
 class DibiMapper extends Mapper
 {
