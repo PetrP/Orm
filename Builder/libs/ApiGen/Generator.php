@@ -387,54 +387,53 @@ class Generator extends Nette\Object
 		// Select only packages or namespaces
 		$userPackages = count(array_diff(array_keys($packages), array('PHP', 'None')));
 		$userNamespaces = count(array_diff(array_keys($namespaces), array('PHP', 'None')));
-		if ($userNamespaces > 0 || 0 === $userPackages) {
-			$packages = array();
 
-			// Don't generate only 'None' namespace
-			if (1 === count($namespaces) && isset($namespaces['None'])) {
-				$namespaces = array();
-			}
+		// Namespaces
 
-			foreach (array_keys($namespaces) as $namespaceName) {
-				// Add missing parent namespaces
-				$parent = '';
-				foreach (explode('\\', $namespaceName) as $part) {
-					$parent = ltrim($parent . '\\' . $part, '\\');
-					if (!isset($namespaces[$parent])) {
-						$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
-					}
-				}
-
-				// Add missing element types
-				foreach ($elementTypes as $type) {
-					if (!isset($namespaces[$namespaceName][$type])) {
-						$namespaces[$namespaceName][$type] = array();
-					}
-				}
-			}
-			uksort($namespaces, $sort);
-		} else {
+		// Don't generate only 'None' namespace
+		if (!$userNamespaces) {
 			$namespaces = array();
+		}
 
-			foreach (array_keys($packages) as $packageName) {
-				// Add missing parent packages
-				$parent = '';
-				foreach (explode('\\', $packageName) as $part) {
-					$parent = ltrim($parent . '\\' . $part, '\\');
-					if (!isset($packages[$parent])) {
-						$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
-					}
-				}
-
-				// Add missing class types
-				foreach ($elementTypes as $type) {
-					if (!isset($packages[$packageName][$type])) {
-						$packages[$packageName][$type] = array();
-					}
+		foreach (array_keys($namespaces) as $namespaceName) {
+			// Add missing parent namespaces
+			$parent = '';
+			foreach (explode('\\', $namespaceName) as $part) {
+				$parent = ltrim($parent . '\\' . $part, '\\');
+				if (!isset($namespaces[$parent])) {
+					$namespaces[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
 				}
 			}
-			uksort($packages, $sort);
+
+			// Add missing element types
+			foreach ($elementTypes as $type) {
+				if (!isset($namespaces[$namespaceName][$type])) {
+					$namespaces[$namespaceName][$type] = array();
+				}
+			}
 		}
+		uksort($namespaces, $sort);
+
+		// Packages
+
+		foreach (array_keys($packages) as $packageName) {
+			// Add missing parent packages
+			$parent = '';
+			foreach (explode('\\', $packageName) as $part) {
+				$parent = ltrim($parent . '\\' . $part, '\\');
+				if (!isset($packages[$parent])) {
+					$packages[$parent] = array('classes' => array(), 'interfaces' => array(), 'traits' => array(), 'exceptions' => array(), 'constants' => array(), 'functions' => array());
+				}
+			}
+
+			// Add missing class types
+			foreach ($elementTypes as $type) {
+				if (!isset($packages[$packageName][$type])) {
+					$packages[$packageName][$type] = array();
+				}
+			}
+		}
+		uksort($packages, $sort);
 
 		$mainFilter = function($element) {
 			return $element->isMain();
@@ -930,6 +929,7 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['package']['filename']);
 		}
 		foreach ($packages as $packageName => $package) {
+			$template->namespace = NULL;
 			$template->package = $packageName;
 			$template->subpackages = array_filter($template->packages, function($subpackageName) use ($packageName) {
 				return 0 === strpos($subpackageName, $packageName . '\\');
@@ -955,6 +955,7 @@ class Generator extends Nette\Object
 			$this->forceDir($destination . '/' . $templates['main']['namespace']['filename']);
 		}
 		foreach ($namespaces as $namespaceName => $namespace) {
+			$template->package = NULL;
 			$template->namespace = $namespaceName;
 			$template->subnamespaces = array_filter($template->namespaces, function($subnamespaceName) use ($namespaceName) {
 				return (bool) preg_match('~^' . preg_quote($namespaceName) . '\\\\[^\\\\]+$~', $subnamespaceName);
@@ -1030,23 +1031,22 @@ class Generator extends Nette\Object
 					}
 				}
 
-				if ($packages) {
-					$template->package = $packageName = $element->getPseudoPackageName();
-					$template->classes = $packages[$packageName]['classes'];
-					$template->interfaces = $packages[$packageName]['interfaces'];
-					$template->traits = $packages[$packageName]['traits'];
-					$template->exceptions = $packages[$packageName]['exceptions'];
-					$template->constants = $packages[$packageName]['constants'];
-					$template->functions = $packages[$packageName]['functions'];
-				} elseif ($namespaces) {
-					$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
-					$template->classes = $namespaces[$namespaceName]['classes'];
-					$template->interfaces = $namespaces[$namespaceName]['interfaces'];
-					$template->traits = $namespaces[$namespaceName]['traits'];
-					$template->exceptions = $namespaces[$namespaceName]['exceptions'];
-					$template->constants = $namespaces[$namespaceName]['constants'];
-					$template->functions = $namespaces[$namespaceName]['functions'];
+				$template->package = $packageName = $element->getPseudoPackageName();
+				$template->namespace = $namespaceName = $element->getPseudoNamespaceName();
+				if (isset($packages[$packageName]))
+				{
+					$data = $packages[$packageName];
 				}
+				else if (isset($namespaces[$namespaceName]))
+				{
+					$data = $namespaces[$namespaceName];
+				}
+				$template->classes = $data['classes'];
+				$template->interfaces = $data['interfaces'];
+				$template->traits = $data['traits'];
+				$template->exceptions = $data['exceptions'];
+				$template->constants = $data['constants'];
+				$template->functions = $data['functions'];
 
 				$template->class = null;
 				$template->constant = null;
