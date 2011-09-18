@@ -14,6 +14,7 @@
 namespace ApiGen;
 
 use TokenReflection\IReflection;
+use TokenReflection\ReflectionAnnotation;
 
 /**
  * Base reflection envelope.
@@ -224,5 +225,46 @@ abstract class ReflectionBase
 	public function getPseudoNamespaceName()
 	{
 		return $this->reflection->isInternal() ? 'PHP' : $this->reflection->getNamespaceName() ?: 'None';
+	}
+
+	/**
+	 * Returns a particular annotation value.
+	 *
+	 * @param string $name Annotation name
+	 * @return string|array|null
+	 */
+	final public function getAnnotation($name)
+	{
+		if ($name === ReflectionAnnotation::SHORT_DESCRIPTION)
+		{
+			$desc = $this->reflection->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
+			if (!$desc AND ($this instanceof ReflectionConstant OR $this instanceof ReflectionProperty OR $this instanceof ReflectionParameter))
+			{
+				$tmp = $this->reflection->getAnnotation('var');
+				if (is_array($tmp) AND isset($tmp[0]) AND !isset($tmp[1]))
+				{
+					$tmp = preg_split('#\s#', $tmp[0], 2);
+					$desc = (isset($tmp[1]) AND $tmp[1]) ? $tmp[1] : NULL;
+				}
+			}
+			return $desc;
+		}
+		return $this->reflection->getAnnotation($name);
+	}
+
+	/**
+	 * Returns all annotations.
+	 *
+	 * @return array
+	 */
+	final public function getAnnotations()
+	{
+		$tmp = $this->reflection->getAnnotations();
+		$tmp[ReflectionAnnotation::SHORT_DESCRIPTION] = $this->getAnnotation(ReflectionAnnotation::SHORT_DESCRIPTION);
+		if (!isset($tmp[ReflectionAnnotation::SHORT_DESCRIPTION]))
+		{
+			unset($tmp[ReflectionAnnotation::SHORT_DESCRIPTION]);
+		}
+		return $tmp;
 	}
 }
