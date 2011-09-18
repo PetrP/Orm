@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use Nette\InvalidStateException;
 
 /**
- * Udalosti
+ * Events.
  * @see Entity
  */
 abstract class _EntityEvent extends Object

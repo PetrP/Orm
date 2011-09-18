@@ -13,12 +13,13 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * Hromadne nastavovani dat (setValues), prevod na pole (toArray),
- * moznost iterovat (IteratorAggregate) a pristupovat k parametrum jako k poli (ArrayAccess)
+ * Base entity things.
  *
- * Vytvareni MetaData, tedy informaci o parametrech entit (createMetaData).
- * Defaultne se nacita z anotaci.
- * @see AnnotationMetaData
+ * Sets multiple properties (setValues).
+ * Convert entity to array (toArray).
+ * Possibility to iterate (IteratorAggregate).
+ * Access to properties like to array (ArrayAccess).
+ * Loads MetaData - information about properties (createMetaData). Default from annotation {@see AnnotationMetaData}
  *
  * @see Entity
  */

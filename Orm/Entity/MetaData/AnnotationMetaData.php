@@ -17,7 +17,7 @@ use ReflectionClass;
 require_once __DIR__ . '/MetaData.php';
 
 /**
- * Ziskava meta data z enotaci.
+ * Fills MetaData from annotation.
  *
  * <code>
  * /**

@@ -10,7 +10,7 @@ namespace Orm;
 use Nette\InvalidStateException;
 
 /**
- * Uchovava stav o repository kde je entita attachnuta.
+ * Maintaining state about repository where is entity attached.
  * @see Entity
  * @property-read IRepositoryContainer $model
  * @todo zvazit jestli to neni spatny navrh

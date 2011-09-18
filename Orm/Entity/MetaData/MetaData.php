@@ -15,7 +15,8 @@ use ReflectionClass;
 require_once __DIR__ . '/MetaDataProperty.php';
 
 /**
- * Informace o parametrech entity.
+ * Information about properties of entity.
+ * @see MetaDataProperty
  */
 class MetaData extends Object
 {

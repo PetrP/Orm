@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../Relationships/RelationshipLoader.php';
 require_once __DIR__ . '/../Injection/InjectionFactory.php';
 
 /**
- * Informace o jednom parametru
+ * Information about one property of entity.
  * @see MetaData
  */
 class MetaDataProperty extends Object
