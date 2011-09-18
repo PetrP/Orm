@@ -91,6 +91,7 @@ class Template extends Nette\Templating\FileTemplate
 		// Highlighting <code>, <pre>
 		$this->texy->registerBlockPattern(
 			function($parser, $matches, $name) use ($fshl) {
+				$matches[2] = str_replace('* /', '*/', $matches[2]);
 				if ('code' === $matches[1]) {
 					$lines = array_filter(explode("\n", $matches[2]));
 					if (!empty($lines)) {
