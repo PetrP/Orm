@@ -698,7 +698,9 @@ class Generator extends Nette\Object
 						// Data type of constants & properties
 						if ($element instanceof ReflectionProperty || $element instanceof ReflectionConstant) {
 							if (!isset($annotations['var'])) {
-								$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of the data type.');
+								if ($element instanceof ReflectionProperty) {
+									$undocumented[$parentElementLabel][] = $message($parentElement, $element, 'Missing documentation of the data type.');
+								}
 							} elseif (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+.+)?$~s', $annotations['var'][0])) {
 								$undocumented[$parentElementLabel][] = $message($parentElement, $element, sprintf('Invalid documentation "%s" of the data type.', $annotations['var'][0]));
 							}
