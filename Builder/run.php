@@ -2,19 +2,22 @@
 
 namespace Orm\Builder;
 
-require_once __DIR__ . '/../tests/libs/Nette/loader.php';
+require_once __DIR__ . '/libs/nette.min.php';
 require_once __DIR__ . '/../tests/libs/dump.php';
-require_once __DIR__ . '/PhpParser.php';
-require_once __DIR__ . '/Builder.php';
-require_once __DIR__ . '/Git.php';
-require_once __DIR__ . '/Zipper.php';
 
 use Nette\Diagnostics\Debugger;
+use Nette\Loaders\RobotLoader;
+use Nette\Caching\Storages\FileStorage;
 
 Debugger::enable();
 Debugger::$strictMode = true;
-
 set_time_limit(0);
+
+$r = new RobotLoader;
+$r->setCacheStorage(new FileStorage(__DIR__ . '/../tests/tmp'));
+$r->addDirectory(__DIR__ . '/inc');
+$r->addDirectory(__DIR__ . '/libs');
+$r->register();
 
 $isDev = isset($_GET['dev']);
 
