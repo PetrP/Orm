@@ -20,7 +20,12 @@ class InjectionFactory
 	private $className;
 	private $callback;
 
-	private function __construct() {}
+	/**
+	 * @todo remove
+	 */
+	private function __construct()
+	{
+	}
 
 	/**
 	 * @param Callback
