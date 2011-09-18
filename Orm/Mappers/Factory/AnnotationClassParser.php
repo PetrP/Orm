@@ -79,6 +79,7 @@ class AnnotationClassParser extends Object
 	}
 
 	/**
+	 * Get class name for object.
 	 * @param string
 	 * @param object
 	 * @return string class name
@@ -123,6 +124,7 @@ class AnnotationClassParser extends Object
 	}
 
 	/**
+	 * Returns phpdoc annotations.
 	 * @param ReflectionClass
 	 * @return array of annotation => array
 	 * @see AnnotationsParser

@@ -37,6 +37,8 @@ final class Callback extends Object
 	}
 
 	/**
+	 * Is instance of Callback?
+	 * Orm or Nette.
 	 * @param mixed class, object, function, callback
 	 * @return bool
 	 */

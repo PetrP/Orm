@@ -11,12 +11,16 @@ namespace Orm;
 final class Orm
 {
 
+	/** @var string <generation>.<major>.<minor> */
 	const VERSION = '<build::version>';
 
+	/** @var int <generation> * 10000 + <major> * 100 + <minor> */
 	const VERSION_ID = /*<build::version_id>*/0/**/;
 
+	/** @var string <gitCommitHash> released on <date> */
 	const REVISION = '<build::revision> released on <build::date>';
 
+	/** @var string 5.3|5.2 */
 	const PACKAGE = '<build::orm>';
 
 }
