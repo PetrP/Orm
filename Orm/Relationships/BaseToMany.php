@@ -20,6 +20,7 @@ abstract class BaseToMany extends Object
 	private $repository;
 
 	/**
+	 * Substitute all Entity with given ones.
 	 * @param array of IEntity|scalar|array
 	 * @return IRelationship $this
 	 */
@@ -37,7 +38,10 @@ abstract class BaseToMany extends Object
 		return $this;
 	}
 
-	/** @return IEntityCollection */
+	/**
+	 * Returns collection of all entity.
+	 * @return IEntityCollection
+	 */
 	final public function get()
 	{
 		return $this->getCollection()->toCollection();

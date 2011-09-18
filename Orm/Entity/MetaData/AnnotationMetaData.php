@@ -59,6 +59,7 @@ class AnnotationMetaData extends Object
 	private $property;
 
 	/**
+	 * Fill MetaData from annotation.
 	 * @param MetaData|string|IEntity class name or object
 	 * @return MetaData
 	 */
@@ -100,8 +101,10 @@ class AnnotationMetaData extends Object
 	}
 
 	/**
-	 * @param string
-	 * @return array
+	 * Returns phpdoc annotations.
+	 * @param string class name
+	 * @return array of annotation => array
+	 * @see AnnotationsParser
 	 */
 	protected function getAnnotation($class)
 	{

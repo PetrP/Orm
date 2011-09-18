@@ -77,6 +77,7 @@ class DibiJoinHelper extends Object
 	}
 
 	/**
+	 * Get join info.
 	 * Work with all propel defined association.
 	 * @param string author->lastName or author->group->name
 	 * @param stdClass|NULL previos info
