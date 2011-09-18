@@ -8,7 +8,7 @@
 namespace Orm;
 
 /**
- * Umoznuje obalit hodnotu v entite.
+ * Makes possible to wrap value in entity.
  *
  * <code>
  * /**

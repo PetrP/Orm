@@ -8,7 +8,7 @@
 namespace Orm;
 
 /**
- * Udalosti
+ * Events.
  * @see Entity
  */
 abstract class EventEntityFragment extends Object

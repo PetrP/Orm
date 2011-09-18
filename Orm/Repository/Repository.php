@@ -10,33 +10,34 @@ namespace Orm;
 use Exception;
 
 /**
- * Pracuje z entitamy, nezavisle na konretnim ulozisti.
- * Ukladani, mazani, nacitani entit.
+ * Handles entities.
+ * Independently of the specific storage.
+ * Saving, deleting, loading entities.
  *
- * Pro kazdou entitu (nebo skupinu pribuznych entit) si vytvorte repository.
+ * For each entity type (or group of related entities) you must create own repository.
  *
- * Konvence je pojmenovavat repository mnoznym cisle, a entity jednotnim.
+ * Convention is named repository plural form and entity singular form.
  *
  * <code>
  * class ArticlesRepository extends Repository
  * </code>
  *
- * Repository se zizkava pres model {@see RepositoryContainer}
+ * Repository must be obtained via IRepositoryContainer {@see RepositoryContainer}
  * <code>
  * $model; // instanceof RepositoryContainer
  * $model->articles; // instanceof ArticlesRepository
  * </code>
  *
- * Repository je NEZAVISLE NA KONKRETNIM ULOZISTI.
- * O uloziste se stara Mapper {@see DibiMapper} {@see IMapper}
+ * Repository is independently of the specific storage.
+ * About storage is cares Mapper {@see IMapper} {@see DibiMapper}
  *
- * Konvence je pojmenovavat metody na vytahovani dat
- * getBy<...>() pro ziskani jednoho zaznamu {@see IEntity}
- * findBy<...>() pro ziskani kolekce zaznamu {@see IEntityCollection}
- * findAll() vsechny zaznamy
+ * Naming convention methods for retrieving data:
+ * `getBy<...>()` for one entity {@see IEntity}
+ * `findBy<...>()` for collection of entities {@see IEntityCollection}
+ * `findAll()` all entities
  *
- * Na mapperu lze volat metody jako mapper->findByAuthorAndTag($author, $tag) atd
- * Ale na repository je potreba si vsechny vytahovaci metody vytvorit.
+ * You can automatically call methods in mapper like `$mapper->findByAuthorAndTag($author, $tag)` etc.
+ * But in repository is needed to create all methods:
  * <code>
  * public function findByAuthor($author)
  * {
@@ -48,17 +49,16 @@ use Exception;
  * }
  * </code>
  *
- * Defaultne se vytvari entita podle repositoryName v jednotnem cisle ArticlesRepository > Article:
- * @see self::getEntityClassName()
+ * Defaults repository works with entity named by repository name in singular form `ArticlesRepository > Article` {@see self::getEntityClassName()}.
  *
- * Defaultne se pouziva `<RepositoryName>Mapper` nebo DibiMapper:
- * @see self::createMapper()
+ * Defaults tries find mapper by repository name `ArticlesRepository > ArticlesMapper`
+ * It can be changed by annotation `@mappper`.
  *
- * @see self::getById() ziskani zaznamu
- * @see self::persist() ukladani
- * @see self::remove() mazani
- * @see self::flush() promitnuti zmen
- * @see self::clean() zruseni zmen
+ * @see self::getById() Get one entity by primary key.
+ * @see self::persist() Saving.
+ * @see self::remove() Deleting.
+ * @see self::flush() Make changes in storage.
+ * @see self::clean() Clear changes in storage.
  *
  * @property-read IMapper $mapper
  * @property-read IRepositoryContainer $model

@@ -10,7 +10,7 @@ namespace Orm;
 use ArrayAccess;
 
 /**
- * Pamatuje si ktere id byli na teto strance potreba a umoznuje je pak nacist najednou jednim dotazem.
+ * Remembers used ids and then allows load all in one query.
  * @see Repository::getById
  * @todo refactoring
  * @todo neumoznuje nekolik stranek najednou (premazava se)

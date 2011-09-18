@@ -12,7 +12,7 @@ use DateTime;
 use Exception;
 
 /**
- * Helper ktery pouziva entita pro validovani.
+ * Helper, which uses entity to validation.
  */
 class ValidationHelper
 {

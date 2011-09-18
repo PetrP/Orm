@@ -7,7 +7,10 @@
 
 namespace Orm;
 
-/** Rozdily nazvu klicu v entite a v ulozisti. */
+/**
+ * Naming conventions in storage.
+ * Different names of keys between entity and storage.
+ */
 interface IConventional
 {
 

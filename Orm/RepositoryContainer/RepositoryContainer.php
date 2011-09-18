@@ -11,11 +11,13 @@ use Exception;
 use ReflectionClass;
 
 /**
- * Kolekce Repository.
- * Stara se o jejich vytvareni.
- * Je to vstupni bod do modelu z jinych casti aplikace.
+ * Collection of IRepository.
  *
- * Na repository se pristupuje jako k property:
+ * Cares of initialisation repository.
+ * It is entry point into model from other parts of application.
+ * Stores container of services what other objects may need.
+ *
+ * Repository can be accessed like to property:
  * <code>
  *
  * $orm = new RepositoryContainer;
@@ -26,7 +28,7 @@ use ReflectionClass;
  *
  * </code>
  *
- * Do aplikace orm vsunete napriklad takto:
+ * Nette application can reach orm like that:
  * <code>
  * // config.ini
  * service.orm = RepositoryContainer

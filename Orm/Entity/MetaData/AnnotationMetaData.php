@@ -10,7 +10,7 @@ namespace Orm;
 use ReflectionClass;
 
 /**
- * Ziskava meta data z enotaci.
+ * Fills MetaData from annotation.
  *
  * <code>
  * /**

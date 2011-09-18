@@ -8,9 +8,8 @@
 namespace Orm;
 
 /**
- * Rozdily nazvu klicu v entite a v ulozisti.
- * V entite camelCase
- * V ulozisti underscore_separated
+ * Naming conventions in database.
+ * In entity camelCase and in storage underscore_separated.
  * @todo Rename?
  */
 class SqlConventional extends NoConventional

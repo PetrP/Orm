@@ -11,7 +11,7 @@ use Exception;
 use ReflectionMethod;
 
 /**
- * Obecna implementace IEntityInjection
+ * Base implementation of IEntityInjection
  * @see IEntityInjection
  */
 abstract class Injection extends Object implements IEntityInjection, IEntityInjectionStaticLoader

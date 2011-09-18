@@ -11,7 +11,7 @@ use Closure;
 use ReflectionClass;
 
 /**
- * Informace o jednom parametru
+ * Information about one property of entity.
  * @see MetaData
  */
 class MetaDataProperty extends Object
