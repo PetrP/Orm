@@ -222,7 +222,7 @@ class PhpParser extends Tokenizer
 		static $tag;
 		if ($head === NULL)
 		{
-			$git = new Git(__DIR__ . '/..');
+			$git = new Git(__DIR__ . '/../..');
 			$head = $git->getSha('HEAD');
 			$tags = array();
 			foreach (array_filter(explode("\n", $git->command('show-ref --tags'))) as $t)
