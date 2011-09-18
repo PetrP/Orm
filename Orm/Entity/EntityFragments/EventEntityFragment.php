@@ -10,7 +10,7 @@ namespace Orm;
 use Nette\Object;
 
 /**
- * Udalosti
+ * Events.
  * @see Entity
  */
 abstract class EventEntityFragment extends Object

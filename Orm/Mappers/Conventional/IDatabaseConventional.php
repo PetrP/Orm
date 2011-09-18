@@ -7,7 +7,12 @@
 
 namespace Orm;
 
-/** Konvence pojmenovani v databazi. */
+/**
+ * Naming conventions in database.
+ * Different names of keys between entity and storage.
+ * Table name and primary key convention.
+ * ManyToMany mapper convention.
+ */
 interface IDatabaseConventional extends IConventional
 {
 

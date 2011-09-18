@@ -10,8 +10,8 @@ namespace Orm;
 use Nette\Object;
 
 /**
- * Rozdily nazvu klicu v entite a v ulozisti.
- * Nedela zadny rozdil, uklada stejne.
+ * Naming conventions in storage.
+ * Makes no difference. Stores same.
  */
 class NoConventional extends Object implements IDatabaseConventional
 {

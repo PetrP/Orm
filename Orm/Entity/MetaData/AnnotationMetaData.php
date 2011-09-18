@@ -12,7 +12,7 @@ use Nette\Reflection\AnnotationsParser;
 use ReflectionClass;
 
 /**
- * Ziskava meta data z enotaci.
+ * Fills MetaData from annotation.
  *
  * <code>
  * /**

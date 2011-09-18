@@ -12,7 +12,8 @@ use Exception;
 use ReflectionClass;
 
 /**
- * Informace o parametrech entity.
+ * Information about properties of entity.
+ * @see MetaDataProperty
  */
 class MetaData extends Object
 {

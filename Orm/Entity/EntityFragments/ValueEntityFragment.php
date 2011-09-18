@@ -11,7 +11,7 @@ use Exception;
 use ReflectionMethod;
 
 /**
- * Obstarava cteni, kontrolu, plneni, nastavovani, validovani dat
+ * Performs all reading, checking, filling, setting and validation of data.
  * @see Entity
  */
 abstract class ValueEntityFragment extends AttachableEntityFragment

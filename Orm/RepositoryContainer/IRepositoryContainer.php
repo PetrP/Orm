@@ -10,9 +10,11 @@ namespace Orm;
 require_once __DIR__ . '/../Orm.php';
 
 /**
- * Kolekce Repository.
- * Stara se o jejich vytvareni.
- * Je to vstupni bod do modelu z jinych casti aplikace.
+ * Collection of IRepository.
+ *
+ * Cares of initialisation repository.
+ * It is entry point into model from other parts of application.
+ * Stores container of services what other objects may need.
  */
 interface IRepositoryContainer
 {
