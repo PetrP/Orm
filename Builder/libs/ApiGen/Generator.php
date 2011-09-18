@@ -634,7 +634,7 @@ class Generator extends Nette\Object
 									continue;
 								}
 
-								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*\s+\$' . $parameter->getName() . '(?:\s+.+)?$~s', $annotations['param'][$no])) {
+								if (!preg_match('~^[\w\\\\]+(?:\|[\w\\\\]+)*(?:\s+\$' . $parameter->getName() . ')?(?:\s+.+)?$~s', $annotations['param'][$no])) {
 									$undocumented[$parentElementLabel][] = $message($parentElement, $element, $parameter, sprintf('Invalid documentation "%s".', $annotations['param'][$no]));
 								}
 
