@@ -60,7 +60,7 @@ class DibiMapper extends Mapper
 		}
 		else
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException;
 		}
 	}
 
