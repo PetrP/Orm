@@ -51,7 +51,7 @@ foreach (array(
 		'tests/libs/dump.php',
 	) as $p)
 	{
-		$b->build(__DIR__ . "/../$p", __DIR__ . "/../Builder/$dir/$p");
+		$b->build(__DIR__ . "/../$p", __DIR__ . "/$dir/$p");
 	}
 }
 
