@@ -32,6 +32,15 @@ $b = new Builder(Builder::NONNS | Builder::NONNS_NETTE, $isDev);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Orm");
 $zip->add($b);
 
+if ($full)
+{
+	$api = new Api;
+	$api->generate(__DIR__ . "/php52/Orm", __DIR__ . "/php52/Api");
+	$api->generate(__DIR__ . "/php53/Orm", __DIR__ . "/php53/Api");
+
+	$zip->add($api);
+}
+
 $zip->save();
 
 foreach (array(
