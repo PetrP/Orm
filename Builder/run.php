@@ -22,10 +22,6 @@ $r->register();
 $isDev = isset($_GET['dev']);
 
 $zip = new Zipper(__DIR__ . '/Orm.zip', __DIR__);
-if (!$isDev)
-{
-	$zip->addMatch(__DIR__ . '/../Orm');
-}
 
 $b = new Builder(Builder::NS | Builder::NS_NETTE, $isDev);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Orm");

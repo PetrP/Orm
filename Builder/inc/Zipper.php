@@ -9,6 +9,9 @@ use Nette\Utils\Strings;
 
 class Zipper extends Object
 {
+	/** @var bool */
+	private $enable;
+
 	/** @var ZipArchive */
 	private $zip;
 
@@ -21,9 +24,12 @@ class Zipper extends Object
 	/**
 	 * @param string
 	 * @param string
+	 * @param true
 	 */
-	public function __construct($file, $rootDir)
+	public function __construct($file, $rootDir, $enable = true)
 	{
+		$this->enable = $enable;
+		if (!$this->enable) return;
 		$this->zip = new ZipArchive;
 		@unlink($file);
 		$r = $this->zip->open($file, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
@@ -38,28 +44,17 @@ class Zipper extends Object
 		}
 	}
 
-	/** @param string */
-	public function addMatch($match)
+	/** @param IZipperFiles */
+	public function add(IZipperFiles $files)
 	{
-		$match = realpath($match);
-		if (!$match) throw new Exception;
-		$this->matches[] = $match;
-	}
-
-	/** @param Builder */
-	public function add(Builder $builder)
-	{
-		foreach ($builder->getFiles() as $fromPath => $toPath)
+		if (!$this->enable) return;
+		foreach ($files->getFiles() as $file)
 		{
-			if (!$this->isMatch($fromPath))
+			if (!Strings::startsWith($file, $this->rootDir))
 			{
-				continue;
+				throw new Exception($file);
 			}
-			if (!Strings::startsWith($toPath, $this->rootDir))
-			{
-				throw new Exception($toPath);
-			}
-			if (!$this->zip->addFile($toPath, substr($toPath, strlen($this->rootDir)+1)))
+			if (!$this->zip->addFile($file, substr($file, strlen($this->rootDir)+1)))
 			{
 				throw new Exception;
 			}
@@ -68,26 +63,17 @@ class Zipper extends Object
 
 	public function save()
 	{
+		if (!$this->enable) return;
 		if (!$this->zip->close())
 		{
 			throw new Exception;
 		}
 	}
 
-	/**
-	 * @param Builder
-	 * @return bool
-	 */
-	private function isMatch($fromPath)
-	{
-		foreach ($this->matches as $match)
-		{
-			if (Strings::startsWith($fromPath, $match))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+}
 
+interface IZipperFiles
+{
+	/** @return array of filenames */
+	public function getFiles();
 }
