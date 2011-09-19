@@ -30,7 +30,7 @@ class ReflectionProperty extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : $this->classes[$className];
 	}
 
 	/**
@@ -41,6 +41,6 @@ class ReflectionProperty extends ReflectionBase
 	public function getDeclaringTrait()
 	{
 		$traitName = $this->reflection->getDeclaringTraitName();
-		return null === $traitName ? null : self::$classes[$traitName];
+		return null === $traitName ? null : $this->classes[$traitName];
 	}
 }

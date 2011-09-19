@@ -1128,7 +1128,7 @@ class Generator extends Nette\Object
 	 */
 	public function colorize($message)
 	{
-		static $placeholders = array(
+		$placeholders = array(
 			'@header@' => "\x1b[1;34;40m",
 			'@count@' => "\x1b[1;34;40m",
 			'@option@' => "\x1b[36;40m",

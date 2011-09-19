@@ -31,14 +31,14 @@ class ReflectionClass extends ReflectionBase
 	 *
 	 * @var integer
 	 */
-	private static $methodAccessLevels = false;
+	private $methodAccessLevels = false;
 
 	/**
 	 * Access level for properties.
 	 *
 	 * @var integer
 	 */
-	private static $propertyAccessLevels = false;
+	private $propertyAccessLevels = false;
 
 	/**
 	 * Cache for list of parent classes.
@@ -101,30 +101,30 @@ class ReflectionClass extends ReflectionBase
 	{
 		parent::__construct($reflection, $generator);
 
-		if (false === self::$methodAccessLevels) {
-			if (count(self::$config->accessLevels) < 3) {
-				self::$methodAccessLevels = 0;
-				self::$propertyAccessLevels = 0;
+		if (false === $this->methodAccessLevels) {
+			if (count($this->config->accessLevels) < 3) {
+				$this->methodAccessLevels = 0;
+				$this->propertyAccessLevels = 0;
 
-				foreach (self::$config->accessLevels as $level) {
+				foreach ($this->config->accessLevels as $level) {
 					switch (strtolower($level)) {
 						case 'public':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
+							$this->methodAccessLevels |= InternalReflectionMethod::IS_PUBLIC;
+							$this->propertyAccessLevels |= InternalReflectionProperty::IS_PUBLIC;
 							break;
 						case 'protected':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
+							$this->methodAccessLevels |= InternalReflectionMethod::IS_PROTECTED;
+							$this->propertyAccessLevels |= InternalReflectionProperty::IS_PROTECTED;
 							break;
 						case 'private':
-							self::$methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
-							self::$propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
+							$this->methodAccessLevels |= InternalReflectionMethod::IS_PRIVATE;
+							$this->propertyAccessLevels |= InternalReflectionProperty::IS_PRIVATE;
 							break;
 					}
 				}
 			} else {
-				self::$methodAccessLevels = null;
-				self::$propertyAccessLevels = null;
+				$this->methodAccessLevels = null;
+				$this->propertyAccessLevels = null;
 			}
 		}
 	}
@@ -138,11 +138,11 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->methods) {
 			$this->methods = $this->getOwnMethods();
-			foreach ($this->reflection->getMethods(self::$methodAccessLevels) as $method) {
+			foreach ($this->reflection->getMethods($this->methodAccessLevels) as $method) {
 				if (isset($this->methods[$method->getName()])) {
 					continue;
 				}
-				$apiMethod = new ReflectionMethod($method, self::$generator);
+				$apiMethod = new ReflectionMethod($method, $this->generator);
 				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->methods[$method->getName()] = $apiMethod;
 				}
@@ -160,8 +160,8 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->ownMethods) {
 			$this->ownMethods = array();
-			foreach ($this->reflection->getOwnMethods(self::$methodAccessLevels) as $method) {
-				$apiMethod = new ReflectionMethod($method, self::$generator);
+			foreach ($this->reflection->getOwnMethods($this->methodAccessLevels) as $method) {
+				$apiMethod = new ReflectionMethod($method, $this->generator);
 				if (!$this->isDocumented() || $apiMethod->isDocumented()) {
 					$this->ownMethods[$method->getName()] = $apiMethod;
 				}
@@ -178,8 +178,8 @@ class ReflectionClass extends ReflectionBase
 	public function getTraitMethods()
 	{
 		$methods = array();
-		foreach ($this->reflection->getTraitMethods(self::$methodAccessLevels) as $method) {
-			$apiMethod = new ReflectionMethod($method, self::$generator);
+		foreach ($this->reflection->getTraitMethods($this->methodAccessLevels) as $method) {
+			$apiMethod = new ReflectionMethod($method, $this->generator);
 			if (!$this->isDocumented() || $apiMethod->isDocumented()) {
 				$methods[$method->getName()] = $apiMethod;
 			}
@@ -211,11 +211,11 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->properties) {
 			$this->properties = $this->getOwnProperties();
-			foreach ($this->reflection->getProperties(self::$propertyAccessLevels) as $property) {
+			foreach ($this->reflection->getProperties($this->propertyAccessLevels) as $property) {
 				if (isset($this->properties[$property->getName()])) {
 					continue;
 				}
-				$apiProperty = new ReflectionProperty($property, self::$generator);
+				$apiProperty = new ReflectionProperty($property, $this->generator);
 				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->properties[$property->getName()] = $apiProperty;
 				}
@@ -234,8 +234,8 @@ class ReflectionClass extends ReflectionBase
 	{
 		if (null === $this->ownProperties) {
 			$this->ownProperties = array();
-			foreach ($this->reflection->getOwnProperties(self::$propertyAccessLevels) as $property) {
-				$apiProperty = new ReflectionProperty($property, self::$generator);
+			foreach ($this->reflection->getOwnProperties($this->propertyAccessLevels) as $property) {
+				$apiProperty = new ReflectionProperty($property, $this->generator);
 				if (!$this->isDocumented() || $apiProperty->isDocumented()) {
 					$this->ownProperties[$property->getName()] = $apiProperty;
 				}
@@ -252,8 +252,8 @@ class ReflectionClass extends ReflectionBase
 	public function getTraitProperties()
 	{
 		$properties = array();
-		foreach ($this->reflection->getTraitProperties(self::$propertyAccessLevels) as $property) {
-			$apiProperty = new ReflectionProperty($property, self::$generator);
+		foreach ($this->reflection->getTraitProperties($this->propertyAccessLevels) as $property) {
+			$apiProperty = new ReflectionProperty($property, $this->generator);
 			if (!$this->isDocumented() || $apiProperty->isDocumented()) {
 				$properties[$property->getName()] = $apiProperty;
 			}
@@ -286,7 +286,7 @@ class ReflectionClass extends ReflectionBase
 		if (null === $this->constants) {
 			$this->constants = array();
 			foreach ($this->reflection->getConstantReflections() as $constant) {
-				$apiConstant = new ReflectionConstant($constant, self::$generator);
+				$apiConstant = new ReflectionConstant($constant, $this->generator);
 				if (!$this->isDocumented() || $apiConstant->isDocumented()) {
 					$this->constants[$constant->getName()] = $apiConstant;
 				}
@@ -413,7 +413,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClass()
 	{
 		if ($className = $this->reflection->getParentClassName()) {
-			return self::$classes[$className];
+			return $this->classes[$className];
 		}
 		return $className;
 	}
@@ -426,7 +426,7 @@ class ReflectionClass extends ReflectionBase
 	public function getParentClasses()
 	{
 		if (null === $this->parentClasses) {
-			$classes = self::$classes;
+			$classes = $this->classes;
 			$this->parentClasses = array_map(function(IReflectionClass $class) use ($classes) {
 				return $classes[$class->getName()];
 			}, $this->reflection->getParentClasses());
@@ -441,7 +441,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = $this->classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getInterfaces());
@@ -454,7 +454,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnInterfaces()
 	{
-		$classes = self::$classes;
+		$classes = $this->classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnInterfaces());
@@ -467,7 +467,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getTraits()
 	{
-		$classes = self::$classes;
+		$classes = $this->classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getTraits());
@@ -480,7 +480,7 @@ class ReflectionClass extends ReflectionBase
 	 */
 	public function getOwnTraits()
 	{
-		$classes = self::$classes;
+		$classes = $this->classes;
 		return array_map(function(IReflectionClass $class) use ($classes) {
 			return $classes[$class->getName()];
 		}, $this->reflection->getOwnTraits());
@@ -495,7 +495,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -515,7 +515,7 @@ class ReflectionClass extends ReflectionBase
 	{
 		$subClasses = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -539,7 +539,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -563,7 +563,7 @@ class ReflectionClass extends ReflectionBase
 
 		$implementers = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -587,7 +587,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -612,7 +612,7 @@ class ReflectionClass extends ReflectionBase
 
 		$users = array();
 		$name = $this->reflection->getName();
-		foreach (self::$classes as $class) {
+		foreach ($this->classes as $class) {
 			if (!$class->isDocumented()) {
 				continue;
 			}
@@ -858,14 +858,14 @@ class ReflectionClass extends ReflectionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented()) {
-			foreach (self::$config->skipDocPath as $mask) {
+			foreach ($this->config->skipDocPath as $mask) {
 				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}
 			}
 			if (true === $this->isDocumented) {
-				foreach (self::$config->skipDocPrefix as $prefix) {
+				foreach ($this->config->skipDocPrefix as $prefix) {
 					if (0 === strpos($this->reflection->getName(), $prefix)) {
 						$this->isDocumented = false;
 						break;
