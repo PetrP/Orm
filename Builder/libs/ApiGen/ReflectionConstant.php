@@ -30,7 +30,7 @@ class ReflectionConstant extends ReflectionBase
 	public function getDeclaringClass()
 	{
 		$className = $this->reflection->getDeclaringClassName();
-		return null === $className ? null : self::$classes[$className];
+		return null === $className ? null : $this->classes[$className];
 	}
 
 	/**
@@ -41,14 +41,14 @@ class ReflectionConstant extends ReflectionBase
 	public function isDocumented()
 	{
 		if (null === $this->isDocumented && parent::isDocumented() && null === $this->reflection->getDeclaringClassName()) {
-			foreach (self::$config->skipDocPath as $mask) {
+			foreach ($this->config->skipDocPath as $mask) {
 				if (fnmatch($mask, $this->reflection->getFilename(), FNM_NOESCAPE)) {
 					$this->isDocumented = false;
 					break;
 				}
 			}
 			if (true === $this->isDocumented) {
-				foreach (self::$config->skipDocPrefix as $prefix) {
+				foreach ($this->config->skipDocPrefix as $prefix) {
 					if (0 === strpos($this->reflection->getName(), $prefix)) {
 						$this->isDocumented = false;
 						break;

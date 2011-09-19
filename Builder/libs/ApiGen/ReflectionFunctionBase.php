@@ -31,7 +31,7 @@ abstract class ReflectionFunctionBase extends ReflectionBase
 	 */
 	public function getParameters()
 	{
-		$generator = self::$generator;
+		$generator = $this->generator;
 		return array_map(function(TokenReflection\IReflectionParameter $parameter) use ($generator) {
 			return new ReflectionParameter($parameter, $generator);
 		}, $this->reflection->getParameters());
