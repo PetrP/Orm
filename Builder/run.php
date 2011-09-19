@@ -20,8 +20,9 @@ $r->addDirectory(__DIR__ . '/libs');
 $r->register();
 
 $isDev = isset($_GET['dev']);
+$full = isset($_GET['full']) ? true : !$isDev;
 
-$zip = new Zipper(__DIR__ . '/Orm.zip', __DIR__);
+$zip = new Zipper(__DIR__ . '/Orm.zip', __DIR__, $full);
 
 $b = new Builder(Builder::NS | Builder::NS_NETTE, $isDev);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Nette_with_namespaces/Orm");
