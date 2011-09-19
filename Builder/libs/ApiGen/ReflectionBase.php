@@ -31,28 +31,28 @@ abstract class ReflectionBase
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $classes;
+	protected $classes;
 
 	/**
 	 * List of functions.
 	 *
 	 * @var \ArrayObject
 	 */
-	protected static $functions;
+	protected $functions;
 
 	/**
 	 * Generator.
 	 *
 	 * @var \ApiGen\Generator
 	 */
-	protected static $generator = null;
+	protected $generator = null;
 
 	/**
 	 * Config.
 	 *
 	 * @var \ApiGen\Config
 	 */
-	protected static $config = null;
+	protected $config = null;
 
 	/**
 	 * Class methods cache.
@@ -92,12 +92,10 @@ abstract class ReflectionBase
 	 */
 	public function __construct(IReflection $reflection, Generator $generator)
 	{
-		if (null === self::$generator) {
-			self::$generator = $generator;
-			self::$config = $generator->getConfig();
-			self::$classes = $generator->getClasses();
-			self::$functions = $generator->getFunctions();
-		}
+		$this->generator = $generator;
+		$this->config = $generator->getConfig();
+		$this->classes = $generator->getClasses();
+		$this->functions = $generator->getFunctions();
 
 		$this->reflectionType = get_class($this);
 		if (!isset(self::$reflectionMethods[$this->reflectionType])) {
@@ -164,7 +162,7 @@ abstract class ReflectionBase
 	 */
 	public function isMain()
 	{
-		return empty(self::$config->main) || 0 === strpos($this->reflection->getName(), self::$config->main);
+		return empty($this->config->main) || 0 === strpos($this->reflection->getName(), $this->config->main);
 	}
 
 	/**
@@ -178,11 +176,11 @@ abstract class ReflectionBase
 			$this->isDocumented = $this->reflection->isTokenized() || $this->reflection->isInternal();
 
 			if ($this->isDocumented) {
-				if (!self::$config->php && $this->reflection->isInternal()) {
+				if (!$this->config->php && $this->reflection->isInternal()) {
 					$this->isDocumented = false;
-				} elseif (!self::$config->deprecated && $this->reflection->isDeprecated()) {
+				} elseif (!$this->config->deprecated && $this->reflection->isDeprecated()) {
 					$this->isDocumented = false;
-				} elseif (!self::$config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
+				} elseif (!$this->config->internal && ($internal = $this->reflection->getAnnotation('internal')) && empty($internal[0])) {
 					$this->isDocumented = false;
 				}
 			}
