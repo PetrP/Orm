@@ -10,7 +10,7 @@ use Nette\Object;
 use SplFileInfo;
 use Exception;
 
-class Builder extends Object
+class Builder extends Object implements IZipperFiles
 {
 	/** Namespace ORM */
 	const NS = 1;
