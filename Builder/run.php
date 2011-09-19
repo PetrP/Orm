@@ -40,6 +40,17 @@ $b = new Builder(Builder::NONNS | Builder::NS_NETTE, $isDev);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Nette_with_namespaces/Orm");
 $zip->add($b);
 
+if ($full)
+{
+	$api = new Api;
+	$api->generate(__DIR__ . "/php52/Nette_with_namespaces/Orm", __DIR__ . "/php52/Nette_with_namespaces/Api");
+	$api->generate(__DIR__ . "/php52/Nette_without_namespaces/Orm", __DIR__ . "/php52/Nette_without_namespaces/Api");
+	$api->generate(__DIR__ . "/php53/Nette_without_namespaces/Orm", __DIR__ . "/php53/Nette_without_namespaces/Api");
+	$api->generate(__DIR__ . "/php53/Nette_with_namespaces/Orm", __DIR__ . "/php53/Nette_with_namespaces/Api");
+
+	$zip->add($api);
+}
+
 $zip->save();
 
 foreach (array(
