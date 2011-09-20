@@ -27,6 +27,24 @@ if (!$isDev)
 	$zip->addMatch(__DIR__ . '/../Orm');
 }
 
+$b = new Builder(Builder::NS | Builder::NS_NETTE, $isDev);
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Nette_with_namespaces/Orm");
+$zip->add($b);
+
+$b = new Builder(Builder::NS | Builder::NONNS_NETTE, $isDev);
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Nette_without_namespaces/Orm");
+$zip->add($b);
+
+$b = new Builder(Builder::NONNS | Builder::NONNS_NETTE, $isDev);
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Nette_without_namespaces/Orm");
+$zip->add($b);
+
+$b = new Builder(Builder::NONNS | Builder::NS_NETTE, $isDev);
+$b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Nette_with_namespaces/Orm");
+$zip->add($b);
+
+$zip->save();
+
 foreach (array(
 	Builder::NS | Builder::NS_NETTE => 'php53/Nette_with_namespaces',
 	Builder::NS | Builder::NONNS_NETTE => 'php53/Nette_without_namespaces',
@@ -38,7 +56,6 @@ foreach (array(
 {
 	$b = new Builder($version, $isDev);
 	foreach (array(
-		'Orm',
 		'tests/cases',
 		'tests/boot.php',
 		'tests/libs/HttpPHPUnit',
@@ -47,10 +64,6 @@ foreach (array(
 	{
 		$b->build(__DIR__ . "/../$p", __DIR__ . "/../Builder/$dir/$p");
 	}
-
-	$zip->add($b);
 }
-
-$zip->save();
 
 echo '<h1>OK<h1>';
