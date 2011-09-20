@@ -72,6 +72,25 @@ class DibiCollection_findBy_Test extends DibiCollection_Base_Test
 		$this->a("SELECT `e`.* FROM `dibicollection` as e WHERE (`e`.`x` IN (2, 1))", $c);
 	}
 
+	/**
+	 * @covers Orm\DibiCollection::release
+	 * @covers Orm\BaseDibiCollection::release
+	 */
+	public function testWipe()
+	{
+		DibiCollection_DibiCollection::setBase($this->c, 'result', array());
+		DibiCollection_DibiCollection::set($this->c, 'count', 666);
+		$this->assertAttributeSame(array(), 'result', $this->c);
+		$this->assertAttributeSame(666, 'count', $this->c);
+
+		$c = $this->c->findBy(array('x' => NULL));
+
+		$this->assertAttributeSame(array(), 'result', $this->c);
+		$this->assertAttributeSame(666, 'count', $this->c);
+		$this->assertAttributeSame(NULL, 'result', $c);
+		$this->assertAttributeSame(NULL, 'count', $c);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'findBy');

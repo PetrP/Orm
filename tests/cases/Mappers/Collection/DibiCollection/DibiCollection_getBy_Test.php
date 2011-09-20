@@ -27,6 +27,17 @@ class DibiCollection_getBy_Test extends DibiCollection_BaseConnected_Test
 		$this->assertSame($e, $e);
 	}
 
+	public function testRelease()
+	{
+		$this->e(1, false, "SELECT `e`.* FROM `dibicollectionconnected` as e");
+		$e = $this->c->fetch();
+
+		$this->e(1, false, "SELECT `e`.* FROM `dibicollectionconnected` as e WHERE (`e`.`x` = 'y') LIMIT 1");
+		$e = $this->c->getBy(array('x' => 'y'));
+
+		$this->assertSame($e, $e);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\BaseDibiCollection', 'getBy');
