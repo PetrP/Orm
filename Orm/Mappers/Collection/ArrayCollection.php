@@ -100,7 +100,7 @@ class ArrayCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Fetches the single row.
+	 * Fetches the first row.
 	 * @return IEntity|NULL
 	 */
 	final public function fetch()
