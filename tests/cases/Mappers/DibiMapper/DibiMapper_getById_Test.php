@@ -16,7 +16,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 
 	public function testEmpty()
 	{
-		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '') LIMIT 1");
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`e`.`id` = '') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => ''), true);
 		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '' given.");
@@ -25,7 +25,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 
 	public function testEmptyZero()
 	{
-		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '0') LIMIT 1");
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`e`.`id` = '0') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => '0'), true);
 		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '0' given.");
@@ -34,7 +34,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 
 	public function test()
 	{
-		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '1') LIMIT 1");
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`e`.`id` = '1') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => 1), true);
 		$e = $this->m->getById(1);
@@ -44,7 +44,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 
 	public function testUnexists()
 	{
-		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '666') LIMIT 1");
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`e`.`id` = '666') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', false, true);
 		$e = $this->m->getById(666);
@@ -56,7 +56,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		setAccessible(new ReflectionProperty('Orm\Mapper', 'conventional'))
 			->setValue($this->m, new SqlConventional_getPrimaryKey_SqlConventional($this->m))
 		;
-		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`foo_bar` = '1') LIMIT 1");
+		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`e`.`foo_bar` = '1') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('foo_bar' => 1), true);
 		$e = $this->m->getById(1);
