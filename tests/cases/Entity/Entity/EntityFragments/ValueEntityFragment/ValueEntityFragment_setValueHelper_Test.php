@@ -29,7 +29,7 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 
 	public function testFkNull()
 	{
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_getset_Entity::\$fk must be 'testentity', 'NULL' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_getset_Entity::\$fk must be 'testentity'; 'NULL' given");
 		$this->e->fk;
 	}
 
@@ -77,14 +77,14 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 	public function testEnumStringBad1()
 	{
 		$e = new ValueEntityFragment_setValueHelper_Entity;
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumString must be ''a', 'b'', 'c' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumString must be 'a', 'b'; 'c' given");
 		$e->enumString = 'c';
 	}
 
 	public function testEnumStringBad2()
 	{
 		$e = new ValueEntityFragment_setValueHelper_Entity;
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumString must be ''a', 'b'', 'NULL' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumString must be 'a', 'b'; 'NULL' given");
 		$e->enumString = NULL;
 	}
 
@@ -104,21 +104,21 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 	public function testEnumIntBad1()
 	{
 		$e = new ValueEntityFragment_setValueHelper_Entity;
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be '1, 2', '3' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be 1, 2; '3' given");
 		$e->enumInt = 3;
 	}
 
 	public function testEnumIntBad2()
 	{
 		$e = new ValueEntityFragment_setValueHelper_Entity;
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be '1, 2', 'c' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be 1, 2; 'c' given");
 		$e->enumInt = 'c';
 	}
 
 	public function testEnumIntBad3()
 	{
 		$e = new ValueEntityFragment_setValueHelper_Entity;
-		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be '1, 2', 'NULL' given");
+		$this->setExpectedException('Orm\NotValidException', "Param ValueEntityFragment_setValueHelper_Entity::\$enumInt must be 1, 2; 'NULL' given");
 		$e->enumInt = NULL;
 	}
 

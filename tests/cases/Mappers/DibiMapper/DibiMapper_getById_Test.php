@@ -19,7 +19,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => ''), true);
-		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '' given.");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '' given.");
 		$this->m->getById('');
 	}
 
@@ -28,7 +28,7 @@ class DibiMapper_getById_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "SELECT `e`.* FROM `dibimapper_connected_dibi` as e WHERE (`id` = '0') LIMIT 1");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('id' => '0'), true);
-		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '0' given.");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '0' given.");
 		$this->m->getById('0');
 	}
 

@@ -45,7 +45,7 @@ class ValueEntityFragment_onPersist_Test extends TestCase
 	public function testBadId()
 	{
 		$e = new TestEntity;
-		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '-1' given");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '-1' given");
 		$e->___event($e, 'persist', $this->r, -1);
 	}
 

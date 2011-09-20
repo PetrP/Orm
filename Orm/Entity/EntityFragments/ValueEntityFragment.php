@@ -561,7 +561,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		}
 		if (!ValidationHelper::isValid($rule['types'], $value))
 		{
-			throw new NotValidException(array($this, $name, implode('|',$rule['types']), $value));
+			throw new NotValidException(array($this, $name, "'" . implode('|', $rule['types']) . "'", $value));
 		}
 
 		$this->values[$name] = $value;

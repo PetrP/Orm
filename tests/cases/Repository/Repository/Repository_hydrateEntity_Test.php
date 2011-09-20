@@ -32,13 +32,13 @@ class Repository_hydrateEntity_Test extends TestCase
 
 	public function testEmptyId()
 	{
-		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '' given.");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '' given.");
 		$this->r->hydrateEntity(array('id' => ''));
 	}
 
 	public function testEmptyIdZero()
 	{
-		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id', '0' given.");
+		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '0' given.");
 		$this->r->hydrateEntity(array('id' => '0'));
 	}
 

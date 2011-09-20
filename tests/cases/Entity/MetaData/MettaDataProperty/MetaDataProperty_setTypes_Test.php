@@ -131,7 +131,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		$e->enum = 'a';
 		$this->assertSame('a', $e->enum);
 
-		$this->setExpectedException('Orm\NotValidException', "Param MetaData_Test2_Entity::\$enum must be ''a', 'b', 'c'', 'd' given");
+		$this->setExpectedException('Orm\NotValidException', "Param MetaData_Test2_Entity::\$enum must be 'a', 'b', 'c'; 'd' given");
 		$e->enum = 'd';
 	}
 
