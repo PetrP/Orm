@@ -189,6 +189,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	{
 		$all = $this->toCollection();
 		$all->findBy[] = $where;
+		$all->release(true);
 		return $all;
 	}
 
