@@ -76,7 +76,7 @@ class DibiMapper extends Mapper
 	public function getById($id)
 	{
 		if (!$id) return NULL;
-		return $this->findAll()->where('[id] = %s', $id)->applyLimit(1)->fetch();
+		return $this->findAll()->getBy(array('id' => $id));
 	}
 
 	/**
