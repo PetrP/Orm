@@ -34,7 +34,16 @@ class MetaDataProperty_setEnum_Test extends TestCase
 	public function testWithNull()
 	{
 		$this->p->setEnum(array(NULL, '', 0, '0', false));
-		$this->assertSame(array('constants' => array(NULL, '', 0, '0', false), 'original' => ", , 0, 0, "), $this->getEnum());
+		$this->assertSame(array('constants' => array(NULL, '', 0, '0', false), 'original' => "NULL, '', 0, '0', FALSE"), $this->getEnum());
+	}
+
+	public function testDetectOriginal()
+	{
+		$this->p->setEnum(array(NULL, '', 0, false, true, 'string', 1.2, $this, array(1,2)));
+		$this->assertSame(array(
+			'constants' => array(NULL, '', 0, false, true, 'string', 1.2, $this, array(1,2)),
+			'original' => "NULL, '', 0, FALSE, TRUE, 'string', 1.2, MetaDataProperty_setEnum_Test, array",
+		), $this->getEnum());
 	}
 
 	public function testReflection()

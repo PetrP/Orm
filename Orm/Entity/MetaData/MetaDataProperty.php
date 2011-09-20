@@ -294,8 +294,17 @@ class MetaDataProperty extends Object
 	 */
 	public function setEnum(array $values, $original = NULL)
 	{
-		$this->data['enum'] = array('constants' => $values, 'original' => $original ? $original : implode(', ', $values));
-		// todo original zrusit
+		if ($original === NULL)
+		{
+			$original = implode(', ', array_map(function ($v) {
+				if (is_string($v)) return "'$v'";
+				if (is_object($v)) return get_class($v);
+				if (is_bool($v)) return $v ? 'TRUE' : 'FALSE';
+				if (is_scalar($v)) return $v;
+				return gettype($v);
+			}, $values));
+		}
+		$this->data['enum'] = array('constants' => $values, 'original' => $original);
 		return $this;
 	}
 
