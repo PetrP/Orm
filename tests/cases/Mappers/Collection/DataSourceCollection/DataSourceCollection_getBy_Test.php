@@ -27,4 +27,15 @@ class DataSourceCollection_getBy_Test extends DataSourceCollection_BaseConnected
 		$this->assertSame($e, $e);
 	}
 
+	public function testRelease()
+	{
+		$this->e(1, false, "SELECT * FROM `datasourcecollectionconnected`");
+		$e = $this->c->fetch();
+
+		$this->e(1, false, "SELECT * FROM `datasourcecollectionconnected` WHERE (`x` = 'y') LIMIT 1");
+		$e = $this->c->getBy(array('x' => 'y'));
+
+		$this->assertSame($e, $e);
+	}
+
 }

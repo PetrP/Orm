@@ -72,4 +72,27 @@ class DataSourceCollection_findBy_Test extends DataSourceCollection_Base_Test
 		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (2, 1))", $c);
 	}
 
+	/**
+	 * @covers Orm\DataSourceCollection::release
+	 * @covers Orm\BaseDibiCollection::release
+	 */
+	public function testWipe()
+	{
+		DibiCollection_DibiCollection::setBase($this->c, 'result', array());
+		DataSourceCollection_DataSourceCollection::set($this->c, 'count', 666);
+		DataSourceCollection_DataSourceCollection::set($this->c, 'dataSource', $this->c);
+		$this->assertAttributeSame(array(), 'result', $this->c);
+		$this->assertAttributeSame(666, 'count', $this->c);
+		$this->assertAttributeSame($this->c, 'dataSource', $this->c);
+
+		$c = $this->c->findBy(array('x' => NULL));
+
+		$this->assertAttributeSame(array(), 'result', $this->c);
+		$this->assertAttributeSame(666, 'count', $this->c);
+		$this->assertAttributeSame($this->c, 'dataSource', $this->c);
+		$this->assertAttributeSame(NULL, 'result', $c);
+		$this->assertAttributeSame(NULL, 'count', $c);
+		$this->assertAttributeSame(NULL, 'dataSource', $c);
+	}
+
 }
