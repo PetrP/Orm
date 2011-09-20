@@ -42,7 +42,7 @@ interface IEntityCollection extends Countable, IteratorAggregate
 	public function applyLimit($limit, $offset = NULL);
 
 	/**
-	 * Fetches the single row.
+	 * Fetches the first row.
 	 * @return IEntity|NULL
 	 */
 	public function fetch();
