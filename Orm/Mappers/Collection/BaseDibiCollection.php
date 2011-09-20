@@ -131,13 +131,14 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	}
 
 	/**
-	 * Fetches the single row.
+	 * Fetches the first row.
 	 * @return IEntity|NULL
-	 * @todo posouva cursor
 	 */
 	final public function fetch()
 	{
-		$row = $this->getResult()->fetch();
+		$result = $this->getResult();
+		$result->seek(0);
+		$row = $result->fetch();
 		if ($row === false) return NULL;
 		return $this->repository->hydrateEntity($row);
 	}
