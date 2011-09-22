@@ -1,10 +1,10 @@
 <?php
 
-use Orm\EntityIterator;
+use Orm\HydrateEntityIterator;
 use Orm\RepositoryContainer;
 use Orm\Object;
 
-class EntityIterator_Base_IteratorAggregate implements IteratorAggregate
+class HydrateEntityIterator_Base_IteratorAggregate implements IteratorAggregate
 {
 	private $array = array();
 	public function __construct(array $array)
@@ -17,23 +17,23 @@ class EntityIterator_Base_IteratorAggregate implements IteratorAggregate
 	}
 }
 
-abstract class EntityIterator_Base_Test extends TestCase
+abstract class HydrateEntityIterator_Base_Test extends TestCase
 {
 	protected $d;
 	protected $i;
 	protected $r;
 	protected function setUp()
 	{
-		$this->d = new EntityIterator_Driver;
+		$this->d = new HydrateEntityIterator_Driver;
 		$m = new RepositoryContainer;
 		$r = new DibiResult($this->d, array());
 		$i = new DibiResultIterator($r);
 		$this->r = $m->tests;
-		$this->i = new EntityIterator($this->r, $i);
+		$this->i = new HydrateEntityIterator($this->r, $i);
 	}
 }
 
-class EntityIterator_Driver extends Object implements IDibiResultDriver
+class HydrateEntityIterator_Driver extends Object implements IDibiResultDriver
 {
 	private $pos = 0;
 	public $count = 3;

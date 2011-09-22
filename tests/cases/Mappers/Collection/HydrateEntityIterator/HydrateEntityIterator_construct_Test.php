@@ -1,11 +1,11 @@
 <?php
 
-use Orm\EntityIterator;
+use Orm\HydrateEntityIterator;
 
 /**
- * @covers Orm\EntityIterator::__construct
+ * @covers Orm\HydrateEntityIterator::__construct
  */
-class EntityIterator_construct_Test extends EntityIterator_Base_Test
+class HydrateEntityIterator_construct_Test extends HydrateEntityIterator_Base_Test
 {
 	public function test1()
 	{
@@ -20,7 +20,7 @@ class EntityIterator_construct_Test extends EntityIterator_Base_Test
 
 	public function testAnyTraversable1()
 	{
-		$i = new EntityIterator($this->r, new ArrayIterator(array(array('id' => 5), array('id' => 6))));
+		$i = new HydrateEntityIterator($this->r, new ArrayIterator(array(array('id' => 5), array('id' => 6))));
 		$all = iterator_to_array($i);
 		$this->assertSame(2, count($all));
 		$this->assertSame(5, $all[0]->id);
@@ -29,7 +29,7 @@ class EntityIterator_construct_Test extends EntityIterator_Base_Test
 
 	public function testAnyTraversable2()
 	{
-		$i = new EntityIterator($this->r, new IteratorIterator(new ArrayIterator(array(array('id' => 5), array('id' => 6)))));
+		$i = new HydrateEntityIterator($this->r, new IteratorIterator(new ArrayIterator(array(array('id' => 5), array('id' => 6)))));
 		$all = iterator_to_array($i);
 		$this->assertSame(2, count($all));
 		$this->assertSame(5, $all[0]->id);
@@ -38,7 +38,7 @@ class EntityIterator_construct_Test extends EntityIterator_Base_Test
 
 	public function testAnyTraversable3()
 	{
-		$i = new EntityIterator($this->r, new EntityIterator_Base_IteratorAggregate(array(array('id' => 5), array('id' => 6))));
+		$i = new HydrateEntityIterator($this->r, new HydrateEntityIterator_Base_IteratorAggregate(array(array('id' => 5), array('id' => 6))));
 		$all = iterator_to_array($i);
 		$this->assertSame(2, count($all));
 		$this->assertSame(5, $all[0]->id);
@@ -47,7 +47,7 @@ class EntityIterator_construct_Test extends EntityIterator_Base_Test
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\EntityIterator', '__construct');
+		$r = new ReflectionMethod('Orm\HydrateEntityIterator', '__construct');
 		$this->assertTrue($r->isPublic(), 'visibility');
 		$this->assertFalse($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

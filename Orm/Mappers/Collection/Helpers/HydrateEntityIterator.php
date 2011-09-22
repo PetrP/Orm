@@ -13,11 +13,12 @@ use Traversable;
 
 /**
  * Hydrate iterator for IEntityCollection.
+ * @see IRepository::hydrateEntity()
  * @author Petr Procházka
  * @package Orm
  * @subpackage Mappers\Collection\Helpers
  */
-class EntityIterator extends IteratorIterator implements Countable
+class HydrateEntityIterator extends IteratorIterator implements Countable
 {
 	/** @var IRepository */
 	private $repository;

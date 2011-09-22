@@ -175,10 +175,10 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 		);
 	}
 
-	/** @return EntityIterator */
+	/** @return HydrateEntityIterator */
 	final public function getIterator()
 	{
-		return new EntityIterator($this->repository, $this->getResult()->getIterator());
+		return new HydrateEntityIterator($this->repository, $this->getResult()->getIterator());
 	}
 
 	/**

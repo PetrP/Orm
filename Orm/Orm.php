@@ -121,7 +121,7 @@ require_once __DIR__ . '/Mappers/Collection/ArrayCollection.php';
 require_once __DIR__ . '/Mappers/Collection/BaseDibiCollection.php';
 require_once __DIR__ . '/Mappers/Collection/DibiCollection.php';
 require_once __DIR__ . '/Mappers/Collection/DataSourceCollection.php';
-require_once __DIR__ . '/Mappers/Collection/Helpers/EntityIterator.php';
+require_once __DIR__ . '/Mappers/Collection/Helpers/HydrateEntityIterator.php';
 require_once __DIR__ . '/Mappers/Collection/Helpers/FetchAssoc.php';
 require_once __DIR__ . '/Mappers/Collection/Helpers/FindByHelper.php';
 
