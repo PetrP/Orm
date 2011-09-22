@@ -1,5 +1,7 @@
 <?php
 
+use Orm\EntityIterator;
+
 /**
  * @covers Orm\EntityIterator::count
  */
@@ -16,6 +18,24 @@ class EntityIterator_count_Test extends EntityIterator_Base_Test
 	{
 		$this->d->count = 0;
 		$this->assertSame(0, $this->i->count());
+	}
+
+	public function testAnyTraversableCountable()
+	{
+		$i = new EntityIterator($this->r, new ArrayIterator(array(array('id' => 1), array('id' => 2))));
+		$this->assertSame(2, $i->count());
+	}
+
+	public function testAnyTraversableNotCountable()
+	{
+		$i = new EntityIterator($this->r, new IteratorIterator(new ArrayIterator(array(array('id' => 1), array('id' => 2)))));
+		$this->assertSame(2, $i->count());
+	}
+
+	public function testAnyTraversable()
+	{
+		$i = new EntityIterator($this->r, new EntityIterator_Base_IteratorAggregate(array(array('id' => 1), array('id' => 2))));
+		$this->assertSame(2, $i->count());
 	}
 
 	public function testReflection()

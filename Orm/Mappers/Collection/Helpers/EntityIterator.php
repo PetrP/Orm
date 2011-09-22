@@ -9,7 +9,7 @@ namespace Orm;
 
 use IteratorIterator;
 use Countable;
-use DibiResultIterator;
+use Traversable;
 
 /**
  * Hydrate iterator for IEntityCollection.
@@ -24,9 +24,9 @@ class EntityIterator extends IteratorIterator implements Countable
 
 	/**
 	 * @param IRepository
-	 * @param DibiResultIterator
+	 * @param Traversable
 	 */
-	public function __construct(IRepository $repository, DibiResultIterator $iterator)
+	public function __construct(IRepository $repository, Traversable $iterator)
 	{
 		$this->repository = $repository;
 		parent::__construct($iterator);
@@ -41,7 +41,12 @@ class EntityIterator extends IteratorIterator implements Countable
 	/** @return int */
 	public function count()
 	{
-		return $this->getInnerIterator()->count();
+		$i = $this->getInnerIterator();
+		if ($i instanceof Countable)
+		{
+			return $i->count();
+		}
+		return iterator_count($i);
 	}
 
 }

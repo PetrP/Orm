@@ -4,6 +4,19 @@ use Orm\EntityIterator;
 use Orm\RepositoryContainer;
 use Orm\Object;
 
+class EntityIterator_Base_IteratorAggregate implements IteratorAggregate
+{
+	private $array = array();
+	public function __construct(array $array)
+	{
+		$this->array = $array;
+	}
+	public function getIterator()
+	{
+		return new ArrayIterator($this->array);
+	}
+}
+
 abstract class EntityIterator_Base_Test extends TestCase
 {
 	protected $d;
