@@ -24,6 +24,7 @@ class ServiceContainerFactory extends Object implements IServiceContainerFactory
 	public function __construct(IServiceContainer $container = NULL)
 	{
 		if (!$container) $container = new ServiceContainer;
+		$container->addService('annotationsParser', 'Orm\AnnotationsParser');
 		$container->addService('annotationClassParser', 'Orm\AnnotationClassParser');
 		$container->addService('mapperFactory', array($this, 'createMapperFactory'));
 		$container->addService('repositoryHelper', 'Orm\RepositoryHelper');

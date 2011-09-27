@@ -16,9 +16,8 @@ use Reflector;
  * Custom callback can be registered like this:
  * <code>
  * $container = $repositoryContainer->getContext();
- * $container->addService('AnnotationClassParser', function () {
- * 	$parser = new AnnotationsParser(array('MyCustomAnnotationsParser', 'getAll'));
- * 	return new AnnotationClassParser($parser);
+ * $container->addService('annotationsParser', function () {
+ * 	return new AnnotationsParser(array('MyCustomAnnotationsParser', 'getAll'));
  * });
  *
  * abstract class BaseEntity extends Orm\Entity
