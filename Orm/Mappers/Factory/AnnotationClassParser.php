@@ -127,17 +127,6 @@ class AnnotationClassParser extends Object
 	}
 
 	/**
-	 * Returns phpdoc annotations.
-	 * @param ReflectionClass
-	 * @return array of annotation => array
-	 * @see AnnotationsParser
-	 */
-	protected function getAnnotations(ReflectionClass $reflection)
-	{
-		return $this->parser->getByReflection($reflection);
-	}
-
-	/**
 	 * @param stdClass
 	 * @param string
 	 * @return string|NULL
@@ -199,7 +188,7 @@ class AnnotationClassParser extends Object
 	 */
 	private function getByReflection(stdClass $r, ReflectionClass $reflection, $defaultClass)
 	{
-		$annotation = $this->getAnnotations($reflection);
+		$annotation = $this->parser->getByReflection($reflection);
 		if (isset($annotation[$r->annotation]))
 		{
 			if (count($annotation[$r->annotation]) !== 1)
@@ -239,6 +228,12 @@ class AnnotationClassParser extends Object
 		}
 
 		return $this->getByClassName($r, get_parent_class($reflection->getName()));
+	}
+
+	/** @deprecated */
+	final protected function getAnnotations(ReflectionClass $reflection)
+	{
+		throw new DeprecatedException(array(__CLASS__, 'getAnnotations()', '', __CLASS__ . '->parser->getByReflection()'));
 	}
 
 }

@@ -1,17 +1,24 @@
 <?php
 
 use Orm\AnnotationClassParser;
+use Orm\AnnotationsParser;
 
 class AnnotationClassParser_get_AnnotationClassParser extends AnnotationClassParser
 {
 	public $a = array();
 
-	protected function getAnnotations(ReflectionClass $reflection)
+	public function __construct()
 	{
-		$n = $reflection->getName();
-		if (isset($this->a[$n])) return $this->a[$n];
-		return parent::getAnnotations($reflection);
+		$t = $this;
+		$normalParser = new AnnotationsParser;
+		$parser = new AnnotationsParser(function (ReflectionClass $reflection) use ($t, $normalParser) {
+			$n = $reflection->getName();
+			if (isset($t->a[$n])) return $t->a[$n];
+			return $normalParser->getByReflection($reflection);
+		});
+		parent::__construct($parser);
 	}
+
 }
 
 

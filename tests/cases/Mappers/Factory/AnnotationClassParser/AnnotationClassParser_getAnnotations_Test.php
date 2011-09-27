@@ -16,18 +16,15 @@ class AnnotationClassParser_getAnnotations_Test extends TestCase
 
 	public function test()
 	{
-		$a = $this->p->_getAnnotations(new ReflectionClass('Nette\Reflection\AnnotationsParser'));
-		$this->assertSame(3, count($a));
-		$this->assertSame(array('Annotations support for PHP.'), $a['description']);
-		$this->assertSame(array('David Grudl'), $a['author']);
-		$this->assertSame(array(true), $a['Annotation']);
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\AnnotationClassParser::getAnnotations() is deprecated; use Orm\AnnotationClassParser->parser->getByReflection() instead.');
+		$this->p->_getAnnotations(new ReflectionClass('Nette\Reflection\AnnotationsParser'));
 	}
 
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AnnotationClassParser', 'getAnnotations');
 		$this->assertTrue($r->isProtected(), 'visibility');
-		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertTrue($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}

@@ -21,6 +21,16 @@ class AnnotationsParser_getByReflection_Test extends TestCase
 		$this->assertSame(array('covers' => array('Orm\AnnotationsParser::getByReflection')), $p->getByReflection(new ReflectionClass($this)));
 	}
 
+	public function test()
+	{
+		$p = new AnnotationsParser;
+		$a = $p->getByReflection(new ReflectionClass('Nette\Reflection\AnnotationsParser'));
+		$this->assertSame(3, count($a));
+		$this->assertSame(array('Annotations support for PHP.'), $a['description']);
+		$this->assertSame(array('David Grudl'), $a['author']);
+		$this->assertSame(array(true), $a['Annotation']);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AnnotationsParser', 'getByReflection');
