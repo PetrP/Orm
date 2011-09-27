@@ -38,9 +38,9 @@ class AnnotationClassParser extends Object
 	private $registered = array();
 
 	/** @param AnnotationsParser */
-	public function __construct(AnnotationsParser $parser = NULL)
+	public function __construct(AnnotationsParser $parser)
 	{
-		$this->parser = $parser === NULL ? new AnnotationsParser : $parser;
+		$this->parser = $parser;
 	}
 
 	/**

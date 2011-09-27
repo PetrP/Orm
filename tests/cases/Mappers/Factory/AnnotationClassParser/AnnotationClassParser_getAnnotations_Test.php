@@ -1,5 +1,7 @@
 <?php
 
+use Orm\AnnotationsParser;
+
 /**
  * @covers Orm\AnnotationClassParser::getAnnotations
  */
@@ -9,7 +11,7 @@ class AnnotationClassParser_getAnnotations_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->p = new AnnotationClassParser_getAnnotations_AnnotationClassParser;
+		$this->p = new AnnotationClassParser_getAnnotations_AnnotationClassParser(new AnnotationsParser);
 	}
 
 	public function test()

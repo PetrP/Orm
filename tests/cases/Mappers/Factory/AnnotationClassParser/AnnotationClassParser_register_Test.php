@@ -1,6 +1,7 @@
 <?php
 
 use Orm\AnnotationClassParser;
+use Orm\AnnotationsParser;
 
 /**
  * @covers Orm\AnnotationClassParser::register
@@ -11,7 +12,7 @@ class AnnotationClassParser_register_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->p = new AnnotationClassParser;
+		$this->p = new AnnotationClassParser(new AnnotationsParser);
 	}
 
 	private function t($annotation, $interface, $defaultClassFallback)

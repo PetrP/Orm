@@ -25,7 +25,7 @@ class ServiceContainerFactory extends Object implements IServiceContainerFactory
 	{
 		if (!$container) $container = new ServiceContainer;
 		$container->addService('annotationsParser', 'Orm\AnnotationsParser');
-		$container->addService('annotationClassParser', 'Orm\AnnotationClassParser');
+		$container->addService('annotationClassParser', array($this, 'createAnnotationClassParser'));
 		$container->addService('mapperFactory', array($this, 'createMapperFactory'));
 		$container->addService('repositoryHelper', 'Orm\RepositoryHelper');
 		$container->addService('dibi', array($this, 'createDibi'));
@@ -40,6 +40,15 @@ class ServiceContainerFactory extends Object implements IServiceContainerFactory
 	public function getContainer()
 	{
 		return $this->container;
+	}
+
+	/**
+	 * @param IServiceContainer
+	 * @return AnnotationClassParser
+	 */
+	public function createAnnotationClassParser(IServiceContainer $container)
+	{
+		return new AnnotationClassParser($container->getService('annotationsParser', 'Orm\AnnotationsParser'));
 	}
 
 	/**

@@ -8,11 +8,6 @@ use Orm\AnnotationsParser;
  */
 class AnnotationClassParser_construct_Test extends TestCase
 {
-	public function testParserDefault()
-	{
-		$p = new AnnotationClassParser;
-		$this->assertAttributeInstanceOf('Orm\AnnotationsParser', 'parser', $p);
-	}
 
 	public function testParserSet()
 	{

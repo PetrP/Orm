@@ -2,6 +2,7 @@
 
 use Orm\MapperFactory;
 use Orm\AnnotationClassParser;
+use Orm\AnnotationsParser;
 
 /**
  * @covers Orm\MapperFactory::__construct
@@ -11,12 +12,12 @@ class MapperFactory_construct_Test extends TestCase
 
 	public function testImplement()
 	{
-		$this->assertInstanceOf('Orm\IMapperFactory', new MapperFactory(new AnnotationClassParser));
+		$this->assertInstanceOf('Orm\IMapperFactory', new MapperFactory(new AnnotationClassParser(new AnnotationsParser)));
 	}
 
 	public function test()
 	{
-		$p = new AnnotationClassParser;
+		$p = new AnnotationClassParser(new AnnotationsParser);
 		$this->assertArrayNotHasKey('mapper', $this->readAttribute($p, 'registered'));
 		$f = new MapperFactory($p);
 		$r = $this->readAttribute($p, 'registered');

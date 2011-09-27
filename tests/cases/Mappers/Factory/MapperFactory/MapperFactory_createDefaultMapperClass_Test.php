@@ -2,6 +2,7 @@
 
 use Orm\AnnotationClassParser;
 use Orm\MapperFactory;
+use Orm\AnnotationsParser;
 
 /**
  * @covers Orm\MapperFactory::createDefaultMapperClass
@@ -12,7 +13,7 @@ class MapperFactory_createDefaultMapperClass_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->f = new MapperFactory(new AnnotationClassParser);
+		$this->f = new MapperFactory(new AnnotationClassParser(new AnnotationsParser));
 	}
 
 	public function testNoSufix()
