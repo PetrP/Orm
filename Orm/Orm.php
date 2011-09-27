@@ -65,6 +65,8 @@ require_once __DIR__ . '/Repository/IRepository.php';
 require_once __DIR__ . '/Repository/Repository.php';
 require_once __DIR__ . '/Repository/Helpers/RepositoryHelper.php';
 require_once __DIR__ . '/Repository/Helpers/PerformanceHelper.php';
+require_once __DIR__ . '/Repository/Helpers/MapperAutoCaller.php';
+require_once __DIR__ . '/Repository/Helpers/MapperAutoCallerException.php';
 
 require_once __DIR__ . '/Entity/IEntity.php';
 require_once __DIR__ . '/Entity/EntityFragments/EventEntityFragment.php';

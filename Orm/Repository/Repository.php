@@ -90,6 +90,9 @@ abstract class Repository extends Object implements IRepository
 	/** @var array cache {@see self::checkAttachableEntity() */
 	private $allowedEntities;
 
+	/** @var MapperAutoCaller {@see self::__call()} */
+	private $mapperAutoCaller;
+
 	/**
 	 * @var string
 	 * @see self::getEntityClassName()
@@ -501,6 +504,26 @@ abstract class Repository extends Object implements IRepository
 			$this->entities[$id] = $entity;
 		}
 		return $this->entities[$id];
+	}
+
+	/**
+	 * Call to undefined method.
+	 * @param string method name
+	 * @param array arguments
+	 * @return mixed
+	 * @throws MemberAccessException
+	 */
+	public function __call($name, $args)
+	{
+		if ($this->mapperAutoCaller === NULL)
+		{
+			$this->mapperAutoCaller = new MapperAutoCaller($this, $this->getModel()->getContext()->getService('annotationsParser'));
+		}
+		if ($this->mapperAutoCaller->has($name))
+		{
+			return call_user_func_array(array($this->getMapper(), $name), $args);
+		}
+		return parent::__call($name, $args);
 	}
 
 	/**
