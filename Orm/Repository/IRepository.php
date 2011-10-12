@@ -74,6 +74,7 @@ interface IRepository
 	 * Zapoji entity do do repository.
 	 *
 	 * Vola udalosti:
+	 * @see Events::ATTACH
 	 * @see Entity::onAttach()
 	 *
 	 * @param IEntity
@@ -88,10 +89,15 @@ interface IRepository
 	 * Ulozi take vsechny relationship, tedy entity ktere tato entity obsahuje v ruznych vazbach.
 	 *
 	 * Vola udalosti:
+	 * @see Events::PERSIST_BEFORE
 	 * @see Entity::onBeforePersist()
+	 * @see Events::PERSIST_BEFORE_UPDATE OR Events::PERSIST_BEFORE_INSERT
 	 * @see Entity::onBeforeUpdate() OR Entity::onBeforeInsert()
+	 * @see Events::PERSIST
 	 * @see Entity::onPersist()
+	 * @see Events::PERSIST_AFTER_UPDATE OR Events::PERSIST_AFTER_INSERT
 	 * @see Entity::onAfterUpdate() OR Entity::onAfterInsert()
+	 * @see Events::PERSIST_AFTER
 	 * @see Entity::onAfterPersist()
 	 *
 	 * @param IEntity
@@ -104,7 +110,9 @@ interface IRepository
 	 * Z entitou lze pak jeste pracovat do ukonceni scriptu, ale uz nema id a neni zapojena na repository.
 	 *
 	 * Vola udalosti:
+	 * @see Events::REMOVE_BEFORE
 	 * @see Entity::onBeforeRemove()
+	 * @see Events::REMOVE_AFTER
 	 * @see Entity::onAfterRemove()
 	 *
 	 * @param scalar|IEntity
@@ -140,6 +148,9 @@ interface IRepository
 
 	/** @return IRepositoryContainer */
 	public function getModel();
+
+	/** @return Events */
+	public function getEvents();
 
 	/**
 	 * Mozno ovlivnit jake entity repository vyraby.
@@ -213,6 +224,7 @@ interface IRepository
 	 * @internal
 	 *
 	 * Vola udalosti:
+	 * @see Events::LOAD
 	 * @see Entity::onLoad()
 	 *
 	 * @param array

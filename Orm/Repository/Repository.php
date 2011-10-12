@@ -62,6 +62,7 @@ use Exception;
  *
  * @property-read IMapper $mapper
  * @property-read IRepositoryContainer $model
+ * @property-read Events $events
  * @author Petr Procházka
  * @package Orm
  * @subpackage Repository
@@ -74,6 +75,9 @@ abstract class Repository extends Object implements IRepository
 
 	/** @var DibiMapper */
 	private $mapper;
+
+	/** @var Events */
+	private $events;
 
 	/** @var SqlConventional */
 	private $conventional;
@@ -105,6 +109,7 @@ abstract class Repository extends Object implements IRepository
 	public function __construct(IRepositoryContainer $model)
 	{
 		$this->model = $model;
+		$this->events = new Events($this);
 		$ph = $this->createPerformanceHelper();
 		if ($ph !== NULL AND !($ph instanceof PerformanceHelper))
 		{
@@ -168,6 +173,7 @@ abstract class Repository extends Object implements IRepository
 	 * Zapoji entity do do repository.
 	 *
 	 * Vola udalosti:
+	 * @see Events::ATTACH
 	 * @see Entity::onAttach()
 	 *
 	 * @param IEntity
@@ -178,7 +184,7 @@ abstract class Repository extends Object implements IRepository
 		$this->checkAttachableEntity(get_class($entity), $entity);
 		if (!$entity->getRepository(false))
 		{
-			$entity->___event($entity, 'attach', $this);
+			$this->events->fireEvent(Events::ATTACH, $entity);
 		}
 		return $entity;
 	}
@@ -190,10 +196,15 @@ abstract class Repository extends Object implements IRepository
 	 * Ulozi take vsechny relationship, tedy entity ktere tato entity obsahuje v ruznych vazbach.
 	 *
 	 * Vola udalosti:
+	 * @see Events::PERSIST_BEFORE
 	 * @see Entity::onBeforePersist()
+	 * @see Events::PERSIST_BEFORE_UPDATE OR Events::PERSIST_BEFORE_INSERT
 	 * @see Entity::onBeforeUpdate() OR Entity::onBeforeInsert()
+	 * @see Events::PERSIST
 	 * @see Entity::onPersist()
+	 * @see Events::PERSIST_AFTER_UPDATE OR Events::PERSIST_AFTER_INSERT
 	 * @see Entity::onAfterUpdate() OR Entity::onAfterInsert()
+	 * @see Events::PERSIST_AFTER
 	 * @see Entity::onAfterPersist()
 	 *
 	 * @param IEntity
@@ -217,8 +228,8 @@ abstract class Repository extends Object implements IRepository
 			if (!isset($recurcion[$hash])) $recurcion[$hash] = 0;
 			$recurcion[$hash]++;
 
-			$entity->___event($entity, 'beforePersist', $this);
-			$entity->___event($entity, $hasId ? 'beforeUpdate' : 'beforeInsert', $this);
+			$this->events->fireEvent(Events::PERSIST_BEFORE, $entity);
+			$this->events->fireEvent($hasId ? Events::PERSIST_BEFORE_UPDATE : Events::PERSIST_BEFORE_INSERT, $entity);
 
 			$relationshipValues = array();
 			$fk = $this->getFkForEntity(get_class($entity));
@@ -236,7 +247,7 @@ abstract class Repository extends Object implements IRepository
 
 			if ($id = $this->getMapper()->persist($entity))
 			{
-				$entity->___event($entity, 'persist', $this, $id);
+				$this->events->fireEvent(Events::PERSIST, $entity, array('id' => $id));
 				$this->entities[$entity->id] = $entity;
 
 				foreach ($relationshipValues as $relationship)
@@ -244,12 +255,12 @@ abstract class Repository extends Object implements IRepository
 					$relationship->persist();
 				}
 
-				$entity->___event($entity, $hasId ? 'afterUpdate' : 'afterInsert', $this);
-				$entity->___event($entity, 'afterPersist', $this);
+				$this->events->fireEvent($hasId ? Events::PERSIST_AFTER_UPDATE : Events::PERSIST_AFTER_INSERT, $entity);
+				$this->events->fireEvent(Events::PERSIST_AFTER, $entity);
 				if ($entity->isChanged())
 				{
 					$this->getMapper()->persist($entity);
-					$entity->___event($entity, 'persist', $this, $id);
+					$this->events->fireEvent(Events::PERSIST, $entity, array('id' => $id));
 				}
 				unset($recurcion[$hash]);
 				return $entity;
@@ -267,7 +278,9 @@ abstract class Repository extends Object implements IRepository
 	 * Z entitou lze pak jeste pracovat do ukonceni scriptu, ale uz nema id a neni zapojena na repository.
 	 *
 	 * Vola udalosti:
+	 * @see Events::REMOVE_BEFORE
 	 * @see Entity::onBeforeRemove()
+	 * @see Events::REMOVE_AFTER
 	 * @see Entity::onAfterRemove()
 	 *
 	 * @param scalar|IEntity
@@ -278,7 +291,7 @@ abstract class Repository extends Object implements IRepository
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkAttachableEntity(get_class($entity), $entity);
 
-		$entity->___event($entity, 'beforeRemove', $this);
+		$this->events->fireEvent(Events::REMOVE_BEFORE, $entity);
 		if (isset($entity->id))
 		{
 			if ($this->getMapper()->remove($entity))
@@ -290,7 +303,7 @@ abstract class Repository extends Object implements IRepository
 				throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
 			}
 		}
-		$entity->___event($entity, 'afterRemove', $this);
+		$this->events->fireEvent(Events::REMOVE_AFTER, $entity);
 		return true;
 	}
 
@@ -362,6 +375,12 @@ abstract class Repository extends Object implements IRepository
 	final public function getModel()
 	{
 		return $this->model;
+	}
+
+	/** @return Events */
+	final public function getEvents()
+	{
+		return $this->events;
 	}
 
 	/**
@@ -475,6 +494,7 @@ abstract class Repository extends Object implements IRepository
 	 * @internal
 	 *
 	 * Vola udalosti:
+	 * @see Events::LOAD
 	 * @see Entity::onLoad()
 	 *
 	 * @param array
@@ -500,7 +520,7 @@ abstract class Repository extends Object implements IRepository
 			$this->checkAttachableEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
-			$entity->___event($entity, 'load', $this, $data);
+			$this->events->fireEvent(Events::LOAD, $entity, array('data' => $data));
 			$this->entities[$id] = $entity;
 		}
 		return $this->entities[$id];

@@ -68,6 +68,22 @@ require_once __DIR__ . '/Repository/Helpers/PerformanceHelper.php';
 require_once __DIR__ . '/Repository/Helpers/MapperAutoCaller.php';
 require_once __DIR__ . '/Repository/Helpers/MapperAutoCallerException.php';
 
+require_once __DIR__ . '/Repository/Events/Events.php';
+require_once __DIR__ . '/Repository/Events/EventArguments.php';
+require_once __DIR__ . '/Repository/Events/Types/IListener.php';
+require_once __DIR__ . '/Repository/Events/Types/IEventFirer.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerAttach.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerLoad.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersist.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistAfter.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistAfterInsert.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistAfterUpdate.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistBefore.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistBeforeInsert.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerPersistBeforeUpdate.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerRemoveAfter.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerRemoveBefore.php';
+
 require_once __DIR__ . '/Entity/IEntity.php';
 require_once __DIR__ . '/Entity/EntityFragments/EventEntityFragment.php';
 require_once __DIR__ . '/Entity/EntityFragments/AttachableEntityFragment.php';

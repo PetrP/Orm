@@ -1,0 +1,75 @@
+<?php
+
+use Orm\RepositoryContainer;
+use Orm\EventArguments;
+use Orm\Events;
+
+/**
+ * @covers Orm\EventArguments::check
+ */
+class EventArguments_check_Test extends TestCase
+{
+	private $r;
+	protected function setUp()
+	{
+		$this->r = new TestsRepository(new RepositoryContainer);
+	}
+
+	public function testReflection()
+	{
+		$r = new ReflectionMethod('Orm\EventArguments', 'check');
+		$this->assertTrue($r->isPublic(), 'visibility');
+		$this->assertFalse($r->isFinal(), 'final');
+		$this->assertFalse($r->isStatic(), 'static');
+		$this->assertFalse($r->isAbstract(), 'abstract');
+	}
+
+	public function testId()
+	{
+		$args = new EventArguments(Events::PERSIST, $this->r, new TestEntity, array('id' => 123));
+		$args->id = 598;
+		$args->check();
+		$this->assertTrue(true);
+	}
+
+	public function testNoId()
+	{
+		$args = new EventArguments(Events::PERSIST, $this->r, new TestEntity, array('id' => 123));
+		$args->id = NULL;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$id must be scalar; 'NULL' given.");
+		$args->check();
+	}
+
+	public function testIdNotScalar()
+	{
+		$args = new EventArguments(Events::PERSIST, $this->r, new TestEntity, array('id' => 123));
+		$args->id = array();
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$id must be scalar; 'array' given.");
+		$args->check();
+	}
+
+	public function testData()
+	{
+		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data['foo'] = 598;
+		$args->check();
+		$this->assertTrue(true);
+	}
+
+	public function testNoData()
+	{
+		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data = NULL;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
+		$args->check();
+	}
+
+	public function testDataNotArray()
+	{
+		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data = 111;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
+		$args->check();
+	}
+
+}

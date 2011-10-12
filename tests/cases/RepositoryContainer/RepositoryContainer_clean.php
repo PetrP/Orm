@@ -23,6 +23,7 @@ class RepositoryContainer_clean1Repository extends Object implements IRepository
 	public function lazyLoad(IEntity $entity, $param) {}
 	public function isAttachableEntity(IEntity $entity) {}
 	public function hydrateEntity($data) {}
+	public function getEvents() {}
 }
 
 class RepositoryContainer_clean2Repository extends RepositoryContainer_clean1Repository

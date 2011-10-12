@@ -25,4 +25,5 @@ class RepositoryContainer_checkRepositoryClass_Bad3Repository extends Object imp
 	public function lazyLoad(IEntity $entity, $param) {}
 	public function isAttachableEntity(IEntity $entity) {}
 	public function hydrateEntity($data) {}
+	public function getEvents() {}
 }
