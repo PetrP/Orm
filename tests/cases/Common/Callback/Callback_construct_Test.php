@@ -57,6 +57,10 @@ class Callback_construct_Test extends TestCase
 		{
 			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
 		}
+		if (PHP_VERSION_ID < 50302)
+		{
+			throw new PHPUnit_Framework_IncompleteTestError('php < 5.3.2 (ReflectionMethod::setAccessible)');
+		}
 		$c1 = Callback::create($this, 'test');
 		$c2 = Callback::create('foo');
 		$r = new ReflectionMethod('Orm\Callback', '__construct');
