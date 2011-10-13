@@ -146,19 +146,19 @@ class Events extends Object
 	/** @var IRepository */
 	private $repository;
 
-	/** @var array event => array(interface, method, entityEvent|NULL) */
+	/** @var array event => array(interface, method, entityEventMethod|NULL) */
 	private static $instructions = array(
-		self::LOAD => array('Orm\IListenerLoad', 'onLoadEvent', 'load'),
-		self::ATTACH => array('Orm\IListenerAttach', 'onAttachEvent', 'attach'),
-		self::PERSIST_BEFORE => array('Orm\IListenerPersistBefore', 'onBeforePersistEvent', 'beforePersist'),
-		self::PERSIST_BEFORE_UPDATE => array('Orm\IListenerPersistBeforeUpdate', 'onBeforePersistUpdateEvent', 'beforeUpdate'), // todo method name
-		self::PERSIST_BEFORE_INSERT => array('Orm\IListenerPersistBeforeInsert', 'onBeforePersistInsertEvent', 'beforeInsert'),
-		self::PERSIST => array('Orm\IListenerPersist', 'onPersistEvent', 'persist'), // todo?
-		self::PERSIST_AFTER_UPDATE => array('Orm\IListenerPersistAfterUpdate', 'onAfterPersistUpdateEvent', 'afterUpdate'),
-		self::PERSIST_AFTER_INSERT => array('Orm\IListenerPersistAfterInsert', 'onAfterPersistInsertEvent', 'afterInsert'),
-		self::PERSIST_AFTER => array('Orm\IListenerPersistAfter', 'onAfterPersistEvent', 'afterPersist'),
-		self::REMOVE_BEFORE => array('Orm\IListenerRemoveBefore', 'onBeforeRemoveEvent', 'beforeRemove'),
-		self::REMOVE_AFTER => array('Orm\IListenerRemoveAfter', 'onAfterRemoveEvent', 'afterRemove'),
+		self::LOAD => array('Orm\IListenerLoad', 'onLoadEvent', 'onLoad'),
+		self::ATTACH => array('Orm\IListenerAttach', 'onAttachEvent', 'onAttach'),
+		self::PERSIST_BEFORE => array('Orm\IListenerPersistBefore', 'onBeforePersistEvent', 'onBeforePersist'),
+		self::PERSIST_BEFORE_UPDATE => array('Orm\IListenerPersistBeforeUpdate', 'onBeforePersistUpdateEvent', 'onBeforeUpdate'), // todo method name
+		self::PERSIST_BEFORE_INSERT => array('Orm\IListenerPersistBeforeInsert', 'onBeforePersistInsertEvent', 'onBeforeInsert'),
+		self::PERSIST => array('Orm\IListenerPersist', 'onPersistEvent', 'onPersist'), // todo?
+		self::PERSIST_AFTER_UPDATE => array('Orm\IListenerPersistAfterUpdate', 'onAfterPersistUpdateEvent', 'onAfterUpdate'),
+		self::PERSIST_AFTER_INSERT => array('Orm\IListenerPersistAfterInsert', 'onAfterPersistInsertEvent', 'onAfterInsert'),
+		self::PERSIST_AFTER => array('Orm\IListenerPersistAfter', 'onAfterPersistEvent', 'onAfterPersist'),
+		self::REMOVE_BEFORE => array('Orm\IListenerRemoveBefore', 'onBeforeRemoveEvent', 'onBeforeRemove'),
+		self::REMOVE_AFTER => array('Orm\IListenerRemoveAfter', 'onAfterRemoveEvent', 'onAfterRemove'),
 	);
 
 	/** @param IRepository */
@@ -291,7 +291,7 @@ class Events extends Object
 					$more = $args->data;
 				}
 			}
-			$entity->___event(self::$instructions[$type][2], $this->repository, $more);
+			$entity->fireEvent(self::$instructions[$type][2], $this->repository, $more);
 		}
 		return $this;
 	}

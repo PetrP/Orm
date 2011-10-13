@@ -38,13 +38,13 @@ class Entity_toString_Test extends TestCase
 O:10:"TestEntity":1:{s:$len:"\x00$class\x00values";a:1:{s:2:"id";s:3:"111";}}
 EOT;
 		$e = unserialize($e);
-		$e->___event($e, 'create', $this->r);
+		$e->fireEvent('onCreate', $this->r);
 		$this->assertSame('111', $e->__toString());
 		$e = <<<EOT
 O:10:"TestEntity":1:{s:$len:"\x00$class\x00values";a:1:{s:2:"id";s:3:"xyz";}}
 EOT;
 		$e = unserialize($e);
-		$e->___event($e, 'create', $this->r);
+		$e->fireEvent('onCreate', $this->r);
 		$this->assertSame('', $e->__toString());
 	}
 

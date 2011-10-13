@@ -14,7 +14,7 @@ class DibiMapper_remove_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "DELETE FROM `dibimapper_connected_dibi` WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->m->repository, array('id' => 3));
+		$e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$r = $this->m->remove($e);
 		$this->assertSame(true, $r);
 	}
@@ -28,7 +28,7 @@ class DibiMapper_remove_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "DELETE FROM `dibimapper_connected_dibi` WHERE `foo_bar` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->m->repository, array('id' => 3));
+		$e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$r = $this->m->remove($e);
 		$this->assertSame(true, $r);
 	}

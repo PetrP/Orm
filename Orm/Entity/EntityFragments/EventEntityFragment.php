@@ -25,7 +25,7 @@ abstract class EventEntityFragment extends Object
 
 	public function __construct()
 	{
-		$this->___event($this, 'create');
+		$this->fireEvent('onCreate');
 	}
 
 	/** Vytvorena nova entita */
@@ -139,36 +139,41 @@ abstract class EventEntityFragment extends Object
 	 * Do not call directly!
 	 * Vola urcitou udalost.
 	 * @internal
-	 * @param IEntity
 	 * @param string nazev udalosti
 	 * @param IRepository
 	 * @param array|scalar $data (onLoad) or $id (onPersist)
 	 */
-	final public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
+	final public function fireEvent($method, IRepository $repository = NULL, $more = NULL)
 	{
-		$method = 'on' . ucfirst($event);
 		if (!method_exists(__CLASS__, $method))
 		{
-			$class= get_class($entity);
+			$class = get_class($this);
 			throw new InvalidEntityException("Call to undefined event $class::$method().");
 		}
 
-		$entity->checkEvent = NULL;
+		$this->checkEvent = NULL;
 		if ($more === NULL)
 		{
-			$entity->{$method}($repository);
+			$this->{$method}($repository);
 		}
 		else
 		{
-			$entity->{$method}($repository, $more);
+			$this->{$method}($repository, $more);
 		}
 
-		if ($entity->checkEvent !== $method)
+		if ($this->checkEvent !== $method)
 		{
-			$class = get_class($entity);
+			$class = get_class($this);
 			throw new InvalidEntityException("Method $class::$method() or its descendant doesn't call parent::$method().");
 		}
-		$entity->checkEvent = NULL;
+		$this->checkEvent = NULL;
+	}
+
+	/** @deprecated */
+	final static public function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
+	{
+		throw new DeprecatedException(array('Orm\Entity', '___event()', 'Orm\Entity', 'fireEvent()'));
+		//$entity->fireEvent('on' . ucfirst($event), $repository, $more);
 	}
 
 }

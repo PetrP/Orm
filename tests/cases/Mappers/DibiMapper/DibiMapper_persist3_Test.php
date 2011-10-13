@@ -68,7 +68,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3 WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->h->whichParams = array('id');
-		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
+		$this->e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
@@ -81,7 +81,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3 WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->h->whichParams = array();
-		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
+		$this->e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
@@ -94,7 +94,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "UPDATE `table` SET `id`=3, `mixed`=NULL, `mixed2`=NULL, `mixed3`=NULL WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->h->whichParamsNot = array('id');
-		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 3));
+		$this->e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(3, $r);
 	}
@@ -125,7 +125,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`id`, `mixed`, `mixed2`, `mixed3`) VALUES (666, NULL, NULL, NULL)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 666, NULL);
-		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 666));
+		$this->e->fireEvent('onLoad', $this->m->repository, array('id' => 666));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(666, $r);
 	}
@@ -138,7 +138,7 @@ class DibiMapper_persist3_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "INSERT INTO `table` (`id`, `mixed`, `mixed2`, `mixed3`) VALUES (666, NULL, NULL, NULL)");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', NULL, NULL);
-		$this->e->___event($this->e, 'load', $this->m->repository, array('id' => 666));
+		$this->e->fireEvent('onLoad', $this->m->repository, array('id' => 666));
 		$r = $this->h->persist($this->e);
 		$this->assertSame(666, $r);
 	}

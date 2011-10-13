@@ -36,13 +36,13 @@ class ValueEntityFragment_getValue_Test extends TestCase
 		$rules['id']['get'] = NULL;
 		$p->setValue($this->e, $rules);
 		$this->setExpectedException('Orm\PropertyAccessException', 'Cannot read to a write-only property ValueEntityFragment_getset_Entity::$id.');
-		$this->e->___event($this->e, 'persist', new TestsRepository(new RepositoryContainer), 2);
+		$this->e->fireEvent('onPersist', new TestsRepository(new RepositoryContainer), 2);
 	}
 
 	public function testRestoreChanged()
 	{
 		$e = new ValueEntityFragment_getValue_Entity;
-		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$e->fireEvent('onPersist', new TestsRepository(new RepositoryContainer), 3);
 		$this->assertFalse($e->isChanged());
 		try {
 			$e->foo;
@@ -57,8 +57,8 @@ class ValueEntityFragment_getValue_Test extends TestCase
 	public function testRestoreChangedInvalidValueNeed()
 	{
 		$e = new ValueEntityFragment_getValue_Entity;
-		$e->___event($e, 'load', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
-		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$e->fireEvent('onLoad', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
+		$e->fireEvent('onPersist', new TestsRepository(new RepositoryContainer), 3);
 		$this->assertFalse($e->isChanged());
 		try {
 			$e->__getValue('foo2', true);
@@ -71,8 +71,8 @@ class ValueEntityFragment_getValue_Test extends TestCase
 	public function testRestoreChangedInvalidValueNotNeed()
 	{
 		$e = new ValueEntityFragment_getValue_Entity;
-		$e->___event($e, 'load', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
-		$e->___event($e, 'persist', new TestsRepository(new RepositoryContainer), 3);
+		$e->fireEvent('onLoad', new TestsRepository(new RepositoryContainer), array('id' => 3, 'foo2' => 'xyz'));
+		$e->fireEvent('onPersist', new TestsRepository(new RepositoryContainer), 3);
 		$this->assertFalse($e->isChanged());
 		$v = $e->__getValue('foo2', false);
 		$this->assertSame(NULL, $v);
@@ -84,7 +84,7 @@ class ValueEntityFragment_getValue_Test extends TestCase
 	{
 		$e = new ValueEntityFragment_getValue_Entity;
 		$r = new ValueEntityFragment_getValue_LazyRepository(new RepositoryContainer);
-		$e->___event($e, 'attach', $r);
+		$e->fireEvent('onAttach', $r);
 		$e->foo2 = 4;
 		$this->assertSame(4, $e->foo2);
 		$this->assertSame(0, $r->count);

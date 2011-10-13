@@ -27,7 +27,7 @@ class ValueEntityFragment_onLoad_Test extends TestCase
 	public function test2()
 	{
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->r, array('xxx' => 'yyy', 'id' => 1));
+		$e->fireEvent('onLoad', $this->r, array('xxx' => 'yyy', 'id' => 1));
 		$this->assertSame(array('xxx' => 'yyy', 'id' => 1), $this->readAttribute($e, 'values'));
 	}
 
@@ -35,7 +35,7 @@ class ValueEntityFragment_onLoad_Test extends TestCase
 	{
 		$e = new TestEntity;
 		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '0' given");
-		$e->___event($e, 'load', $this->r, array('id' => 0));
+		$e->fireEvent('onLoad', $this->r, array('id' => 0));
 	}
 
 	public function testReflection()

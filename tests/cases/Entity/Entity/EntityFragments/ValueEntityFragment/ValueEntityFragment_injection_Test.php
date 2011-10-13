@@ -71,7 +71,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 
 	public function testPersistedRead()
 	{
-		$this->e->___event($this->e, 'load', $this->r, array(
+		$this->e->fireEvent('onLoad', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
 			'id' => 1,
 		));
@@ -87,7 +87,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 
 	public function testPersistedWrite()
 	{
-		$this->e->___event($this->e, 'load', $this->r, array(
+		$this->e->fireEvent('onLoad', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
 			'id' => 1,
 		));
@@ -103,7 +103,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 
 	public function testPersistedMultiWrite()
 	{
-		$this->e->___event($this->e, 'load', $this->r, array(
+		$this->e->fireEvent('onLoad', $this->r, array(
 			'many' => serialize(array(1=>1,2=>2,3=>3)),
 			'id' => 1,
 		));

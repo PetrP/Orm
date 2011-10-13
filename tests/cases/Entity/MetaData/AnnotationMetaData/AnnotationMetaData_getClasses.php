@@ -23,7 +23,7 @@ class AnnotationMetaData_getClasses_EntityBase_A
 	{
 		throw new NotImplementedException;
 	}
-	public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
+	public function fireEvent($method, IRepository $repository = NULL, $more = NULL)
 	{
 		throw new NotImplementedException;
 	}
@@ -99,7 +99,7 @@ class AnnotationMetaData_getClasses_EntityBase_B implements IEntity
 	{
 		throw new NotImplementedException;
 	}
-	public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL)
+	public function fireEvent($method, IRepository $repository = NULL, $more = NULL)
 	{
 		throw new NotImplementedException;
 	}

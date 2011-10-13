@@ -36,7 +36,7 @@ class ValueEntityFragment_onPersist_Test extends TestCase
 	public function test2()
 	{
 		$e = new TestEntity;
-		$e->___event($e, 'persist', $this->r, 123);
+		$e->fireEvent('onPersist', $this->r, 123);
 		$this->assertSame(array('id' => 123), $this->readAttribute($e, 'values'));
 		$this->assertSame(array('id' => true), $this->readAttribute($e, 'valid'));
 		$this->assertSame(false, $e->isChanged());
@@ -46,7 +46,7 @@ class ValueEntityFragment_onPersist_Test extends TestCase
 	{
 		$e = new TestEntity;
 		$this->setExpectedException('Orm\NotValidException', "Param TestEntity::\$id must be 'id'; '-1' given");
-		$e->___event($e, 'persist', $this->r, -1);
+		$e->fireEvent('onPersist', $this->r, -1);
 	}
 
 	public function testReflection()

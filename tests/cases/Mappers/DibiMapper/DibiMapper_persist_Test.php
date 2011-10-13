@@ -31,7 +31,7 @@ class DibiMapper_persist_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('query', true, "UPDATE `dibimapper_connected_dibi` SET `id`=3, `string`='xxx', `date`='2011-11-11 00:00:00' WHERE `id` = '3'");
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->m->repository, array('id' => 3));
+		$e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$e->string = 'xxx';
 		$e->date = '2011-11-11';
 		$r = $this->m->persist($e);
@@ -48,7 +48,7 @@ class DibiMapper_persist_Test extends DibiMapper_Connected_Test
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('getInsertId', 3, NULL);
 		$e = new TestEntity;
-		$e->___event($e, 'load', $this->m->repository, array('id' => 3));
+		$e->fireEvent('onLoad', $this->m->repository, array('id' => 3));
 		$e->string = 'xxx';
 		$e->date = '2011-11-11';
 		$r = $this->m->persist($e);

@@ -101,7 +101,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		$e = new MetaData_Test2_Entity;
 		MetaData_Test2_Entity::$metaData = NULL;
 		$model = new RepositoryContainer;
-		$e->___event($e, 'attach', $model->tests);
+		$e->fireEvent('onAttach', $model->tests);
 
 		$e->fk = NULL;
 		$this->assertSame(NULL, $e->fk);

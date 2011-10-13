@@ -55,12 +55,11 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 * Do not call directly!
 	 * Vola urcitou udalost.
 	 * @internal
-	 * @param IEntity
 	 * @param string nazev udalosti
 	 * @param IRepository
 	 * @param array|scalar $data (onLoad) or $id (onPersist)
 	 */
-	public static function ___event(IEntity $entity, $event, IRepository $repository = NULL, $more = NULL);
+	public function fireEvent($method, IRepository $repository = NULL, $more = NULL);
 
 	/**
 	 * Repository ktery se o tuto entitu stara.

@@ -19,7 +19,7 @@ class ValueEntityFragment_onAttach_Test extends TestCase
 	{
 		$e = new TestEntity;
 		$rule = $this->readAttribute($e, 'rules');
-		$e->___event($e, 'attach', $this->r);
+		$e->fireEvent('onAttach', $this->r);
 		$this->assertAttributeSame($rule, 'rules', $e);
 	}
 
@@ -27,7 +27,7 @@ class ValueEntityFragment_onAttach_Test extends TestCase
 	{
 		$e = new ValueEntityFragment_onAttach_Entity;
 		$this->setExpectedException('Orm\MetaDataException', 'fooBar isn\'t repository in ValueEntityFragment_onAttach_Entity::$mixed');
-		$e->___event($e, 'attach', $this->r);
+		$e->fireEvent('onAttach', $this->r);
 	}
 
 	public function testReflection()

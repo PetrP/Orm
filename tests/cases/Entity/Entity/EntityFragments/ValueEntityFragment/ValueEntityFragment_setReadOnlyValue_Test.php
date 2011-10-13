@@ -43,7 +43,7 @@ class ValueEntityFragment_setReadOnlyValue_Test extends TestCase
 
 	public function testChanged()
 	{
-		$this->e->___event($this->e, 'persist', new TestsRepository(new RepositoryContainer), 123);
+		$this->e->fireEvent('onPersist', new TestsRepository(new RepositoryContainer), 123);
 		$this->assertFalse($this->e->isChanged('readOnly'));
 		$this->e->srov('readOnly', 'xyz');
 		$this->assertTrue($this->e->isChanged('readOnly'));
