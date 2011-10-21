@@ -317,18 +317,22 @@ class Events extends Object
 		{
 			throw new InvalidArgumentException(array($this, 'fireEvent() $type', 'valid event type', $type));
 		}
-		$args = new EventArguments($type, $this->repository, $entity, $arguments);
-		foreach ($this->listeners[$type] as $k => $event)
+		$hasEntityEvent = self::$instructions[$type][2];
+		if ($hasEntityEvent OR $this->listeners[$type])
 		{
-			if ($event[0] === false)
+			$args = new EventArguments($type, $this->repository, $entity, $arguments);
+			foreach ($this->listeners[$type] as $k => $event)
 			{
-				$this->handleLazy($event[1]);
-				$event = $this->listeners[$type][$k];
+				if ($event[0] === false)
+				{
+					$this->handleLazy($event[1]);
+					$event = $this->listeners[$type][$k];
+				}
+				call_user_func($event[1], $args);
+				$args->check(); // srozumitelna chyba na ukor vykonu
 			}
-			call_user_func($event[1], $args);
-			$args->check(); // srozumitelna chyba na ukor vykonu
 		}
-		if ($entity AND self::$instructions[$type][2])
+		if ($hasEntityEvent)
 		{
 			$more = NULL;
 			if (isset($args->id))
@@ -342,7 +346,7 @@ class Events extends Object
 					$more = $args->data;
 				}
 			}
-			$entity->fireEvent(self::$instructions[$type][2], $this->repository, $more);
+			$entity->fireEvent($hasEntityEvent, $this->repository, $more);
 		}
 		return $this;
 	}
