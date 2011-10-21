@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Events;
+
 /**
  * @covers Orm\Repository::flush
  */
@@ -51,6 +53,60 @@ class Repository_flush_Test extends TestCase
 		$this->assertSame(1, $this->r->mapper->count);
 		$this->assertSame(1, $this->r2->mapper->count);
 		$this->assertSame(0, $r->mapper->count); // bug?
+	}
+
+	public function testEvents1()
+	{
+		$test = $this;
+		$order = (object) array('a' => array());
+		$r = $this->r;
+		$r->events->addCallbackListener(Events::FLUSH_BEFORE, function () use ($r, $order, $test) {
+			$test->assertSame(0, $r->mapper->count);
+			$order->a[] = 'before';
+		});
+		$r->events->addCallbackListener(Events::FLUSH_AFTER, function () use ($r, $order, $test) {
+			$test->assertSame(1, $r->mapper->count);
+			$order->a[] = 'after';
+		});
+		$this->assertSame(0, $r->mapper->count);
+		$r->flush();
+		$this->assertSame(1, $r->mapper->count);
+		$this->assertSame(array('before', 'after'), $order->a);
+	}
+
+	public function testEvents2()
+	{
+		$test = $this;
+		$order = (object) array('a' => array());
+		$r1 = $this->r;
+		$r2 = $this->r2;
+		$r1->events->addCallbackListener(Events::FLUSH_BEFORE, function () use ($r1, $r2, $order, $test) {
+			$test->assertSame(0, $r1->mapper->count);
+			$test->assertSame(0, $r2->mapper->count);
+			$order->a[] = '1_before';
+		});
+		$r1->events->addCallbackListener(Events::FLUSH_AFTER, function () use ($r1, $r2, $order, $test) {
+			$test->assertSame(1, $r1->mapper->count);
+			$test->assertSame(1, $r2->mapper->count);
+			$order->a[] = '1_after';
+		});
+		$r2->events->addCallbackListener(Events::FLUSH_BEFORE, function () use ($r1, $r2, $order, $test) {
+			$test->assertSame(0, $r1->mapper->count);
+			$test->assertSame(0, $r2->mapper->count);
+			$order->a[] = '2_before';
+		});
+		$r2->events->addCallbackListener(Events::FLUSH_AFTER, function () use ($r1, $r2, $order, $test) {
+			$test->assertSame(1, $r1->mapper->count);
+			$test->assertSame(1, $r2->mapper->count);
+			$order->a[] = '2_after';
+		});
+
+		$this->assertSame(0, $r1->mapper->count);
+		$this->assertSame(0, $r2->mapper->count);
+		$r1->flush();
+		$this->assertSame(1, $r1->mapper->count);
+		$this->assertSame(1, $r2->mapper->count);
+		$this->assertSame(array('1_before', '2_before', '1_after', '2_after'), $order->a);
 	}
 
 	public function testReflection()

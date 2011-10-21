@@ -69,6 +69,11 @@ class Events_addListener_Test extends TestCase
 			array('Events_addListener_Persist_after', Events::PERSIST_AFTER, 'onAfterPersistEvent'),
 			array('Events_addListener_Remove_before', Events::REMOVE_BEFORE, 'onBeforeRemoveEvent'),
 			array('Events_addListener_Remove_after', Events::REMOVE_AFTER, 'onAfterRemoveEvent'),
+			array('Events_addListener_Flush_before', Events::FLUSH_BEFORE, 'onBeforeFlushEvent'),
+			array('Events_addListener_Flush_after', Events::FLUSH_AFTER, 'onAfterFlushEvent'),
+			array('Events_addListener_Clean_before', Events::CLEAN_BEFORE, 'onBeforeCleanEvent'),
+			array('Events_addListener_Clean_after', Events::CLEAN_AFTER, 'onAfterCleanEvent'),
+
 		) as $tmp) $r[$tmp[0]] = $tmp;
 		return $r;
 	}
@@ -80,7 +85,7 @@ class Events_addListener_Test extends TestCase
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
 
-		$this->assertSame(12, count($listeners));
+		$this->assertSame(16, count($listeners));
 		foreach ($listeners as $event => $tmp)
 		{
 			$this->assertSame(array(array(true, array($object, 'fireEvent'))), $tmp);
@@ -110,7 +115,7 @@ class Events_addListener_Test extends TestCase
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
 
-		$this->assertSame(12, count($listeners));
+		$this->assertSame(16, count($listeners));
 		foreach ($listeners as $event => $tmp)
 		{
 			if ($event === Events::REMOVE_AFTER) continue;

@@ -31,7 +31,14 @@ class EventArguments_entity_Test extends TestCase
 	 */
 	public function testHasNotEntity($type)
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$entity must be instance of Orm\\IEntity; 'NULL' given.");
+		if ($type & (Events::FLUSH_BEFORE | Events::FLUSH_AFTER | Events::CLEAN_BEFORE | Events::CLEAN_AFTER))
+		{
+			$this->assertTrue(true);
+		}
+		else
+		{
+			$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$entity must be instance of Orm\\IEntity; 'NULL' given.");
+		}
 		new EventArguments($type, $this->r, NULL, array('id' => 123, 'data' => array('foo' => 'bar')));
 	}
 

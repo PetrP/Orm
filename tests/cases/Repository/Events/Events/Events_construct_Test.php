@@ -40,5 +40,9 @@ class Events_construct_Test extends TestCase
 		$this->assertSame(pow(2, 9), Events::PERSIST_AFTER);
 		$this->assertSame(pow(2, 10), Events::REMOVE_BEFORE);
 		$this->assertSame(pow(2, 11), Events::REMOVE_AFTER);
+		$this->assertSame(pow(2, 12), Events::FLUSH_BEFORE);
+		$this->assertSame(pow(2, 13), Events::FLUSH_AFTER);
+		$this->assertSame(pow(2, 14), Events::CLEAN_BEFORE);
+		$this->assertSame(pow(2, 15), Events::CLEAN_AFTER);
 	}
 }

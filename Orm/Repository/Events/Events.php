@@ -131,6 +131,38 @@ class Events extends Object
 	const REMOVE_AFTER = 2048;
 
 	/**
+	 * It fires before repository will be flushed.
+	 * @see IRepository::flush()
+	 * @see IRepositoryContainer::flush()
+	 * @see IListenerFlushBefore
+	 */
+	const FLUSH_BEFORE = 4096;
+
+	/**
+	 * It fires after repository was flushed.
+	 * @see IRepository::flush()
+	 * @see IRepositoryContainer::flush()
+	 * @see IListenerFlushAfter
+	 */
+	const FLUSH_AFTER = 8192;
+
+	/**
+	 * It fires before repository will be cleaned.
+	 * @see IRepository::clean()
+	 * @see IRepositoryContainer::clean()
+	 * @see IListenerCleanBefore
+	 */
+	const CLEAN_BEFORE = 16384;
+
+	/**
+	 * It fires after repository was cleaned.
+	 * @see IRepository::clean()
+	 * @see IRepositoryContainer::clean()
+	 * @see IListenerCleanAfter
+	 */
+	const CLEAN_AFTER = 32768;
+
+	/**
 	 * @var array
 	 * 	event => array(array(true, callback)) // not lazy
 	 * 	event => array(listenersLine => array(false, lazyKey)) // lazy
@@ -148,6 +180,10 @@ class Events extends Object
 		self::PERSIST_AFTER => array(),
 		self::REMOVE_BEFORE => array(),
 		self::REMOVE_AFTER => array(),
+		self::FLUSH_BEFORE => array(),
+		self::FLUSH_AFTER => array(),
+		self::CLEAN_BEFORE => array(),
+		self::CLEAN_AFTER => array(),
 	);
 
 	/** @var array lazyKey => array(factory, array(event => listenersLine)) */
@@ -170,6 +206,10 @@ class Events extends Object
 		self::PERSIST_AFTER => array('Orm\IListenerPersistAfter', 'onAfterPersistEvent', 'onAfterPersist'),
 		self::REMOVE_BEFORE => array('Orm\IListenerRemoveBefore', 'onBeforeRemoveEvent', 'onBeforeRemove'),
 		self::REMOVE_AFTER => array('Orm\IListenerRemoveAfter', 'onAfterRemoveEvent', 'onAfterRemove'),
+		self::FLUSH_BEFORE => array('Orm\IListenerFlushBefore', 'onBeforeFlushEvent', NULL),
+		self::FLUSH_AFTER => array('Orm\IListenerFlushAfter', 'onAfterFlushEvent', NULL),
+		self::CLEAN_BEFORE => array('Orm\IListenerCleanBefore', 'onBeforeCleanEvent', NULL),
+		self::CLEAN_AFTER => array('Orm\IListenerCleanAfter', 'onAfterCleanEvent', NULL),
 	);
 
 	/** @param IRepository */

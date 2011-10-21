@@ -72,6 +72,10 @@ class Events_addLazyListener_Test extends TestCase
 			array(Events::PERSIST_AFTER),
 			array(Events::REMOVE_BEFORE),
 			array(Events::REMOVE_AFTER),
+			array(Events::FLUSH_BEFORE),
+			array(Events::FLUSH_AFTER),
+			array(Events::CLEAN_BEFORE),
+			array(Events::CLEAN_AFTER),
 		);
 	}
 

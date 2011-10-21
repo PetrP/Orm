@@ -3,6 +3,7 @@
 use Orm\Object;
 use Orm\IRepository;
 use Orm\IEntity;
+use Orm\Events;
 
 class RepositoryContainer_flush1Repository extends Object implements IRepository
 {
@@ -26,7 +27,10 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	public function lazyLoad(IEntity $entity, $param) {}
 	public function isAttachableEntity(IEntity $entity) {}
 	public function hydrateEntity($data) {}
-	public function getEvents() {}
+	public function getEvents()
+	{
+		return new Events($this);
+	}
 }
 
 class RepositoryContainer_flush1Mapper extends Object

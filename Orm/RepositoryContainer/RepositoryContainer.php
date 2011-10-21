@@ -276,9 +276,19 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public function flush()
 	{
+		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{
-			$repo->getMapper()->flush();
+			$events[] = $repo->getEvents()->fireEvent(Events::FLUSH_BEFORE);
+			$mappers[] = $repo->getMapper();
+		}
+		foreach ($mappers as $mapper)
+		{
+			$mapper->flush();
+		}
+		foreach ($events as $event)
+		{
+			$event->fireEvent(Events::FLUSH_AFTER);
 		}
 	}
 
@@ -291,9 +301,19 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public function clean()
 	{
+		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{
-			$repo->getMapper()->rollback();
+			$events[] = $repo->getEvents()->fireEvent(Events::CLEAN_BEFORE);
+			$mappers[] = $repo->getMapper();
+		}
+		foreach ($mappers as $mapper)
+		{
+			$mapper->rollback();
+		}
+		foreach ($events as $event)
+		{
+			$event->fireEvent(Events::CLEAN_AFTER);
 		}
 	}
 

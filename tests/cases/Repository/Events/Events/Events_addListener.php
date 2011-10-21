@@ -15,6 +15,10 @@ use Orm\IListenerPersistAfterInsert;
 use Orm\IListenerPersistAfter;
 use Orm\IListenerRemoveBefore;
 use Orm\IListenerRemoveAfter;
+use Orm\IListenerFlushBefore;
+use Orm\IListenerFlushAfter;
+use Orm\IListenerCleanBefore;
+use Orm\IListenerCleanAfter;
 use Orm\IEventFirer;
 
 abstract class Events_addListener_Base extends Object
@@ -77,6 +81,22 @@ class Events_addListener_Remove_before extends Events_addListener_Base implement
 class Events_addListener_Remove_after extends Events_addListener_Base implements IListenerRemoveAfter
 {
 	public function onAfterRemoveEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Flush_before extends Events_addListener_Base implements IListenerFlushBefore
+{
+	public function onBeforeFlushEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Flush_after extends Events_addListener_Base implements IListenerFlushAfter
+{
+	public function onAfterFlushEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Clean_before extends Events_addListener_Base implements IListenerCleanBefore
+{
+	public function onBeforeCleanEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Clean_after extends Events_addListener_Base implements IListenerCleanAfter
+{
+	public function onAfterCleanEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }
 
 class Events_addListener_Firer extends Events_addListener_Base implements IEventFirer

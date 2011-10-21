@@ -84,6 +84,10 @@ require_once __DIR__ . '/Repository/Events/Types/IListenerPersistAfterUpdate.php
 require_once __DIR__ . '/Repository/Events/Types/IListenerPersistAfter.php';
 require_once __DIR__ . '/Repository/Events/Types/IListenerRemoveBefore.php';
 require_once __DIR__ . '/Repository/Events/Types/IListenerRemoveAfter.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerFlushBefore.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerFlushAfter.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerCleanBefore.php';
+require_once __DIR__ . '/Repository/Events/Types/IListenerCleanAfter.php';
 
 require_once __DIR__ . '/Entity/IEntity.php';
 require_once __DIR__ . '/Entity/EntityFragments/EventEntityFragment.php';

@@ -49,6 +49,10 @@ class EventArguments extends Object
 		Events::PERSIST_AFTER => array('entity' => true),
 		Events::REMOVE_BEFORE => array('entity' => true),
 		Events::REMOVE_AFTER => array('entity' => true),
+		Events::FLUSH_BEFORE => array(),
+		Events::FLUSH_AFTER => array(),
+		Events::CLEAN_BEFORE => array(),
+		Events::CLEAN_AFTER => array(),
 	);
 
 	/**

@@ -32,6 +32,10 @@ class EventArguments_construct_Test extends TestCase
 			Events::PERSIST_AFTER,
 			Events::REMOVE_BEFORE,
 			Events::REMOVE_AFTER,
+			Events::FLUSH_BEFORE,
+			Events::FLUSH_AFTER,
+			Events::CLEAN_BEFORE,
+			Events::CLEAN_AFTER,
 		));
 	}
 
