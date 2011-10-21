@@ -278,7 +278,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		foreach ($this->repositories as $repo)
 		{
-			$repo->flush(true);
+			$repo->getMapper()->flush();
 		}
 	}
 
@@ -293,7 +293,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		foreach ($this->repositories as $repo)
 		{
-			$repo->clean(true);
+			$repo->getMapper()->rollback();
 		}
 	}
 

@@ -27,15 +27,16 @@ class Repository_flush_Test extends TestCase
 		$this->assertSame(1, $this->r2->mapper->count);
 	}
 
-	public function test2()
+	public function testDeprecated1()
 	{
-		$this->assertSame(0, $this->m->count);
-		$this->assertSame(0, $this->r->mapper->count);
-		$this->assertSame(0, $this->r2->mapper->count);
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\Repository::flush(TRUE) is deprecated.');
 		$this->r->flush(true);
-		$this->assertSame(0, $this->m->count);
-		$this->assertSame(1, $this->r->mapper->count);
-		$this->assertSame(0, $this->r2->mapper->count);
+	}
+
+	public function testDeprecated2()
+	{
+		$this->r->flush(false);
+		$this->assertTrue(true);
 	}
 
 	public function testNotHandleByModel()
@@ -50,20 +51,6 @@ class Repository_flush_Test extends TestCase
 		$this->assertSame(1, $this->r->mapper->count);
 		$this->assertSame(1, $this->r2->mapper->count);
 		$this->assertSame(0, $r->mapper->count); // bug?
-	}
-
-	public function testNotHandleByModel2()
-	{
-		$r = new Repository_flush_Repository($this->m);
-		$this->assertSame(0, $this->m->count);
-		$this->assertSame(0, $this->r->mapper->count);
-		$this->assertSame(0, $this->r2->mapper->count);
-		$this->assertSame(0, $r->mapper->count);
-		$r->flush(true);
-		$this->assertSame(0, $this->m->count);
-		$this->assertSame(0, $this->r->mapper->count);
-		$this->assertSame(0, $this->r2->mapper->count);
-		$this->assertSame(1, $r->mapper->count);
 	}
 
 	public function testReflection()

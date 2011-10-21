@@ -318,14 +318,17 @@ abstract class Repository extends Object implements IRepository
 
 	/**
 	 * Primitne vsechny zmeny do uloziste.
-	 * @param bool true jenom pro tuto repository; false pro vsechny repository
+	 * Na vsech repozitarich.
 	 * @return void
 	 * @see IMapper::flush()
 	 * @see RepositoryContainer::flush()
 	 */
-	final public function flush($onlyThis = false)
+	final public function flush()
 	{
-		if ($onlyThis) return $this->getMapper()->flush();
+		if (func_num_args() > 0 AND func_get_arg(0))
+		{
+			throw new DeprecatedException(array(__CLASS__, 'flush(TRUE)'));
+		}
 		return $this->getModel()->flush();
 	}
 
@@ -345,15 +348,18 @@ abstract class Repository extends Object implements IRepository
 
 	/**
 	 * Zrusi vsechny zmeny, ale do ukonceni scriptu se zmeny porad drzi.
+	 * Na vsech repozitarich.
 	 * @todo zrusit i zmeny na entitach, aby se hned vratili do puvodniho stavu.
-	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::clean()
 	 * @see RepositoryContainer::clean()
 	 */
-	final public function clean($onlyThis = false)
+	final public function clean()
 	{
-		if ($onlyThis) return $this->getMapper()->rollback();
+		if (func_num_args() > 0 AND func_get_arg(0))
+		{
+			throw new DeprecatedException(array(__CLASS__, 'clean(TRUE)'));
+		}
 		return $this->getModel()->clean();
 	}
 

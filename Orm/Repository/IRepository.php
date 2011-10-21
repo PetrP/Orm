@@ -122,22 +122,22 @@ interface IRepository
 
 	/**
 	 * Primitne vsechny zmeny do uloziste.
-	 * @param bool true jenom pro tuto repository; false pro vsechny repository
+	 * Na vsech repozitarich.
 	 * @return void
 	 * @see IMapper::flush()
 	 * @see RepositoryContainer::flush()
 	 */
-	public function flush($onlyThis = false);
+	public function flush();
 
 	/**
 	 * Zrusi vsechny zmeny, ale do ukonceni scriptu se zmeny porad drzi.
+	 * Na vsech repozitarich.
 	 * @todo zrusit i zmeny na entitach, aby se hned vratili do puvodniho stavu.
-	 * @param bool true jenom pro tuto repository; false pro vsechny repository
 	 * @return void
 	 * @see IMapper::clean()
 	 * @see RepositoryContainer::clean()
 	 */
-	public function clean($onlyThis = false);
+	public function clean();
 
 	/**
 	 * Mapper ktery pouziva tato repository.

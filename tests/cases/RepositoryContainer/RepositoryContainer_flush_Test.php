@@ -21,11 +21,11 @@ class RepositoryContainer_flush_Test extends TestCase
 		$this->assertSame(array(), $r1->count);
 		$this->assertSame(array(), $r2->count);
 		$this->m->flush();
-		$this->assertSame(array(true), $r1->count);
-		$this->assertSame(array(true), $r2->count);
+		$this->assertSame(array('mapper'), $r1->count);
+		$this->assertSame(array('mapper'), $r2->count);
 		$this->m->flush();
-		$this->assertSame(array(true, true), $r1->count);
-		$this->assertSame(array(true, true), $r2->count);
+		$this->assertSame(array('mapper', 'mapper'), $r1->count);
+		$this->assertSame(array('mapper', 'mapper'), $r2->count);
 	}
 
 	public function testNoRepo()
