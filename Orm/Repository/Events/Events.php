@@ -327,16 +327,13 @@ class Events extends Object
 		if ($hasEntityEvent)
 		{
 			$more = NULL;
-			if (isset($args->id))
+			if ($hasEntityEvent === 'onLoad')
+			{
+				$more = $args->data;
+			}
+			else if ($hasEntityEvent === 'onPersist')
 			{
 				$more = $args->id;
-			}
-			else
-			{
-				if (isset($args->data))
-				{
-					$more = $args->data;
-				}
 			}
 			$entity->fireEvent($hasEntityEvent, $this->repository, $more);
 		}
