@@ -277,7 +277,7 @@ class Events extends Object
 			call_user_func($event[1], $args);
 			$args->check(); // srozumitelna chyba na ukor vykonu
 		}
-		if ($entity)
+		if ($entity AND self::$instructions[$type][2])
 		{
 			$more = NULL;
 			if (isset($args->id))
