@@ -234,14 +234,6 @@ class Events extends Object
 				$this->listeners[$e][] = array(true, array($event, $m[1]));
 			}
 		}
-		if ($event instanceof IEventFirer)
-		{
-			$is = true;
-			foreach (self::$instructions as $e => $m)
-			{
-				$this->listeners[$e][] = array(true, array($event, 'fireEvent'));
-			}
-		}
 		if (!$is)
 		{
 			throw new InvalidArgumentException(ExceptionHelper::format(array($this, $event), "%c1::addListener() no event interface match for '%c2'."));
@@ -355,10 +347,6 @@ class Events extends Object
 	private function handleLazy($key)
 	{
 		$object = call_user_func($this->lazy[$key][0]);
-		if ($object instanceof IEventFirer)
-		{
-			throw new NotSupportedException('Orm\Events: lazy Orm\IEventFirer is not supported');
-		}
 		if (!($object instanceof IListener))
 		{
 			$cb = Callback::create($this->lazy[$key][0]);

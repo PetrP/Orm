@@ -71,7 +71,6 @@ require_once __DIR__ . '/Repository/Helpers/MapperAutoCallerException.php';
 require_once __DIR__ . '/Repository/Events/Events.php';
 require_once __DIR__ . '/Repository/Events/EventArguments.php';
 require_once __DIR__ . '/Repository/Events/Types/IListener.php';
-require_once __DIR__ . '/Repository/Events/Types/IEventFirer.php';
 require_once __DIR__ . '/Repository/Events/Types/IListenerLoadBefore.php';
 require_once __DIR__ . '/Repository/Events/Types/IListenerLoadAfter.php';
 require_once __DIR__ . '/Repository/Events/Types/IListenerAttach.php';

@@ -19,7 +19,6 @@ use Orm\IListenerFlushBefore;
 use Orm\IListenerFlushAfter;
 use Orm\IListenerCleanBefore;
 use Orm\IListenerCleanAfter;
-use Orm\IEventFirer;
 
 abstract class Events_addListener_Base extends Object
 {
@@ -99,21 +98,9 @@ class Events_addListener_Clean_after extends Events_addListener_Base implements 
 	public function onAfterCleanEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }
 
-class Events_addListener_Firer extends Events_addListener_Base implements IEventFirer
-{
-	public function fireEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
-}
-
 class Events_addListener_Remove extends Events_addListener_Base implements IListenerRemoveBefore, IListenerRemoveAfter
 {
 	public function onBeforeRemoveEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
-
-	public function onAfterRemoveEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
-}
-
-class Events_addListener_FirerAndNormal extends Events_addListener_Base implements IEventFirer, IListenerRemoveAfter
-{
-	public function fireEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 
 	public function onAfterRemoveEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }

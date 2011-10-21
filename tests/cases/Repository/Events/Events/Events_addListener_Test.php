@@ -78,20 +78,6 @@ class Events_addListener_Test extends TestCase
 		return $r;
 	}
 
-	public function testFirer()
-	{
-		$object = new Events_addListener_Firer;
-		$this->e->addListener($object);
-
-		$listeners = $this->readAttribute($this->e, 'listeners');
-
-		$this->assertSame(16, count($listeners));
-		foreach ($listeners as $event => $tmp)
-		{
-			$this->assertSame(array(array(true, array($object, 'fireEvent'))), $tmp);
-		}
-	}
-
 	public function testMore()
 	{
 		$listenersInit = $this->readAttribute($this->e, 'listeners');
@@ -108,23 +94,4 @@ class Events_addListener_Test extends TestCase
 		$this->assertSame(array(true, array($object, 'onAfterRemoveEvent')), $listeners[Events::REMOVE_AFTER][0]);
 	}
 
-	public function testFirerAndNormal()
-	{
-		$object = new Events_addListener_FirerAndNormal;
-		$this->e->addListener($object);
-
-		$listeners = $this->readAttribute($this->e, 'listeners');
-
-		$this->assertSame(16, count($listeners));
-		foreach ($listeners as $event => $tmp)
-		{
-			if ($event === Events::REMOVE_AFTER) continue;
-			$this->assertSame(array(array(true, array($object, 'fireEvent'))), $tmp);
-		}
-
-		$this->assertSame(array(
-			array(true, array($object, 'onAfterRemoveEvent')),
-			array(true, array($object, 'fireEvent')),
-		), $listeners[Events::REMOVE_AFTER]);
-	}
 }

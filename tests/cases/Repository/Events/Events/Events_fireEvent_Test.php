@@ -203,15 +203,6 @@ class Events_fireEvent_Test extends TestCase
 		return new Events_addListener_Load_before;
 	}
 
-	public function testLazyFirer()
-	{
-		$this->e->addLazyListener(Events::ATTACH, function () {
-			return new Events_addListener_Firer;
-		});
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\Events: lazy Orm\IEventFirer is not supported');
-		$this->e->fireEvent(Events::ATTACH, new TestEntity);
-	}
-
 	public function testLazyInvalid()
 	{
 		$this->e->addLazyListener(Events::ATTACH, function () {
