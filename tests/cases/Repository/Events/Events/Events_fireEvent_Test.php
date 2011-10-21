@@ -37,7 +37,7 @@ class Events_fireEvent_Test extends TestCase
 
 	public function testInvalidEvent()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events::fireEvent() \$type must be valid event type; '1026' given.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events::fireEvent() \$type must be valid event type; '2052' given.");
 		$this->e->fireEvent(Events::REMOVE_AFTER | Events::ATTACH);
 	}
 

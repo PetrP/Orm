@@ -32,7 +32,7 @@ class EventArguments_type_Test extends TestCase
 
 	public function testInvalid2()
 	{
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$type must be valid event type; '1026' given.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$type must be valid event type; '2052' given.");
 		new EventArguments(Events::REMOVE_AFTER | Events::ATTACH, $this->r, new TestEntity);
 	}
 

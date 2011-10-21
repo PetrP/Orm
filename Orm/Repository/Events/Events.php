@@ -36,7 +36,7 @@ class Events extends Object
 	 * @see IRepository::hydrateEntity()
 	 * @see IListenerLoadAfter
 	 */
-	const LOAD_AFTER = 2048;
+	const LOAD_AFTER = 2;
 
 	/**
 	 * Entity is attached to repository.
@@ -44,7 +44,7 @@ class Events extends Object
 	 * @see IRepository::attach()
 	 * @see IListenerAttach
 	 */
-	const ATTACH = 2;
+	const ATTACH = 4;
 
 	/**
 	 * Entity is changed and will be saved.
@@ -53,7 +53,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistBefore
 	 */
-	const PERSIST_BEFORE = 4;
+	const PERSIST_BEFORE = 8;
 
 	/**
 	 * Entity will be saved first time.
@@ -62,7 +62,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistBeforeInsert
 	 */
-	const PERSIST_BEFORE_INSERT = 8;
+	const PERSIST_BEFORE_INSERT = 16;
 
 	/**
 	 * Entity will be updated.
@@ -71,7 +71,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistBeforeUpdate
 	 */
-	const PERSIST_BEFORE_UPDATE = 16;
+	const PERSIST_BEFORE_UPDATE = 32;
 
 	/**
 	 * Entity is saved.
@@ -82,7 +82,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersist
 	 */
-	const PERSIST = 32;
+	const PERSIST = 64;
 
 	/**
 	 * Entity was saved first time.
@@ -92,7 +92,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistAfterInsert
 	 */
-	const PERSIST_AFTER_INSERT = 64;
+	const PERSIST_AFTER_INSERT = 128;
 
 	/**
 	 * Entity was updated.
@@ -102,7 +102,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistAfterUpdate
 	 */
-	const PERSIST_AFTER_UPDATE =  128;
+	const PERSIST_AFTER_UPDATE =  256;
 
 	/**
 	 * Entity was saved.
@@ -112,7 +112,7 @@ class Events extends Object
 	 * @see IRepository::persist()
 	 * @see IListenerPersistAfter
 	 */
-	const PERSIST_AFTER = 256;
+	const PERSIST_AFTER = 512;
 
 	/**
 	 * It fires before entity will be deleted.
@@ -120,7 +120,7 @@ class Events extends Object
 	 * @see IRepository::remove()
 	 * @see IListenerRemoveBefore
 	 */
-	const REMOVE_BEFORE = 512;
+	const REMOVE_BEFORE = 1024;
 
 	/**
 	 * It fires after entity was deleted.
@@ -128,7 +128,7 @@ class Events extends Object
 	 * @see IRepository::remove()
 	 * @see IListenerRemoveAfter
 	 */
-	const REMOVE_AFTER = 1024;
+	const REMOVE_AFTER = 2048;
 
 	/**
 	 * @var array
