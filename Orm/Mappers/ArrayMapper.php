@@ -111,6 +111,8 @@ abstract class ArrayMapper extends Mapper
 		try {
 			$originData = $this->loadData();
 
+			$conventional = $this->getConventional();
+
 			foreach ($this->data as $id => $entity)
 			{
 				if ($entity)
@@ -140,6 +142,8 @@ abstract class ArrayMapper extends Mapper
 							throw new MapperPersistenceException(array($this, $entity, $key, $value));
 						}
 					}
+
+					$values = $conventional->formatEntityToStorage($values);
 
 					$originData[$id] = $values;
 				}

@@ -2,6 +2,8 @@
 
 use Orm\RepositoryContainer;
 use Orm\Callback;
+use Orm\SqlConventional;
+use Orm\NoConventional;
 
 /**
  * @covers Orm\ArrayMapper::flush
@@ -100,6 +102,40 @@ class ArrayMapper_flush_pesist_Test extends TestCase
 		$this->e->mixed = new ArrayIterator(array());
 		$this->setExpectedException('Orm\MapperPersistenceException', "ArrayMapper_flush_Mapper: can't persist ArrayMapper_flush_Entity::\$mixed; it contains 'ArrayIterator'.");
 		$this->t(NULL);
+	}
+
+	public function testConventional1()
+	{
+		$this->m->conv = new NoConventional($this->m);
+		$this->e->miXed = 'string';
+		$this->m->persist($this->e);
+		$this->m->flush();
+		$storage = $this->readAttribute($this->m, 'array');
+		$this->assertSame(3, count($storage));
+		unset($storage[3]['date']);
+		$this->assertSame(array(
+			'id' => NULL, // protoze se nepersistuje pres repository
+			'string' => '',
+			'mixed' => NULL,
+			'miXed' => 'string',
+		), $storage[3]);
+	}
+
+	public function testConventional2()
+	{
+		$this->m->conv = new SqlConventional($this->m);
+		$this->e->miXed = 'string';
+		$this->m->persist($this->e);
+		$this->m->flush();
+		$storage = $this->readAttribute($this->m, 'array');
+		$this->assertSame(3, count($storage));
+		unset($storage[3]['date']);
+		$this->assertSame(array(
+			'id' => NULL, // protoze se nepersistuje pres repository
+			'string' => '',
+			'mixed' => NULL,
+			'mi_xed' => 'string',
+		), $storage[3]);
 	}
 
 	public function testReflection()
