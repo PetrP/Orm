@@ -12,7 +12,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsChangeId()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
 			if ($args->data['id'] == 1)
 			{
 				$args->data['id'] = 55;
@@ -25,7 +25,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsChangeId2()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
 			if ($args->data['id'] == 111)
 			{
 				$args->data['id'] = 555;
@@ -38,4 +38,32 @@ class Repository_hydrateEntity_events_Test extends TestCase
 		$this->assertSame($e, $r->getById(555));
 	}
 
+	public function testEventsNotChangeId()
+	{
+		$r = new TestsRepository(new RepositoryContainer);
+		$r->events->addCallbackListener(Events::LOAD_AFTER, function (EventArguments $args) {
+			if ($args->data['id'] == 1)
+			{
+				$args->data['id'] = 55;
+			}
+		});
+		$this->assertSame(1, $r->getById(1)->id);
+		$this->assertSame(NULL, $r->getById(55));
+	}
+
+	public function testEventsNotChangeId2()
+	{
+		$r = new TestsRepository(new RepositoryContainer);
+		$r->events->addCallbackListener(Events::LOAD_AFTER, function (EventArguments $args) {
+			if ($args->data['id'] == 111)
+			{
+				$args->data['id'] = 555;
+			}
+		});
+
+		$e = $r->hydrateEntity(array('id' => 111));
+		$this->assertSame(111, $e->id);
+		$this->assertSame($e, $r->getById(111));
+		$this->assertSame(NULL, $r->getById(555));
+	}
 }

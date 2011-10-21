@@ -503,8 +503,9 @@ abstract class Repository extends Object implements IRepository
 	 * @internal
 	 *
 	 * Vola udalosti:
-	 * @see Events::LOAD
+	 * @see Events::LOAD_BEFORE
 	 * @see Entity::onLoad()
+	 * @see Events::LOAD_AFTER
 	 *
 	 * @param array
 	 * @return IEntity
@@ -529,9 +530,10 @@ abstract class Repository extends Object implements IRepository
 			$this->checkAttachableEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
-			$this->events->fireEvent(Events::LOAD, $entity, array('data' => $data));
+			$this->events->fireEvent(Events::LOAD_BEFORE, $entity, array('data' => $data));
 			$id = $entity->id;
 			$this->entities[$id] = $entity;
+			$this->events->fireEvent(Events::LOAD_AFTER, $entity, array('data' => $data));
 		}
 		return $this->entities[$id];
 	}

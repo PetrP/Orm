@@ -62,7 +62,7 @@ class Events_fireEvent_Test extends TestCase
 	{
 		$e = new TestEntity;
 		$this->assertSame('', $e->string);
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 		$this->assertSame(123, $e->id);
 		$this->assertSame('foo', $e->string);
 	}
@@ -82,7 +82,7 @@ class Events_fireEvent_Test extends TestCase
 	public function testNoEven_More_nodata()
 	{
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
-		$this->e->fireEvent(Events::LOAD, new TestEntity);
+		$this->e->fireEvent(Events::LOAD_BEFORE, new TestEntity);
 	}
 
 	/**
@@ -90,9 +90,9 @@ class Events_fireEvent_Test extends TestCase
 	 */
 	public function testCallback($cb)
 	{
-		$this->e->addCallbackListener(Events::LOAD, $cb);
+		$this->e->addCallbackListener(Events::LOAD_BEFORE, $cb);
 		$e = new TestEntity;
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 		$this->assertSame('foo muhaha', $e->string);
 	}
 
@@ -120,39 +120,39 @@ class Events_fireEvent_Test extends TestCase
 
 	public function testCallbackMore()
 	{
-		$this->e->addCallbackListener(Events::LOAD, array($this, 'cb'));
-		$this->e->addCallbackListener(Events::LOAD, array($this, 'cb'));
+		$this->e->addCallbackListener(Events::LOAD_BEFORE, array($this, 'cb'));
+		$this->e->addCallbackListener(Events::LOAD_BEFORE, array($this, 'cb'));
 		$e = new TestEntity;
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 		$this->assertSame('foo muhaha muhaha', $e->string);
 	}
 
 	public function testCallbackCheck()
 	{
-		$this->e->addCallbackListener(Events::LOAD, function (EventArguments $args) {
+		$this->e->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
 			$args->data = NULL;
 		});
-		$this->e->addCallbackListener(Events::LOAD, array($this, 'cb'));
+		$this->e->addCallbackListener(Events::LOAD_BEFORE, array($this, 'cb'));
 
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
-		$this->e->fireEvent(Events::LOAD, new TestEntity, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, new TestEntity, array('data' => array('id' => 123, 'string' => 'foo')));
 	}
 
 	public function testLazyOnce()
 	{
 		$count = (object) array('count' => 0, 'e' => NULL);
-		$this->e->addLazyListener(Events::LOAD, function () use ($count) {
+		$this->e->addLazyListener(Events::LOAD_BEFORE, function () use ($count) {
 			$count->count++;
-			return $count->e = new Events_addListener_Load;
+			return $count->e = new Events_addListener_Load_before;
 		});
 		$e = new TestEntity;
 		$this->assertSame(0, $count->count);
 		$this->assertSame(NULL, $count->e);
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 		$this->assertSame(1, $count->count);
-		$this->assertInstanceOf('Events_addListener_Load', $count->e);
+		$this->assertInstanceOf('Events_addListener_Load_before', $count->e);
 		$this->assertSame(1, $count->e->count);
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 		$this->assertSame(1, $count->count);
 		$this->assertSame(2, $count->e->count);
 	}
@@ -163,17 +163,17 @@ class Events_fireEvent_Test extends TestCase
 	public function testLazy($cb)
 	{
 		Events_addListener_Base::$logs = array();
-		$this->e->addLazyListener(Events::LOAD, $cb);
+		$this->e->addLazyListener(Events::LOAD_BEFORE, $cb);
 		$e = new TestEntity;
 
-		$this->e->fireEvent(Events::LOAD, $e, array('data' => array('id' => 123, 'string' => 'foo')));
+		$this->e->fireEvent(Events::LOAD_BEFORE, $e, array('data' => array('id' => 123, 'string' => 'foo')));
 
 		$this->assertSame(1, count(Events_addListener_Base::$logs));
-		$this->assertInstanceOf('Events_addListener_Load', Events_addListener_Base::$logs[0][0]);
-		$this->assertSame('onLoadEvent', Events_addListener_Base::$logs[0][1]);
+		$this->assertInstanceOf('Events_addListener_Load_before', Events_addListener_Base::$logs[0][0]);
+		$this->assertSame('onBeforeLoadEvent', Events_addListener_Base::$logs[0][1]);
 		$this->assertInstanceOf('Orm\EventArguments', Events_addListener_Base::$logs[0][2]);
 
-		$this->assertSame(Events::LOAD, Events_addListener_Base::$logs[0][2]->type);
+		$this->assertSame(Events::LOAD_BEFORE, Events_addListener_Base::$logs[0][2]->type);
 		$this->assertSame($this->r, Events_addListener_Base::$logs[0][2]->repository);
 		$this->assertSame($e, Events_addListener_Base::$logs[0][2]->entity);
 		$this->assertSame(array('id' => 123, 'string' => 'foo'), Events_addListener_Base::$logs[0][2]->data);
@@ -185,10 +185,10 @@ class Events_fireEvent_Test extends TestCase
 	{
 		return array(
 			'closure' => array(function () {
-				return new Events_addListener_Load;
+				return new Events_addListener_Load_before;
 			}),
 			'create_function' => array(create_function('', '
-				return new Events_addListener_Load;
+				return new Events_addListener_Load_before;
 			')),
 			'array' => array(array($this, 'cbf')),
 			'array2' => array(array('Events_fireEvent_Test', 'cbf')),
@@ -200,7 +200,7 @@ class Events_fireEvent_Test extends TestCase
 
 	public static function cbf()
 	{
-		return new Events_addListener_Load;
+		return new Events_addListener_Load_before;
 	}
 
 	public function testLazyFirer()

@@ -224,8 +224,9 @@ interface IRepository
 	 * @internal
 	 *
 	 * Vola udalosti:
-	 * @see Events::LOAD
+	 * @see Events::LOAD_BEFORE
 	 * @see Entity::onLoad()
+	 * @see Events::LOAD_AFTER
 	 *
 	 * @param array
 	 * @return IEntity

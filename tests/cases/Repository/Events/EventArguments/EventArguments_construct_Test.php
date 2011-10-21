@@ -20,7 +20,8 @@ class EventArguments_construct_Test extends TestCase
 	public static function dataProviderTypes()
 	{
 		return array_map(function ($t) { return array($t); }, array(
-			Events::LOAD,
+			Events::LOAD_BEFORE,
+			Events::LOAD_AFTER,
 			Events::ATTACH,
 			Events::PERSIST_BEFORE,
 			Events::PERSIST_BEFORE_UPDATE,

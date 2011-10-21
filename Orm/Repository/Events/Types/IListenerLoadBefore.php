@@ -8,18 +8,18 @@
 namespace Orm;
 
 /**
- * Data from storage are hydrated into entity.
+ * Before data from storage are hydrated into entity.
  * Has EventArguments::$data and EventArguments::$entity.
  * It fires before data are hydrated. Entity is empty. $data can be changed. Values at entity will be overwritten.
  * @see IRepository::hydrateEntity()
- * @see Events::LOAD
+ * @see Events::LOAD_BEFORE
  *
  * @author Petr Procházka
  * @package Orm
  * @subpackage Repository\Events\Types
  */
-interface IListenerLoad extends IListener
+interface IListenerLoadBefore extends IListener
 {
-		/** @param EventArguments has $entity and $data */
-	public function onLoadEvent(EventArguments $args);
+	/** @param EventArguments has $entity and $data */
+	public function onBeforeLoadEvent(EventArguments $args);
 }

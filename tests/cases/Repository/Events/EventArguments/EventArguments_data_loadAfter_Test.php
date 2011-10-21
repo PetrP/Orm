@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::__construct
  */
-class EventArguments_data_Test extends TestCase
+class EventArguments_data_loadAfter_Test extends TestCase
 {
 	private $r;
 	protected function setUp()
@@ -17,14 +17,14 @@ class EventArguments_data_Test extends TestCase
 
 	public function testLoad()
 	{
-		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$this->assertSame(array('foo' => 'bar'), $args->data);
 		$this->assertSame(false, isset($args->id));
 	}
 
 	public function testLoadWrite()
 	{
-		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$this->assertSame(array('foo' => 'bar'), $args->data);
 		$args->data['foo'] = 598;
 		$this->assertSame(array('foo' => 598), $args->data);
@@ -33,13 +33,13 @@ class EventArguments_data_Test extends TestCase
 	public function testLoadtNoData()
 	{
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
-		new EventArguments(Events::LOAD, $this->r, new TestEntity);
+		new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity);
 	}
 
 	public function testLoadDataNotArray()
 	{
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
-		new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => 111));
+		new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => 111));
 	}
 
 	/**
@@ -47,7 +47,7 @@ class EventArguments_data_Test extends TestCase
 	 */
 	public function testReadData($type)
 	{
-		if ($type === Events::LOAD)
+		if ($type === Events::LOAD_AFTER OR $type === Events::LOAD_BEFORE)
 		{
 			$this->assertTrue(true);
 			return;
@@ -62,7 +62,7 @@ class EventArguments_data_Test extends TestCase
 	 */
 	public function testWriteData($type)
 	{
-		if ($type === Events::LOAD)
+		if ($type === Events::LOAD_AFTER OR $type === Events::LOAD_BEFORE)
 		{
 			$this->assertTrue(true);
 			return;

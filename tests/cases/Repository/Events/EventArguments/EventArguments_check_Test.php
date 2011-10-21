@@ -50,7 +50,7 @@ class EventArguments_check_Test extends TestCase
 
 	public function testData()
 	{
-		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data['foo'] = 598;
 		$args->check();
 		$this->assertTrue(true);
@@ -58,7 +58,7 @@ class EventArguments_check_Test extends TestCase
 
 	public function testNoData()
 	{
-		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = NULL;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
 		$args->check();
@@ -66,10 +66,33 @@ class EventArguments_check_Test extends TestCase
 
 	public function testDataNotArray()
 	{
-		$args = new EventArguments(Events::LOAD, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = 111;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
 		$args->check();
 	}
 
+	public function testDataAfter()
+	{
+		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data['foo'] = 598;
+		$args->check();
+		$this->assertTrue(true);
+	}
+
+	public function testNoDataAfter()
+	{
+		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data = NULL;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
+		$args->check();
+	}
+
+	public function testDataNotArrayAfter()
+	{
+		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args->data = 111;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
+		$args->check();
+	}
 }

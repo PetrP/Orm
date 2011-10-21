@@ -57,7 +57,8 @@ class Events_addListener_Test extends TestCase
 	{
 		$r = array();
 		foreach (array(
-			array('Events_addListener_Load', Events::LOAD, 'onLoadEvent'),
+			array('Events_addListener_Load_before', Events::LOAD_BEFORE, 'onBeforeLoadEvent'),
+			array('Events_addListener_Load_after', Events::LOAD_AFTER, 'onAfterLoadEvent'),
 			array('Events_addListener_Attach', Events::ATTACH, 'onAttachEvent'),
 			array('Events_addListener_Persist_before', Events::PERSIST_BEFORE, 'onBeforePersistEvent'),
 			array('Events_addListener_Persist_before_update', Events::PERSIST_BEFORE_UPDATE, 'onBeforePersistUpdateEvent'),
@@ -79,7 +80,7 @@ class Events_addListener_Test extends TestCase
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
 
-		$this->assertSame(11, count($listeners));
+		$this->assertSame(12, count($listeners));
 		foreach ($listeners as $event => $tmp)
 		{
 			$this->assertSame(array(array(true, array($object, 'fireEvent'))), $tmp);
@@ -109,7 +110,7 @@ class Events_addListener_Test extends TestCase
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
 
-		$this->assertSame(11, count($listeners));
+		$this->assertSame(12, count($listeners));
 		foreach ($listeners as $event => $tmp)
 		{
 			if ($event === Events::REMOVE_AFTER) continue;
