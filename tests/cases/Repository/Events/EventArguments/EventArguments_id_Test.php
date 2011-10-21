@@ -47,13 +47,15 @@ class EventArguments_id_Test extends TestCase
 	 */
 	public function testReadId($type)
 	{
+		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
 		if ($type === Events::PERSIST)
 		{
 			$this->assertTrue(true);
-			return;
 		}
-		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
-		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property Orm\EventArguments::$id.');
+		else
+		{
+			$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property Orm\EventArguments::$id.');
+		}
 		$args->id;
 	}
 
@@ -62,13 +64,15 @@ class EventArguments_id_Test extends TestCase
 	 */
 	public function testWriteId($type)
 	{
+		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
 		if ($type === Events::PERSIST)
 		{
 			$this->assertTrue(true);
-			return;
 		}
-		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
-		$this->setExpectedException('Orm\MemberAccessException', 'Cannot write to an undeclared property Orm\EventArguments::$id.');
+		else
+		{
+			$this->setExpectedException('Orm\MemberAccessException', 'Cannot write to an undeclared property Orm\EventArguments::$id.');
+		}
 		$args->id = 123;
 	}
 
