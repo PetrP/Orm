@@ -116,6 +116,8 @@ abstract class ArrayMapper extends Mapper
 		try {
 			$originData = $this->loadData();
 
+			$conventional = $this->getConventional();
+
 			foreach ($this->data as $id => $entity)
 			{
 				if ($entity)
@@ -145,6 +147,8 @@ abstract class ArrayMapper extends Mapper
 							throw new InvalidStateException("Neumim ulozit `".get_class($entity)."::$$key` " . (is_object($value) ? get_class($value) : gettype($value)));
 						}
 					}
+
+					$values = $conventional->formatEntityToStorage($values);
 
 					$originData[$id] = $values;
 				}
