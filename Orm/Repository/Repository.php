@@ -251,7 +251,8 @@ abstract class Repository extends Object implements IRepository
 
 			if ($id = $this->getMapper()->persist($entity))
 			{
-				$this->events->fireEvent(Events::PERSIST, $entity, array('id' => $id));
+				$args = array('id' => $id);
+				$this->events->fireEvent(Events::PERSIST, $entity, $args);
 				if ($hasId)
 				{
 					$this->entities[$hasId] = false;
@@ -269,7 +270,7 @@ abstract class Repository extends Object implements IRepository
 				if ($entity->isChanged())
 				{
 					$this->getMapper()->persist($entity);
-					$this->events->fireEvent(Events::PERSIST, $entity, array('id' => $id));
+					$this->events->fireEvent(Events::PERSIST, $entity, $args);
 				}
 				unset($recurcion[$hash]);
 				return $entity;
@@ -536,10 +537,11 @@ abstract class Repository extends Object implements IRepository
 			$this->checkAttachableEntity($entityName);
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
-			$this->events->fireEvent(Events::LOAD_BEFORE, $entity, array('data' => $data));
+			$args = array('data' => $data);
+			$this->events->fireEvent(Events::LOAD_BEFORE, $entity, $args);
 			$id = $entity->id;
 			$this->entities[$id] = $entity;
-			$this->events->fireEvent(Events::LOAD_AFTER, $entity, array('data' => $data));
+			$this->events->fireEvent(Events::LOAD_AFTER, $entity, $args);
 		}
 		return $this->entities[$id];
 	}

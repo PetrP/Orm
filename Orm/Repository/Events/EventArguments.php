@@ -133,4 +133,17 @@ class EventArguments extends Object
 			}
 		}
 	}
+
+	/** @return array */
+	public function getArguments()
+	{
+		$keys = $this->keys;
+		unset($keys['entity']);
+		$arguments = array();
+		foreach ($keys as $key => $tmp)
+		{
+			$arguments[$key] = $this->{$key};
+		}
+		return $arguments;
+	}
 }

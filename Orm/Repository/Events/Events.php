@@ -299,11 +299,11 @@ class Events extends Object
 	 * Fires event.
 	 * @param int one event (e.g. Events::LOAD_BEFORE)
 	 * @param IEntity|NULL
-	 * @param array
+	 * @param array reference
 	 * @return Events $this
 	 * @see EventArguments
 	 */
-	public function fireEvent($type, IEntity $entity = NULL, array $arguments = array())
+	public function fireEvent($type, IEntity $entity = NULL, array & $arguments = array())
 	{
 		if (!isset(self::$instructions[$type]))
 		{
@@ -323,6 +323,7 @@ class Events extends Object
 				call_user_func($event[1], $args);
 				$args->check(); // srozumitelna chyba na ukor vykonu
 			}
+			$arguments = $args->getArguments();
 		}
 		if ($hasEntityEvent)
 		{
