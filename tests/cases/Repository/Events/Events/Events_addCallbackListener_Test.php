@@ -53,7 +53,7 @@ class Events_addCallbackListener_Test extends TestCase
 		$this->assertSame(array(true, $cb), $listeners[$event][0]);
 	}
 
-	public function dataProviderAll()
+	public static function dataProviderAll()
 	{
 		return array(
 			array(Events::LOAD_BEFORE),

@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::__construct
  */
-class EventArguments_type_Test extends TestCase
+class EventArguments_type_Test extends EventArguments_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -20,7 +20,7 @@ class EventArguments_type_Test extends TestCase
 	 */
 	public function testType($type)
 	{
-		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
 		$this->assertSame($type, $args->type);
 	}
 

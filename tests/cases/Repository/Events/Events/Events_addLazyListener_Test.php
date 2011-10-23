@@ -59,24 +59,7 @@ class Events_addLazyListener_Test extends TestCase
 
 	public function dataProviderAll()
 	{
-		return array(
-			array(Events::LOAD_BEFORE),
-			array(Events::LOAD_AFTER),
-			array(Events::ATTACH),
-			array(Events::PERSIST_BEFORE),
-			array(Events::PERSIST_BEFORE_UPDATE),
-			array(Events::PERSIST_BEFORE_INSERT),
-			array(Events::PERSIST),
-			array(Events::PERSIST_AFTER_UPDATE),
-			array(Events::PERSIST_AFTER_INSERT),
-			array(Events::PERSIST_AFTER),
-			array(Events::REMOVE_BEFORE),
-			array(Events::REMOVE_AFTER),
-			array(Events::FLUSH_BEFORE),
-			array(Events::FLUSH_AFTER),
-			array(Events::CLEAN_BEFORE),
-			array(Events::CLEAN_AFTER),
-		);
+		return Events_addCallbackListener_Test::dataProviderAll();
 	}
 
 	/**

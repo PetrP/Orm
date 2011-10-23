@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::__construct
  */
-class EventArguments_entity_Test extends TestCase
+class EventArguments_entity_Test extends EventArguments_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -22,7 +22,7 @@ class EventArguments_entity_Test extends TestCase
 	public function testHasEntity($type)
 	{
 		$e = new TestEntity;
-		$args = new EventArguments($type, $this->r, $e, array('id' => 123, 'data' => array('foo' => 'bar')));
+		$args = new EventArguments($type, $this->r, $e, $this->args);
 		$this->assertSame($e, $args->entity);
 	}
 
@@ -39,7 +39,7 @@ class EventArguments_entity_Test extends TestCase
 		{
 			$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$entity must be instance of Orm\\IEntity; 'NULL' given.");
 		}
-		new EventArguments($type, $this->r, NULL, array('id' => 123, 'data' => array('foo' => 'bar')));
+		new EventArguments($type, $this->r, NULL, $this->args);
 	}
 
 	public function testWrite()

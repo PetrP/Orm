@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::__construct
  */
-class EventArguments_data_loadAfter_Test extends TestCase
+class EventArguments_data_loadAfter_Test extends EventArguments_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -47,7 +47,7 @@ class EventArguments_data_loadAfter_Test extends TestCase
 	 */
 	public function testReadData($type)
 	{
-		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
 		if ($type === Events::LOAD_AFTER OR $type === Events::LOAD_BEFORE)
 		{
 			$this->assertTrue(true);
@@ -64,7 +64,7 @@ class EventArguments_data_loadAfter_Test extends TestCase
 	 */
 	public function testWriteData($type)
 	{
-		$args = new EventArguments($type, $this->r, new TestEntity, array('id' => 123, 'data' => array('foo' => 'bar')));
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
 		if ($type === Events::LOAD_AFTER OR $type === Events::LOAD_BEFORE)
 		{
 			$this->assertTrue(true);
