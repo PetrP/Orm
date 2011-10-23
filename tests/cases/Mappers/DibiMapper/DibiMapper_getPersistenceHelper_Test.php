@@ -22,6 +22,7 @@ class DibiMapper_getPersistenceHelper_Test extends TestCase
 		$this->assertAttributeInstanceOf('Orm\SqlConventional', 'conventional', $ph);
 		$this->assertAttributeSame($this->m->getConventional(), 'conventional', $ph);
 		$this->assertAttributeSame('tests', 'table', $ph);
+		$this->assertAttributeSame($this->m->repository->events, 'events', $ph);
 	}
 
 	public function testNoCache()

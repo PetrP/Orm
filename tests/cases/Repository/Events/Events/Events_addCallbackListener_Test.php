@@ -72,6 +72,9 @@ class Events_addCallbackListener_Test extends TestCase
 			array(Events::FLUSH_AFTER),
 			array(Events::CLEAN_BEFORE),
 			array(Events::CLEAN_AFTER),
+			array(Events::SERIALIZE_BEFORE),
+			array(Events::SERIALIZE_AFTER),
+			array(Events::SERIALIZE_CONVENTIONAL),
 		);
 	}
 

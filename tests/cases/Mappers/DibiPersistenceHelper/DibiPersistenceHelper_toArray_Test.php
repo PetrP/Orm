@@ -8,7 +8,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 
 	public function testAll()
 	{
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed' => 1,
 			'mi_xed2' => 2,
@@ -22,7 +22,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testParamsCallback($callback)
 	{
 		$this->h->params['miXed2'] = $callback;
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 'foo_2_3',
 			'mi_xed' => 1,
@@ -55,13 +55,13 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	{
 		$this->h->params['miXed2'] = 'foo';
 		$this->setExpectedException('Orm\NotCallableException', "Callback 'foo' is not callable.");
-		$this->h->call('toArray', array($this->e, NULL));
+		$this->h->call('toArray', array($this->e, NULL, 'insert'));
 	}
 
 	public function testParamsFalse()
 	{
 		$this->h->params['miXed2'] = false;
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed' => 1,
 			'mi_xed3' => 3,
@@ -72,13 +72,13 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	{
 		$this->h->params['foo'] = false;
 		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
-		$this->h->call('toArray', array($this->e, NULL));
+		$this->h->call('toArray', array($this->e, NULL, 'insert'));
 	}
 
 	public function testParamsTrue()
 	{
 		$this->h->params['miXed2'] = true;
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 2,
 			'mi_xed' => 1,
@@ -89,7 +89,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testParamsIdNotWork()
 	{
 		$this->h->params['id'] = function () { throw new Exception(); };
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed' => 1,
 			'mi_xed2' => 2,
@@ -99,7 +99,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 
 	public function testParamsId()
 	{
-		$r = $this->h->call('toArray', array($this->e, 35));
+		$r = $this->h->call('toArray', array($this->e, 35, 'insert'));
 		$this->assertSame(array(
 			'id' => 35,
 			'mi_xed' => 1,
@@ -112,13 +112,13 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	{
 		$this->h->params['foo'] = function () { throw new Exception(); };
 		$this->setExpectedException('Orm\MemberAccessException', 'Cannot read an undeclared property DibiPersistenceHelper_Entity::$foo.');
-		$this->h->call('toArray', array($this->e, NULL));
+		$this->h->call('toArray', array($this->e, NULL, 'insert'));
 	}
 
 	public function testParamsUnexistsGetter()
 	{
 		$this->h->params['miXed4'] = true;
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed4' => 4,
 			'mi_xed' => 1,
@@ -130,7 +130,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testWhichParams()
 	{
 		$this->h->whichParams = array('miXed', 'miXed3');
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed' => 1,
 			'mi_xed3' => 3,
@@ -140,7 +140,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testWhichParamsNot()
 	{
 		$this->h->whichParamsNot = array('miXed', 'miXed3');
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 2,
 		), $r);
@@ -150,7 +150,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	{
 		$this->h->whichParams = array('miXed', 'miXed2');
 		$this->h->whichParamsNot = array('miXed');
-		$r = $this->h->call('toArray', array($this->e, NULL));
+		$r = $this->h->call('toArray', array($this->e, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 2,
 		), $r);
@@ -159,7 +159,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testWhichParamsId()
 	{
 		$this->h->whichParams = array('id');
-		$r = $this->h->call('toArray', array($this->e, 35));
+		$r = $this->h->call('toArray', array($this->e, 35, 'insert'));
 		$this->assertSame(array(
 			'id' => 35,
 		), $r);
@@ -168,7 +168,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testWhichParamsIdNot()
 	{
 		$this->h->whichParams = array();
-		$r = $this->h->call('toArray', array($this->e, 35));
+		$r = $this->h->call('toArray', array($this->e, 35, 'insert'));
 		$this->assertSame(array(
 			'id' => 35,
 		), $r);
@@ -177,7 +177,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 	public function testWhichParamsNotId()
 	{
 		$this->h->whichParamsNot = array('id');
-		$r = $this->h->call('toArray', array($this->e, 35));
+		$r = $this->h->call('toArray', array($this->e, 35, 'insert'));
 		$this->assertSame(array(
 			'id' => 35,
 			'mi_xed' => 1,
@@ -203,7 +203,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo', 'miXed');
 		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
 		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
-		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$r = $this->h->call('toArray', array($this->ee, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 'a:3:{i:1;i:1;i:2;i:2;i:3;i:3;}',
 		), $r);
@@ -217,7 +217,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo', 'miXed');
 		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
 		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
-		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$r = $this->h->call('toArray', array($this->ee, NULL, 'insert'));
 		$this->assertSame(array(), $r);
 	}
 
@@ -229,7 +229,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo', 'miXed');
 		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
 		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
-		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$r = $this->h->call('toArray', array($this->ee, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed' => 'x',
 			'mi_xed2' => 'x',
@@ -245,7 +245,7 @@ class DibiPersistenceHelper_toArray_Test extends DibiPersistenceHelper_Test
 		$this->ee->miXed = new Orm\OneToMany($this->ee, $this->ee->repository, 'foo', 'miXed');
 		$this->ee->miXed2 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'array', 'array', true, array(1, 2, 3));
 		$this->ee->miXed3 = new Orm\ManyToMany($this->ee, $this->ee->repository, 'dibi', 'dibi', true);
-		$r = $this->h->call('toArray', array($this->ee, NULL));
+		$r = $this->h->call('toArray', array($this->ee, NULL, 'insert'));
 		$this->assertSame(array(
 			'mi_xed2' => 'a:3:{i:1;i:1;i:2;i:2;i:3;i:3;}',
 		), $r);

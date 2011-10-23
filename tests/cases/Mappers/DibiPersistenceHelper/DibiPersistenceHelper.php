@@ -34,7 +34,7 @@ class DibiPersistenceHelper_Repository extends Repository
 {
 	protected $entityClassName = 'DibiPersistenceHelper_Entity';
 }
-class DibiPersistenceHelper_Mapper extends ArrayMapper
+class DibiPersistenceHelper_Mapper extends DibiMapper_Connected_DibiMapper
 {
 	public function createManyToManyMapper($param, Orm\IRepository $targetRepository, $targetParam)
 	{
@@ -75,12 +75,12 @@ abstract class DibiPersistenceHelper_Test extends TestCase
 	protected function setUp()
 	{
 		$this->model = new RepositoryContainer;
-		$this->r = $this->model->DibiMapper_Connected_Dibi;
+		$this->r = $this->model->getRepository('DibiPersistenceHelper_Repository');
 		$m = $this->r->getMapper();
 		$this->d = $m->getConnection()->getDriver();
-		$this->h = new DibiPersistenceHelper_DibiPersistenceHelper($m->getConnection(), $m->conventional, 'table');
+		$this->h = new DibiPersistenceHelper_DibiPersistenceHelper($m->getConnection(), $m->conventional, 'table', $this->r->events);
 		$this->e = new DibiPersistenceHelper_Entity;
-		$this->ee = $this->model->getRepository('DibiPersistenceHelper_Repository')->attach(new DibiPersistenceHelper_Entity);
+		$this->ee = $this->r->attach(new DibiPersistenceHelper_Entity);
 		$this->e->miXed = 1;
 		$this->e->miXed2 = 2;
 		$this->e->miXed3 = 3;

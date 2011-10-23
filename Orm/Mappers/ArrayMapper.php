@@ -112,12 +112,24 @@ abstract class ArrayMapper extends Mapper
 			$originData = $this->loadData();
 
 			$conventional = $this->getConventional();
+			$events = $this->getRepository()->getEvents();
 
 			foreach ($this->data as $id => $entity)
 			{
 				if ($entity)
 				{
 					$values = $entity->toArray();
+
+					$operation = isset($originData[$id]) ? 'update' : 'insert';
+
+					$arguments = array('params' => array(), 'values' => $values, 'operation' => $operation);
+					$events->fireEvent(Events::SERIALIZE_BEFORE, $entity, $arguments);
+					$values = $arguments['values'];
+					if ($arguments['params'])
+					{
+						throw new NotSupportedException('Orm\EventArguments::$params are not supported for Orm\ArrayMapper during Orm\Events::SERIALIZE_BEFORE event.');
+					}
+
 					foreach ($values as $key => $value)
 					{
 						if ($value instanceof IEntityInjection)
@@ -143,7 +155,15 @@ abstract class ArrayMapper extends Mapper
 						}
 					}
 
+					$arguments = array('values' => $values, 'operation' => $operation);
+					$events->fireEvent(Events::SERIALIZE_AFTER, $entity, $arguments);
+					$values = $arguments['values'];
+
 					$values = $conventional->formatEntityToStorage($values);
+
+					$arguments = array('values' => $values, 'operation' => $operation);
+					$events->fireEvent(Events::SERIALIZE_CONVENTIONAL, $entity, $arguments);
+					$values = $arguments['values'];
 
 					$originData[$id] = $values;
 				}

@@ -163,6 +163,40 @@ class Events extends Object
 	const CLEAN_AFTER = 32768;
 
 	/**
+	 * Before entity is serialized to storage.
+	 * Has EventArguments::$params, EventArguments::$values, EventArguments::$operation and EventArguments::$entity.
+	 * EventArguments::$params are only in DibiMapper and contains DibiPersistenceHelper::$params.
+	 * EventArguments::$values contains all entity values given by IEntity::toArray() before then will scalarized.
+	 * EventArguments::$operation contains string insert or update depending on entity is (or not) persisted first time.
+	 * @see DibiPersistenceHelper::toArray()
+	 * @see ArrayMapper::flush()
+	 * @see IListenerSerializeBefore
+	 */
+	const SERIALIZE_BEFORE = 65536;
+
+	/**
+	 * After entity is serialized to storage.
+	 * Has EventArguments::$values, EventArguments::$operation and EventArguments::$entity.
+	 * EventArguments::$values contains all scalarized values.
+	 * EventArguments::$operation contains string insert or update depending on entity is (or not) persisted first time.
+	 * @see DibiPersistenceHelper::toArray()
+	 * @see ArrayMapper::flush()
+	 * @see IListenerSerializeAfter
+	 */
+	const SERIALIZE_AFTER = 131072;
+
+	/**
+	 * After entity is serialized and conventional is applied.
+	 * Has EventArguments::$values, EventArguments::$operation and EventArguments::$entity.
+	 * EventArguments::$values contains all scalarized values. Conventional is applied.
+	 * EventArguments::$operation contains string insert or update depending on entity is (or not) persisted first time.
+	 * @see DibiPersistenceHelper::toArray()
+	 * @see ArrayMapper::flush()
+	 * @see IListenerSerializeConventional
+	 */
+	const SERIALIZE_CONVENTIONAL = 262144;
+
+	/**
 	 * @var array
 	 * 	event => array(array(true, callback)) // not lazy
 	 * 	event => array(listenersLine => array(false, lazyKey)) // lazy
@@ -184,6 +218,9 @@ class Events extends Object
 		self::FLUSH_AFTER => array(),
 		self::CLEAN_BEFORE => array(),
 		self::CLEAN_AFTER => array(),
+		self::SERIALIZE_BEFORE => array(),
+		self::SERIALIZE_AFTER => array(),
+		self::SERIALIZE_CONVENTIONAL => array(),
 	);
 
 	/** @var array lazyKey => array(factory, array(event => listenersLine)) */
@@ -210,6 +247,9 @@ class Events extends Object
 		self::FLUSH_AFTER => array('Orm\IListenerFlushAfter', 'onAfterFlushEvent', NULL),
 		self::CLEAN_BEFORE => array('Orm\IListenerCleanBefore', 'onBeforeCleanEvent', NULL),
 		self::CLEAN_AFTER => array('Orm\IListenerCleanAfter', 'onAfterCleanEvent', NULL),
+		self::SERIALIZE_BEFORE => array('Orm\IListenerSerializeBefore', 'onBeforeSerializeEvent', NULL),
+		self::SERIALIZE_AFTER => array('Orm\IListenerSerializeAfter', 'onAfterSerializeEvent', NULL),
+		self::SERIALIZE_CONVENTIONAL => array('Orm\IListenerSerializeConventional', 'onConventionalSerializeEvent', NULL),
 	);
 
 	/** @param IRepository */

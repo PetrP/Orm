@@ -29,7 +29,21 @@ class EventArguments_getArguments_Test extends TestCase
 		{
 			$expectedArguments = array('data' => array('id' => 123, 'string' => 'foo'));
 		}
-		$arguments = array('id' => 123, 'data' => array('id' => 123, 'string' => 'foo'));
+		else if ($type & (Events::SERIALIZE_AFTER | Events::SERIALIZE_CONVENTIONAL))
+		{
+			$expectedArguments = array('values' => array('id' => 123, 'string' => 'foo'), 'operation' => 'insert');
+		}
+		else if ($type & Events::SERIALIZE_BEFORE)
+		{
+			$expectedArguments = array('params' => array('id' => true, 'string' => true), 'values' => array('id' => 123, 'string' => 'foo'), 'operation' => 'insert');
+		}
+		$arguments = array(
+			'id' => 123,
+			'data' => array('id' => 123, 'string' => 'foo'),
+			'operation' => 'insert',
+			'params' => array('id' => true, 'string' => true),
+			'values' => array('id' => 123, 'string' => 'foo'),
+		);
 		$args = new EventArguments($type, $this->r, new TestEntity, $arguments);
 		$this->assertSame($expectedArguments, $args->getArguments());
 	}

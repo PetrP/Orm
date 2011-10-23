@@ -211,7 +211,7 @@ class DibiMapper extends Mapper
 	 */
 	protected function getPersistenceHelper()
 	{
-		return new DibiPersistenceHelper($this->getConnection(), $this->getConventional(), $this->getTableName());
+		return new DibiPersistenceHelper($this->getConnection(), $this->getConventional(), $this->getTableName(), $this->getRepository()->getEvents());
 	}
 
 	/**

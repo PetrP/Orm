@@ -10,6 +10,7 @@ namespace Orm;
 /**
  * @property-read int $type
  * @property-read NULL|IEntity $entity
+ * @property-read NULL|string $operation update|insert
  * @property-read IRepository $repository
  * @author Petr Procházka
  * @package Orm
@@ -22,6 +23,15 @@ class EventArguments extends Object
 
 	/** @var scalar */
 	public $id;
+
+	/** @var array */
+	public $params;
+
+	/** @var array */
+	public $values;
+
+	/** @var NULL|string update|insert */
+	private $operation;
 
 	/** @var int event type */
 	private $type;
@@ -53,6 +63,9 @@ class EventArguments extends Object
 		Events::FLUSH_AFTER => array(),
 		Events::CLEAN_BEFORE => array(),
 		Events::CLEAN_AFTER => array(),
+		Events::SERIALIZE_BEFORE => array('entity' => true, 'params' => true, 'values' => true, 'operation' => true),
+		Events::SERIALIZE_AFTER => array('entity' => true, 'values' => true, 'operation' => true),
+		Events::SERIALIZE_CONVENTIONAL => array('entity' => true, 'values' => true, 'operation' => true),
 	);
 
 	/**
@@ -91,6 +104,30 @@ class EventArguments extends Object
 		{
 			unset($this->data);
 		}
+		if (isset($this->keys['operation']))
+		{
+			$this->operation = isset($arguments['operation']) ? $arguments['operation'] : NULL;
+			if ($this->operation !== 'update' AND $this->operation !== 'insert')
+			{
+				throw new InvalidArgumentException(array($this, '$operation', 'update|insert', $this->operation));
+			}
+		}
+		if (isset($this->keys['params']))
+		{
+			$this->params = isset($arguments['params']) ? $arguments['params'] : NULL;
+		}
+		else
+		{
+			unset($this->params);
+		}
+		if (isset($this->keys['values']))
+		{
+			$this->values = isset($arguments['values']) ? $arguments['values'] : NULL;
+		}
+		else
+		{
+			unset($this->values);
+		}
 		$this->check();
 	}
 
@@ -104,6 +141,16 @@ class EventArguments extends Object
 	public function getEntity()
 	{
 		return $this->entity;
+	}
+
+	/** @return NULL|string update|insert */
+	public function getOperation()
+	{
+		if (!$this->operation)
+		{
+			throw new MemberAccessException("Cannot read an undeclared property Orm\\EventArguments::\$operation.");
+		}
+		return $this->operation;
 	}
 
 	/** @return IRepository */
@@ -130,6 +177,20 @@ class EventArguments extends Object
 			if (!is_array($this->data))
 			{
 				throw new InvalidArgumentException(array($this, '$data', 'array', $this->data));
+			}
+		}
+		if (isset($this->keys['params']))
+		{
+			if (!is_array($this->params))
+			{
+				throw new InvalidArgumentException(array($this, '$params', 'array', $this->params));
+			}
+		}
+		if (isset($this->keys['values']))
+		{
+			if (!is_array($this->values))
+			{
+				throw new InvalidArgumentException(array($this, '$values', 'array', $this->values));
 			}
 		}
 	}

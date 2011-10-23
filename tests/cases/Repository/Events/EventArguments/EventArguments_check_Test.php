@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::check
  */
-class EventArguments_check_Test extends TestCase
+class EventArguments_check_Test extends EventArguments_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -93,6 +93,63 @@ class EventArguments_check_Test extends TestCase
 		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = 111;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
+		$args->check();
+	}
+
+	public function testParams()
+	{
+		$args = new EventArguments(Events::SERIALIZE_BEFORE, $this->r, new TestEntity, $this->args);
+		$args->params['foo'] = 598;
+		$args->check();
+		$this->assertTrue(true);
+	}
+
+	public function testNoParams()
+	{
+		$args = new EventArguments(Events::SERIALIZE_BEFORE, $this->r, new TestEntity, $this->args);
+		$args->params = NULL;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$params must be array; 'NULL' given.");
+		$args->check();
+	}
+
+	public function testParamsNotArray()
+	{
+		$args = new EventArguments(Events::SERIALIZE_BEFORE, $this->r, new TestEntity, $this->args);
+		$args->params = 111;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$params must be array; '111' given.");
+		$args->check();
+	}
+
+	/**
+	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 */
+	public function testValues($type)
+	{
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
+		$args->values['foo'] = 598;
+		$args->check();
+		$this->assertTrue(true);
+	}
+
+	/**
+	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 */
+	public function testNoValues($type)
+	{
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
+		$args->values = NULL;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$values must be array; 'NULL' given.");
+		$args->check();
+	}
+
+	/**
+	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 */
+	public function testValuesNotArray($type)
+	{
+		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
+		$args->values = 111;
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$values must be array; '111' given.");
 		$args->check();
 	}
 }

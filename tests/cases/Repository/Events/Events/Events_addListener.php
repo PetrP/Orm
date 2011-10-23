@@ -19,6 +19,9 @@ use Orm\IListenerFlushBefore;
 use Orm\IListenerFlushAfter;
 use Orm\IListenerCleanBefore;
 use Orm\IListenerCleanAfter;
+use Orm\IListenerSerializeBefore;
+use Orm\IListenerSerializeAfter;
+use Orm\IListenerSerializeConventional;
 
 abstract class Events_addListener_Base extends Object
 {
@@ -96,6 +99,18 @@ class Events_addListener_Clean_before extends Events_addListener_Base implements
 class Events_addListener_Clean_after extends Events_addListener_Base implements IListenerCleanAfter
 {
 	public function onAfterCleanEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Serialize_before extends Events_addListener_Base implements IListenerSerializeBefore
+{
+	public function onBeforeSerializeEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Serialize_after extends Events_addListener_Base implements IListenerSerializeAfter
+{
+	public function onAfterSerializeEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+}
+class Events_addListener_Serialize_conventional extends Events_addListener_Base implements IListenerSerializeConventional
+{
+	public function onConventionalSerializeEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }
 
 class Events_addListener_Remove extends Events_addListener_Base implements IListenerRemoveBefore, IListenerRemoveAfter

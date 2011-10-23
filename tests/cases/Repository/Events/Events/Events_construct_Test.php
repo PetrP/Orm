@@ -46,6 +46,9 @@ class Events_construct_Test extends TestCase
 		$this->checkConstant(pow(2, 13), Events::FLUSH_AFTER, $uses);
 		$this->checkConstant(pow(2, 14), Events::CLEAN_BEFORE, $uses);
 		$this->checkConstant(pow(2, 15), Events::CLEAN_AFTER, $uses);
+		$this->checkConstant(pow(2, 16), Events::SERIALIZE_BEFORE, $uses);
+		$this->checkConstant(pow(2, 17), Events::SERIALIZE_AFTER, $uses);
+		$this->checkConstant(pow(2, 18), Events::SERIALIZE_CONVENTIONAL, $uses);
 
 		$r = new ReflectionClass('Orm\Events');
 		$c = $r->getConstants();

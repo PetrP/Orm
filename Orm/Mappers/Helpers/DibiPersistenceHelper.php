@@ -61,16 +61,21 @@ class DibiPersistenceHelper extends Object
 	/** @var IDatabaseConventional */
 	private $conventional;
 
+	/** @var Events */
+	private $events;
+
 	/**
 	 * @param DibiConnection
 	 * @param IDatabaseConventional
 	 * @param string
+	 * @param Events
 	 */
-	public function __construct(DibiConnection $connection, IDatabaseConventional $conventional, $table)
+	public function __construct(DibiConnection $connection, IDatabaseConventional $conventional, $table, Events $events)
 	{
 		$this->connection = $connection;
 		$this->conventional = $conventional;
 		$this->table = $table;
+		$this->events = $events;
 		$this->primaryKey = $conventional->getPrimaryKey();
 	}
 
@@ -81,9 +86,10 @@ class DibiPersistenceHelper extends Object
 	 */
 	public function persist(IEntity $entity, $id = NULL)
 	{
-		$values = $this->toArray($entity, $id);
+		$hasEntry = $this->hasEntry($entity);
+		$values = $this->toArray($entity, $id, $hasEntry ? 'update' : 'insert');
 
-		if ($this->hasEntry($entity))
+		if ($hasEntry)
 		{
 			$id = $entity->id;
 			$this->update($values, $id);
@@ -107,12 +113,19 @@ class DibiPersistenceHelper extends Object
 		return $this->conventional;
 	}
 
+	/** @return Events */
+	public function getEvents()
+	{
+		return $this->events;
+	}
+
 	/**
 	 * @param IEntity
 	 * @param scalar|NULL id
+	 * @param string update|insert
 	 * @return array
 	 */
-	protected function toArray(IEntity $entity, $id)
+	protected function toArray(IEntity $entity, $id, $operation)
 	{
 		$values = $entity->toArray();
 		if ($id !== NULL) $values['id'] = $id;
@@ -130,6 +143,11 @@ class DibiPersistenceHelper extends Object
 			unset($tmp['id']);
 			$params = $tmp + $params;
 		}
+
+		$arguments = array('params' => $params, 'values' => $values, 'operation' => $operation);
+		$this->events->fireEvent(Events::SERIALIZE_BEFORE, $entity, $arguments);
+		$params = $arguments['params'];
+		$values = $arguments['values'];
 
 		$result = array();
 		foreach ($params as $key => $do)
@@ -159,6 +177,10 @@ class DibiPersistenceHelper extends Object
 			}
 		}
 
+		$arguments = array('values' => $result, 'operation' => $operation);
+		$this->events->fireEvent(Events::SERIALIZE_AFTER, $entity, $arguments);
+		$result = $arguments['values'];
+
 		$result = $this->conventional->formatEntityToStorage($result);
 		$primaryKey = $this->conventional->getPrimaryKey();
 		if ($primaryKey !== $this->primaryKey AND array_key_exists($primaryKey, $result))
@@ -167,6 +189,11 @@ class DibiPersistenceHelper extends Object
 			unset($result[$primaryKey]);
 			$result = array($this->primaryKey => $id) + $result;
 		}
+
+		$arguments = array('values' => $result, 'operation' => $operation);
+		$this->events->fireEvent(Events::SERIALIZE_CONVENTIONAL, $entity, $arguments);
+		$result = $arguments['values'];
+
 		return $result;
 	}
 

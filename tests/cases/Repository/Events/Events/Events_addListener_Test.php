@@ -73,6 +73,9 @@ class Events_addListener_Test extends TestCase
 			array('Events_addListener_Flush_after', Events::FLUSH_AFTER, 'onAfterFlushEvent'),
 			array('Events_addListener_Clean_before', Events::CLEAN_BEFORE, 'onBeforeCleanEvent'),
 			array('Events_addListener_Clean_after', Events::CLEAN_AFTER, 'onAfterCleanEvent'),
+			array('Events_addListener_Serialize_before', Events::SERIALIZE_BEFORE, 'onBeforeSerializeEvent'),
+			array('Events_addListener_Serialize_after', Events::SERIALIZE_AFTER, 'onAfterSerializeEvent'),
+			array('Events_addListener_Serialize_conventional', Events::SERIALIZE_CONVENTIONAL, 'onConventionalSerializeEvent'),
 
 		) as $tmp) $r[$tmp[0]] = $tmp;
 		return $r;
