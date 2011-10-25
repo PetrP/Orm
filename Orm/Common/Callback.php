@@ -161,7 +161,7 @@ final class Callback extends Object
 	 */
 	public function __toString()
 	{
-		if ($this->cb instanceof \Closure)
+		if ($this->cb instanceof Closure)
 		{
 			return '{closure}';
 		}

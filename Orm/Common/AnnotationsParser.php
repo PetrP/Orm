@@ -76,7 +76,7 @@ class AnnotationsParser extends Object
 	 * @return array
 	 * @see Nette\Reflection\AnnotationsParser::getAll()
 	 */
-	public function getByReflection(\Reflector $r)
+	public function getByReflection(Reflector $r)
 	{
 		return call_user_func($this->callback, $r);
 	}
