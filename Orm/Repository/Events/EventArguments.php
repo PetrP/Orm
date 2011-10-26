@@ -83,10 +83,13 @@ class EventArguments extends Object
 		$this->keys = self::$typeKeys[$type];
 		$this->type = $type;
 		$this->repository = $repository;
-		$this->entity = $entity;
-		if (isset($this->keys['entity']) AND !$entity)
+		if (isset($this->keys['entity']))
 		{
-			throw new InvalidArgumentException(array($this, '$entity', 'instance of Orm\IEntity', $entity));
+			$this->entity = $entity;
+			if (!$entity)
+			{
+				throw new InvalidArgumentException(array($this, '$entity', 'instance of Orm\IEntity', $entity));
+			}
 		}
 		if (isset($this->keys['id']))
 		{
@@ -140,6 +143,10 @@ class EventArguments extends Object
 	/** @return NULL|IEntity */
 	public function getEntity()
 	{
+		if (!$this->entity)
+		{
+			throw new MemberAccessException("Cannot read an undeclared property Orm\\EventArguments::\$entity.");
+		}
 		return $this->entity;
 	}
 
