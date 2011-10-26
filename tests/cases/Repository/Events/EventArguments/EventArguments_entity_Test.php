@@ -18,7 +18,7 @@ class EventArguments_entity_Test extends EventArguments_TestCase
 
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testHasEntity($type)
 	{
@@ -32,7 +32,7 @@ class EventArguments_entity_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testHasNotEntity($type)
 	{

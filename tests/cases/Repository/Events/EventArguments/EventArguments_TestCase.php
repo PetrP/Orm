@@ -1,6 +1,8 @@
 <?php
 
-abstract class EventArguments_TestCase extends TestCase
+use Orm\Events;
+
+abstract class EventArguments_TestCase extends Events_TestCase
 {
 	protected $args = array(
 		'id' => 123,
@@ -9,4 +11,13 @@ abstract class EventArguments_TestCase extends TestCase
 		'params' => array('foo' => true),
 		'values' => array('foo' => 'bar'),
 	);
+
+	public static function dataProviderValuesTypes()
+	{
+		return array(
+			array(Events::SERIALIZE_BEFORE),
+			array(Events::SERIALIZE_AFTER),
+			array(Events::SERIALIZE_CONVENTIONAL),
+		);
+	}
 }

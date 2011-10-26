@@ -17,9 +17,4 @@ class EventArguments_construct_Test extends TestCase
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}
 
-	public static function dataProviderTypes()
-	{
-		return Events_addCallbackListener_Test::dataProviderAll();
-	}
-
 }

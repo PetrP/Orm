@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::getArguments
  */
-class EventArguments_getArguments_Test extends TestCase
+class EventArguments_getArguments_Test extends Events_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -16,7 +16,7 @@ class EventArguments_getArguments_Test extends TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function test($type)
 	{

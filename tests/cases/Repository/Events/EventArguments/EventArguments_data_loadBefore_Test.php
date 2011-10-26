@@ -43,7 +43,7 @@ class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testReadData($type)
 	{
@@ -60,7 +60,7 @@ class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testWriteData($type)
 	{

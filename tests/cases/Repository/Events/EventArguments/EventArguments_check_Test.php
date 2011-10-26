@@ -121,7 +121,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 * @dataProvider dataProviderValuesTypes
 	 */
 	public function testValues($type)
 	{
@@ -132,7 +132,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 * @dataProvider dataProviderValuesTypes
 	 */
 	public function testNoValues($type)
 	{
@@ -143,7 +143,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_values_Test::dataProviderValuesTypes
+	 * @dataProvider dataProviderValuesTypes
 	 */
 	public function testValuesNotArray($type)
 	{

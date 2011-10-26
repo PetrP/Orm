@@ -17,7 +17,7 @@ class EventArguments_operation_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testHas($type)
 	{
@@ -30,7 +30,7 @@ class EventArguments_operation_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testHasNot($type)
 	{

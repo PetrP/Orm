@@ -47,7 +47,7 @@ class EventArguments_params_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testReadParams($type)
 	{
@@ -64,7 +64,7 @@ class EventArguments_params_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testWriteParams($type)
 	{

@@ -16,7 +16,7 @@ class EventArguments_type_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testType($type)
 	{

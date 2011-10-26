@@ -7,7 +7,7 @@ use Orm\Callback;
 /**
  * @covers Orm\Events::addLazyListener
  */
-class Events_addLazyListener_Test extends TestCase
+class Events_addLazyListener_Test extends Events_TestCase
 {
 	private $e;
 	protected function setUp()
@@ -55,11 +55,6 @@ class Events_addLazyListener_Test extends TestCase
 		$this->assertSame(array(
 			0 => array($cb, array($event => 0))
 		), $this->readAttribute($this->e, 'lazy'));
-	}
-
-	public function dataProviderAll()
-	{
-		return Events_addCallbackListener_Test::dataProviderAll();
 	}
 
 	/**

@@ -14,15 +14,6 @@ class EventArguments_values_Test extends EventArguments_TestCase
 	{
 		$this->r = new TestsRepository(new RepositoryContainer);
 	}
-	
-	public static function dataProviderValuesTypes()
-	{
-		return array(
-			array(Events::SERIALIZE_BEFORE),
-			array(Events::SERIALIZE_AFTER),
-			array(Events::SERIALIZE_CONVENTIONAL),
-		);
-	}
 
 	/**
 	 * @dataProvider dataProviderValuesTypes
@@ -68,7 +59,7 @@ class EventArguments_values_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testReadValues($type)
 	{
@@ -85,7 +76,7 @@ class EventArguments_values_Test extends EventArguments_TestCase
 	}
 
 	/**
-	 * @dataProvider EventArguments_construct_Test::dataProviderTypes
+	 * @dataProvider dataProviderAll
 	 */
 	public function testWriteValues($type)
 	{
