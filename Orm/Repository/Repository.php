@@ -222,6 +222,23 @@ abstract class Repository extends Object implements IRepository
 				return $entity;
 			}
 		}
+		$recursionRelationship = array();
+		static $recursionRelationshipCallback;
+		if (!$recursionRelationshipCallback) $recursionRelationshipCallback = function (IEntity $entity, array & $recursionRelationship, $persist = false) {
+			foreach ($recursionRelationship as $k => $tmp)
+			{
+				list($repository, $key, $value) = $tmp;
+				if ($persist)
+				{
+					$repository->persist($value);
+				}
+				if ($key !== NULL)
+				{
+					$entity->{$key} = $value;
+				}
+				unset($recursionRelationship[$k]);
+			}
+		};
 		try {
 			$hash = spl_object_hash($entity);
 			static $recurcion = array();
@@ -241,12 +258,35 @@ abstract class Repository extends Object implements IRepository
 			{
 				if (isset($fk[$key]) AND $value instanceof IEntity)
 				{
-					$this->getModel()->getRepository($fk[$key])->persist($value);
+					$repository = $this->getModel()->getRepository($fk[$key]);
+					try {
+						$repository->persist($value);
+					} catch (RecursiveException $re) {
+						if (isset($value->id))
+						{
+							$recursionRelationship[] = array($repository, NULL, $value);
+						}
+						else
+						{
+							try {
+								$entity->{$key} = NULL;
+							} catch (Exception $ree) {
+								throw $re;
+							}
+							$recursionRelationship[] = array($repository, $key, $value);
+						}
+					}
 				}
 				else if ($value instanceof IRelationship)
 				{
 					$relationshipValues[] = $value;;
 				}
+			}
+			if (!$entity->isChanged())
+			{
+				unset($recurcion[$hash]);
+				$recursionRelationshipCallback($entity, $recursionRelationship);
+				return $entity;
 			}
 
 			if ($id = $this->getMapper()->persist($entity))
@@ -260,6 +300,7 @@ abstract class Repository extends Object implements IRepository
 				$id = $entity->id;
 				$this->entities[$id] = $entity;
 
+				$recursionRelationshipCallback($entity, $recursionRelationship, true);
 				foreach ($relationshipValues as $relationship)
 				{
 					$relationship->persist();
@@ -279,6 +320,7 @@ abstract class Repository extends Object implements IRepository
 
 		} catch (Exception $e) {
 			unset($recurcion[$hash]);
+			$recursionRelationshipCallback($entity, $recursionRelationship);
 			throw $e;
 		}
 	}

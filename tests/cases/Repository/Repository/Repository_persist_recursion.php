@@ -49,3 +49,83 @@ class Repository_persist_recursion2_Mapper extends Repository_persist_cascade3_M
 		return $result;
 	}
 }
+
+/**
+ * @property Repository_persist_recursion3_Entity $11 {1:1 Repository_persist_recursion3_Repository}
+ */
+class Repository_persist_recursion3_Entity extends TestEntity
+{
+}
+
+/** @mapper TestsMapper */
+class Repository_persist_recursion3_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion3_Entity';
+}
+
+/**
+ * @property Repository_persist_recursion5_Entity|NULL $11 {1:1 Repository_persist_recursion5_Repository}
+ */
+class Repository_persist_recursion4_Entity extends TestEntity
+{
+}
+
+/** @mapper TestsMapper */
+class Repository_persist_recursion4_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion4_Entity';
+}
+
+/**
+ * @property Repository_persist_recursion4_Entity $11 {1:1 Repository_persist_recursion4_Repository}
+ */
+class Repository_persist_recursion5_Entity extends TestEntity
+{
+}
+
+/** @mapper TestsMapper */
+class Repository_persist_recursion5_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion5_Entity';
+}
+
+
+
+/** @property Repository_persist_recursion7_Entity $11 {1:1 Repository_persist_recursion7_Repository} */
+class Repository_persist_recursion6_Entity extends TestEntity
+{
+}
+/** @mapper TestsMapper */
+class Repository_persist_recursion6_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion6_Entity';
+}
+
+/** @property Repository_persist_recursion8_Entity $11 {1:1 Repository_persist_recursion8_Repository} */
+class Repository_persist_recursion7_Entity extends TestEntity
+{
+}
+/** @mapper TestsMapper */
+class Repository_persist_recursion7_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion7_Entity';
+}
+
+/** @property Repository_persist_recursion9_Entity $11 {1:1 Repository_persist_recursion9_Repository} */
+class Repository_persist_recursion8_Entity extends TestEntity
+{
+}
+/** @mapper TestsMapper */
+class Repository_persist_recursion8_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion8_Entity';
+}
+/** @property Repository_persist_recursion6_Entity|NULL $11 {1:1 Repository_persist_recursion6_Repository} */
+class Repository_persist_recursion9_Entity extends TestEntity
+{
+}
+/** @mapper TestsMapper */
+class Repository_persist_recursion9_Repository extends Repository
+{
+	protected $entityClassName = 'Repository_persist_recursion9_Entity';
+}
