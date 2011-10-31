@@ -80,7 +80,7 @@ class Events_addLazyListener_Test extends Events_TestCase
 			'create_function' => array($f = create_function('', ''), $f),
 			'Nette' => array($f = callback($this, 'testAll'), array($this, 'testAll')),
 			'Orm' => array($f = Callback::create($this, 'testAll'), array($this, 'testAll')),
-			'invoke' => array($o = new Nette\Latte\Engine, array($o, '__invoke')),
+			'invoke' => array($o = new Events_invoke, array($o, '__invoke')),
 			'static' => array('Events_addLazyListener_Test::cb', array('Events_addLazyListener_Test', 'cb')),
 		);
 	}
