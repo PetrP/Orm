@@ -38,6 +38,15 @@ class RepositoryContainer_isRepository_Test extends TestCase
 		$this->assertFalse($this->m->isRepository('XyzRepository'));
 	}
 
+	public function testBC()
+	{
+		$this->assertFalse($this->m->isRepository('tests', false));
+		$this->assertTrue($this->m->isRepository('testsRepository', false));
+
+		$this->assertTrue($this->m->isRepository('tests', true));
+		$this->assertTrue($this->m->isRepository('testsRepository', true));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'isRepository');

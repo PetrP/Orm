@@ -14,8 +14,23 @@ class RepositoryContainer_register_Test extends TestCase
 		$this->m = new RepositoryContainer;
 	}
 
-	public function testOld1()
+	public function testBCCanByReregister1()
 	{
+		$this->m->register('tests', 'TestsRepository');
+		$this->assertInstanceOf('TestsRepository', $this->m->tests);
+		$this->assertSame($this->m->TestsRepository, $this->m->tests);
+	}
+
+	public function testBCCanByReregister2()
+	{
+		$this->m->register('tests', 'TestEntityRepository');
+		$this->assertInstanceOf('TestEntityRepository', $this->m->tests);
+		$this->assertSame($this->m->TestEntityRepository, $this->m->tests);
+	}
+
+	public function testBCCanByReregister3()
+	{
+		$this->assertInstanceOf('TestsRepository', $this->m->tests);
 		$this->setExpectedException('Orm\RepositoryAlreadyRegisteredException', "Repository alias 'tests' is already registered");
 		$this->m->register('tests', 'TestsRepository');
 	}

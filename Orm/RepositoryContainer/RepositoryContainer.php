@@ -165,7 +165,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	{
 		$this->checkRepositoryClass($repositoryClass, $repositoryClass, true, $originClass);
 		$alias = strtolower($alias);
-		if ($this->isRepository($alias))
+		if ($this->isRepository($alias, false))
 		{
 			throw new RepositoryAlreadyRegisteredException("Repository alias '{$alias}' is already registered");
 		}
@@ -187,11 +187,14 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 			$this->aliases[$name] = $originClass;
 			return true;
 		}
-		if ($this->checkRepositoryClass($this->getRepositoryClass($name, true), $name, false, $originClass))
+		if (func_num_args() <= 1 OR func_get_arg(1) !== false)
 		{
-			// bc
-			$this->aliases[$name] = $originClass;
-			return true;
+			if ($this->checkRepositoryClass($this->getRepositoryClass($name, true), $name, false, $originClass))
+			{
+				// bc
+				$this->aliases[$name] = $originClass;
+				return true;
+			}
 		}
 		return false;
 	}
