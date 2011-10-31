@@ -7,8 +7,8 @@ abstract class Events_TestCase extends TestCase
 	public function dataProviderAll()
 	{
 		return array(
-			array(Events::LOAD_BEFORE),
-			array(Events::LOAD_AFTER),
+			array(Events::HYDRATE_BEFORE),
+			array(Events::HYDRATE_AFTER),
 			array(Events::ATTACH),
 			array(Events::PERSIST_BEFORE),
 			array(Events::PERSIST_BEFORE_UPDATE),

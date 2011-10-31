@@ -3,8 +3,8 @@
 use Orm\Object;
 use Orm\EventArguments;
 use Orm\IListener;
-use Orm\IListenerLoadBefore;
-use Orm\IListenerLoadAfter;
+use Orm\IListenerHydrateBefore;
+use Orm\IListenerHydrateAfter;
 use Orm\IListenerAttach;
 use Orm\IListenerPersistBefore;
 use Orm\IListenerPersistBeforeUpdate;
@@ -36,13 +36,13 @@ abstract class Events_addListener_Base extends Object
 }
 
 class Events_addListener_Event extends Events_addListener_Base implements IListener {}
-class Events_addListener_Load_before extends Events_addListener_Base implements IListenerLoadBefore
+class Events_addListener_Hydrate_before extends Events_addListener_Base implements IListenerHydrateBefore
 {
-	public function onBeforeLoadEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+	public function onBeforeHydrateEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }
-class Events_addListener_Load_after extends Events_addListener_Base implements IListenerLoadAfter
+class Events_addListener_Hydrate_after extends Events_addListener_Base implements IListenerHydrateAfter
 {
-	public function onAfterLoadEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
+	public function onAfterHydrateEvent(EventArguments $args) { $this->log(__FUNCTION__, $args); }
 }
 class Events_addListener_Attach extends Events_addListener_Base implements IListenerAttach
 {

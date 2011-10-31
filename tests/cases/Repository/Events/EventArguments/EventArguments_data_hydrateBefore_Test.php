@@ -7,7 +7,7 @@ use Orm\Events;
 /**
  * @covers Orm\EventArguments::__construct
  */
-class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
+class EventArguments_data_hydrateBefore_Test extends EventArguments_TestCase
 {
 	private $r;
 	protected function setUp()
@@ -15,31 +15,31 @@ class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
 		$this->r = new TestsRepository(new RepositoryContainer);
 	}
 
-	public function testLoad()
+	public function test()
 	{
-		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$this->assertSame(array('foo' => 'bar'), $args->data);
 		$this->assertSame(false, isset($args->id));
 	}
 
-	public function testLoadWrite()
+	public function testWrite()
 	{
-		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$this->assertSame(array('foo' => 'bar'), $args->data);
 		$args->data['foo'] = 598;
 		$this->assertSame(array('foo' => 598), $args->data);
 	}
 
-	public function testLoadtNoData()
+	public function testNoData()
 	{
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
-		new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity);
+		new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity);
 	}
 
-	public function testLoadDataNotArray()
+	public function testDataNotArray()
 	{
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
-		new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => 111));
+		new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => 111));
 	}
 
 	/**
@@ -48,7 +48,7 @@ class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
 	public function testReadData($type)
 	{
 		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
-		if ($type === Events::LOAD_BEFORE OR $type === Events::LOAD_AFTER)
+		if ($type === Events::HYDRATE_BEFORE OR $type === Events::HYDRATE_AFTER)
 		{
 			$this->assertTrue(true);
 		}
@@ -65,7 +65,7 @@ class EventArguments_data_loadBefore_Test extends EventArguments_TestCase
 	public function testWriteData($type)
 	{
 		$args = new EventArguments($type, $this->r, new TestEntity, $this->args);
-		if ($type === Events::LOAD_BEFORE OR $type === Events::LOAD_AFTER)
+		if ($type === Events::HYDRATE_BEFORE OR $type === Events::HYDRATE_AFTER)
 		{
 			$this->assertTrue(true);
 		}

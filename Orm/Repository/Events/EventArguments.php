@@ -47,8 +47,8 @@ class EventArguments extends Object
 
 	/** @var array allowed keys for events */
 	private static $typeKeys = array(
-		Events::LOAD_BEFORE => array('entity' => true, 'data' => true),
-		Events::LOAD_AFTER => array('entity' => true, 'data' => true),
+		Events::HYDRATE_BEFORE => array('entity' => true, 'data' => true),
+		Events::HYDRATE_AFTER => array('entity' => true, 'data' => true),
 		Events::ATTACH => array('entity' => true),
 		Events::PERSIST_BEFORE => array('entity' => true),
 		Events::PERSIST_BEFORE_UPDATE => array('entity' => true),

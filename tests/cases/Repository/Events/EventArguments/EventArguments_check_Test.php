@@ -50,7 +50,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testData()
 	{
-		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data['foo'] = 598;
 		$args->check();
 		$this->assertTrue(true);
@@ -58,7 +58,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testNoData()
 	{
-		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = NULL;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
 		$args->check();
@@ -66,7 +66,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testDataNotArray()
 	{
-		$args = new EventArguments(Events::LOAD_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_BEFORE, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = 111;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
 		$args->check();
@@ -74,7 +74,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testDataAfter()
 	{
-		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data['foo'] = 598;
 		$args->check();
 		$this->assertTrue(true);
@@ -82,7 +82,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testNoDataAfter()
 	{
-		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = NULL;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; 'NULL' given.");
 		$args->check();
@@ -90,7 +90,7 @@ class EventArguments_check_Test extends EventArguments_TestCase
 
 	public function testDataNotArrayAfter()
 	{
-		$args = new EventArguments(Events::LOAD_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
+		$args = new EventArguments(Events::HYDRATE_AFTER, $this->r, new TestEntity, array('data' => array('foo' => 'bar')));
 		$args->data = 111;
 		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\EventArguments::\$data must be array; '111' given.");
 		$args->check();

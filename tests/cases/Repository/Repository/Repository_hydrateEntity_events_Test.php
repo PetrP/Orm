@@ -12,7 +12,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsChangeId()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::HYDRATE_BEFORE, function (EventArguments $args) {
 			if ($args->data['id'] == 1)
 			{
 				$args->data['id'] = 55;
@@ -25,7 +25,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsChangeId2()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::HYDRATE_BEFORE, function (EventArguments $args) {
 			if ($args->data['id'] == 111)
 			{
 				$args->data['id'] = 555;
@@ -41,7 +41,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsNotChangeId()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD_AFTER, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::HYDRATE_AFTER, function (EventArguments $args) {
 			if ($args->data['id'] == 1)
 			{
 				$args->data['id'] = 55;
@@ -54,7 +54,7 @@ class Repository_hydrateEntity_events_Test extends TestCase
 	public function testEventsNotChangeId2()
 	{
 		$r = new TestsRepository(new RepositoryContainer);
-		$r->events->addCallbackListener(Events::LOAD_AFTER, function (EventArguments $args) {
+		$r->events->addCallbackListener(Events::HYDRATE_AFTER, function (EventArguments $args) {
 			if ($args->data['id'] == 111)
 			{
 				$args->data['id'] = 555;

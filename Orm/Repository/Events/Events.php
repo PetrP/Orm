@@ -20,23 +20,23 @@ class Events extends Object
 	 * It fires before data are hydrated. Entity is empty. $data can be changed. Values at entity will be overwritten.
 	 *
 	 * <code>
-	 * $events->addCallbackListener(Events::LOAD_BEFORE, function (EventArguments $args) {
+	 * $events->addCallbackListener(Events::HYDRATE_BEFORE, function (EventArguments $args) {
 	 * 	$args->data['foo'] = 'data can be changed';
 	 * });
 	 * </code>
 	 * @see IRepository::hydrateEntity()
-	 * @see IListenerLoadBefore
+	 * @see IListenerHydrateBefore
 	 */
-	const LOAD_BEFORE = 1;
+	const HYDRATE_BEFORE = 1;
 
 	/**
 	 * After data from storage are hydrated into entity.
 	 * Has EventArguments::$data and EventArguments::$entity.
 	 * It fires after data are hydrated. Entity has all values. If $data are changed there's no effect.
 	 * @see IRepository::hydrateEntity()
-	 * @see IListenerLoadAfter
+	 * @see IListenerHydrateAfter
 	 */
-	const LOAD_AFTER = 2;
+	const HYDRATE_AFTER = 2;
 
 	/**
 	 * Entity is attached to repository.
@@ -202,8 +202,8 @@ class Events extends Object
 	 * 	event => array(listenersLine => array(false, lazyKey)) // lazy
 	 */
 	private $listeners = array(
-		self::LOAD_BEFORE => array(),
-		self::LOAD_AFTER => array(),
+		self::HYDRATE_BEFORE => array(),
+		self::HYDRATE_AFTER => array(),
 		self::ATTACH => array(),
 		self::PERSIST_BEFORE => array(),
 		self::PERSIST_BEFORE_UPDATE => array(),
@@ -231,8 +231,8 @@ class Events extends Object
 
 	/** @var array event => array(interface, method, entityEventMethod|NULL) */
 	private static $instructions = array(
-		self::LOAD_BEFORE => array('Orm\IListenerLoadBefore', 'onBeforeLoadEvent', 'onLoad'),
-		self::LOAD_AFTER => array('Orm\IListenerLoadAfter', 'onAfterLoadEvent', NULL),
+		self::HYDRATE_BEFORE => array('Orm\IListenerHydrateBefore', 'onBeforeHydrateEvent', 'onLoad'),
+		self::HYDRATE_AFTER => array('Orm\IListenerHydrateAfter', 'onAfterHydrateEvent', NULL),
 		self::ATTACH => array('Orm\IListenerAttach', 'onAttachEvent', 'onAttach'),
 		self::PERSIST_BEFORE => array('Orm\IListenerPersistBefore', 'onBeforePersistEvent', 'onBeforePersist'),
 		self::PERSIST_BEFORE_UPDATE => array('Orm\IListenerPersistBeforeUpdate', 'onBeforePersistUpdateEvent', 'onBeforeUpdate'), // todo method name
@@ -283,7 +283,7 @@ class Events extends Object
 
 	/**
 	 * Adds event callback listener.
-	 * @param int one or more (e.g. Events::LOAD_BEFORE | Events::ATTACH)
+	 * @param int one or more (e.g. Events::HYDRATE_BEFORE | Events::ATTACH)
 	 * @param array|string|Closure|Callback
 	 * @return Events $this
 	 */
@@ -337,7 +337,7 @@ class Events extends Object
 
 	/**
 	 * Fires event.
-	 * @param int one event (e.g. Events::LOAD_BEFORE)
+	 * @param int one event (e.g. Events::HYDRATE_BEFORE)
 	 * @param IEntity|NULL
 	 * @param array reference
 	 * @return Events $this

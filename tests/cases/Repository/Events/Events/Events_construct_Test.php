@@ -30,8 +30,8 @@ class Events_construct_Test extends TestCase
 	{
 		$uses = array('a' => array(), 'i' => 0, 'c' => 0);
 
-		$this->checkConstant(pow(2, 0), Events::LOAD_BEFORE, $uses);
-		$this->checkConstant(pow(2, 1), Events::LOAD_AFTER, $uses);
+		$this->checkConstant(pow(2, 0), Events::HYDRATE_BEFORE, $uses);
+		$this->checkConstant(pow(2, 1), Events::HYDRATE_AFTER, $uses);
 		$this->checkConstant(pow(2, 2), Events::ATTACH, $uses);
 		$this->checkConstant(pow(2, 3), Events::PERSIST_BEFORE, $uses);
 		$this->checkConstant(pow(2, 4), Events::PERSIST_BEFORE_INSERT, $uses);

@@ -57,8 +57,8 @@ class Events_addListener_Test extends TestCase
 	{
 		$r = array();
 		foreach (array(
-			array('Events_addListener_Load_before', Events::LOAD_BEFORE, 'onBeforeLoadEvent'),
-			array('Events_addListener_Load_after', Events::LOAD_AFTER, 'onAfterLoadEvent'),
+			array('Events_addListener_Hydrate_before', Events::HYDRATE_BEFORE, 'onBeforeHydrateEvent'),
+			array('Events_addListener_Hydrate_after', Events::HYDRATE_AFTER, 'onAfterHydrateEvent'),
 			array('Events_addListener_Attach', Events::ATTACH, 'onAttachEvent'),
 			array('Events_addListener_Persist_before', Events::PERSIST_BEFORE, 'onBeforePersistEvent'),
 			array('Events_addListener_Persist_before_update', Events::PERSIST_BEFORE_UPDATE, 'onBeforePersistUpdateEvent'),

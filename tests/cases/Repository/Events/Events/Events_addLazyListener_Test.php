@@ -62,12 +62,12 @@ class Events_addLazyListener_Test extends Events_TestCase
 	 */
 	public function testCallbacks($cb, $expect)
 	{
-		$this->e->addLazyListener(Events::LOAD_BEFORE, $cb);
+		$this->e->addLazyListener(Events::HYDRATE_BEFORE, $cb);
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
-		$this->assertSame(array(false, 0), $listeners[Events::LOAD_BEFORE][0]);
+		$this->assertSame(array(false, 0), $listeners[Events::HYDRATE_BEFORE][0]);
 		$this->assertSame(array(
-			0 => array($expect, array(Events::LOAD_BEFORE => 0))
+			0 => array($expect, array(Events::HYDRATE_BEFORE => 0))
 		), $this->readAttribute($this->e, 'lazy'));
 	}
 
@@ -87,37 +87,37 @@ class Events_addLazyListener_Test extends Events_TestCase
 
 	public function testMore()
 	{
-		$this->e->addCallbackListener(Events::LOAD_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, function () {});
-		$this->e->addCallbackListener(Events::LOAD_BEFORE, function () {});
+		$this->e->addCallbackListener(Events::HYDRATE_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, function () {});
+		$this->e->addCallbackListener(Events::HYDRATE_BEFORE, function () {});
 
 		$listenersInit = $this->readAttribute($this->e, 'listeners');
 
 		$cb = array($this, 'testAll');
-		$this->e->addLazyListener(Events::LOAD_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb);
+		$this->e->addLazyListener(Events::HYDRATE_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb);
 
 		$cb2 = array($this, 'testMore');
-		$this->e->addLazyListener(Events::LOAD_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb2);
+		$this->e->addLazyListener(Events::HYDRATE_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb2);
 
 		$listenersUnset = $listeners = $this->readAttribute($this->e, 'listeners');
-		unset($listenersUnset[Events::LOAD_BEFORE][2]);
-		unset($listenersUnset[Events::LOAD_BEFORE][3]);
+		unset($listenersUnset[Events::HYDRATE_BEFORE][2]);
+		unset($listenersUnset[Events::HYDRATE_BEFORE][3]);
 		unset($listenersUnset[Events::ATTACH][1]);
 		unset($listenersUnset[Events::ATTACH][2]);
 		unset($listenersUnset[Events::REMOVE_AFTER][1]);
 		unset($listenersUnset[Events::REMOVE_AFTER][2]);
 		$this->assertSame($listenersInit, $listenersUnset);
 
-		$this->assertSame(array(false, 0), $listeners[Events::LOAD_BEFORE][2]);
+		$this->assertSame(array(false, 0), $listeners[Events::HYDRATE_BEFORE][2]);
 		$this->assertSame(array(false, 0), $listeners[Events::ATTACH][1]);
 		$this->assertSame(array(false, 0), $listeners[Events::REMOVE_AFTER][1]);
 
-		$this->assertSame(array(false, 1), $listeners[Events::LOAD_BEFORE][3]);
+		$this->assertSame(array(false, 1), $listeners[Events::HYDRATE_BEFORE][3]);
 		$this->assertSame(array(false, 1), $listeners[Events::ATTACH][2]);
 		$this->assertSame(array(false, 1), $listeners[Events::REMOVE_AFTER][2]);
 
 		$this->assertSame(array(
-			0 => array($cb, array(Events::LOAD_BEFORE => 2, Events::ATTACH => 1, Events::REMOVE_AFTER => 1)),
-			1 => array($cb2, array(Events::LOAD_BEFORE => 3, Events::ATTACH => 2, Events::REMOVE_AFTER => 2)),
+			0 => array($cb, array(Events::HYDRATE_BEFORE => 2, Events::ATTACH => 1, Events::REMOVE_AFTER => 1)),
+			1 => array($cb2, array(Events::HYDRATE_BEFORE => 3, Events::ATTACH => 2, Events::REMOVE_AFTER => 2)),
 		), $this->readAttribute($this->e, 'lazy'));
 	}
 

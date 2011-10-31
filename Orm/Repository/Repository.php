@@ -552,9 +552,9 @@ abstract class Repository extends Object implements IRepository
 	 * @internal
 	 *
 	 * Vola udalosti:
-	 * @see Events::LOAD_BEFORE
+	 * @see Events::HYDRATE_BEFORE
 	 * @see Entity::onLoad()
-	 * @see Events::LOAD_AFTER
+	 * @see Events::HYDRATE_AFTER
 	 *
 	 * @param array
 	 * @return IEntity
@@ -580,10 +580,10 @@ abstract class Repository extends Object implements IRepository
 			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
 			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
 			$args = array('data' => $data);
-			$this->events->fireEvent(Events::LOAD_BEFORE, $entity, $args);
+			$this->events->fireEvent(Events::HYDRATE_BEFORE, $entity, $args);
 			$id = $entity->id;
 			$this->entities[$id] = $entity;
-			$this->events->fireEvent(Events::LOAD_AFTER, $entity, $args);
+			$this->events->fireEvent(Events::HYDRATE_AFTER, $entity, $args);
 		}
 		return $this->entities[$id];
 	}

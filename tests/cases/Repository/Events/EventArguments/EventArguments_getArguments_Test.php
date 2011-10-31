@@ -25,7 +25,7 @@ class EventArguments_getArguments_Test extends Events_TestCase
 		{
 			$expectedArguments = array('id' => 123);
 		}
-		else if ($type & (Events::LOAD_AFTER | Events::LOAD_BEFORE))
+		else if ($type & (Events::HYDRATE_AFTER | Events::HYDRATE_BEFORE))
 		{
 			$expectedArguments = array('data' => array('id' => 123, 'string' => 'foo'));
 		}

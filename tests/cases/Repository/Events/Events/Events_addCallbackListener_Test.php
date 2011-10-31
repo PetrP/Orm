@@ -58,10 +58,10 @@ class Events_addCallbackListener_Test extends Events_TestCase
 	 */
 	public function testCallbacks($cb, $expect)
 	{
-		$this->e->addCallbackListener(Events::LOAD_BEFORE, $cb);
+		$this->e->addCallbackListener(Events::HYDRATE_BEFORE, $cb);
 
 		$listeners = $this->readAttribute($this->e, 'listeners');
-		$this->assertSame(array(true, $expect), $listeners[Events::LOAD_BEFORE][0]);
+		$this->assertSame(array(true, $expect), $listeners[Events::HYDRATE_BEFORE][0]);
 	}
 
 	public function dataProviderCallbacks()
@@ -83,15 +83,15 @@ class Events_addCallbackListener_Test extends Events_TestCase
 		$listenersInit = $this->readAttribute($this->e, 'listeners');
 
 		$cb = array($this, 'testAll');
-		$this->e->addCallbackListener(Events::LOAD_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb);
+		$this->e->addCallbackListener(Events::HYDRATE_BEFORE | Events::ATTACH | Events::REMOVE_AFTER, $cb);
 
 		$listenersUnset = $listeners = $this->readAttribute($this->e, 'listeners');
-		unset($listenersUnset[Events::LOAD_BEFORE][0]);
+		unset($listenersUnset[Events::HYDRATE_BEFORE][0]);
 		unset($listenersUnset[Events::ATTACH][0]);
 		unset($listenersUnset[Events::REMOVE_AFTER][0]);
 		$this->assertSame($listenersInit, $listenersUnset);
 
-		$this->assertSame(array(true, $cb), $listeners[Events::LOAD_BEFORE][0]);
+		$this->assertSame(array(true, $cb), $listeners[Events::HYDRATE_BEFORE][0]);
 		$this->assertSame(array(true, $cb), $listeners[Events::ATTACH][0]);
 		$this->assertSame(array(true, $cb), $listeners[Events::REMOVE_AFTER][0]);
 	}
