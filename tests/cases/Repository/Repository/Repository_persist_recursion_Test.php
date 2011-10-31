@@ -21,7 +21,7 @@ class Repository_persist_recursion_Test extends TestCase
 	{
 		$e = new Repository_persist_recursion1_Entity;
 		$e->m1 = $e;
-		$this->setExpectedException('Orm\InvalidEntityException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity');
+		$this->setExpectedException('Orm\RecursiveException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity', 2);
 		$this->r1->persist($e);
 	}
 
@@ -30,7 +30,7 @@ class Repository_persist_recursion_Test extends TestCase
 		$e = new Repository_persist_recursion1_Entity;
 		$this->r1->attach($e);
 		$e->{'1m'}->add($e);
-		$this->setExpectedException('Orm\InvalidEntityException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity');
+		$this->setExpectedException('Orm\RecursiveException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity', 2);
 		$this->r1->persist($e);
 	}
 
@@ -42,7 +42,7 @@ class Repository_persist_recursion_Test extends TestCase
 		$e1->m1 = $e2;
 		$e2->m1 = $e3;
 		$e3->m1 = $e1;
-		$this->setExpectedException('Orm\InvalidEntityException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity');
+		$this->setExpectedException('Orm\RecursiveException', 'There is an infinite recursion during persist in Repository_persist_recursion1_Entity', 2);
 		$this->r1->persist($e1);
 	}
 

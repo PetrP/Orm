@@ -227,7 +227,7 @@ abstract class Repository extends Object implements IRepository
 			static $recurcion = array();
 			if (isset($recurcion[$hash]) AND $recurcion[$hash] > 1)
 			{
-				throw new InvalidEntityException("There is an infinite recursion during persist in " . EntityHelper::toString($entity));
+				throw new RecursiveException("There is an infinite recursion during persist in " . EntityHelper::toString($entity), $recurcion[$hash]);
 			}
 			if (!isset($recurcion[$hash])) $recurcion[$hash] = 0;
 			$recurcion[$hash]++;
