@@ -27,8 +27,13 @@ class Callback_construct_Test extends TestCase
 
 	public function testStatic()
 	{
-		$c = Callback::create('Callback_construct_Test::testStatic');
-		$this->assertSame(array('Callback_construct_Test', 'testStatic'), $c->getNative());
+		$c = Callback::create('Callback_construct_Test::staticCB');
+		$this->assertSame(array('Callback_construct_Test', 'staticCB'), $c->getNative());
+	}
+
+	public static function staticCB()
+	{
+
 	}
 
 	public function testClosure()

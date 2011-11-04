@@ -111,8 +111,8 @@ class MetaDataProperty_setInjection_Test extends TestCase
 	public function testCallbackString()
 	{
 		$this->p = new MetaDataProperty($this->m, 'id', 'MetaDataProperty_setInjection_JustInjection');
-		$this->p->setInjection('MetaDataProperty_setInjection_NonStaticInjectionLoader::create');
-		$this->t('MetaDataProperty_setInjection_JustInjection', array('MetaDataProperty_setInjection_NonStaticInjectionLoader', 'create'));
+		$this->p->setInjection('MetaDataProperty_setInjection_Injection::create');
+		$this->t('MetaDataProperty_setInjection_JustInjection', array('MetaDataProperty_setInjection_Injection', 'create'));
 	}
 
 	public function testCallbackBad()
