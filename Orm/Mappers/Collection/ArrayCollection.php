@@ -319,7 +319,15 @@ class ArrayCollection extends Object implements IEntityCollection
 
 			if ($this->offset !== NULL OR $this->limit !== NULL)
 			{
-				$source = array_slice($source, (int) $this->offset, $this->limit);
+				if ($this->limit === NULL)
+				{
+					// php <= 5.2.3 bug #41686
+					$source = array_slice($source, (int) $this->offset);
+				}
+				else
+				{
+					$source = array_slice($source, (int) $this->offset, $this->limit);
+				}
 			}
 
 			$this->result = $source;
