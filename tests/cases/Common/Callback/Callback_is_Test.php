@@ -23,8 +23,13 @@ class Callback_is_Test extends TestCase
 	 */
 	public function testNetteNotNamespaceCallback()
 	{
+		if (class_exists('Callback'))
+		{
+			$this->markTestIncomplete('nette php 5.2');
+		}
 		eval('class Callback {}');
-		$this->assertTrue(Callback::is(new \Callback));
+		$c = '\Callback';
+		$this->assertTrue(Callback::is(new $c));
 	}
 
 	/**
@@ -33,7 +38,8 @@ class Callback_is_Test extends TestCase
 	public function testNettePrefixedCallback()
 	{
 		eval('class NCallback {}');
-		$this->assertTrue(Callback::is(new \NCallback('foo')));
+		$c = '\NCallback';
+		$this->assertTrue(Callback::is(new $c));
 	}
 
 	public function testNot()
