@@ -1,6 +1,7 @@
 <?php
 
 use Orm\Callback;
+use Orm\Orm;
 
 /**
  * @covers Orm\Callback::__toString
@@ -22,6 +23,10 @@ class Callback_toString_Test extends TestCase
 
 	public function testClosure()
 	{
+		if (Orm::PACKAGE === '5.2')
+		{
+			$this->markTestIncomplete('php 5.2 (closure)');
+		}
 		$c = Callback::create(function () {});
 		$this->assertSame('{closure}', $c->__toString());
 	}

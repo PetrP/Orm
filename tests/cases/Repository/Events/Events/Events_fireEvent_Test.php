@@ -221,10 +221,12 @@ class Events_fireEvent_Test extends TestCase
 
 	public function testLazyInvalid()
 	{
-		$this->e->addLazyListener(Events::ATTACH, function () {
+		$this->e->addLazyListener(Events::ATTACH, $f = function () {
 			return (object) array();
 		});
-		$this->setExpectedException('Orm\BadReturnException', "Orm\\Events lazy factory {closure}() must return Orm\\IListener, 'stdClass' given.");
+		$f = Callback::create($f)->__toString();
+		$this->assertContains($f, array('{closure}', '{lambda}'));
+		$this->setExpectedException('Orm\BadReturnException', "Orm\\Events lazy factory $f() must return Orm\\IListener, 'stdClass' given.");
 		$this->e->fireEvent(Events::ATTACH, new TestEntity);
 	}
 
@@ -237,19 +239,23 @@ class Events_fireEvent_Test extends TestCase
 
 	public function testLazyInvalidType()
 	{
-		$this->e->addLazyListener(Events::ATTACH, function () {
+		$this->e->addLazyListener(Events::ATTACH, $f = function () {
 			return new Events_addListener_Persist;
 		});
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events lazy factory {closure}() must return Orm\\IListenerAttach; 'Events_addListener_Persist' given.");
+		$f = Callback::create($f)->__toString();
+		$this->assertContains($f, array('{closure}', '{lambda}'));
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events lazy factory $f() must return Orm\\IListenerAttach; 'Events_addListener_Persist' given.");
 		$this->e->fireEvent(Events::ATTACH, new TestEntity);
 	}
 
 	public function testLazyExtraType()
 	{
-		$this->e->addLazyListener(Events::REMOVE_BEFORE, function () {
+		$this->e->addLazyListener(Events::REMOVE_BEFORE, $f = function () {
 			return new Events_addListener_Remove;
 		});
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events lazy factory {closure}() returns not expected Orm\\IListenerRemoveAfter; 'Events_addListener_Remove'.");
+		$f = Callback::create($f)->__toString();
+		$this->assertContains($f, array('{closure}', '{lambda}'));
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\Events lazy factory $f() returns not expected Orm\\IListenerRemoveAfter; 'Events_addListener_Remove'.");
 		$this->e->fireEvent(Events::REMOVE_BEFORE, new TestEntity);
 	}
 
