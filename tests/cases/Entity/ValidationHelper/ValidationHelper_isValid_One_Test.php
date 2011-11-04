@@ -179,13 +179,14 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t(false, false);
 		$this->t(true, false);
 		$this->t('', false);
-		$this->t(' ', true, ValidationHelper::createDateTime('now'), false);
+
 		try {
 			$this->t('xx', false);
+			$this->fail();
 		} catch (Exception $e) {
 			$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (xx) at position 0 (x): The timezone could not be found in the database');
 		}
-		$this->t("\0", true, ValidationHelper::createDateTime('now'), false);
+
 		$this->t('0', true, ValidationHelper::createDateTime('now'), false);
 		$this->t('1', true, ValidationHelper::createDateTime('+1 second'), false);
 		$this->t(1, true, ValidationHelper::createDateTime('+1 second'), false);
@@ -198,6 +199,28 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 
 		$this->t(new DateTime('2011-11-11'), true);
 		$this->t('-1 month', true, ValidationHelper::createDateTime('-1 month'), false);
+
+		if (PHP_VERSION_ID <= 50203)
+		{
+			// pravdepodobne "opraveno" s bugem #41964
+			try {
+				$this->t(' ', true, ValidationHelper::createDateTime('now'), false);
+				$this->fail();
+			} catch (Exception $e) {
+				$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string ( ) at position 0 (');
+			}
+			try {
+				$this->t("\0", true, ValidationHelper::createDateTime('now'), false);
+				$this->fail();
+			} catch (Exception $e) {
+				$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string () at position 0 (');
+			}
+		}
+		else
+		{
+			$this->t(' ', true, ValidationHelper::createDateTime('now'), false);
+			$this->t("\0", true, ValidationHelper::createDateTime('now'), false);
+		}
 	}
 
 	public function testArrayObject()
