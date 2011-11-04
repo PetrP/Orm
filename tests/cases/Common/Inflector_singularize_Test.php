@@ -47,5 +47,7 @@ class Inflector_singularize_Test extends TestCase
 		$this->t('f', 'fs');
 		$this->t('', 's');
 		$this->t('foo', 'foo');
+
+		$this->t('tum', 'ta');
 	}
 }

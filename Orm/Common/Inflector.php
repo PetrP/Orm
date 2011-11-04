@@ -40,7 +40,16 @@ class Inflector
 			'x' => 'xes', // fix
 		);
 
-		$end = strtolower(substr($singular, $len = -3));
+		$len = -3;
+/*§php52
+		if (PHP_VERSION_ID <= 50206)
+		{
+			// 5.2.2 - 5.2.6 bug #45166
+			$len = max($len, -strlen($singular));
+			if (!$len) return $singular . 's';
+		}
+php52§*/
+		$end = strtolower(substr($singular, $len));
 		do {
 			if (isset($rules[$end]))
 			{
@@ -72,8 +81,16 @@ class Inflector
 			'ia' => 'ium', // medium
 			's' => '',
 		);
-
-		$end = strtolower(substr($plural, $len = -4));
+		$len = -4;
+/*§php52
+		if (PHP_VERSION_ID <= 50206)
+		{
+			// 5.2.2 - 5.2.6 bug #45166
+			$len = max($len, -strlen($plural));
+			if (!$len) return $plural;
+		}
+php52§*/
+		$end = strtolower(substr($plural, $len));
 		do {
 			if (isset($rules[$end]))
 			{

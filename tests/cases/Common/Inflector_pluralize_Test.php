@@ -46,5 +46,8 @@ class Inflector_pluralize_Test extends TestCase
 		$this->t('fo', 'fos');
 		$this->t('f', 'fs');
 		$this->t('', 's');
+
+		$this->t('x', 'xes');
+		$this->t('ss', 'sses');
 	}
 }
