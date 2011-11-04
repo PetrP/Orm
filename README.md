@@ -15,7 +15,10 @@ Links
 
 Requirements
 ------------
-ORM requires PHP 5.2.2 or later.
+ORM requires PHP 5.2.6 or later.
+
+PHP 5.3.3 is bogus. 5.2.2 - 5.2.5 is supported partialy.
+[See info.](http://orm.petrprochazka.com/forum/topic/96/entity-magicke-pretezovani-settru-a-gettru/)
 
 Require [Nette Framework](http://nette.org/download) in namespaces or without prefixes version.
 
