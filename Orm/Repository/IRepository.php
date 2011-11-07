@@ -158,11 +158,11 @@ interface IRepository
 	 * jinak vraci konkretni nazev tridy pro tyto data.
 	 * Kdyz vyraby jen jednu tridu muze pokazde vratit string.
 	 *
-	 * Defaultne vraci nazev repository v jednotem cisle, ale hloupe jen bez s na konci.
-	 * V pripade nepravidelnosti je mozne prepsat tuto metodu, nebo property entityClassName:
+	 * Defaultne vraci nazev repository v jednotem cisle; pro prevod pouziva {@see Inflector::singularize()}.
+	 * V pripade potreby je mozne prepsat tuto metodu, nebo property $entityClassName:
 	 * <code>
-	 * // CitiesRepository
-	 * protected $entityClassName = 'City';
+	 * // MiceRepository
+	 * protected $entityClassName = 'Mouse';
 	 * </code>
 	 *
 	 * Repository muze vyrabet ruzne entity, muze se rozhodovat na zaklade nejake polozky kterou ma ulozenou v ulozisti, napr. $type
