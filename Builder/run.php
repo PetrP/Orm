@@ -38,6 +38,18 @@ if ($info->versionId !== -1)
 
 $zip->save();
 
+if ($info->versionId !== -1)
+{
+	@mkdir(__DIR__ . '/ftp'); @mkdir(__DIR__ . '/ftp/api'); @mkdir(__DIR__ . '/ftp/download');
+	mkdir(__DIR__ . "/ftp/api/{$info->tag}");
+	rename(__DIR__ . "/Orm-{$info->version}.zip", __DIR__ . "/ftp/download/Orm-{$info->version}.zip");
+	mkdir(__DIR__ . "/ftp/api/{$info->tag}/php52/"); mkdir(__DIR__ . "/ftp/api/{$info->tag}/php53/");
+	rename(__DIR__ . '/php52/Nette_with_namespaces/Api', __DIR__ . "/ftp/api/{$info->tag}/php52/Nette_with_namespaces");
+	rename(__DIR__ . '/php52/Nette_without_namespaces/Api', __DIR__ . "/ftp/api/{$info->tag}/php52/Nette_without_namespaces");
+	rename(__DIR__ . '/php53/Nette_with_namespaces/Api', __DIR__ . "/ftp/api/{$info->tag}/php53/Nette_with_namespaces");
+	rename(__DIR__ . '/php53/Nette_without_namespaces/Api', __DIR__ . "/ftp/api/{$info->tag}/php53/Nette_without_namespaces");
+}
+
 echo "<h1>{$info->tag}<h1>{$info->shortSha}<br>{$info->versionId}";
 
 foreach (array(
