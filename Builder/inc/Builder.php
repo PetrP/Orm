@@ -30,17 +30,17 @@ class Builder extends Object implements IZipperFiles
 	/** @var array fromPath => toPath */
 	private $files = array();
 
-	/** @var bool */
-	private $isDev;
+	/** @var VersionInfo */
+	private $info;
 
 	/**
 	 * @param int
-	 * @param bool
+	 * @param VersionInfo
 	 */
-	public function __construct($version, $isDev = false)
+	public function __construct($version, VersionInfo $info)
 	{
 		$this->version = $version;
-		$this->isDev = $isDev;
+		$this->info = $info;
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Builder extends Object implements IZipperFiles
 	private function convert($data)
 	{
 		$data = PhpParser::standardizeLineEndings($data);
-		$data = PhpParser::buildInfo($data, $this->version, $this->isDev);
+		$data = PhpParser::buildInfo($data, $this->version, $this->info);
 
 		if ($this->version & self::NONNS AND $this->version & self::NONNS_NETTE)
 		{
