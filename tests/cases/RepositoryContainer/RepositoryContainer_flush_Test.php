@@ -34,6 +34,13 @@ class RepositoryContainer_flush_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testNotAttached()
+	{
+		$r = new RepositoryContainer_flush1Repository($this->m);
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'RepositoryContainer_flush1Repository' is not attached to RepositoryContainer. It is impossible flush it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
+		$this->m->flush($r);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'flush');

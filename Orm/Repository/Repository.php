@@ -372,7 +372,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			throw new DeprecatedException(array(__CLASS__, 'flush(TRUE)'));
 		}
-		return $this->getModel()->flush();
+		return $this->getModel()->flush($this);
 	}
 
 	/**
@@ -403,7 +403,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			throw new DeprecatedException(array(__CLASS__, 'clean(TRUE)'));
 		}
-		return $this->getModel()->clean();
+		return $this->getModel()->clean($this);
 	}
 
 	/**

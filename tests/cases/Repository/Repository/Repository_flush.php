@@ -1,14 +1,15 @@
 <?php
 
 use Orm\RepositoryContainer;
+use Orm\IRepository;
 
 class Repository_flush_Model extends RepositoryContainer
 {
 	public $count = 0;
-	public function flush()
+	public function flush(IRepository $checkRepository = NULL)
 	{
 		$this->count++;
-		parent::flush();
+		parent::flush($checkRepository);
 	}
 }
 

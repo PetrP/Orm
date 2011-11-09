@@ -1,6 +1,7 @@
 <?php
 
 use Orm\Events;
+use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\Repository::clean
@@ -43,16 +44,9 @@ class Repository_clean_Test extends TestCase
 
 	public function testNotHandleByModel()
 	{
-		$r = new Repository_clean_Repository($this->m);
-		$this->assertSame(0, $this->m->count);
-		$this->assertSame(0, $this->r->mapper->count);
-		$this->assertSame(0, $this->r2->mapper->count);
-		$this->assertSame(0, $r->mapper->count);
+		$r = new Repository_clean_Repository(new RepositoryContainer);
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'Repository_clean_Repository' is not attached to RepositoryContainer. It is impossible clean it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
 		$r->clean();
-		$this->assertSame(1, $this->m->count);
-		$this->assertSame(1, $this->r->mapper->count);
-		$this->assertSame(1, $this->r2->mapper->count);
-		$this->assertSame(0, $r->mapper->count); // bug?
 	}
 
 	public function testClearAllEntity()

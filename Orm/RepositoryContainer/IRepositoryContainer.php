@@ -46,15 +46,19 @@ interface IRepositoryContainer
 
 	/**
 	 * Promitne vsechny zmeny do uloziste na vsech repository.
+	 * @param IRepository|NULL Checks for this repository, if it will be flushed.
+	 * @throws RepositoryNotFoundException
 	 * @return void
 	 */
-	public function flush();
+	public function flush(IRepository $checkRepository = NULL);
 
 	/**
 	 * Zrusi vsechny zmeny na vsech repository, ale do ukonceni scriptu se zmeny porad drzi.
+	 * @param IRepository|NULL Checks for this repository, if it will be cleaned.
+	 * @throws RepositoryNotFoundException
 	 * @return void
 	 */
-	public function clean();
+	public function clean(IRepository $checkRepository = NULL);
 
 	/** @return IServiceContainer */
 	public function getContext();

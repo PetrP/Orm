@@ -273,12 +273,18 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 
 	/**
 	 * Promitne vsechny zmeny do uloziste na vsech repository.
+	 * @param IRepository|NULL Checks for this repository, if it will be flushed.
+	 * @throws RepositoryNotFoundException
 	 * @return void
 	 * @see IRepository::flush()
 	 * @see IMapper::flush()
 	 */
-	public function flush()
+	public function flush(IRepository $checkRepository = NULL)
 	{
+		if ($checkRepository !== NULL AND $this->getRepository($rc = get_class($checkRepository)) !== $checkRepository)
+		{
+			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible flush it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
+		}
 		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{
@@ -302,8 +308,12 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 * @see IRepository::clean()
 	 * @see IMapper::clean()
 	 */
-	public function clean()
+	public function clean(IRepository $checkRepository = NULL)
 	{
+		if ($checkRepository !== NULL AND $this->getRepository($rc = get_class($checkRepository)) !== $checkRepository)
+		{
+			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible clean it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
+		}
 		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{

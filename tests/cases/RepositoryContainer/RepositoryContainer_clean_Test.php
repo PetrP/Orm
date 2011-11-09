@@ -34,6 +34,13 @@ class RepositoryContainer_clean_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testNotAttached()
+	{
+		$r = new RepositoryContainer_clean1Repository($this->m);
+		$this->setExpectedException('Orm\RepositoryNotFoundException', "Repository 'RepositoryContainer_clean1Repository' is not attached to RepositoryContainer. It is impossible clean it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
+		$this->m->clean($r);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'clean');

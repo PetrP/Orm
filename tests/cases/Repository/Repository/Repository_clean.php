@@ -1,14 +1,15 @@
 <?php
 
 use Orm\RepositoryContainer;
+use Orm\IRepository;
 
 class Repository_clean_Model extends RepositoryContainer
 {
 	public $count = 0;
-	public function clean()
+	public function clean(IRepository $checkRepository = NULL)
 	{
 		$this->count++;
-		parent::clean();
+		parent::clean($checkRepository);
 	}
 }
 
