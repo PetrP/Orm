@@ -151,58 +151,12 @@ class PhpParser extends Tokenizer
 	/**
 	 * @param string
 	 * @param int
-	 * @param bool
+	 * @param VersionInfo
 	 * @return string
 	 */
-	public static function buildInfo($data, $version, $isDev = false)
+	public static function buildInfo($data, $version, VersionInfo $info)
 	{
-		static $head;
-		static $tag;
-		if ($head === NULL)
-		{
-			$git = new Git(__DIR__ . '/../..');
-			$head = $git->getSha('HEAD');
-			$tags = array();
-			foreach (array_filter(explode("\n", $git->command('show-ref --tags'))) as $t)
-			{
-				list($tsha, $tname) = explode(' ', $t);
-				$tname = substr($tname, strrpos($tname, '/')+1);
-				if (!preg_match('#^v[0-9]+\.[0-9]+\.[0-9]+$#s', $tname)) continue;
-				if (trim($git->command("cat-file -t $tsha")) === 'tag')
-				{
-					$tagContent = $git->command("cat-file tag $tsha");
-					if (preg_match('#^object ([0-9a-f]{40})\n#', $tagContent, $match))
-					{
-						if ($match[1] === $head)
-						{
-							$tagDate = 'unknown';
-							if (preg_match('#\ntagger [^\>]+> ([0-9]+) #', $tagContent, $match))
-							{
-								$d = \Nette\DateTime::from($match[1]);
-								$tagDate = $d->format('Y-m-d');
-							}
-							$tags[] = array($tname, $tagDate);
-						}
-					}
-				}
-				else if ($tsha === $head)
-				{
-					$tags[] = array($tname, 'unknown');
-				}
-			}
-			if (!$tags)
-			{
-				if (!$isDev) throw new Exception('Add dev parametr to url: run.php?dev');
-				$tags = array(array('0.0.0.dev', '0000-00-00'));
-			}
-			if (count($tags) > 1) throw new Exception;
-			$tag = current($tags);
-			$tag[0] = ltrim($tag[0], 'v');
-		}
-
-		$_head = $head; // protoze nejaky bug pri static variable a closure use
-		$_tag = $tag;
-		$data = preg_replace_callback('#(?:/\*)?\<build\:\:([^\>]+)\>(?:\*/[^/]*/\*\*/)?#s', function (array $m) use ($version, $_head, $_tag) {
+		$data = preg_replace_callback('#(?:/\*)?\<build\:\:([^\>]+)\>(?:\*/[^/]*/\*\*/)?#s', function (array $m) use ($version, $info) {
 			$m = $m[1];
 			if ($m === 'orm')
 			{
@@ -216,20 +170,19 @@ class PhpParser extends Tokenizer
 			}
 			else if ($m === 'date')
 			{
-				return $_tag[1];
+				return $info->date;
 			}
 			else if ($m === 'revision')
 			{
-				return substr($_head, 0, 7);
+				return $info->shortSha;
 			}
 			else if ($m === 'version')
 			{
-				return $_tag[0];
+				return $info->version;
 			}
 			else if ($m === 'version_id')
 			{
-				$tmp = explode('.', $_tag[0]);
-				return $tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2];
+				return $info->versionId;
 			}
 			throw new Exception($m);
 		}, $data);
