@@ -28,6 +28,15 @@ if ($info->versionId !== -1)
 
 $zip->save();
 
+if ($info->versionId !== -1)
+{
+	@mkdir(__DIR__ . '/ftp'); @mkdir(__DIR__ . '/ftp/api'); @mkdir(__DIR__ . '/ftp/download');
+	mkdir(__DIR__ . "/ftp/api/{$info->tag}");
+	rename(__DIR__ . "/Orm-{$info->tag}.zip", __DIR__ . "/ftp/download/Orm-{$info->tag}.zip");
+	rename(__DIR__ . '/php52/Api', __DIR__ . "/ftp/api/{$info->tag}/php52");
+	rename(__DIR__ . '/php53/Api', __DIR__ . "/ftp/api/{$info->tag}/php53");
+}
+
 echo "<h1>{$info->tag}<h1>{$info->shortSha}<br>{$info->versionId}";
 
 foreach (array(
