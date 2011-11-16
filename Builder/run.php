@@ -24,6 +24,8 @@ if ($info->versionId !== -1)
 	$api->generate(__DIR__ . "/php53/Orm", __DIR__ . "/php53/Api");
 
 	$zip->add($api);
+
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/README', $info));
 }
 
 $zip->save();

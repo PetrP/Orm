@@ -12,22 +12,22 @@ class VersionInfo extends Object
 {
 
 	/** @var string v1.2.3 */
-	private $tag;
+	protected $tag;
 
 	/** @var string 1.2.3 */
-	private $version;
+	protected $version;
 
 	/** @var string 10203 */
-	private $versionId;
+	protected $versionId;
 
 	/** @var string 2011-11-11 */
-	private $date;
+	protected $date;
 
 	/** @var string 0000000000000000000000000000000000000000 */
-	private $sha;
+	protected $sha;
 
 	/** @var string 00000000 */
-	private $shortSha;
+	protected $shortSha;
 
 	/**
 	 * @param Git
@@ -182,7 +182,7 @@ class VersionInfo extends Object
 	 * @param string
 	 * @param int
 	 */
-	private function parseId($version)
+	protected function parseId($version)
 	{
 		$tmp = explode('.', $version);
 		return $tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2];
