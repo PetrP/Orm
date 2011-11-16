@@ -34,6 +34,8 @@ if ($info->versionId !== -1)
 	$api->generate(__DIR__ . "/php53/Nette_with_namespaces/Orm", __DIR__ . "/php53/Nette_with_namespaces/Api");
 
 	$zip->add($api);
+
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/README', $info));
 }
 
 $zip->save();
