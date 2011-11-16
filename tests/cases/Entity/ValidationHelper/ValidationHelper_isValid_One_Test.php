@@ -177,7 +177,14 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		try {
 			$this->t(true, false);
 		} catch (Exception $e) {
-			$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (1): Unexpected character');
+			if (PHP_VERSION_ID <= 50203)
+			{
+				$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (');
+			}
+			else
+			{
+				$this->assertSame($e->getMessage(), 'DateTime::__construct(): Failed to parse time string (1) at position 0 (1): Unexpected character');
+			}
 		}
 		$this->t('', true, ValidationHelper::createDateTime('now'), false);
 		try {
