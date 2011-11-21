@@ -47,6 +47,17 @@ class IdentityMap extends Object
 		$this->repository = $repository;
 		$this->events = $repository->getEvents();
 		$this->performanceHelper = $performanceHelper;
+
+		$allowedEntities = array();
+		foreach ((array) $this->repository->getEntityClassName() as $en)
+		{
+			if (!class_exists($en))
+			{
+				throw new InvalidEntityException(get_class($this->repository) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
+			}
+			$allowedEntities[strtolower($en)] = true;
+		}
+		$this->allowedEntities = $allowedEntities;
 	}
 
 	/**
@@ -166,20 +177,6 @@ class IdentityMap extends Object
 	 */
 	private function checkEntityClassName($entityName, $throw = true)
 	{
-		if ($this->allowedEntities === NULL)
-		{
-			$allowedEntities = array();
-			foreach ((array) $this->repository->getEntityClassName() as $en)
-			{
-				if (!class_exists($en))
-				{
-					throw new InvalidEntityException(get_class($this->repository) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
-				}
-				$allowedEntities[strtolower($en)] = true;
-			}
-			$this->allowedEntities = $allowedEntities;
-		}
-
 		if (!isset($this->allowedEntities[strtolower($entityName)]))
 		{
 			if ($throw)

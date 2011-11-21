@@ -25,6 +25,7 @@ class ValueEntityFragment_getValue_Entity extends TestEntity
 
 class ValueEntityFragment_getValue_LazyRepository extends Repository
 {
+	protected $entityClassName = 'ValueEntityFragment_getValue_Entity';
 	public $count = 0;
 	public function lazyLoad(IEntity $entity, $param)
 	{

@@ -11,7 +11,7 @@ class Repository_getEntityClassName_Test extends TestCase
 
 	protected function setUp()
 	{
-		$this->r = new Repository_getEntityClassNamesRepository(new RepositoryContainer);
+		$this->r = new Repository_getEntityClassNamesRepository(new RepositoryContainer, 'TestEntity');
 	}
 
 	public function testByProperty()
@@ -36,6 +36,7 @@ class Repository_getEntityClassName_Test extends TestCase
 		}
 		$c = 'Repository_createMapper\Repository_createMapperRepository'; // aby nebyl parse error v php52
 		$r = new $c(new RepositoryContainer);
+		$r->entityClassName = NULL;
 		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName());
 		$this->assertSame('repository_createmapper\repository_createmapper', $r->getEntityClassName(array()));
 	}
