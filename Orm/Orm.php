@@ -64,6 +64,7 @@ require_once __DIR__ . '/RepositoryContainer/Exceptions/RepositoryAlreadyRegiste
 require_once __DIR__ . '/Repository/IRepository.php';
 require_once __DIR__ . '/Repository/Repository.php';
 require_once __DIR__ . '/Repository/Helpers/RepositoryHelper.php';
+require_once __DIR__ . '/Repository/Helpers/IdentityMap.php';
 require_once __DIR__ . '/Repository/Helpers/PerformanceHelper.php';
 require_once __DIR__ . '/Repository/Helpers/MapperAutoCaller.php';
 require_once __DIR__ . '/Repository/Helpers/MapperAutoCallerException.php';

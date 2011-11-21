@@ -33,20 +33,20 @@ class Repository_createPerformanceHelper_Test extends TestCase
 	public function testOk()
 	{
 		$r = $this->t(new ArrayObject);
-		$this->assertAttributeInstanceOf('Orm\PerformanceHelper', 'performanceHelper', $r);
+		$this->assertAttributeInstanceOf('Orm\PerformanceHelper', 'performanceHelper', $this->readAttribute($r, 'identityMap'));
 	}
 
 	public function testNoCache()
 	{
 		$r = $this->t(NULL);
-		$this->assertAttributeSame(NULL, 'performanceHelper', $r);
+		$this->assertAttributeSame(NULL, 'performanceHelper', $this->readAttribute($r, 'identityMap'));
 	}
 
 	public function testNoCallback()
 	{
 		Orm\PerformanceHelper::$keyCallback = NULL;
 		$r = $this->t(new ArrayObject);
-		$this->assertAttributeSame(NULL, 'performanceHelper', $r);
+		$this->assertAttributeSame(NULL, 'performanceHelper', $this->readAttribute($r, 'identityMap'));
 	}
 
 	public function testBadCache()
@@ -59,7 +59,7 @@ class Repository_createPerformanceHelper_Test extends TestCase
 	{
 		Orm\PerformanceHelper::$keyCallback = NULL;
 		$r = $this->t((object) array());
-		$this->assertAttributeSame(NULL, 'performanceHelper', $r);
+		$this->assertAttributeSame(NULL, 'performanceHelper', $this->readAttribute($r, 'identityMap'));
 	}
 
 	public function testBadReturn1()

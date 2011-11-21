@@ -105,14 +105,13 @@ class PerformanceHelper_Base_Test extends TestCase
 		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
-		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
-		$r->setAccessible(true);
-		$r->setValue($this->r, $h);
+		$im = $this->readAttribute($this->r, 'identityMap');
+		$im->__construct($this->r, $h);
 
 		$e = $this->r->getById(3);
 		$this->assertSame(NULL, $e);
 
-		$entities = $this->readAttribute($this->r, 'entities');
+		$entities = $this->readAttribute($im, 'entities');
 		$this->assertSame(5, count($entities));
 		$this->assertSame(false, $entities[999]);
 		$this->assertSame(false, $entities[4]);
@@ -130,15 +129,14 @@ class PerformanceHelper_Base_Test extends TestCase
 		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
-		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
-		$r->setAccessible(true);
-		$r->setValue($this->r, $h);
+		$im = $this->readAttribute($this->r, 'identityMap');
+		$im->__construct($this->r, $h);
 
 		$e = $this->r->getById(2);
 		$this->assertInstanceOf('TestEntity', $e);
 		$this->assertSame(2, $e->id);
 
-		$entities = $this->readAttribute($this->r, 'entities');
+		$entities = $this->readAttribute($im, 'entities');
 		$this->assertSame(4, count($entities));
 		$this->assertSame(false, $entities[999]);
 		$this->assertSame(false, $entities[4]);
@@ -155,14 +153,13 @@ class PerformanceHelper_Base_Test extends TestCase
 		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
-		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
-		$r->setAccessible(true);
-		$r->setValue($this->r, $h);
+		$im = $this->readAttribute($this->r, 'identityMap');
+		$im->__construct($this->r, $h);
 
 		$e = $this->r->getById(4);
 		$this->assertSame(NULL, $e);
 
-		$entities = $this->readAttribute($this->r, 'entities');
+		$entities = $this->readAttribute($im, 'entities');
 		$this->assertSame(4, count($entities));
 		$this->assertSame(false, $entities[999]);
 		$this->assertSame(false, $entities[4]);
@@ -179,15 +176,14 @@ class PerformanceHelper_Base_Test extends TestCase
 		$h = new PerformanceHelper($this->r, $this->cache);
 		$this->assertSame('PerformanceHelper_Base_Test', $this->cache->lastIndex);
 
-		$r = new ReflectionProperty('Orm\Repository', 'performanceHelper');
-		$r->setAccessible(true);
-		$r->setValue($this->r, $h);
+		$im = $this->readAttribute($this->r, 'identityMap');
+		$im->__construct($this->r, $h);
 
 		$e = $this->r->getById(1);
 		$this->assertInstanceOf('TestEntity', $e);
 		$this->assertSame(1, $e->id);
 
-		$entities = $this->readAttribute($this->r, 'entities');
+		$entities = $this->readAttribute($im, 'entities');
 		$this->assertSame(4, count($entities));
 		$this->assertSame(false, $entities[999]);
 		$this->assertSame(false, $entities[4]);

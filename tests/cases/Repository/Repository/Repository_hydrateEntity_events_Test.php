@@ -6,6 +6,7 @@ use Orm\EventArguments;
 
 /**
  * @covers Orm\Repository::hydrateEntity
+ * @covers Orm\IdentityMap::create
  */
 class Repository_hydrateEntity_events_Test extends TestCase
 {

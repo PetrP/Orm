@@ -4,7 +4,9 @@ use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\Repository::isAttachableEntity
- * @covers Orm\Repository::checkAttachableEntity
+ * @covers Orm\IdentityMap::check
+ * @covers Orm\IdentityMap::checkEntityClassName
+ * @covers Orm\IdentityMap::checkEntityRepository
  */
 class Repository_isAttachableEntity_Test extends TestCase
 {

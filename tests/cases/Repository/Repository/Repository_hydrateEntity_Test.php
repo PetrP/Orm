@@ -4,6 +4,7 @@ use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\Repository::hydrateEntity
+ * @covers Orm\IdentityMap::create
  */
 class Repository_hydrateEntity_Test extends TestCase
 {
@@ -51,11 +52,12 @@ class Repository_hydrateEntity_Test extends TestCase
 	public function testPrimaryKey()
 	{
 		$c = new NoConventional_getPrimaryKey_NoConventional;
-		setAccessible(new ReflectionProperty('Orm\Repository', 'conventional'))
-			->setValue($this->r, $c)
+		$im = $this->readAttribute($this->r, 'identityMap');
+		setAccessible(new ReflectionProperty('Orm\IdentityMap', 'conventional'))
+			->setValue($im, $c)
 		;
-		setAccessible(new ReflectionProperty('Orm\Repository', 'primaryKey'))
-			->setValue($this->r, $c->getPrimaryKey())
+		setAccessible(new ReflectionProperty('Orm\IdentityMap', 'primaryKey'))
+			->setValue($im, $c->getPrimaryKey())
 		;
 		$e = $this->r->hydrateEntity(array('foo_bar' => 1));
 		$this->assertSame(1, $e->id);

@@ -79,20 +79,8 @@ abstract class Repository extends Object implements IRepository
 	/** @var Events */
 	private $events;
 
-	/** @var SqlConventional */
-	private $conventional;
-
-	/** @var string @see IDatabaseConventional::getPrimaryKey() */
-	private $primaryKey;
-
-	/** @var array @todo refaktorovat */
-	private $entities = array();
-
-	/** @var PerformanceHelper|NULL */
-	private $performanceHelper;
-
-	/** @var array cache {@see self::checkAttachableEntity() */
-	private $allowedEntities;
+	/** @var IdentityMap */
+	private $identityMap;
 
 	/** @var MapperAutoCaller {@see self::__call()} */
 	private $mapperAutoCaller;
@@ -115,7 +103,7 @@ abstract class Repository extends Object implements IRepository
 		{
 			throw new BadReturnException(array($this, 'createPerformanceHelper', 'Orm\PerformanceHelper or NULL', $ph));
 		}
-		$this->performanceHelper = $ph;
+		$this->identityMap = new IdentityMap($this, $ph);
 	}
 
 	/**
@@ -136,35 +124,20 @@ abstract class Repository extends Object implements IRepository
 		{
 			throw new InvalidArgumentException(array($this, 'getById() $id', 'scalar', $id));
 		}
-		if ($this->performanceHelper)
+		$entity = $this->identityMap->getById($id);
+		if ($entity === NULL)
 		{
-			$this->performanceHelper->access($id);
-		}
-		if (isset($this->entities[$id]))
-		{
-			if ($this->entities[$id]) return $this->entities[$id];
-			return NULL;
-		}
-
-		// nactu vsechny ktere budu pravdepodobne potrebovat
-		if ($this->performanceHelper AND $ids = $this->performanceHelper->get())
-		{
-			$this->getMapper()->findById($ids)->fetchAll();
-			foreach ($ids as $tmp)
+			$entity = $this->getMapper()->getById($id);
+			if ($entity === NULL)
 			{
-				if (!isset($this->entities[$tmp])) $this->entities[$tmp] = false;
-			}
-			if (isset($this->entities[$id]))
-			{
-				if ($this->entities[$id]) return $this->entities[$id];
-				return NULL;
+				// nastavit ze neexistuje
+				$this->identityMap->remove($id);
 			}
 		}
-
-		$entity = $this->getMapper()->getById($id);
-		if (!$entity)
+		else if ($entity === false)
 		{
-			$this->entities[$id] = false;
+			// uz se jednou zkouselo a neexistuje
+			$entity = NULL;
 		}
 		return $entity;
 	}
@@ -181,7 +154,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	public function attach(IEntity $entity)
 	{
-		$this->checkAttachableEntity(get_class($entity), $entity);
+		$this->identityMap->check($entity);
 		if (!$entity->getRepository(false))
 		{
 			$this->events->fireEvent(Events::ATTACH, $entity);
@@ -295,10 +268,10 @@ abstract class Repository extends Object implements IRepository
 				$this->events->fireEvent(Events::PERSIST, $entity, $args);
 				if ($hasId)
 				{
-					$this->entities[$hasId] = false;
+					$this->identityMap->remove($hasId);
 				}
 				$id = $entity->id;
-				$this->entities[$id] = $entity;
+				$this->identityMap->add($id, $entity);
 
 				$recursionRelationshipCallback($entity, $recursionRelationship, true);
 				foreach ($relationshipValues as $relationship)
@@ -341,19 +314,16 @@ abstract class Repository extends Object implements IRepository
 	final public function remove($entity)
 	{
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
-		$this->checkAttachableEntity(get_class($entity), $entity);
+		$this->identityMap->check($entity);
 
 		$this->events->fireEvent(Events::REMOVE_BEFORE, $entity);
 		if (isset($entity->id))
 		{
-			if ($this->getMapper()->remove($entity))
-			{
-				$this->entities[$entity->id] = false;
-			}
-			else
+			if (!$this->getMapper()->remove($entity))
 			{
 				throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
 			}
+			$this->identityMap->remove($entity->id);
 		}
 		$this->events->fireEvent(Events::REMOVE_AFTER, $entity);
 		return true;
@@ -526,7 +496,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function isAttachableEntity(IEntity $entity)
 	{
-		return $this->checkAttachableEntity(get_class($entity), $entity, false);
+		return $this->identityMap->check($entity, false);
 	}
 
 	/**
@@ -562,30 +532,7 @@ abstract class Repository extends Object implements IRepository
 	 */
 	final public function hydrateEntity($data)
 	{
-		if ($this->conventional === NULL)
-		{
-			$this->conventional = $this->getMapper()->getConventional(); // speedup
-			$this->primaryKey = $this->conventional->getPrimaryKey();
-		}
-		if (!isset($data[$this->primaryKey]))
-		{
-			throw new BadReturnException("Data, that is returned from storage, doesn't contain id.");
-		}
-		$id = $data[$this->primaryKey];
-		if (!isset($this->entities[$id]) OR !$this->entities[$id])
-		{
-			$data = (array) $this->conventional->formatStorageToEntity($data);
-			$entityName = $this->getEntityClassName($data);
-			$this->checkAttachableEntity($entityName);
-			$entity = unserialize("O:".strlen($entityName).":\"$entityName\":0:{}");
-			if (!($entity instanceof IEntity)) throw new InvalidEntityException('Unserialize error');
-			$args = array('data' => $data);
-			$this->events->fireEvent(Events::HYDRATE_BEFORE, $entity, $args);
-			$id = $entity->id;
-			$this->entities[$id] = $entity;
-			$this->events->fireEvent(Events::HYDRATE_AFTER, $entity, $args);
-		}
-		return $this->entities[$id];
+		return $this->identityMap->create($data);
 	}
 
 	/**
@@ -606,52 +553,6 @@ abstract class Repository extends Object implements IRepository
 			return call_user_func_array(array($this->getMapper(), $name), $args);
 		}
 		return parent::__call($name, $args);
-	}
-
-	/**
-	 * Kontroluje jestli je nazev entity spravny.
-	 * @param string
-	 * @return void
-	 * @throws InvalidEntityException
-	 * @see self::isAttachableEntity()
-	 * @see self::getEntityClassName()
-	 */
-	final private function checkAttachableEntity($entityName, IEntity $entity = NULL, $throw = true)
-	{
-		if ($this->allowedEntities === NULL)
-		{
-			$allowedEntities = array();
-			foreach ((array) $this->getEntityClassName() as $en)
-			{
-				if (!class_exists($en))
-				{
-					throw new InvalidEntityException(get_class($this) . ": entity '$en' does not exists; see property Orm\\Repository::\$entityClassName or method Orm\\IRepository::getEntityClassName()");
-				}
-				$allowedEntities[strtolower($en)] = true;
-			}
-			$this->allowedEntities = $allowedEntities;
-		}
-		// todo strtolower mozna bude moc pomale
-		if (!isset($this->allowedEntities[strtolower($entityName)]))
-		{
-			if ($throw)
-			{
-				$tmp = (array) $this->getEntityClassName();
-				$tmpLast = array_pop($tmp);
-				$tmp = $tmp ? "'" . implode("', '", $tmp) . "' or '$tmpLast'" : "'$tmpLast'";
-				throw new InvalidEntityException(get_class($this) . " can't work with entity '$entityName', only with $tmp");
-			}
-			return false;
-		}
-		if ($entity AND $r = $entity->getRepository(false) AND $r !== $this)
-		{
-			if ($throw)
-			{
-				throw new InvalidEntityException(EntityHelper::toString($entity) . ' is attached to another repository.');
-			}
-			return false;
-		}
-		return true;
 	}
 
 	/**
