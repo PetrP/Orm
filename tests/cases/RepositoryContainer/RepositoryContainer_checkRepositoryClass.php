@@ -26,4 +26,5 @@ class RepositoryContainer_checkRepositoryClass_Bad3Repository extends Object imp
 	public function isAttachableEntity(IEntity $entity) {}
 	public function hydrateEntity($data) {}
 	public function getEvents() {}
+	public function persistAll() {}
 }

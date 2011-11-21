@@ -31,6 +31,7 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	{
 		return new Events($this);
 	}
+	public function persistAll() {}
 }
 
 class RepositoryContainer_flush1Mapper extends Object

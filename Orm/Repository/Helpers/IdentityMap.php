@@ -29,6 +29,9 @@ class IdentityMap extends Object
 	/** @var array */
 	private $entities = array();
 
+	/** @var array */
+	private $newEntities = array();
+
 	/** @var array cache {@see self::checkEntityClassName()} */
 	private $allowedEntities;
 
@@ -112,6 +115,28 @@ class IdentityMap extends Object
 	}
 
 	/**
+	 * Attach as new not persisted entity.
+	 * @param IEntity
+	 * @return void
+	 * @see IRepository::attach()
+	 */
+	public function attach(IEntity $entity)
+	{
+		$this->newEntities[spl_object_hash($entity)] = $entity;
+	}
+
+	/**
+	 * Detach as new not persisted entity.
+	 * @param IEntity
+	 * @return void
+	 * @see IRepository::remove()
+	 */
+	public function detach(IEntity $entity)
+	{
+		unset($this->newEntities[spl_object_hash($entity)]);
+	}
+
+	/**
 	 * Vytvori entity, nebo vrati tuto existujici.
 	 * @param array
 	 * @return IEntity
@@ -164,6 +189,21 @@ class IdentityMap extends Object
 			return false;
 		}
 		return true;
+	}
+
+	/** @return array of IEntity */
+	public function getAllUnpersist()
+	{
+		$result = array();
+		foreach ($this->entities as $entity)
+		{
+			if ($entity AND $entity->isChanged())
+			{
+				$result[spl_object_hash($entity)] = $entity;
+			}
+		}
+		$result += $this->newEntities;
+		return array_values($result);
 	}
 
 	/**

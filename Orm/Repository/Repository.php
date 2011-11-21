@@ -157,6 +157,7 @@ abstract class Repository extends Object implements IRepository
 		$this->identityMap->check($entity);
 		if (!$entity->getRepository(false))
 		{
+			$this->identityMap->attach($entity);
 			$this->events->fireEvent(Events::ATTACH, $entity);
 		}
 		return $entity;
@@ -325,8 +326,21 @@ abstract class Repository extends Object implements IRepository
 			}
 			$this->identityMap->remove($entity->id);
 		}
+		$this->identityMap->detach($entity);
 		$this->events->fireEvent(Events::REMOVE_AFTER, $entity);
 		return true;
+	}
+
+	/**
+	 * Persist all unpersist entities.
+	 * @return Repository $this
+	 * @see self::persist()
+	 */
+	final public function persistAll()
+	{
+		$tmp = $this->identityMap->getAllUnpersist();
+		array_walk($tmp, array($this, 'persist'));
+		return $this;
 	}
 
 	/**
