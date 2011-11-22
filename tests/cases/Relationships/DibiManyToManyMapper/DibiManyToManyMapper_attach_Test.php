@@ -3,7 +3,7 @@
 use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
 use Orm\RepositoryContainer;
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataToMany;
 
 /**
  * @covers Orm\DibiManyToManyMapper::attach
@@ -21,7 +21,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->mm = new DibiManyToManyMapper($c);
 		$this->m = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', true);
 		$this->m2 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', false);
-		$this->m3 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', RelationshipLoader::MAPPED_BOTH);
+		$this->m3 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', RelationshipMetaDataToMany::MAPPED_BOTH);
 	}
 
 	public function test()

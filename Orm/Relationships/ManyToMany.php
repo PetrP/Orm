@@ -75,7 +75,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 */
 	private $initialValue;
 
-	/** @var RelationshipLoader::MAPPED_* */
+	/** @var RelationshipMetaDataToMany::MAPPED_* */
 	private $mapped;
 
 	/** @var string */
@@ -86,7 +86,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 * @param IRepository|string repositoryName for lazy load
 	 * @param string m:1 param on child entity
 	 * @param string m:1 param on parent entity
-	 * @param mixed RelationshipLoader::MAPPED_*
+	 * @param mixed RelationshipMetaDataToMany::MAPPED_*
 	 * @param mixed
 	 */
 	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mapped, $value = NULL)
@@ -246,7 +246,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		}
 	}
 
-	/** @return mixed RelationshipLoader::MAPPED_* */
+	/** @return mixed RelationshipMetaDataToMany::MAPPED_* */
 	final public function getWhereIsMapped()
 	{
 		return $this->mapped;
@@ -258,7 +258,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 */
 	final public function isMappedByParent()
 	{
-		return $this->mapped === RelationshipLoader::MAPPED_HERE OR $this->mapped === RelationshipLoader::MAPPED_BOTH;
+		return $this->mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $this->mapped === RelationshipMetaDataToMany::MAPPED_BOTH;
 	}
 
 	/**
@@ -272,19 +272,19 @@ class ManyToMany extends BaseToMany implements IRelationship
 			$childRepository = $this->getChildRepository(false);
 			if ($parentRepository AND $childRepository)
 			{
-				if ($this->mapped === RelationshipLoader::MAPPED_HERE OR $this->mapped === RelationshipLoader::MAPPED_BOTH)
+				if ($this->mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $this->mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 				{
 					$repoMapper = $parentRepository->getMapper();
 					$mapper = $repoMapper->createManyToManyMapper($this->parentParam, $childRepository, $this->param);
 				}
-				else if ($this->mapped === RelationshipLoader::MAPPED_THERE)
+				else if ($this->mapped === RelationshipMetaDataToMany::MAPPED_THERE)
 				{
 					$repoMapper = $childRepository->getMapper();
 					$mapper = $repoMapper->createManyToManyMapper($this->param, $parentRepository, $this->parentParam);
 				}
 				else
 				{
-					throw new InvalidArgumentException(array(__CLASS__, 'mapped', 'Orm\RelationshipLoader::MAPPED_HERE, MAPPED_THERE or MAPPED_BOTH', $this->mapped));
+					throw new InvalidArgumentException(array(__CLASS__, 'mapped', 'Orm\RelationshipMetaDataToMany::MAPPED_HERE, MAPPED_THERE or MAPPED_BOTH', $this->mapped));
 				}
 				if (!($mapper instanceof IManyToManyMapper))
 				{

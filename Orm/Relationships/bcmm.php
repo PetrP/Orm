@@ -36,13 +36,13 @@ abstract class OldManyToMany extends ManyToMany
 		{
 			$this->parentRepository = $firstRepository;
 			$this->childRepository = $secondRepository;
-			$mapped = RelationshipLoader::MAPPED_HERE;
+			$mapped = RelationshipMetaDataToMany::MAPPED_HERE;
 		}
 		else if ($this->getSecondRepository()->isAttachableEntity($parent))
 		{
 			$this->parentRepository = $secondRepository;
 			$this->childRepository = $firstRepository;
-			$mapped = RelationshipLoader::MAPPED_THERE;
+			$mapped = RelationshipMetaDataToMany::MAPPED_THERE;
 		}
 		else
 		{

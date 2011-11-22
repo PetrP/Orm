@@ -1,23 +1,23 @@
 <?php
 
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataOneToMany;
 use Orm\MetaData;
 
 /**
- * @covers Orm\RelationshipLoader::getRepository
+ * @covers Orm\RelationshipMetaDataOneToMany::getRepository
  */
-class RelationshipLoader_getRepository_Test extends TestCase
+class RelationshipMetaDataOneToMany_getRepository_Test extends TestCase
 {
 
 	public function test()
 	{
-		$l = new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', 'repo', 'param', 'Entity', 'parentParam');
+		$l = new RelationshipMetaDataOneToMany('Entity', 'parentParam', 'repo', 'param', 'Orm\OneToMany');
 		$this->assertSame('repo', $l->getRepository());
 	}
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\RelationshipLoader', 'getRepository');
+		$r = new ReflectionMethod('Orm\RelationshipMetaDataOneToMany', 'getRepository');
 		$this->assertTrue($r->isPublic(), 'visibility');
 		$this->assertTrue($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

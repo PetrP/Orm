@@ -201,7 +201,7 @@ class MetaDataProperty extends Object
 	 * @param MetaData::OneToMany|MetaData::ManyToMany
 	 * @param string
 	 * @param string
-	 * @param mixed RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
+	 * @param mixed RelationshipMetaDataToMany::MAPPED_HERE|RelationshipMetaDataToMany::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see self::setOneToMany()
 	 * @see self::setManyToMany()
@@ -224,8 +224,8 @@ class MetaDataProperty extends Object
 			throw new MetaDataException("{$this->class}::\${$this->name} {{$relationship}} excepts $mainClass class as type, '$class' given");
 		}
 
-
-		$loader = new RelationshipLoader($relationship, $class, $repositoryName, $param, $this->class, $this->name, $mapped);
+		$loader = $relationship === MetaData::ManyToMany ? 'Orm\RelationshipMetaDataManyToMany' : 'Orm\RelationshipMetaDataOneToMany';
+		$loader = new $loader($this->class, $this->name, $repositoryName, $param, $class, $mapped);
 		$this->setInjection($loader);
 		$this->data['relationship'] = $relationship;
 		$this->data['relationshipParam'] = $loader;
@@ -274,7 +274,7 @@ class MetaDataProperty extends Object
 	 *
 	 * @param string
 	 * @param string|NULL parametr na child entitach (m:m)
-	 * @param mixed RelationshipLoader::MAPPED_HERE|RelationshipLoader::MAPPED_THERE|NULL
+	 * @param mixed RelationshipMetaDataToMany::MAPPED_HERE|RelationshipMetaDataToMany::MAPPED_THERE|NULL
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */

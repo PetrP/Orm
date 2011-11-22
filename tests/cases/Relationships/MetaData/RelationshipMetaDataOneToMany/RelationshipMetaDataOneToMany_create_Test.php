@@ -1,18 +1,18 @@
 <?php
 
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataOneToMany;
 use Orm\MetaData;
 
 /**
- * @covers Orm\RelationshipLoader::create
+ * @covers Orm\RelationshipMetaDataOneToMany::create
  */
-class RelationshipLoader_create_Test extends OneToMany_Test
+class RelationshipMetaDataOneToMany_create_Test extends OneToMany_Test
 {
 	private $l;
 	protected function setUp()
 	{
 		parent::setUp();
-		$this->l = new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', get_class($this->r), 'param', get_class($this->e), 'many');
+		$this->l = new RelationshipMetaDataOneToMany(get_class($this->e), 'many', get_class($this->r), 'param', 'Orm\OneToMany');
 	}
 
 	public function testInjection()
@@ -35,7 +35,7 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 
 	public function testValue()
 	{
-		$this->l = new RelationshipLoader(MetaData::OneToMany, 'OneToMany_OneToMany', get_class($this->r), 'param', get_class($this->e), 'many');
+		$this->l = new RelationshipMetaDataOneToMany(get_class($this->e), 'many', get_class($this->r), 'param', 'OneToMany_OneToMany');
 		$this->o2m = $this->l->create('OneToMany_OneToMany', $this->e, array(10,11,12,13));
 		$this->t(10,11,12,13);
 	}
@@ -48,7 +48,7 @@ class RelationshipLoader_create_Test extends OneToMany_Test
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\RelationshipLoader', 'create');
+		$r = new ReflectionMethod('Orm\RelationshipMetaDataOneToMany', 'create');
 		$this->assertTrue($r->isPublic(), 'visibility');
 		$this->assertFalse($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

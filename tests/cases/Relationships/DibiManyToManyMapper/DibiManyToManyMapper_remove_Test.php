@@ -2,7 +2,7 @@
 
 use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataToMany;
 
 /**
  * @covers Orm\DibiManyToManyMapper::remove
@@ -41,7 +41,7 @@ class DibiManyToManyMapper_remove_Test extends DibiManyToManyMapper_Connected_Te
 
 	public function testBoth()
 	{
-		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', RelationshipLoader::MAPPED_BOTH));
+		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', RelationshipMetaDataToMany::MAPPED_BOTH));
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE ( `x` = \'1\' AND `y` IN (1, 2, 3) ) OR (`y` = \'1\' AND `x` IN (1, 2, 3))');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->mm->remove($this->e, array(1, 2, 3));

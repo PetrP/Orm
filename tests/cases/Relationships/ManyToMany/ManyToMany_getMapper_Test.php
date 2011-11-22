@@ -1,7 +1,7 @@
 <?php
 
 use Orm\ManyToMany;
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataToMany;
 
 /**
  * @covers Orm\ManyToMany::getMapper
@@ -67,7 +67,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 
 	public function testMappedBoth()
 	{
-		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', RelationshipLoader::MAPPED_BOTH);
+		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', RelationshipMetaDataToMany::MAPPED_BOTH);
 		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper not support relationship to self.');
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
@@ -75,7 +75,7 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testMappedBad()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->r, 'param', 'param', 'foo');
-		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\ManyToMany::mapped must be Orm\\RelationshipLoader::MAPPED_HERE, MAPPED_THERE or MAPPED_BOTH; 'foo' given.");
+		$this->setExpectedException('Orm\InvalidArgumentException', "Orm\\ManyToMany::mapped must be Orm\\RelationshipMetaDataToMany::MAPPED_HERE, MAPPED_THERE or MAPPED_BOTH; 'foo' given.");
 		$this->m2m->gm();
 	}
 

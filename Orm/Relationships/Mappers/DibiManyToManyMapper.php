@@ -57,13 +57,13 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		{
 			throw new RequiredArgumentException(get_class($this) . '::$table is required');
 		}
-		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_THERE)
+		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_THERE)
 		{
 			$tmp = $this->childParam;
 			$this->childParam = $this->parentParam;
 			$this->parentParam = $tmp;
 		}
-		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_BOTH)
+		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			$this->both = true;
 		}

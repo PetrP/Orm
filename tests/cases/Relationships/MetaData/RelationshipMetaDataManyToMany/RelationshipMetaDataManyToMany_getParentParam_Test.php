@@ -1,23 +1,23 @@
 <?php
 
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataManyToMany;
 use Orm\MetaData;
 
 /**
- * @covers Orm\RelationshipLoader::getParentParam
+ * @covers Orm\RelationshipMetaDataManyToMany::getParentParam
  */
-class RelationshipLoader_getParentParam_Test extends TestCase
+class RelationshipMetaDataManyToMany_getParentParam_Test extends TestCase
 {
 
 	public function test()
 	{
-		$l = new RelationshipLoader(MetaData::OneToMany, 'Orm\OneToMany', 'repo', 'param', 'Entity', 'parentParam');
+		$l = new RelationshipMetaDataManyToMany('Entity', 'parentParam', 'repo', 'param', 'Orm\ManyToMany');
 		$this->assertSame('parentParam', $l->getParentParam());
 	}
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\RelationshipLoader', 'getParentParam');
+		$r = new ReflectionMethod('Orm\RelationshipMetaDataManyToMany', 'getParentParam');
 		$this->assertTrue($r->isPublic(), 'visibility');
 		$this->assertTrue($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

@@ -55,7 +55,7 @@ class DibiJoinHelper extends Object
 						$childRepository = $model->getRepository($r);
 						$parentParam = $loader->getParentParam();
 						$mapped = $loader->getWhereIsMapped();
-						if ($mapped === RelationshipLoader::MAPPED_HERE OR $mapped === RelationshipLoader::MAPPED_BOTH)
+						if ($mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 						{
 							$manyToManyMapper = $this->mapper->createManyToManyMapper($parentParam, $childRepository, $childParam);
 							$parentParam = $manyToManyMapper->parentParam;

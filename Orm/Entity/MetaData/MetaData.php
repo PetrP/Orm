@@ -213,7 +213,7 @@ class MetaData extends Object
 				if (isset(self::$cache[NULL][$lowerEntityClass][0]))
 				{
 					$cache2 = self::$cache[NULL][$lowerEntityClass];
-					unset(self::$cache[NULL][$lowerEntityClass][0]); // muzu pouzit jen jednou protoze RelationshipLoader::check
+					unset(self::$cache[NULL][$lowerEntityClass][0]); // muzu pouzit jen jednou protoze RelationshipMetaDataToMany::check
 				}
 				else
 				{

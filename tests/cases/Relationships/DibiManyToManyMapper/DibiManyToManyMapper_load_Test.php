@@ -2,7 +2,7 @@
 
 use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
-use Orm\RelationshipLoader;
+use Orm\RelationshipMetaDataToMany;
 
 /**
  * @covers Orm\DibiManyToManyMapper::load
@@ -42,7 +42,7 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 
 	public function testBoth()
 	{
-		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', RelationshipLoader::MAPPED_BOTH));
+		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', RelationshipMetaDataToMany::MAPPED_BOTH));
 		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('y' => 9), true);

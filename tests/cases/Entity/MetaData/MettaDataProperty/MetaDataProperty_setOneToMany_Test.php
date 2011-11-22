@@ -8,7 +8,6 @@ use Orm\RepositoryContainer;
 /**
  * @covers Orm\MetaDataProperty::setOneToMany
  * @covers Orm\MetaDataProperty::setToMany
- * @covers Orm\RelationshipLoader::__construct
  */
 class MetaDataProperty_setOneToMany_Test extends TestCase
 {
@@ -38,10 +37,10 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$this->assertAttributeSame($class, 'className', $ii[0]);
 
 		$ii = $this->readAttribute($ii[0], 'callback');
-		$this->assertInstanceOf('Orm\RelationshipLoader', $ii[0]);
+		$this->assertInstanceOf('Orm\RelationshipMetaDataOneToMany', $ii[0]);
 		$this->assertSame('create', $ii[1]);
 
-		$this->assertAttributeSame($class, 'class', $ii[0]);
+		$this->assertAttributeSame($class, 'relationshipClass', $ii[0]);
 	}
 
 	public function testBase()

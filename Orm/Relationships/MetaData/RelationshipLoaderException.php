@@ -11,9 +11,9 @@ namespace Orm;
  * MetaData relationship is invalid.
  * @author Petr Procházka
  * @package Orm
- * @subpackage Relationships\Loader
+ * @subpackage Relationships\MetaData
  */
-class RelationshipLoaderException extends MetaDataException
+class RelationshipLoaderException extends MetaDataException // todo rename
 {
 
 }
