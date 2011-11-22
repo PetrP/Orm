@@ -33,7 +33,14 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 		$p->check($this->model);
 
 		$this->assertSame(MetaData::OneToOne, $this->get($p));
-		$this->assertSame('MetaData_Test2', $this->get($p, 'relationshipParam'));
+		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));
+		$rp = $this->get($p, 'relationshipParam');
+		$this->assertInstanceOf('Orm\RelationshipMetaDataOneToOne', $rp);
+		$this->assertSame(Orm\MetaData::OneToOne, $rp->type);
+		$this->assertSame('MetaData_Test2', $rp->childRepository);
+		$this->assertSame(NULL, $rp->childParam);
+		$this->assertSame('MetaData_Test_Entity', $rp->parentEntityName);
+		$this->assertSame('id', $rp->parentParam);
 	}
 
 	public function testTwice()
@@ -47,7 +54,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 
 	public function testNoRepo()
 	{
-		$this->setExpectedException('Orm\MetaDataException', 'You must specify foreign repository in MetaData_Test_Entity::$id');
+		$this->setExpectedException('Orm\MetaDataException', 'MetaData_Test_Entity::$id {1:1} You must specify foreign repository {1:1 repositoryName}');
 		$this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('')
 		;

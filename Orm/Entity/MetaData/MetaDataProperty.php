@@ -164,15 +164,14 @@ class MetaDataProperty extends Object
 	 */
 	public function setOneToOne($repositoryName)
 	{
-		if (isset($this->data['relationship'])) throw new MetaDataException("Already has relationship in {$this->class}::\${$this->name}");
-		if (!$repositoryName)
+		if (isset($this->data['relationship']))
 		{
-			throw new MetaDataException("You must specify foreign repository in {$this->class}::\${$this->name}");
+			throw new MetaDataException("Already has relationship in {$this->class}::\${$this->name}");
 		}
 		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
 		$this->data['relationship'] = MetaData::OneToOne;
-		$this->data['relationshipParam'] = $repositoryName;
+		$this->data['relationshipParam'] = new RelationshipMetaDataOneToOne($this->class, $this->name, $repositoryName, NULL);
 
 		return $this;
 	}
@@ -191,8 +190,14 @@ class MetaDataProperty extends Object
 	 */
 	public function setManyToOne($repositoryName)
 	{
-		$this->setOneToOne($repositoryName);
+		if (isset($this->data['relationship']))
+		{
+			throw new MetaDataException("Already has relationship in {$this->class}::\${$this->name}");
+		}
+		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
+
 		$this->data['relationship'] = MetaData::ManyToOne;
+		$this->data['relationshipParam'] = new RelationshipMetaDataManyToOne($this->class, $this->name, $repositoryName, NULL);
 
 		return $this;
 	}
@@ -395,16 +400,7 @@ class MetaDataProperty extends Object
 	 */
 	public function check(IRepositoryContainer $model)
 	{
-		$relationship = $this->data['relationship'];
-		if ($relationship === MetaData::OneToOne OR $relationship === MetaData::ManyToOne)
-		{
-			$repositoryName = $this->data['relationshipParam'];
-			if (!$model->isRepository($repositoryName))
-			{
-				throw new MetaDataException("$repositoryName isn't repository in {$this->class}::\${$this->name}");
-			}
-		}
-		else if ($relationship === MetaData::OneToMany OR $relationship === MetaData::ManyToMany)
+		if ($this->data['relationship'])
 		{
 			$this->data['relationshipParam']->check($model);
 		}
