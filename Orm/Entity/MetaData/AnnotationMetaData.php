@@ -273,7 +273,12 @@ class AnnotationMetaData extends Object
 	public function builtParamsOneToMany($string, $slice = 2)
 	{
 		$string = preg_replace('#\s+#', ' ', trim($string));
-		return array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, $slice) + array(NULL, NULL);
+		$arr = array_slice(array_filter(array_map('trim', explode(' ', $string, 3))), 0, $slice) + array(NULL, NULL);
+		if ($arr[1])
+		{
+			$arr[1] = ltrim($arr[1], '$');
+		}
+		return $arr;
 	}
 
 	/**

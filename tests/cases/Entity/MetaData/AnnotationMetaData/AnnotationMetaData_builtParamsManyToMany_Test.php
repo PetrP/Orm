@@ -31,6 +31,14 @@ class AnnotationMetaData_builtParamsManyToMany_Test extends TestCase
 		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('  repositoryName   param  '));
 	}
 
+	public function testDolar()
+	{
+		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('repositoryName $param'));
+		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('repositoryName   $param'));
+		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('  repositoryName   $param  '));
+		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('  repositoryName $$param'));
+	}
+
 	public function testMore()
 	{
 		$this->assertSame(array('repositoryName', 'param', NULL), $this->p->builtParamsManyToMany('repositoryName param dalsi'));

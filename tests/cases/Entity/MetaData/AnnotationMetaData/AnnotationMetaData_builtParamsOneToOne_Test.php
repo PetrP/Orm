@@ -31,6 +31,14 @@ class AnnotationMetaData_builtParamsOneToOne_Test extends TestCase
 		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('  repositoryName   param  '));
 	}
 
+	public function testDolar()
+	{
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('repositoryName $param'));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('repositoryName   $param'));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('  repositoryName   $param  '));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('  repositoryName $$param'));
+	}
+
 	public function testMore()
 	{
 		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToOne('repositoryName param dalsi'));

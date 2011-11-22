@@ -31,6 +31,14 @@ class AnnotationMetaData_builtParamsOneToMany_Test extends TestCase
 		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('  repositoryName   param  '));
 	}
 
+	public function testDolar()
+	{
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('repositoryName $param'));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('repositoryName   $param'));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('  repositoryName   $param  '));
+		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('  repositoryName $$param'));
+	}
+
 	public function testMore()
 	{
 		$this->assertSame(array('repositoryName', 'param'), $this->p->builtParamsOneToMany('repositoryName param dalsi'));
