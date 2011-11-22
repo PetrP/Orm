@@ -48,7 +48,6 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('MetaData_Test2', 'abc')
 		;
-		$p->check($this->model);
 
 		$this->assertSame(MetaData::OneToOne, $this->get($p));
 		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));

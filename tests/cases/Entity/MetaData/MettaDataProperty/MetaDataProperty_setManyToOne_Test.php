@@ -49,7 +49,6 @@ class MetaDataProperty_setManyToOne_Test extends TestCase
 		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setManyToOne('MetaData_Test2', 'abc')
 		;
-		$p->check($this->model);
 
 		$this->assertSame(MetaData::ManyToOne, $this->get($p));
 		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));

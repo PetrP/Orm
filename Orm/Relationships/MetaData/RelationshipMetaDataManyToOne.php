@@ -27,4 +27,15 @@ class RelationshipMetaDataManyToOne extends RelationshipMetaDataToOne
 		parent::__construct(MetaData::ManyToOne, $parentEntityName, $parentParam, $childRepositoryName, $childParam);
 	}
 
+	/**
+	 * Kontroluje asociace z druhe strany
+	 * @param IRepositoryContainer
+	 */
+	public function check(IRepositoryContainer $model)
+	{
+		if ($this->isChecked) return;
+		parent::check($model);
+
+		$this->checkIntegrity($model, MetaData::OneToMany, true);
+	}
 }

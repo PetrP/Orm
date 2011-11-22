@@ -27,4 +27,15 @@ class RelationshipMetaDataOneToOne extends RelationshipMetaDataToOne
 		parent::__construct(MetaData::OneToOne, $parentEntityName, $parentParam, $childRepositoryName, $childParam);
 	}
 
+	/**
+	 * Kontroluje asociace z druhe strany
+	 * @param IRepositoryContainer
+	 */
+	public function check(IRepositoryContainer $model)
+	{
+		if ($this->isChecked) return;
+		parent::check($model);
+
+		$this->checkIntegrity($model, MetaData::OneToOne, false);
+	}
 }

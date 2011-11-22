@@ -4,6 +4,7 @@ use Orm\MetaData;
 use Orm\RepositoryContainer;
 use Orm\RelationshipLoaderException;
 use Orm\RelationshipMetaDataToMany;
+use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @covers Orm\RelationshipMetaDataManyToMany::check
@@ -109,6 +110,27 @@ class RelationshipMetaDataManyToMany_check_Test extends TestCase
 		MetaData::clean();
 		new RepositoryContainer;
 		MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany4a_Entity');
+		$this->assertTrue(true);
+	}
+
+	public function testCheckRepo()
+	{
+		$rl = new RelationshipMetaDataManyToMany('Entity', 'foo', 'repo', '', 'Orm\ManyToMany');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'repo isn\'t repository in Entity::$foo');
+		$rl->check(new RepositoryContainer);
+	}
+
+	public function testCheckParam()
+	{
+		$rl = new RelationshipMetaDataManyToMany('Entity', 'foo', 'tests', 'xxxx', 'Orm\ManyToMany');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'Entity::$foo {m:m} na druhe strane asociace tests::$xxxx neni asociace ktera by ukazovala zpet');
+		$rl->check(new RepositoryContainer);
+	}
+
+	public function testCheckParamEmpty()
+	{
+		$rl = new RelationshipMetaDataManyToMany('Entity', 'foo', 'tests', '', 'Orm\ManyToMany');
+		$rl->check(new RepositoryContainer);
 		$this->assertTrue(true);
 	}
 

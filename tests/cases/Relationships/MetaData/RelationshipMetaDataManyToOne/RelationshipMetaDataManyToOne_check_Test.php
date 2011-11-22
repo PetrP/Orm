@@ -19,6 +19,20 @@ class RelationshipMetaDataManyToOne_check_Test extends TestCase
 		$rl->check(new RepositoryContainer);
 	}
 
+	public function testCheckParam()
+	{
+		$rl = new RelationshipMetaDataManyToOne('Entity', 'foo', 'tests', 'xxxx');
+		$this->setExpectedException('Orm\RelationshipLoaderException', 'Entity::$foo {m:1} na druhe strane asociace tests::$xxxx neni asociace ktera by ukazovala zpet');
+		$rl->check(new RepositoryContainer);
+	}
+
+	public function testCheckParamEmpty()
+	{
+		$rl = new RelationshipMetaDataManyToOne('Entity', 'foo', 'tests', '');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataManyToOne', 'check');
