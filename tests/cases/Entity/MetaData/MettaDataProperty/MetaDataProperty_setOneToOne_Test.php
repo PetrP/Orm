@@ -43,6 +43,24 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 		$this->assertSame('id', $rp->parentParam);
 	}
 
+	public function testBaseWithParam()
+	{
+		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
+			->setOneToOne('MetaData_Test2', 'abc')
+		;
+		$p->check($this->model);
+
+		$this->assertSame(MetaData::OneToOne, $this->get($p));
+		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));
+		$rp = $this->get($p, 'relationshipParam');
+		$this->assertInstanceOf('Orm\RelationshipMetaDataOneToOne', $rp);
+		$this->assertSame(Orm\MetaData::OneToOne, $rp->type);
+		$this->assertSame('MetaData_Test2', $rp->childRepository);
+		$this->assertSame('abc', $rp->childParam);
+		$this->assertSame('MetaData_Test_Entity', $rp->parentEntityName);
+		$this->assertSame('id', $rp->parentParam);
+	}
+
 	public function testTwice()
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');

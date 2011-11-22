@@ -160,9 +160,10 @@ class MetaDataProperty extends Object
 	 * </pre>
 	 *
 	 * @param string Nazev repository pripojene polozky
+	 * @param string|NULL parametr na child entitach (1:1)
 	 * @return MetaDataProperty $this
 	 */
-	public function setOneToOne($repositoryName)
+	public function setOneToOne($repositoryName, $param = NULL)
 	{
 		if (isset($this->data['relationship']))
 		{
@@ -171,7 +172,7 @@ class MetaDataProperty extends Object
 		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
 		$this->data['relationship'] = MetaData::OneToOne;
-		$this->data['relationshipParam'] = new RelationshipMetaDataOneToOne($this->class, $this->name, $repositoryName, NULL);
+		$this->data['relationshipParam'] = new RelationshipMetaDataOneToOne($this->class, $this->name, $repositoryName, $param);
 
 		return $this;
 	}
@@ -186,9 +187,10 @@ class MetaDataProperty extends Object
 	 * </pre>
 	 *
 	 * @param string Nazev repository pripojene polozky
+	 * @param string|NULL parametr na child entitach (1:m)
 	 * @return MetaDataProperty $this
 	 */
-	public function setManyToOne($repositoryName)
+	public function setManyToOne($repositoryName, $param = NULL)
 	{
 		if (isset($this->data['relationship']))
 		{
@@ -197,7 +199,7 @@ class MetaDataProperty extends Object
 		// todo kontrolovat jestli types obsahuje jen IEntity nebo NULL?
 
 		$this->data['relationship'] = MetaData::ManyToOne;
-		$this->data['relationshipParam'] = new RelationshipMetaDataManyToOne($this->class, $this->name, $repositoryName, NULL);
+		$this->data['relationshipParam'] = new RelationshipMetaDataManyToOne($this->class, $this->name, $repositoryName, $param);
 
 		return $this;
 	}

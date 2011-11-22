@@ -44,6 +44,25 @@ class MetaDataProperty_setManyToOne_Test extends TestCase
 		$this->assertSame('id', $rp->parentParam);
 	}
 
+	public function testBaseWithParam()
+	{
+		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
+			->setManyToOne('MetaData_Test2', 'abc')
+		;
+		$p->check($this->model);
+
+		$this->assertSame(MetaData::ManyToOne, $this->get($p));
+		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));
+		$this->assertInstanceOf('Orm\RelationshipMetaDataManyToOne', $this->get($p, 'relationshipParam'));
+		$rp = $this->get($p, 'relationshipParam');
+		$this->assertInstanceOf('Orm\RelationshipMetaDataManyToOne', $rp);
+		$this->assertSame(Orm\MetaData::ManyToOne, $rp->type);
+		$this->assertSame('MetaData_Test2', $rp->childRepository);
+		$this->assertSame('abc', $rp->childParam);
+		$this->assertSame('MetaData_Test_Entity', $rp->parentEntityName);
+		$this->assertSame('id', $rp->parentParam);
+	}
+
 	public function testTwice()
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');

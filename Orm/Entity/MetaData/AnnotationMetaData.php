@@ -238,6 +238,34 @@ class AnnotationMetaData extends Object
 	 * </code>
 	 *
 	 * @param string
+	 * @return array
+	 * @see MetaDataProperty::setOneToOne()
+	 */
+	public function builtParamsOneToOne($string)
+	{
+		return $this->builtParamsOneToMany($string);
+	}
+
+	/**
+	 * <code>
+	 * repositoryName paramName
+	 * </code>
+	 *
+	 * @param string
+	 * @return array
+	 * @see MetaDataProperty::setManyToOne()
+	 */
+	public function builtParamsManyToOne($string)
+	{
+		return $this->builtParamsOneToMany($string);
+	}
+
+	/**
+	 * <code>
+	 * repositoryName paramName
+	 * </code>
+	 *
+	 * @param string
 	 * @param int internal
 	 * @return array
 	 * @see MetaDataProperty::setOneToMany()
