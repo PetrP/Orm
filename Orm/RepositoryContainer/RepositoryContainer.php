@@ -285,6 +285,10 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		{
 			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible flush it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
 		}
+		foreach ($this->repositories as $repo)
+		{
+			$repo->persistAll();
+		}
 		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{

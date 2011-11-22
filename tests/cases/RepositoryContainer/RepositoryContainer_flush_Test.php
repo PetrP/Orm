@@ -41,6 +41,22 @@ class RepositoryContainer_flush_Test extends TestCase
 		$this->m->flush($r);
 	}
 
+	public function testPersistAll()
+	{
+		$r = $this->m->tests;
+		$e1 = $r->attach(new TestEntity);
+		$e2 = $r->attach(new TestEntity);
+		$this->assertSame(true, $e1->isChanged());
+		$this->assertSame(true, $e2->isChanged());
+		$this->assertSame(false, isset($e1->id));
+		$this->assertSame(false, isset($e2->id));
+		$this->m->flush();
+		$this->assertSame(false, $e1->isChanged());
+		$this->assertSame(false, $e2->isChanged());
+		$this->assertSame(true, isset($e1->id));
+		$this->assertSame(true, isset($e2->id));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'flush');
