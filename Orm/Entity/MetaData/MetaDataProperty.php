@@ -70,7 +70,6 @@ class MetaDataProperty extends Object
 	/**
 	 * Pouziva se pro kontrolu napr. anotaci, jestli neni v jedne tride 2x stejnej parametr (coz je vetsinou chyba).
 	 * Pri rucnim vytvareni MetaDat neni potreba vyplnovat, neni pak mozne 2x zadat stejny parametr.
-	 * @internal
 	 * @return string|NULL
 	 */
 	public function getSince()

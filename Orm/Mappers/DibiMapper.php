@@ -300,7 +300,7 @@ class DibiMapper extends Mapper
 	}
 
 	/**
-	 * @internal
+	 * Do not call directly. It uses DibiCollection.
 	 * @param string author->lastName or author->group->name
 	 * @return object
 	 * 	->key author.last_name

@@ -52,7 +52,6 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	/**
 	 * Do not call directly!
 	 * Vola urcitou udalost.
-	 * @internal
 	 * @param IEntity
 	 * @param string nazev udalosti
 	 * @param IRepository
