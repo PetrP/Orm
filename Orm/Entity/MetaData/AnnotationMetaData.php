@@ -54,8 +54,7 @@ class AnnotationMetaData extends Object
 	private $class;
 
 	/**
-	 * temporary save
-	 * @internal
+	 * Temporary save
 	 * @var array|NULL array(string, MetaDataProperty)
 	 * @see self::callOnMacro()
 	 */
@@ -195,7 +194,6 @@ class AnnotationMetaData extends Object
 	/**
 	 * callback
 	 * Vola metodu na property. To je cokoli v kudrnatych zavorkach.
-	 * @internal
 	 * @param array
 	 * @see MetaDataProperty::$property
 	 */
