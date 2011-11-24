@@ -138,7 +138,6 @@ abstract class EventEntityFragment extends Object
 	/**
 	 * Do not call directly!
 	 * Vola urcitou udalost.
-	 * @internal
 	 * @param string nazev udalosti
 	 * @param IRepository
 	 * @param array|scalar $data (onLoad) or $id (onPersist)

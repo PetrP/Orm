@@ -33,7 +33,7 @@ class PerformanceHelper extends Object
 	/** @var array reference na self::$toSave */
 	private $access = array();
 
-	/** @var array @internal */
+	/** @var array @access private */
 	public static $toSave;
 
 	/** @var array */
