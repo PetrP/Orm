@@ -45,7 +45,7 @@ class EntityToArray extends Object
 	public static $maxDeep = 3;
 
 	/**
-	 * @internal
+	 * Do not call directly! Call {@see Entity::toArray()} instead.
 	 * @param IEntity
 	 * @param int
 	 * @param int

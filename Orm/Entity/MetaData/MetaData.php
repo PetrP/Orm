@@ -191,7 +191,6 @@ class MetaData extends Object
 	 * Vraci MetaData v internal formatu.
 	 * Entita ma metadata jako pole pro lepsi vykon.
 	 * Vysledek se cachuje.
-	 * @internal
 	 * @param string class name
 	 * @param IRepositoryContainer
 	 * @return array internal format

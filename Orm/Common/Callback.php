@@ -174,10 +174,21 @@ final class Callback extends Object
 	}
 /*§php52
 
-	/** @internal * /
+	/** @var array Simulate closure scope in php 5.2 @access private * /
 	static $vars = array();
 
-	/** @internal * /
+	/**
+	 * Simulate closure scope in php 5.2
+	 * <code>
+	 * 	function () use ($foo, $bar) {}
+	 * </code>
+	 * <code>
+	 * 	create_function('', 'extract(Callback::$vars['.Callback::uses(array('foo'=>$foo,'bar'=>$bar)).'], EXTR_REFS);')
+	 * </code>
+	 * @access private
+	 * @see Orm\Builder\PhpParser::replaceClosures()
+	 * @param array
+	 * /
 	static function uses($args)
 	{
 		self::$vars[] = $args;

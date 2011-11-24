@@ -183,7 +183,6 @@ interface IRepository
 	 *
 	 * </code>
 	 *
-	 * Do not call directly.
 	 * @param array|NULL
 	 * @return string|array
 	 */
@@ -220,8 +219,7 @@ interface IRepository
 
 	/**
 	 * Vytvori entity, nebo vrati tuto existujici.
-	 * Do not call directly.
-	 * @internal
+	 * Do not call directly. Only from implementation of {@see IEntityCollection}.
 	 *
 	 * Vola udalosti:
 	 * @see Events::HYDRATE_BEFORE

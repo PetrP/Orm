@@ -30,7 +30,6 @@ final class Orm
 }
 
 /*§php52
-/** @internal * /
 if (!defined('PHP_VERSION_ID'))
 {
 	// php < 5.2.7
