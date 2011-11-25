@@ -184,9 +184,6 @@ class MetaData extends Object
 	/** @var array runtime cache */
 	static private $cache = array();
 
-	/** @var array runtime cache */
-	static private $cache2 = array();
-
 	/**
 	 * Vraci MetaData v internal formatu.
 	 * Entita ma metadata jako pole pro lepsi vykon.
@@ -197,50 +194,54 @@ class MetaData extends Object
 	 */
 	public static function getEntityRules($entityClass, IRepositoryContainer $model = NULL)
 	{
-		$lowerEntityClass = strtolower($entityClass);
+		$lec = strtolower($entityClass);
+		if (!isset(self::$cache[NULL][$lec]))
+		{
+			$meta = self::createEntityRules($entityClass);
+			self::$cache[NULL][$lec] = array(NULL, $meta->toArray());
+		}
 		if ($model)
 		{
 			$hash = spl_object_hash($model);
-			$cache = & self::$cache[$hash][$lowerEntityClass];
-			if ($cache === NULL)
+			if (!isset(self::$cache[$hash][$lec]))
 			{
-				$cache2 = & self::$cache2[$hash][$lowerEntityClass];
-				if ($cache2 !== NULL)
-				{
-					$cache2[0]->check($model);
-					return $cache2[1];
-				}
-				if (isset(self::$cache[NULL][$lowerEntityClass][0]))
-				{
-					$cache2 = self::$cache[NULL][$lowerEntityClass];
-					unset(self::$cache[NULL][$lowerEntityClass][0]); // muzu pouzit jen jednou protoze RelationshipMetaDataToMany::check
-				}
-				else
-				{
-					$meta = self::createEntityRules($entityClass);
-					$cache2 = array($meta, $meta->toArray());
-				}
+				self::$cache[$hash][$lec] = self::$cache[NULL][$lec];
 				try {
 					$e = NULL;
-					$cache2[0]->check($model);
-					$cache = $cache2[1];
-				} catch (Exception $e) {}
-				unset(self::$cache2[$hash][$lowerEntityClass]);
-				if (!self::$cache2[$hash]) unset(self::$cache2[$hash]);
-				if ($e) throw $e;
+					$tmp = array();
+					foreach (self::$cache[$hash][$lec][1] as $rule)
+					{
+						if ($rule['relationshipParam'] instanceof RelationshipMetaData)
+						{
+							$tmp[] = $rule['relationshipParam'];
+						}
+					}
+					self::$cache[$hash][$lec][0] = $tmp;
+					while (self::$cache[$hash][$lec][0])
+					{
+						$t = current(self::$cache[$hash][$lec][0]);
+						unset(self::$cache[$hash][$lec][0][key(self::$cache[$hash][$lec][0])]);
+						$t->check($model);
+					}
+					self::$cache[$hash][$lec][0] = NULL;
+				} catch (Exception $e) {
+					unset(self::$cache[$hash][$lec]);
+					if (!self::$cache[$hash]) unset(self::$cache[$hash]);
+					throw $e;
+				}
 			}
-			return $cache;
-		}
-		else
-		{
-			$cache = & self::$cache[NULL][$lowerEntityClass];
-			if ($cache === NULL)
+			if (self::$cache[$hash][$lec][0] !== NULL)
 			{
-				$meta = self::createEntityRules($entityClass);
-				$cache = array($meta, $meta->toArray());
+				while (self::$cache[$hash][$lec][0])
+				{
+					$t = current(self::$cache[$hash][$lec][0]);
+					unset(self::$cache[$hash][$lec][0][key(self::$cache[$hash][$lec][0])]);
+					$t->check($model);
+				}
 			}
-			return $cache[1];
+			return self::$cache[$hash][$lec][1];
 		}
+		return self::$cache[NULL][$lec][1];
 	}
 
 	/**
@@ -260,6 +261,6 @@ class MetaData extends Object
 	/** @deprecated */
 	public static function clean()
 	{
-		self::$cache2 = self::$cache = array();
+		self::$cache = array();
 	}
 }

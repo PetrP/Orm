@@ -39,7 +39,6 @@ class RelationshipMetaDataOneToMany extends RelationshipMetaDataToMany
 	 */
 	public function check(IRepositoryContainer $model)
 	{
-		if ($this->isChecked) return;
 		parent::check($model);
 
 		$this->checkIntegrity($model, MetaData::ManyToOne, false);

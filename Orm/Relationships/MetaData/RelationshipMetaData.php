@@ -33,9 +33,6 @@ abstract class RelationshipMetaData extends Object
 	/** @var string */
 	private $childParam;
 
-	/** @var bool */
-	protected $isChecked = false;
-
 	/**
 	 * @see self::check()
 	 * @var array entityName => entityName
@@ -64,12 +61,10 @@ abstract class RelationshipMetaData extends Object
 	 */
 	public function check(IRepositoryContainer $model)
 	{
-		if ($this->isChecked) return;
 		if (!$model->isRepository($this->childRepository))
 		{
 			throw new RelationshipLoaderException("{$this->childRepository} isn't repository in {$this->parentEntityName}::\${$this->parentParam}");
 		}
-		$this->isChecked = true;
 	}
 
 	/** @return string MetaData::ManyToOne|MetaData::OneToOne|MetaData::ManyToMany|MetaData::OneToMany */

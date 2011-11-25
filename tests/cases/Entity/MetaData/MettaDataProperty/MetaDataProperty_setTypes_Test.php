@@ -98,6 +98,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		;
 
 		MetaData_Test2_Entity::$metaData = $m;
+		MetaData::clean();
 		$e = new MetaData_Test2_Entity;
 		MetaData_Test2_Entity::$metaData = NULL;
 		$model = new RepositoryContainer;
@@ -122,6 +123,7 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		;
 
 		MetaData_Test2_Entity::$metaData = $m;
+		MetaData::clean();
 		$e = new MetaData_Test2_Entity;
 		MetaData_Test2_Entity::$metaData = NULL;
 

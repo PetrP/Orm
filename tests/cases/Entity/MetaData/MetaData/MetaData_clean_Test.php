@@ -14,7 +14,6 @@ class MetaData_clean_Test extends TestCase
 		$this->assertAttributeNotEmpty('cache', 'Orm\MetaData');
 		MetaData::clean();
 		$this->assertAttributeEmpty('cache', 'Orm\MetaData');
-		$this->assertAttributeEmpty('cache2', 'Orm\MetaData');
 	}
 
 	public function testReflection()

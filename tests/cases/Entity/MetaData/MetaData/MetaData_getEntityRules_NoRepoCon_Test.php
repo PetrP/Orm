@@ -47,13 +47,6 @@ class MetaData_getEntityRules_NoRepoCon_Test extends TestCase
 		$this->assertInternalType('array', MetaData::getEntityRules('MetaData_Test_Entity'));
 	}
 
-	public function testRecursionCache()
-	{
-		$this->assertAttributeEmpty('cache2', 'Orm\MetaData');
-		MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity');
-		$this->assertAttributeEmpty('cache2', 'Orm\MetaData');
-	}
-
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\MetaData', 'getEntityRules');
