@@ -395,26 +395,24 @@ class MetaDataProperty extends Object
 	}
 
 	/**
-	 * Zkontroluje asociace
-	 * @param IRepositoryContainer
-	 * @return void
-	 * @see MetaData::check()
-	 */
-	public function check(IRepositoryContainer $model)
-	{
-		if ($this->data['relationship'])
-		{
-			$this->data['relationshipParam']->check($model);
-		}
-	}
-
-	/**
 	 * @return array internal format
 	 * @see MetaData::toArray()
 	 */
 	public function toArray()
 	{
 		return $this->data;
+	}
+
+	/**
+	 * @deprecated
+	 * Zkontroluje asociace
+	 * @param IRepositoryContainer
+	 * @return void
+	 * @see MetaData::check()
+	 */
+	final public function check(IRepositoryContainer $model)
+	{
+		throw new DeprecatedException(array($this, 'check()'));
 	}
 
 }

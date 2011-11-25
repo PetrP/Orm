@@ -30,7 +30,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 		$p = $this->m->addProperty('id', 'MetaData_Test2_Entity')
 			->setOneToOne('MetaData_Test2')
 		;
-		$p->check($this->model);
+		$this->get($p, 'relationshipParam')->check($this->model);
 
 		$this->assertSame(MetaData::OneToOne, $this->get($p));
 		$this->assertSame('MetaData_Test2', (string) $this->get($p, 'relationshipParam'));
@@ -83,7 +83,7 @@ class MetaDataProperty_setOneToOne_Test extends TestCase
 			->setOneToOne('BlaBlaBla')
 		;
 		$this->setExpectedException('Orm\MetaDataException', 'BlaBlaBla isn\'t repository in MetaData_Test_Entity::$id');
-		$p->check($this->model);
+		$this->get($p, 'relationshipParam')->check($this->model);
 	}
 
 	public function testReflection()

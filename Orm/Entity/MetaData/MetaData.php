@@ -172,15 +172,6 @@ class MetaData extends Object
 		return $properties;
 	}
 
-	/** @param IRepositoryContainer */
-	public function check(IRepositoryContainer $model)
-	{
-		foreach ($this->properties as $name => $property)
-		{
-			$property->check($model);
-		}
-	}
-
 	/** @var array runtime cache */
 	static private $cache = array();
 
@@ -263,4 +254,14 @@ class MetaData extends Object
 	{
 		self::$cache = array();
 	}
+
+	/**
+	 * @deprecated
+	 * @param IRepositoryContainer
+	 */
+	final public function check(IRepositoryContainer $model)
+	{
+		throw new DeprecatedException(array($this, 'check()'));
+	}
+
 }
