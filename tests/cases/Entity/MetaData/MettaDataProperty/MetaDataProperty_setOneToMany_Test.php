@@ -1,7 +1,6 @@
 <?php
 
 use Orm\MetaData;
-use Orm\OldOneToMany;
 use Orm\MetaDataProperty;
 use Orm\RepositoryContainer;
 
@@ -40,23 +39,23 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$this->assertInstanceOf('Orm\RelationshipMetaDataOneToMany', $ii[0]);
 		$this->assertSame('create', $ii[1]);
 
-		$this->assertAttributeSame($class, 'relationshipClass', $ii[0]);
+		$this->assertAttributeSame($name, 'relationshipClass', $ii[0]);
 	}
 
 	public function testBase()
 	{
-		$p = $this->m->addProperty('id', 'MetaDataProperty_setOneToMany_OneToMany')
-			->setOneToMany()
+		$p = $this->m->addProperty('id', 'Orm\OneToMany')
+			->setOneToMany('tests')
 		;
-		$this->t($p, 'MetaDataProperty_setOneToMany_OneToMany', 'MetaDataProperty_setOneToMany_OneToMany');
+		$this->t($p, 'Orm\OneToMany', 'Orm\OneToMany');
 	}
 
 	public function testTwice()
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');
-		$this->m->addProperty('id', 'MetaDataProperty_setOneToMany_OneToMany')
-			->setOneToMany()
-			->setOneToMany()
+		$this->m->addProperty('id', 'Orm\OneToMany')
+			->setOneToMany('tests')
+			->setOneToMany('tests')
 		;
 	}
 
@@ -64,7 +63,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'MetaData_Test_Entity::$id {1:m} excepts Orm\OneToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
-			->setOneToMany()
+			->setOneToMany('tests')
 		;
 	}
 
@@ -72,7 +71,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {1:m} excepts Orm\OneToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
-			->setOneToMany()
+			->setOneToMany('tests')
 		;
 	}
 
@@ -80,7 +79,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {1:m} Class \'Directory\' isn\'t instanceof Orm\OneToMany');
 		$this->m->addProperty('id', 'Directory')
-			->setOneToMany()
+			->setOneToMany('tests')
 		;
 	}
 
@@ -89,7 +88,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', 'Orm\OneToMany')
 			->setOneToMany('MetaData_Test2', 'param')
 		;
-		$this->t($p, 'Orm\OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'Orm\OneToMany', 'Orm\OneToMany');
 	}
 
 	public function testFunctionalWithoutClass2()
@@ -97,7 +96,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', '')
 			->setOneToMany('MetaData_Test2', 'param')
 		;
-		$this->t($p, 'Orm\OneToMany', 'MetaDataProperty_setOneToMany_OneToMany'); // todo
+		$this->t($p, 'Orm\OneToMany', 'Orm\OneToMany');
 	}
 
 	public function testReflection()
@@ -109,8 +108,4 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}
 
-}
-
-class MetaDataProperty_setOneToMany_OneToMany extends OldOneToMany
-{
 }

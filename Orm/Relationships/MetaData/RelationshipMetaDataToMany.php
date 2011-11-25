@@ -28,9 +28,6 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 	/** @var string */
 	private $relationshipClass;
 
-	/** @var bool */
-	protected $old = false;
-
 	/**
 	 * @param string MetaData::ManyToOne|MetaData::OneToOne|MetaData::ManyToMany|MetaData::OneToMany
 	 * @param string
@@ -44,12 +41,7 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 		if ($type !== MetaData::OneToMany AND $type !== MetaData::ManyToMany) throw new InvalidArgumentException;
 		parent::__construct($type, $parentEntityName, $parentParam, $childRepositoryName, $childParam);
 		$this->setRelationshipClass($relationshipClass);
-		if ($this->old AND $childRepositoryName)
-		{
-			$oldMainClass = $type === MetaData::ManyToMany ? 'Orm\OldManyToMany' : 'Orm\OldOneToMany';
-			throw new RelationshipLoaderException("{$parentEntityName}::\${$parentParam} {{$type}} You can't specify foreign repository for $oldMainClass");
-		}
-		if (!$this->old AND !$childRepositoryName)
+		if (!$childRepositoryName)
 		{
 			throw new RelationshipLoaderException("{$parentEntityName}::\${$parentParam} {{$type}} You must specify foreign repository {{$type} repositoryName param}");
 		}
@@ -85,10 +77,6 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 			throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} Class '$relationshipClass' isn't instanceof $mainClass");
 		}
 		$this->relationshipClass = $relationshipClass;
-		if (isset($parents[$type === MetaData::ManyToMany ? 'Orm\OldManyToMany' : 'Orm\OldOneToMany']))
-		{
-			$this->old = true;
-		}
 	}
 
 }

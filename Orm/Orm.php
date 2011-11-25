@@ -165,8 +165,6 @@ require_once __DIR__ . '/Relationships/MetaData/RelationshipMetaDataManyToMany.p
 require_once __DIR__ . '/Relationships/MetaData/RelationshipLoader.php';
 require_once __DIR__ . '/Relationships/MetaData/RelationshipLoaderException.php';
 require_once __DIR__ . '/Relationships/Exceptions/BadEntityException.php';
-require_once __DIR__ . '/Relationships/bc1m.php';
-require_once __DIR__ . '/Relationships/bcmm.php';
 
 require_once __DIR__ . '/DI/IServiceContainer.php';
 require_once __DIR__ . '/DI/ServiceContainer.php';

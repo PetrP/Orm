@@ -35,12 +35,6 @@ class RelationshipMetaDataOneToMany_construct_Test extends TestCase
 		$this->assertSame('entity', $rl->getChildParam());
 	}
 
-	public function testOldToMany()
-	{
-		$this->setExpectedException('Orm\RelationshipLoaderException', 'Entity::$foo {1:m} You can\'t specify foreign repository for Orm\OldOneToMany');
-		new RelationshipMetaDataOneToMany('Entity', 'foo', 'repo', '', 'RelationshipMetaDataOneToMany_construct_OldOneToMany');
-	}
-
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataOneToMany', '__construct');

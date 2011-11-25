@@ -242,8 +242,6 @@ class MetaDataProperty extends Object
 	 * * @property OneToMany $bars {1:m bars foo}
 	 * * typ lze vynechat
 	 * * @property $bars {1:m bars foo}
-	 * * zpetna kompatibila
-	 * * @property FooToBars $bars {1:m}
 	 * </pre>
 	 *
 	 * @param string
@@ -252,7 +250,7 @@ class MetaDataProperty extends Object
 	 * @return MetaDataProperty $this
 	 * @see OneToMany
 	 */
-	public function setOneToMany($repositoryName = NULL, $param = NULL)
+	public function setOneToMany($repositoryName, $param = NULL)
 	{
 		$this->setToMany(MetaData::OneToMany, $repositoryName, $param);
 		return $this;
@@ -268,8 +266,6 @@ class MetaDataProperty extends Object
 	 * * @property ManyToMany $bars {m:n bars foos}
 	 * * typ lze vynechat
 	 * * @property $bars {m:n bars foos}
-	 * * zpetna kompatibila
-	 * * @property FoosToBars $bars {m:n}
 	 * </pre>
 	 *
 	 * @param string
@@ -278,7 +274,7 @@ class MetaDataProperty extends Object
 	 * @return MetaDataProperty $this
 	 * @see ManyToMany
 	 */
-	public function setManyToMany($repositoryName = NULL, $param = NULL, $mapped = NULL)
+	public function setManyToMany($repositoryName, $param = NULL, $mapped = NULL)
 	{
 		$this->setToMany(MetaData::ManyToMany, $repositoryName, $param, $mapped);
 		return $this;

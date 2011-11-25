@@ -1,7 +1,6 @@
 <?php
 
 use Orm\MetaData;
-use Orm\OldManyToMany;
 use Orm\MetaDataProperty;
 use Orm\RepositoryContainer;
 
@@ -41,23 +40,23 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$this->assertInstanceOf('Orm\RelationshipMetaDataManyToMany', $ii[0]);
 		$this->assertSame('create', $ii[1]);
 
-		$this->assertAttributeSame($class, 'relationshipClass', $ii[0]);
+		$this->assertAttributeSame($name, 'relationshipClass', $ii[0]);
 	}
 
 	public function testBase()
 	{
-		$p = $this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
-			->setManyToMany()
+		$p = $this->m->addProperty('id', 'Orm\ManyToMany')
+			->setManyToMany('tests')
 		;
-		$this->t($p, 'MetaDataProperty_setManyToMany_ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany');
+		$this->t($p, 'Orm\ManyToMany', 'Orm\ManyToMany');
 	}
 
 	public function testTwice()
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'Already has relationship in MetaData_Test_Entity::$id');
-		$this->m->addProperty('id', 'MetaDataProperty_setManyToMany_ManyToMany')
-			->setManyToMany()
-			->setManyToMany()
+		$this->m->addProperty('id', 'Orm\ManyToMany')
+			->setManyToMany('tests')
+			->setManyToMany('tests')
 		;
 	}
 
@@ -65,7 +64,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\MetaDataException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, \'string|int\' given');
 		$this->m->addProperty('id', 'string|int')
-			->setManyToMany()
+			->setManyToMany('tests')
 		;
 	}
 
@@ -73,7 +72,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} excepts Orm\ManyToMany class as type, class \'BadClass\' doesn\'t exists');
 		$this->m->addProperty('id', 'BadClass')
-			->setManyToMany()
+			->setManyToMany('tests')
 		;
 	}
 
@@ -81,7 +80,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 	{
 		$this->setExpectedException('Orm\RelationshipLoaderException', 'MetaData_Test_Entity::$id {m:m} Class \'Directory\' isn\'t instanceof Orm\ManyToMany');
 		$this->m->addProperty('id', 'Directory')
-			->setManyToMany()
+			->setManyToMany('tests')
 		;
 	}
 
@@ -90,7 +89,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', 'Orm\ManyToMany')
 			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'Orm\ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
+		$this->t($p, 'Orm\ManyToMany', 'Orm\ManyToMany');
 	}
 
 	public function testFunctionalWithoutClass2()
@@ -98,7 +97,7 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$p = $this->m->addProperty('id', '')
 			->setManyToMany('MetaData_Test2')
 		;
-		$this->t($p, 'Orm\ManyToMany', 'MetaDataProperty_setManyToMany_ManyToMany'); // todo
+		$this->t($p, 'Orm\ManyToMany', 'Orm\ManyToMany');
 	}
 
 	public function testMapBoth()
@@ -155,8 +154,4 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		$this->assertFalse($r->isAbstract(), 'abstract');
 	}
 
-}
-
-class MetaDataProperty_setManyToMany_ManyToMany extends OldManyToMany
-{
 }

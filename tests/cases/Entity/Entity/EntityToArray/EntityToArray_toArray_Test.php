@@ -10,10 +10,12 @@ use Orm\RepositoryContainer;
 class EntityToArray_toArray_Test extends TestCase
 {
 	private $r;
+	private $r2;
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
 		$this->r = $m->TestEntityRepository;
+		$this->r2 = $m->{'EntityToArray_toArray_1m_Repository'};
 	}
 
 	public function testEmpty()
@@ -124,7 +126,7 @@ class EntityToArray_toArray_Test extends TestCase
 
 	public function testRelationshipAsArrayOfId()
 	{
-		$e = new EntityToArray_toArray_1m_Entity;
+		$e = $this->r2->attach(new EntityToArray_toArray_1m_Entity);
 		$e->r->add($this->r->getById(1));
 		$a = $e->toArray(EntityToArray::RELATIONSHIP_AS_ARRAY_OF_ID);
 
@@ -141,7 +143,7 @@ class EntityToArray_toArray_Test extends TestCase
 
 	public function testRelationshipAsArrayOfArray()
 	{
-		$e = new EntityToArray_toArray_1m_Entity;
+		$e = $this->r2->attach(new EntityToArray_toArray_1m_Entity);
 		$e->r->add($ee = $this->r->getById(1));
 		$a = $e->toArray(EntityToArray::RELATIONSHIP_AS_ARRAY_OF_ARRAY);
 
@@ -162,7 +164,7 @@ class EntityToArray_toArray_Test extends TestCase
 
 	public function testNoRelationshipAs()
 	{
-		$e = new EntityToArray_toArray_1m_Entity;
+		$e = $this->r2->attach(new EntityToArray_toArray_1m_Entity);
 		$e->r->add($ee = $this->r->getById(1));
 
 		$this->setExpectedException('Orm\EntityToArrayNoModeException', 'EntityToArray_toArray_1m_Entity::toArray() no mode for entity; use Orm\EntityToArray::RELATIONSHIP_AS_IS, RELATIONSHIP_AS_ARRAY_OF_ID or RELATIONSHIP_AS_ARRAY_OF_ARRAY.');

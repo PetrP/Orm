@@ -144,13 +144,13 @@ class AnnotationMetaData_Test extends TestCase
 		$this->assertSame(MetaData::ManyToOne, $this->x('@property $bla {m:1 TestEntity}')->relationship);
 		$this->assertSame(MetaData::ManyToOne, $this->x('@property $bla {n:1 TestEntity}')->relationship);
 
-		$this->assertSame(MetaData::ManyToMany, $this->x('@property AnnotationMetaData_ManyToMany $bla {m:m}')->relationship);
-		$this->assertSame(MetaData::ManyToMany, $this->x('@property AnnotationMetaData_ManyToMany $bla {m:n}')->relationship);
-		$this->assertSame(MetaData::ManyToMany, $this->x('@property AnnotationMetaData_ManyToMany $bla {n:m}')->relationship);
-		$this->assertSame(MetaData::ManyToMany, $this->x('@property AnnotationMetaData_ManyToMany $bla {n:n}')->relationship);
+		$this->assertSame(MetaData::ManyToMany, $this->x('@property $bla {m:m TestEntity}')->relationship);
+		$this->assertSame(MetaData::ManyToMany, $this->x('@property $bla {m:n TestEntity}')->relationship);
+		$this->assertSame(MetaData::ManyToMany, $this->x('@property $bla {n:m TestEntity}')->relationship);
+		$this->assertSame(MetaData::ManyToMany, $this->x('@property $bla {n:n TestEntity}')->relationship);
 
-		$this->assertSame(MetaData::OneToMany, $this->x('@property AnnotationMetaData_OneToMany $bla {1:m}')->relationship);
-		$this->assertSame(MetaData::OneToMany, $this->x('@property AnnotationMetaData_OneToMany $bla {1:n}')->relationship);
+		$this->assertSame(MetaData::OneToMany, $this->x('@property $bla {1:m TestEntity}')->relationship);
+		$this->assertSame(MetaData::OneToMany, $this->x('@property $bla {1:n TestEntity}')->relationship);
 	}
 
 	public function testNative()

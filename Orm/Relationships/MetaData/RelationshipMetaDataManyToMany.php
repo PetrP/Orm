@@ -46,10 +46,7 @@ class RelationshipMetaDataManyToMany extends RelationshipMetaDataToMany
 		if ($this->isChecked) return;
 		parent::check($model);
 
-		if (!$this->old)
-		{
-			$this->checkIntegrity($model, MetaData::ManyToMany, true, array($this, 'checkIntegrityCallback'));
-		}
+		$this->checkIntegrity($model, MetaData::ManyToMany, true, array($this, 'checkIntegrityCallback'));
 	}
 
 	/** @return mixed RelationshipMetaDataToMany::MAPPED_* */

@@ -3,8 +3,6 @@
 use Orm\AnnotationsParser;
 use Orm\AnnotationMetaData;
 use Orm\Entity;
-use Orm\OldManyToMany;
-use Orm\OldOneToMany;
 use Orm\MetaData;
 
 class MockAnnotationMetaData extends AnnotationMetaData
@@ -32,9 +30,6 @@ class AnnotationMetaData_MockEntity extends Entity
 {
 
 }
-
-class AnnotationMetaData_ManyToMany extends OldManyToMany {};
-class AnnotationMetaData_OneToMany extends OldOneToMany {};
 
 if (PHP_VERSION_ID < 50300)
 {
