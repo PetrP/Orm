@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RelationshipMetaDataOneToMany;
+
 /**
  * @covers Orm\OneToMany::createEntity
  * @covers Orm\BaseToMany::createEntity
@@ -59,7 +61,7 @@ class OneToMany_createEntity_NotInvasive_Test extends OneToMany_Test
 
 	public function testNotAttached()
 	{
-		$this->o2m = new OneToMany_OneToMany(new TestEntity, 'OneToMany_', 'param', 'id');
+		$this->o2m = new OneToMany_OneToMany(new TestEntity, new RelationshipMetaDataOneToMany('TestEntity', 'id', 'OneToMany_', 'param'));
 		$e = $this->tt(11);
 		$this->assertSame(NULL, $e);
 	}

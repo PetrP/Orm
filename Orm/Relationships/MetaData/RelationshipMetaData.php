@@ -51,7 +51,7 @@ abstract class RelationshipMetaData extends Object
 		$this->type = $type;
 		$this->parentEntityName = $parentEntityName;
 		$this->parentParam = $parentParam;
-		$this->childRepository = $childRepositoryName;
+		$this->childRepository = (string) $childRepositoryName;
 		$this->childParam = $childParam;
 	}
 

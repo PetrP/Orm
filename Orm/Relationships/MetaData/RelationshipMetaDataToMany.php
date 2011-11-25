@@ -56,7 +56,7 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 	public function create($className, IEntity $parent, $value)
 	{
 		if ($this->relationshipClass !== $className) throw new RelationshipLoaderException;
-		return new $className($parent, $this->repository, $this->param, $this->parentParam, $this->getWhereIsMapped(), $value);
+		return new $className($parent, $this, $value);
 	}
 
 	/** @return mixed RelationshipMetaDataToMany::MAPPED_* */

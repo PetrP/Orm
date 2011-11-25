@@ -17,9 +17,24 @@ use Traversable;
  */
 abstract class BaseToMany extends Object
 {
+	/** @var IEntity */
+	private $parent;
 
-	/** @var IRepository|string */
-	private $repository;
+	/** @var RelationshipMetaDataToMany */
+	private $metaData;
+
+	/** @var IRepository cache */
+	private $childRepository;
+
+	/**
+	 * @param IEntity
+	 * @param RelationshipMetaDataToMany
+	 */
+	public function __construct(IEntity $parent, RelationshipMetaDataToMany $metaData)
+	{
+		$this->parent = $parent;
+		$this->metaData = $metaData;
+	}
 
 	/**
 	 * Substitute all Entity with given ones.
@@ -49,12 +64,6 @@ abstract class BaseToMany extends Object
 		return $this->getCollection()->toCollection();
 	}
 
-	/** @param IRepository|string repositoryName for lazy load */
-	public function __construct($repository)
-	{
-		$this->repository = $repository;
-	}
-
 	/** @return int */
 	final public function count()
 	{
@@ -80,21 +89,43 @@ abstract class BaseToMany extends Object
 	}
 
 	/**
+	 * @param bool
+	 * @return IRepositoryContainer
+	 * @todo deprecated?
+	 */
+	public function getModel($need = true)
+	{
+		return $this->parent->getModel((bool) $need);
+	}
+
+	/**
 	 * Repository
 	 * @param bool
 	 * @return Repository|NULL
 	 */
 	protected function getChildRepository($need = true)
 	{
-		if (!($this->repository instanceof IRepository))
+		if (!$this->childRepository)
 		{
 			if (!($model = $this->getModel($need)))
 			{
 				return NULL;
 			}
-			$this->repository = $model->getRepository($this->repository);
+			$this->childRepository = $model->getRepository($this->metaData->getChildRepository());
 		}
-		return $this->repository;
+		return $this->childRepository;
+	}
+
+	/** @return IEntity */
+	final protected function getParent()
+	{
+		return $this->parent;
+	}
+
+	/** @return RelationshipMetaDataToMany */
+	final protected function getMetaData()
+	{
+		return $this->metaData;
 	}
 
 	/**

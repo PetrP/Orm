@@ -7,6 +7,7 @@ use Orm\ManyToMany;
 use Orm\ArrayManyToManyMapper;
 use Orm\IRepository;
 use Orm\IEntity;
+use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @property ValueEntityFragment_injectionEntity_ManyToMany $many {m:m ValueEntityFragment_injection}
@@ -48,9 +49,9 @@ class ValueEntityFragment_injectionEntity_ManyToMany extends ManyToMany
 	}
 
 	public $create = 0;
-	public function __construct(IEntity $parent, $repository, $childParam, $parentParam, $mapped, $value = NULL)
+	public function __construct(IEntity $parent, RelationshipMetaDataManyToMany $metaData, $value = NULL)
 	{
-		parent::__construct($parent, $repository, $childParam, $parentParam, $mapped, $value);
+		parent::__construct($parent, $metaData, $value);
 		$this->create++;
 	}
 

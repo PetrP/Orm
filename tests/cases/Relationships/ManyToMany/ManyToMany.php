@@ -7,6 +7,7 @@ use Orm\ManyToMany;
 use Orm\IRepository;
 use Orm\RepositoryContainer;
 use Orm\IEntity;
+use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @property $foo
@@ -42,12 +43,24 @@ class ManyToMany_ManyToMany extends ManyToMany
 		if (func_num_args() > 1) return parent::createEntity($entity, $invasive);
 		return parent::createEntity($entity);
 	}
+
+	public function _getParent()
+	{
+		return $this->getParent();
+	}
+
+	public function _getMetaData()
+	{
+		return $this->getMetaData();
+	}
 }
 
 abstract class ManyToMany_Test extends TestCase
 {
 	/** @var ManyToMany_ManyToMany */
 	protected $m2m;
+	protected $meta1;
+	protected $meta2;
 	protected $e;
 	protected $r;
 	protected function setUp()
@@ -55,7 +68,9 @@ abstract class ManyToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->ManyToMany_;
 		$this->e = $e = $r->getById(1);
-		$this->m2m = new ManyToMany_ManyToMany($e, 'OneToMany_', 'param', 'id', true, array(10,11,12,13));
+		$this->m2m = new ManyToMany_ManyToMany($e, new RelationshipMetaDataManyToMany(get_class($e), 'id', 'OneToMany_', 'param', NULL, true), array(10,11,12,13));
+		$this->meta1 = new RelationshipMetaDataManyToMany(get_class($e), 'id', 'OneToMany_', 'param', NULL, true);
+		$this->meta2 = new RelationshipMetaDataManyToMany(get_class($this->e), 'param', 'OneToMany_', 'param', NULL, true);
 		$this->r = $m->OneToMany_;
 	}
 

@@ -4,6 +4,7 @@ use Orm\DibiManyToManyMapper;
 use Orm\ManyToMany;
 use Orm\RepositoryContainer;
 use Orm\RelationshipMetaDataToMany;
+use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @covers Orm\DibiManyToManyMapper::attach
@@ -19,9 +20,9 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 	{
 		$c = new DibiConnection(array('lazy' => true));
 		$this->mm = new DibiManyToManyMapper($c);
-		$this->m = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', true);
-		$this->m2 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', false);
-		$this->m3 = new ManyToMany(new TestEntity, new TestsRepository(new RepositoryContainer), 'foo', 'bar', RelationshipMetaDataToMany::MAPPED_BOTH);
+		$this->m = new ManyToMany(new TestEntity, new RelationshipMetaDataManyToMany('TestEntity', 'bar', 'TestsRepository', 'foo', NULL, RelationshipMetaDataToMany::MAPPED_HERE));
+		$this->m2 = new ManyToMany(new TestEntity, new RelationshipMetaDataManyToMany('TestEntity', 'bar', 'TestsRepository', 'foo', NULL, RelationshipMetaDataToMany::MAPPED_THERE));
+		$this->m3 = new ManyToMany(new TestEntity, new MockRelationshipMetaDataManyToManyBoth('TestEntity', 'bar', 'TestsRepository', 'foo'));
 	}
 
 	public function test()

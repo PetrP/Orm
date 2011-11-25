@@ -20,7 +20,7 @@ use Exception;
  * class Foo extends Orm\Entity {}
  *
  * /**
- *  * @property Foo $foo {m:1 FoosRepository}
+ *  * @property Foo $foo {m:1 FoosRepository bars}
  *  * /
  * class Bar extends Orm\Entity {}
  *
@@ -41,14 +41,6 @@ use Exception;
  */
 class OneToMany extends BaseToMany implements IRelationship
 {
-	/** @var Entity */
-	private $parent;
-
-	/** @var string */
-	private $param;
-
-	/** @var string */
-	private $parentParam;
 
 	/** @var IEntityCollection @see self::getCollection() */
 	private $get;
@@ -76,16 +68,11 @@ class OneToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * @param IEntity
-	 * @param IRepository|string repositoryName for lazy load
-	 * @param string m:1 param on child entity
-	 * @param string m:1 param on parent entity
+	 * @param RelationshipMetaDataOneToMany
 	 */
-	public function __construct(IEntity $parent, $repository, $param, $parentParam)
+	public function __construct(IEntity $parent, RelationshipMetaDataOneToMany $metaData)
 	{
-		$this->parent = $parent;
-		$this->param = $param;
-		$this->parentParam = $parentParam;
-		parent::__construct($repository);
+		parent::__construct($parent, $metaData);
 	}
 
 	/**
@@ -95,15 +82,16 @@ class OneToMany extends BaseToMany implements IRelationship
 	 */
 	final public function add($entity)
 	{
-		$param = $this->param;
 		$entity = $this->createEntity($entity);
 		if ($this->handleCheckAndIgnore($entity)) return NULL;
-		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $this->parent)
+		$param = $this->getMetaData()->getChildParam();
+		$parent = $this->getParent();
+		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $parent)
 		{
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
 		}
-		$this->parent->markAsChanged($this->parentParam);
-		$entity->$param = $this->parent;
+		$parent->markAsChanged($this->getMetaData()->getParentParam());
+		$entity->$param = $parent;
 		$this->add[spl_object_hash($entity)] = $entity;
 		return $entity;
 	}
@@ -114,13 +102,14 @@ class OneToMany extends BaseToMany implements IRelationship
 	 */
 	final public function remove($entity)
 	{
-		$param = $this->param;
 		$entity = $this->createEntity($entity);
-		if (!isset($entity->$param) OR $entity->$param !== $this->parent)
+		$param = $this->getMetaData()->getChildParam();
+		$parent = $this->getParent();
+		if (!isset($entity->$param) OR $entity->$param !== $parent)
 		{
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
-		$this->parent->markAsChanged($this->parentParam);
+		$parent->markAsChanged($this->getMetaData()->getParentParam());
 		try {
 			$entity->$param = NULL;
 			$this->edit[spl_object_hash($entity)] = $entity;
@@ -143,8 +132,8 @@ class OneToMany extends BaseToMany implements IRelationship
 			{
 				return false;
 			}
-			$param = $this->param;
-			return isset($entity->$param) AND $entity->$param === $this->parent;
+			$param = $this->getMetaData()->getChildParam();
+			return isset($entity->$param) AND $entity->$param === $this->getParent();
 		}
 		return false;
 	}
@@ -154,10 +143,12 @@ class OneToMany extends BaseToMany implements IRelationship
 	{
 		if ($this->get === NULL)
 		{
+			$param = $this->getMetaData()->getChildParam();
+			$parent = $this->getParent();
 			if ($repository = $this->getChildRepository(false))
 			{
-				$method = 'findBy' . $this->param;
-				$all = method_exists($repository, $method) ? $repository->$method($this->parent) : $repository->mapper->$method($this->parent);
+				$method = 'findBy' . $param;
+				$all = method_exists($repository, $method) ? $repository->$method($parent) : $repository->mapper->$method($parent);
 			}
 			else
 			{
@@ -169,7 +160,7 @@ class OneToMany extends BaseToMany implements IRelationship
 				$array = array();
 				foreach ($all as $entity)
 				{
-					if (isset($entity->{$this->param}) AND $entity->{$this->param} === $this->parent)
+					if (isset($entity->{$param}) AND $entity->{$param} === $parent)
 					{
 						// zkontroluje data nad uz vytvorenejma entitama, protoze ty entity v edit muzou mit parent = NULL
 						$array[spl_object_hash($entity)] = $entity;
@@ -177,7 +168,7 @@ class OneToMany extends BaseToMany implements IRelationship
 				}
 				foreach ($this->add as $hash => $entity)
 				{
-					if (isset($entity->{$this->param}) AND $entity->{$this->param} === $this->parent)
+					if (isset($entity->{$param}) AND $entity->{$param} === $parent)
 					{
 						unset($array[$hash]);
 						$array[$hash] = $entity;
@@ -228,15 +219,6 @@ class OneToMany extends BaseToMany implements IRelationship
 
 		$this->del = $this->edit = $this->add = array();
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
-	}
-
-	/**
-	 * @param bool
-	 * @return IRepositoryContainer
-	 */
-	public function getModel($need = true)
-	{
-		return $this->parent->getModel((bool) $need);
 	}
 
 	/**

@@ -6,6 +6,7 @@ use Orm\OneToMany;
 use Orm\IRepository;
 use Orm\RepositoryContainer;
 use Orm\IEntity;
+use Orm\RelationshipMetaDataOneToMany;
 
 /**
  * @property TestEntity $param {m:1 tests}
@@ -84,12 +85,23 @@ class OneToMany_OneToMany extends OneToMany
 		if (func_num_args() > 1) return parent::createEntity($entity, $invasive);
 		return parent::createEntity($entity);
 	}
+
+	public function _getParent()
+	{
+		return $this->getParent();
+	}
+
+	public function _getMetaData()
+	{
+		return $this->getMetaData();
+	}
 }
 
 abstract class OneToMany_Test extends TestCase
 {
 	/** @var OneToMany_OneToMany */
 	protected $o2m;
+	protected $meta1;
 	protected $e;
 	protected $r;
 	protected function setUp()
@@ -97,7 +109,8 @@ abstract class OneToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->tests;
 		$this->e = $e = $r->getById(1);
-		$this->o2m = new OneToMany_OneToMany($e, 'OneToMany_', 'param', 'id');
+		$this->o2m = new OneToMany_OneToMany($e, new RelationshipMetaDataOneToMany(get_class($e), 'id', 'OneToMany_', 'param'));
+		$this->meta1 = new RelationshipMetaDataOneToMany(get_class($e), 'id', 'OneToMany_', 'param');
 		$this->r = $m->OneToMany_;
 	}
 

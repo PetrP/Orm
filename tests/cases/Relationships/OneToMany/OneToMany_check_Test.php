@@ -10,7 +10,7 @@ class OneToMany_check_Test extends OneToMany_Test
 {
 	public function testDefault()
 	{
-		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param', 'id');
+		$this->o2m = new IgnoreOneToMany($this->e, $this->meta1);
 		$this->o2m->set(array());
 
 		$e = new OneToMany_Entity;
@@ -20,7 +20,7 @@ class OneToMany_check_Test extends OneToMany_Test
 
 	public function testTrue()
 	{
-		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param', 'id');
+		$this->o2m = new IgnoreOneToMany($this->e, $this->meta1);
 		$this->o2m->set(array());
 		$this->o2m->check = true;
 
@@ -31,7 +31,7 @@ class OneToMany_check_Test extends OneToMany_Test
 
 	public function testFalse()
 	{
-		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param', 'id');
+		$this->o2m = new IgnoreOneToMany($this->e, $this->meta1);
 		$this->o2m->set(array());
 		$this->o2m->check = false;
 
@@ -48,7 +48,7 @@ class OneToMany_check_Test extends OneToMany_Test
 
 	public function testWithIgnore()
 	{
-		$this->o2m = new IgnoreOneToMany($this->e, 'OneToMany_', 'param', 'id');
+		$this->o2m = new IgnoreOneToMany($this->e, $this->meta1);
 		$this->o2m->set(array());
 		$this->o2m->ignore = true;
 		$this->o2m->check = false;

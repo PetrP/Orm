@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RelationshipMetaDataManyToMany;
+
 /**
  * @covers Orm\ManyToMany::createEntity
  * @covers Orm\BaseToMany::createEntity
@@ -58,7 +60,7 @@ class ManyToMany_createEntity_NotInvasive_Test extends ManyToMany_Test
 
 	public function testNotAttached()
 	{
-		$this->m2m = new ManyToMany_ManyToMany(new ManyToMany_Entity, 'OneToMany_', 'param', 'param', true, array(10,11,12,13));
+		$this->m2m = new ManyToMany_ManyToMany(new ManyToMany_Entity, new RelationshipMetaDataManyToMany('ManyToMany_Entity', 'param', 'OneToMany_', 'param', NULL, true), array(10,11,12,13));
 		$e = $this->tt(11);
 		$this->assertSame(NULL, $e);
 	}
