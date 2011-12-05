@@ -165,7 +165,7 @@ class ArrayCollection extends Object implements IEntityCollection
 		{
 			if ($key !== NULL)
 			{
-				$k = $row[$key];
+				$k = (string) $row[$key];
 			}
 			$data[$k] = $row[$value];
 		}

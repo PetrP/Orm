@@ -1,6 +1,7 @@
 <?php
 
 use Orm\ArrayCollection;
+use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\ArrayCollection::fetchPairs
@@ -64,6 +65,20 @@ class ArrayCollection_fetchPairs_Test extends ArrayCollection_Base_Test
 	{
 		$this->c->applyLimit(0);
 		$this->assertSame(array(), $this->c->fetchPairs('int', 'string'));
+	}
+
+	public function testEntityAsKey()
+	{
+		$m = new RepositoryContainer;
+		foreach ($this->e as $i => $e)
+		{
+			$e->e = $m->tests->getById($i + 1);
+		}
+		$this->assertSame(array(
+			1 => 2,
+			2 => 1,
+			NULL => 4,
+		), $this->c->fetchPairs('e', 'int'));
 	}
 
 }
