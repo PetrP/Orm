@@ -48,6 +48,12 @@ class RelationshipMetaDataManyToMany_construct_Test extends TestCase
 		$this->assertSame(RelationshipMetaDataManyToMany::MAPPED_HERE, $rl->getWhereIsMapped());
 	}
 
+	public function testDefaultClass()
+	{
+		$rl = new RelationshipMetaDataManyToMany('Entity', 'foo', 'repo', '');
+		$this->assertAttributeSame('Orm\ManyToMany', 'relationshipClass', $rl);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataManyToMany', '__construct');

@@ -34,9 +34,9 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @param string
+	 * @param string|NULL
 	 */
-	public function __construct($type, $parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass)
+	public function __construct($type, $parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass = NULL)
 	{
 		if ($type !== MetaData::OneToMany AND $type !== MetaData::ManyToMany) throw new InvalidArgumentException;
 		parent::__construct($type, $parentEntityName, $parentParam, $childRepositoryName, $childParam);
@@ -67,14 +67,21 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 	{
 		$type = $this->getType();
 		$mainClass = $type === MetaData::ManyToMany ? 'Orm\ManyToMany' : 'Orm\OneToMany';
-		if (!class_exists($relationshipClass))
+		if (!$relationshipClass)
 		{
-			throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} excepts $mainClass class as type, class '$relationshipClass' doesn't exists");
+			$relationshipClass = $mainClass;
 		}
-		$parents = class_parents($relationshipClass);
-		if (strtolower($relationshipClass) !== strtolower($mainClass) AND !isset($parents[$mainClass]))
+		else
 		{
-			throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} Class '$relationshipClass' isn't instanceof $mainClass");
+			if (!class_exists($relationshipClass))
+			{
+				throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} excepts $mainClass class as type, class '$relationshipClass' doesn't exists");
+			}
+			$parents = class_parents($relationshipClass);
+			if (strtolower($relationshipClass) !== strtolower($mainClass) AND !isset($parents[$mainClass]))
+			{
+				throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} Class '$relationshipClass' isn't instanceof $mainClass");
+			}
 		}
 		$this->relationshipClass = $relationshipClass;
 	}

@@ -35,6 +35,12 @@ class RelationshipMetaDataOneToMany_construct_Test extends TestCase
 		$this->assertSame('entity', $rl->getChildParam());
 	}
 
+	public function testDefaultClass()
+	{
+		$rl = new RelationshipMetaDataOneToMany('Entity', 'foo', 'repo', '');
+		$this->assertAttributeSame('Orm\OneToMany', 'relationshipClass', $rl);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataOneToMany', '__construct');

@@ -21,9 +21,9 @@ class RelationshipMetaDataOneToMany extends RelationshipMetaDataToMany
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @param string
+	 * @param string|NULL
 	 */
-	public function __construct($parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass)
+	public function __construct($parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass = NULL)
 	{
 		if (!$childParam)
 		{

@@ -24,10 +24,10 @@ class RelationshipMetaDataManyToMany extends RelationshipMetaDataToMany
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @param string
+	 * @param string|NULL
 	 * @param bool|NULL
 	 */
-	public function __construct($parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass, $mapped = NULL)
+	public function __construct($parentEntityName, $parentParam, $childRepositoryName, $childParam, $relationshipClass = NULL, $mapped = NULL)
 	{
 		if (!$childParam)
 		{
