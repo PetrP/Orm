@@ -1,6 +1,7 @@
 <?php
 
 use Orm\ExceptionHelper;
+use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\ExceptionHelper
@@ -43,6 +44,15 @@ class ExceptionHelper_Test extends TestCase
 		$this->assertSame('boolean', ExceptionHelper::format(array(true), '%v1'));
 		$this->assertSame('boolean', ExceptionHelper::format(array(false), '%v1'));
 		$this->assertSame('', ExceptionHelper::format(array(''), '%v1'));
+	}
+
+	public function testEntity()
+	{
+		$e1 = new TestEntity;
+		$m = new RepositoryContainer;
+		$e2 = $m->tests->getById(1);
+		$this->assertSame('TestEntity', ExceptionHelper::format(array($e1), '%e1'));
+		$this->assertSame('TestEntity#1', ExceptionHelper::format(array($e2), '%e1'));
 	}
 
 	public function testMore()

@@ -21,7 +21,7 @@ class AttachableEntityFragment extends EventEntityFragment
 	/** @var IRepository|NULL null kdyz jeste nebylo ulozeno */
 	private $repository;
 
-	/** @var IRepositoryContainer|NULL cache */
+	/** @var IRepositoryContainer|NULL */
 	private $model;
 
 	/**
@@ -36,12 +36,38 @@ class AttachableEntityFragment extends EventEntityFragment
 	}
 
 	/**
+	 * Pripojeno na model (nemusi se volat vzdy, ale jen kdyz jeste neni pripojeno na repository)
+	 * @param IRepositoryContainer
+	 */
+	protected function onAttachModel(IRepositoryContainer $model)
+	{
+		parent::onAttachModel($model);
+		if ($this->model AND $model !== $this->model)
+		{
+			throw new EntityAlreadyAttachedException(array($this));
+		}
+		if ($this->repository AND $model !== $this->repository->getModel())
+		{
+			throw new EntityAlreadyAttachedException(array($this));
+		}
+		$this->model = $model;
+	}
+
+	/**
 	 * Pripojeno na repository
 	 * @param IRepository
 	 */
 	protected function onAttach(IRepository $repository)
 	{
 		parent::onAttach($repository);
+		if ($this->repository AND $repository !== $this->repository)
+		{
+			throw new EntityAlreadyAttachedException(array($this));
+		}
+		if ($this->model AND $repository->getModel() !== $this->model)
+		{
+			throw new EntityAlreadyAttachedException(array($this));
+		}
 		$this->repository = $repository;
 	}
 

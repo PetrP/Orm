@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RepositoryContainer;
+
 /**
  * @covers Orm\OneToMany::createEntity
  * @covers Orm\BaseToMany::createEntity
@@ -71,6 +73,48 @@ class OneToMany_createEntity_Test extends OneToMany_Test
 		$this->assertFalse(isset($e->id));
 		$this->assertSame('xyz', $e->string);
 		$this->assertSame($this->r, $e->getRepository());
+	}
+
+	public function testAttach1()
+	{
+		$m = $this->r->model;
+		$r = $this->e->getRepository();
+		$r2 = $this->r;
+		$e = new OneToManyX_Entity;
+		$e2 = $r2->attach(new OneToMany_Entity);
+
+		$this->assertSame(NULL, $e->getRepository(false));
+		$this->assertSame(NULL, $e->getModel(false));
+		$this->assertSame($r2, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
+
+		$e->many->__createEntity($e2);
+
+		$this->assertSame(NULL, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame($r2, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
+	}
+
+	public function testAttach2()
+	{
+		$m = $this->r->model;
+		$r = $this->e->getRepository();
+		$r2 = $this->r;
+		$e = $r->getById(1);
+		$e2 = new OneToMany_Entity;
+
+		$this->assertSame($r, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame(NULL, $e2->getRepository(false));
+		$this->assertSame(NULL, $e2->getModel(false));
+
+		$e->many->__createEntity($e2);
+
+		$this->assertSame($r, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame($r2, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
 	}
 
 	public function testReflection()

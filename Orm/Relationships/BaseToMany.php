@@ -137,6 +137,14 @@ abstract class BaseToMany extends Object
 	 */
 	final protected function createEntity($entity, $invasive = true)
 	{
+		if ($entity instanceof IEntity)
+		{
+			$model = $entity->getModel(false);
+			if ($model AND $this->parent->getModel(false) !== $model)
+			{
+				$this->parent->fireEvent('onAttachModel', NULL, $model);
+			}
+		}
 		$repository = $this->getChildRepository($invasive); // todo neni mozne kdyz parent neni pripojen na repo
 		if (!$repository)
 		{

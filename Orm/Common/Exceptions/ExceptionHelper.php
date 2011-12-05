@@ -89,4 +89,13 @@ class ExceptionHelper
 		return (is_scalar($value) AND !is_bool($value)) ? $value : static::t($value);
 	}
 
+	/**
+	 * @param IEntity
+	 * @return string
+	 * @see EntityHelper::toString()
+	 */
+	public static function e(IEntity $entity)
+	{
+		return EntityHelper::toString($entity);
+	}
 }

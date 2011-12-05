@@ -102,6 +102,7 @@ require_once __DIR__ . '/Entity/Helpers/EntityHelper.php';
 require_once __DIR__ . '/Entity/Helpers/ValidationHelper.php';
 require_once __DIR__ . '/Entity/Helpers/EntityToArray.php';
 require_once __DIR__ . '/Entity/Helpers/EntityToArrayNoModeException.php';
+require_once __DIR__ . '/Entity/Exceptions/EntityAlreadyAttachedException.php';
 require_once __DIR__ . '/Entity/Exceptions/EntityNotAttachedException.php';
 require_once __DIR__ . '/Entity/Exceptions/EntityNotPersistedException.php';
 require_once __DIR__ . '/Entity/Exceptions/NotValidException.php';

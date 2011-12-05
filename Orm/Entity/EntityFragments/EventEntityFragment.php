@@ -45,6 +45,15 @@ abstract class EventEntityFragment extends Object
 	}
 
 	/**
+	 * Pripojeno na model (nemusi se volat vzdy, ale jen kdyz jeste neni pripojeno na repository)
+	 * @param IRepositoryContainer
+	 */
+	protected function onAttachModel(IRepositoryContainer $model)
+	{
+		$this->checkEvent = 'onAttachModel';
+	}
+
+	/**
 	 * Pripojeno na repository
 	 * @param IRepository
 	 */
@@ -151,7 +160,11 @@ abstract class EventEntityFragment extends Object
 		}
 
 		$this->checkEvent = NULL;
-		if ($more === NULL)
+		if ($method === 'onAttachModel')
+		{
+			$this->{$method}($more);
+		}
+		else if ($more === NULL)
 		{
 			$this->{$method}($repository);
 		}

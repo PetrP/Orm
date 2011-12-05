@@ -236,6 +236,16 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	}
 
 	/**
+	 * Pripojeno na model (nemusi se volat vzdy, ale jen kdyz jeste neni pripojeno na repository)
+	 * @param IRepositoryContainer
+	 */
+	final protected function onAttachModel(IRepositoryContainer $model)
+	{
+		parent::onAttachModel($model);
+		$this->rules = MetaData::getEntityRules(get_class($this), $model);
+	}
+
+	/**
 	 * Pripojeno na repository
 	 * @param IRepository
 	 */
@@ -515,7 +525,19 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 
 		if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 		{
-			if (!($value instanceof IEntity) AND $value !== NULL)
+			if ($value instanceof IEntity)
+			{
+				if ($model = $this->getModel(false))
+				{
+					$repo = $model->getRepository($rule['relationshipParam']);
+					$repo->attach($value);
+				}
+				else if ($model = $value->getModel(false))
+				{
+					$this->fireEvent('onAttachModel', NULL, $model);
+				}
+			}
+			else if ($value !== NULL)
 			{
 				$id = (string) $value;
 				$repo = $this->getModel()->getRepository($rule['relationshipParam']);

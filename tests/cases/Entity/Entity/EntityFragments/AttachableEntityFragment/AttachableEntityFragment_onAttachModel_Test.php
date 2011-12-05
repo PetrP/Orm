@@ -3,12 +3,10 @@
 use Orm\RepositoryContainer;
 
 /**
- * @covers Orm\AttachableEntityFragment::onAttach
+ * @covers Orm\AttachableEntityFragment::onAttachModel
  */
-class AttachableEntityFragment_onAttach_Test extends TestCase
+class AttachableEntityFragment_onAttachModel_Test extends TestCase
 {
-	private $r;
-
 	private $m1;
 	private $m2;
 	private $r1;
@@ -16,28 +14,23 @@ class AttachableEntityFragment_onAttach_Test extends TestCase
 
 	protected function setUp()
 	{
-		$m = new RepositoryContainer;
-		$this->r = $m->testentityrepository;
-		$this->m1 = $m;
+		$this->m1 = new RepositoryContainer;
 		$this->m2 = new RepositoryContainer;
 		$this->r1 = $this->m1->testentityrepository;
 		$this->r2 = $this->m2->testentityrepository;
 	}
 
-	public function testNew()
+	public function test()
 	{
 		$e = new TestEntity;
-		$this->assertSame(NULL, $e->getRepository(false));
-		$this->r->attach($e);
-		$this->assertSame($this->r, $e->getRepository(false));
-	}
 
-	public function testAlreadyAttached()
-	{
-		$e = $this->r->getById(1);
-		$this->assertSame($this->r, $e->getRepository());
-		$this->r->attach($e);
-		$this->assertSame($this->r, $e->getRepository());
+		$this->assertSame(NULL, $e->getRepository(false));
+		$this->assertSame(NULL, $e->getModel(false));
+
+		$e->fireEvent('onAttachModel', NULL, $this->m1);
+
+		$this->assertSame(NULL, $e->getRepository(false));
+		$this->assertSame($this->m1, $e->getModel(false));
 	}
 
 	public function testDifferentRC1()
@@ -46,7 +39,7 @@ class AttachableEntityFragment_onAttach_Test extends TestCase
 
 		$e->fireEvent('onAttachModel', NULL, $this->m1);
 		$this->setExpectedException('Orm\EntityAlreadyAttachedException', 'TestEntity is already attached to another RepositoryContainer.');
-		$e->fireEvent('onAttach', $this->r2);
+		$e->fireEvent('onAttachModel', NULL, $this->m2);
 	}
 
 	public function testDifferentRC2()
@@ -55,25 +48,25 @@ class AttachableEntityFragment_onAttach_Test extends TestCase
 
 		$e->fireEvent('onAttach', $this->r1);
 		$this->setExpectedException('Orm\EntityAlreadyAttachedException', 'TestEntity is already attached to another RepositoryContainer.');
-		$e->fireEvent('onAttach', $this->r2);
+		$e->fireEvent('onAttachModel', NULL, $this->m2);
 	}
 
 	public function testTwiceOk()
 	{
 		$e = new TestEntity;
 		$e->fireEvent('onAttachModel', NULL, $this->m1);
-		$e->fireEvent('onAttach', $this->r1);
+		$e->fireEvent('onAttachModel', NULL, $this->m1);
 
 		$e = new TestEntity;
 		$e->fireEvent('onAttach', $this->r1);
-		$e->fireEvent('onAttach', $this->r1);
+		$e->fireEvent('onAttachModel', NULL, $this->m1);
 
 		$this->assertTrue(true);
 	}
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onAttach');
+		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onAttachModel');
 		$this->assertTrue($r->isProtected(), 'visibility');
 		$this->assertFalse($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

@@ -155,6 +155,48 @@ class ValueEntityFragment_setValueHelper_Test extends TestCase
 		$this->assertSame(NULL, $e->enumNull);
 	}
 
+	public function testAttach1()
+	{
+		$m = new RepositoryContainer;
+		$r = $m->EventEntityFragmentRepository;
+		$r2 = $m->EventEntityFragment_onAttachModel_Repository;
+		$e = new EventEntityFragment_Entity;
+		$e2 = $r2->getById(1);
+
+		$this->assertSame(NULL, $e->getRepository(false));
+		$this->assertSame(NULL, $e->getModel(false));
+		$this->assertSame($r2, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
+
+		$e2->one = $e;
+
+		$this->assertSame($r, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame($r2, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
+	}
+
+	public function testAttach2()
+	{
+		$m = new RepositoryContainer;
+		$r = $m->EventEntityFragmentRepository;
+		$r2 = $m->EventEntityFragment_onAttachModel_Repository;
+		$e = $r->getById(1);
+		$e2 = new EventEntityFragment_onAttachModel_Entity;
+
+		$this->assertSame($r, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame(NULL, $e2->getRepository(false));
+		$this->assertSame(NULL, $e2->getModel(false));
+
+		$e2->one = $e;
+
+		$this->assertSame($r, $e->getRepository(false));
+		$this->assertSame($m, $e->getModel(false));
+		$this->assertSame(NULL, $e2->getRepository(false));
+		$this->assertSame($m, $e2->getModel(false));
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ValueEntityFragment', 'setValueHelper');
