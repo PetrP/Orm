@@ -182,9 +182,10 @@ abstract class Repository extends Object implements IRepository
 	 * @see Entity::onAfterPersist()
 	 *
 	 * @param IEntity
+	 * @param bool Persist all associations?
 	 * @return IEntity
 	 */
-	final public function persist(IEntity $entity)
+	final public function persist(IEntity $entity, $all = true)
 	{
 		$this->attach($entity);
 		$hasId = isset($entity->id);
@@ -198,13 +199,16 @@ abstract class Repository extends Object implements IRepository
 		}
 		$recursionRelationship = array();
 		static $recursionRelationshipCallback;
-		if (!$recursionRelationshipCallback) $recursionRelationshipCallback = function (IEntity $entity, array & $recursionRelationship, $persist = false) {
+		if (!$recursionRelationshipCallback) $recursionRelationshipCallback = function (IEntity $entity, array & $recursionRelationship, $all, $persist = false) {
 			foreach ($recursionRelationship as $k => $tmp)
 			{
 				list($repository, $key, $value) = $tmp;
 				if ($persist)
 				{
-					$repository->persist($value);
+					if ($all OR !isset($value->id))
+					{
+						$repository->persist($value, $all);
+					}
 				}
 				if ($key !== NULL)
 				{
@@ -234,7 +238,10 @@ abstract class Repository extends Object implements IRepository
 				{
 					$repository = $this->getModel()->getRepository($fk[$key]);
 					try {
-						$repository->persist($value);
+						if ($all OR !isset($value->id))
+						{
+							$repository->persist($value, $all);
+						}
 					} catch (RecursiveException $re) {
 						if (isset($value->id))
 						{
@@ -259,7 +266,7 @@ abstract class Repository extends Object implements IRepository
 			if (!$entity->isChanged())
 			{
 				unset($recurcion[$hash]);
-				$recursionRelationshipCallback($entity, $recursionRelationship);
+				$recursionRelationshipCallback($entity, $recursionRelationship, $all);
 				return $entity;
 			}
 
@@ -274,10 +281,10 @@ abstract class Repository extends Object implements IRepository
 				$id = $entity->id;
 				$this->identityMap->add($id, $entity);
 
-				$recursionRelationshipCallback($entity, $recursionRelationship, true);
+				$recursionRelationshipCallback($entity, $recursionRelationship, $all, true);
 				foreach ($relationshipValues as $relationship)
 				{
-					$relationship->persist();
+					$relationship->persist($all);
 				}
 
 				$this->events->fireEvent($hasId ? Events::PERSIST_AFTER_UPDATE : Events::PERSIST_AFTER_INSERT, $entity);
@@ -294,7 +301,7 @@ abstract class Repository extends Object implements IRepository
 
 		} catch (Exception $e) {
 			unset($recurcion[$hash]);
-			$recursionRelationshipCallback($entity, $recursionRelationship);
+			$recursionRelationshipCallback($entity, $recursionRelationship, $all);
 			throw $e;
 		}
 	}

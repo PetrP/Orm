@@ -48,7 +48,10 @@ interface IRelationship extends IteratorAggregate, Countable, IEntityInjection
 	 */
 	function has($entity);
 
-	/** @return void */
-	function persist();
+	/**
+	 * @param bool Persist all associations?
+	 * @return void
+	 */
+	function persist($all = true);
 
 }

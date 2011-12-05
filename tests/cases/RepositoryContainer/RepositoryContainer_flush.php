@@ -15,7 +15,7 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 
 	public function getById($id) {}
 	public function attach(IEntity $entity) {}
-	public function persist(IEntity $entity) {}
+	public function persist(IEntity $entity, $all = true) {}
 	public function remove($entity) {}
 	public function clean() {}
 	public function getMapper()

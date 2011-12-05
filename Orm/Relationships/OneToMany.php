@@ -208,8 +208,11 @@ class OneToMany extends BaseToMany implements IRelationship
 		return $this->get;
 	}
 
-	/** @return void */
-	final public function persist()
+	/**
+	 * @param bool Persist all associations?
+	 * @return void
+	 */
+	final public function persist($all = true)
 	{
 		$repository = $this->getChildRepository();
 
@@ -223,20 +226,29 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			foreach ($this->get as $entity)
 			{
-				$repository->persist($entity);
+				if ($all OR !isset($entity->id))
+				{
+					$repository->persist($entity, $all);
+				}
 			}
 		}
 		else
 		{
 			foreach ($this->edit as $entity)
 			{
-				$repository->persist($entity);
+				if ($all OR !isset($entity->id))
+				{
+					$repository->persist($entity, $all);
+				}
 			}
 			$order = 0; // todo
 			foreach ($this->add as $entity)
 			{
 				if ($entity->hasParam('order')) $entity->order = ++$order; // todo
-				$repository->persist($entity);
+				if ($all OR !isset($entity->id))
+				{
+					$repository->persist($entity, $all);
+				}
 			}
 		}
 

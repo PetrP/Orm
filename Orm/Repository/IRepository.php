@@ -101,6 +101,7 @@ interface IRepository
 	 * @see Entity::onAfterPersist()
 	 *
 	 * @param IEntity
+	 * @param bool Persist all associations?
 	 * @return IEntity
 	 */
 	public function persist(IEntity $entity);

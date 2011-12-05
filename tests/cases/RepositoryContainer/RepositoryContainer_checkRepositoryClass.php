@@ -15,7 +15,7 @@ class RepositoryContainer_checkRepositoryClass_Bad3Repository extends Object imp
 
 	public function getById($id) {}
 	public function attach(IEntity $entity) {}
-	public function persist(IEntity $entity) {}
+	public function persist(IEntity $entity, $all = true) {}
 	public function remove($entity) {}
 	public function flush() {}
 	public function clean() {}

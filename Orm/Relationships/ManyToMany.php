@@ -218,9 +218,10 @@ class ManyToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * @see IManyToManyMapper
+	 * @param bool Persist all associations?
 	 * @return void
 	 */
-	final public function persist()
+	final public function persist($all = true)
 	{
 		$repository = $this->getChildRepository();
 
@@ -236,12 +237,18 @@ class ManyToMany extends BaseToMany implements IRelationship
 		{
 			foreach ($this->get as $entity)
 			{
-				$repository->persist($entity);
+				if ($all OR !isset($entity->id))
+				{
+					$repository->persist($entity, $all);
+				}
 			}
 		}
 		foreach ($this->add as $entity)
 		{
-			$repository->persist($entity);
+			if ($all OR !isset($entity->id))
+			{
+				$repository->persist($entity, $all);
+			}
 			$add[$entity->id] = $entity->id;
 		}
 
