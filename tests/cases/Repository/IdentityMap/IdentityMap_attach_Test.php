@@ -20,7 +20,7 @@ class IdentityMap_attach_Test extends TestCase
 	{
 		$e = new TestEntity;
 		$this->assertSame(NULL, $this->im->attach($e));
-		$this->assertSame(array($e), $this->im->getAllUnpersist());
+		$this->assertSame(array($e), $this->im->getAllNew());
 	}
 
 	public function test2()
@@ -29,7 +29,7 @@ class IdentityMap_attach_Test extends TestCase
 		$e2 = new TestEntity;
 		$this->assertSame(NULL, $this->im->attach($e1));
 		$this->assertSame(NULL, $this->im->attach($e2));
-		$this->assertSame(array($e1, $e2), $this->im->getAllUnpersist());
+		$this->assertSame(array($e1, $e2), $this->im->getAllNew());
 	}
 
 	public function testReflection()

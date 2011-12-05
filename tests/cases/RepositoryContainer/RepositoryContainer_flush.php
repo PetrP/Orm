@@ -4,6 +4,7 @@ use Orm\Object;
 use Orm\IRepository;
 use Orm\IEntity;
 use Orm\Events;
+use Orm\IdentityMap;
 
 class RepositoryContainer_flush1Repository extends Object implements IRepository
 {
@@ -31,7 +32,10 @@ class RepositoryContainer_flush1Repository extends Object implements IRepository
 	{
 		return new Events($this);
 	}
-	public function persistAll() {}
+	public function getIdentityMap()
+	{
+		return new IdentityMap($this);
+	}
 }
 
 class RepositoryContainer_flush1Mapper extends Object

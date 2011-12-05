@@ -31,7 +31,7 @@ class RepositoryContainer_clean1Repository extends Object implements IRepository
 	{
 		return new Events($this);
 	}
-	public function persistAll() {}
+	public function getIdentityMap() {}
 }
 
 class RepositoryContainer_clean1Mapper extends Object

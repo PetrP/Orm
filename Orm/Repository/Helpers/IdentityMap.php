@@ -10,6 +10,7 @@ namespace Orm;
 /**
  * Identity map over repository.
  * And also check and hydrate entity (for optimization reasons).
+ * @todo prejmenovat vetsinu metod
  * @author Petr Procházka
  * @package Orm
  * @subpackage Repository\Helpers
@@ -191,19 +192,16 @@ class IdentityMap extends Object
 		return true;
 	}
 
-	/** @return array of IEntity */
-	public function getAllUnpersist()
+	/** @return array of id => IEntity all entity with id handled by identity map */
+	public function getAll()
 	{
-		$result = array();
-		foreach ($this->entities as $entity)
-		{
-			if ($entity AND $entity->isChanged())
-			{
-				$result[spl_object_hash($entity)] = $entity;
-			}
-		}
-		$result += $this->newEntities;
-		return array_values($result);
+		return $this->entities;
+	}
+
+	/** @return array of IEntity all entity without id handled by identity map */
+	public function getAllNew()
+	{
+		return array_values($this->newEntities);
 	}
 
 	/**

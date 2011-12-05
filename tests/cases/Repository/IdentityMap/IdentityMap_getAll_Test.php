@@ -4,9 +4,9 @@ use Orm\RepositoryContainer;
 use Orm\IdentityMap;
 
 /**
- * @covers Orm\IdentityMap::getAllUnpersist
+ * @covers Orm\IdentityMap::getAll
  */
-class IdentityMap_getAllUnpersist_Test extends TestCase
+class IdentityMap_getAll_Test extends TestCase
 {
 	private $im;
 	private $r;
@@ -24,7 +24,7 @@ class IdentityMap_getAllUnpersist_Test extends TestCase
 		$e2 = new TestEntity;
 		$this->im->add(1, $e1);
 		$this->im->add(2, $e2);
-		$this->assertSame(array($e1, $e2), $this->im->getAllUnpersist());
+		$this->assertSame(array(1 => $e1, 2 => $e2), $this->im->getAll());
 	}
 
 	public function testAttach()
@@ -33,7 +33,7 @@ class IdentityMap_getAllUnpersist_Test extends TestCase
 		$e2 = new TestEntity;
 		$this->im->attach($e1);
 		$this->im->add(2, $e2);
-		$this->assertSame(array($e2, $e1), $this->im->getAllUnpersist());
+		$this->assertSame(array(2 => $e2), $this->im->getAll());
 	}
 
 	public function testAttachAndAdd()
@@ -44,30 +44,30 @@ class IdentityMap_getAllUnpersist_Test extends TestCase
 		$this->im->add(1, $e1);
 		$this->im->attach($e2);
 		$this->im->add(2, $e2);
-		$this->assertSame(array($e1, $e2), $this->im->getAllUnpersist());
+		$this->assertSame(array(1 => $e1, 2 => $e2), $this->im->getAll());
 	}
 
-	public function testOnlyChanged1()
+	public function testChanged1()
 	{
 		$e1 = $this->r->getById(1);
 		$e2 = new TestEntity;
 		$this->im->add(1, $e1);
 		$this->im->add(2, $e2);
-		$this->assertSame(array($e2), $this->im->getAllUnpersist());
+		$this->assertSame(array(1 => $e1, 2 => $e2), $this->im->getAll());
 	}
 
-	public function testOnlyChanged2()
+	public function testChanged2()
 	{
 		$e1 = $this->r->getById(1);
 		$e2 = new TestEntity;
 		$this->im->attach($e1);
 		$this->im->attach($e2);
-		$this->assertSame(array($e1, $e2), $this->im->getAllUnpersist());
+		$this->assertSame(array(), $this->im->getAll());
 	}
 
 	public function testReflection()
 	{
-		$r = new ReflectionMethod('Orm\IdentityMap', 'getAllUnpersist');
+		$r = new ReflectionMethod('Orm\IdentityMap', 'getAll');
 		$this->assertTrue($r->isPublic(), 'visibility');
 		$this->assertFalse($r->isFinal(), 'final');
 		$this->assertFalse($r->isStatic(), 'static');

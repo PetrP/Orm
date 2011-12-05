@@ -60,6 +60,13 @@ interface IRepositoryContainer
 	 */
 	public function clean(IRepository $checkRepository = NULL);
 
+	/**
+	 * Persist all unpersist entities at all repositories.
+	 * @param IRepository|NULL Checks for this repository, if it will be cleaned.
+	 * @return void
+	 */
+	public function persistAll(IRepository $checkRepository = NULL);
+
 	/** @return IServiceContainer */
 	public function getContext();
 

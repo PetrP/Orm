@@ -122,13 +122,6 @@ interface IRepository
 	public function remove($entity);
 
 	/**
-	 * Persist all unpersist entities.
-	 * @return IRepository $this
-	 * @see self::persist()
-	 */
-	public function persistAll();
-
-	/**
 	 * Primitne vsechny zmeny do uloziste.
 	 * Na vsech repozitarich.
 	 * @return void
@@ -239,5 +232,8 @@ interface IRepository
 	 * @see self::getEntityClassName()
 	 */
 	public function hydrateEntity($data);
+
+	/** @return IdentityMap */
+	public function getIdentityMap();
 
 }

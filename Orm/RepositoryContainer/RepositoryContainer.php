@@ -282,10 +282,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	public function flush(IRepository $checkRepository = NULL)
 	{
 		$this->checkRepository($checkRepository, 'flush it');
-		foreach ($this->repositories as $repo)
-		{
-			$repo->persistAll();
-		}
+		$this->persistAll();
 		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{
@@ -325,6 +322,55 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		foreach ($events as $event)
 		{
 			$event->fireEvent(Events::CLEAN_AFTER);
+		}
+	}
+
+	/**
+	 * Persist all unpersist entities at all repositories.
+	 * @param IRepository|NULL Checks for this repository, if it will be cleaned.
+	 * @return void
+	 */
+	public function persistAll(IRepository $checkRepository = NULL)
+	{
+		$this->checkRepository($checkRepository, 'persist all');
+		$seconds = array();
+		do {
+			$count = 0;
+			foreach ($this->repositories as $repo)
+			{
+				$im = $repo->getIdentityMap();
+
+				// vsechny nepersistovane se persistujou
+				foreach ($im->getAllNew() as $e)
+				{
+					$repo->persist($e, false);
+					$seconds[$e->id] = array($e, $repo);
+					$count++;
+				}
+
+				// vsechny zmenene ze persistujou, ale jen jednou
+				foreach ($im->getAll() as $id => $e)
+				{
+					if ($e AND !isset($seconds[$id]) AND $e->isChanged())
+					{
+						$seconds[$id] = array($e, $repo);
+						$repo->persist($e, false);
+						$count++;
+					}
+				}
+			}
+		} while ($count !== 0);
+
+		// zmeny ktere se updavili v ramci udalosti se dopersistujou primo pres mapper
+		foreach ($seconds as $tmp)
+		{
+			if ($tmp[0]->isChanged())
+			{
+				list($e, $repo) = $tmp;
+				$args = array('id' => $e->id);
+				$repo->getMapper()->persist($e);
+				$repo->getEvents()->fireEvent(Events::PERSIST, $e, $args);
+			}
 		}
 	}
 
