@@ -4,6 +4,7 @@ use Orm\RepositoryContainer;
 
 /**
  * @covers Orm\RepositoryContainer::clean
+ * @covers Orm\RepositoryContainer::checkRepository
  */
 class RepositoryContainer_clean_Test extends TestCase
 {

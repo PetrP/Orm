@@ -281,10 +281,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public function flush(IRepository $checkRepository = NULL)
 	{
-		if ($checkRepository !== NULL AND $this->getRepository($rc = get_class($checkRepository)) !== $checkRepository)
-		{
-			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible flush it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
-		}
+		$this->checkRepository($checkRepository, 'flush it');
 		foreach ($this->repositories as $repo)
 		{
 			$repo->persistAll();
@@ -314,10 +311,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 	 */
 	public function clean(IRepository $checkRepository = NULL)
 	{
-		if ($checkRepository !== NULL AND $this->getRepository($rc = get_class($checkRepository)) !== $checkRepository)
-		{
-			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible clean it. Do not inicialize your own repository, but ask RepositoryContainer for it.");
-		}
+		$this->checkRepository($checkRepository, 'clean it');
 		$events = $mappers = array();
 		foreach ($this->repositories as $repo)
 		{
@@ -331,6 +325,20 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		foreach ($events as $event)
 		{
 			$event->fireEvent(Events::CLEAN_AFTER);
+		}
+	}
+
+	/**
+	 * @param IRepository|NULL
+	 * @param string
+	 * @return void
+	 * @throws RepositoryNotFoundException
+	 */
+	private function checkRepository(IRepository $checkRepository = NULL, $m)
+	{
+		if ($checkRepository !== NULL AND $this->getRepository($rc = get_class($checkRepository)) !== $checkRepository)
+		{
+			throw new RepositoryNotFoundException("Repository '{$rc}' is not attached to RepositoryContainer. It is impossible $m. Do not inicialize your own repository, but ask RepositoryContainer for it.");
 		}
 	}
 
