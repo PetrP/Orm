@@ -14,12 +14,12 @@ class AnnotationMetaData_Test extends TestCase
 		return (object) $this->y($property, $return);
 	}
 
-	protected function y($property, $return = NULL)
+	protected function y($property, $return = NULL, $propertyClass = NULL)
 	{
 		$property = explode(' ', $property, 2);
 		if ($property[0]{0} === '@') $property[0] = substr($property[0], 1);
 		MockAnnotationMetaData::$mock = array($property[0] => array(@$property[1]));
-		$a = MockAnnotationMetaData::getMetaData('AnnotationMetaData_MockEntity')->toArray();
+		$a = MockAnnotationMetaData::getMetaData('AnnotationMetaData_MockEntity', NULL, $propertyClass)->toArray();
 		return $return ? $a[$return] : end($a);
 	}
 
@@ -164,6 +164,12 @@ class AnnotationMetaData_Test extends TestCase
 		$p = $this->x('@property -read $blabla');
 		$this->assertSame(array('method' => NULL), $p->get);
 		$this->assertSame(NULL, $p->set);
+	}
+
+	public function testMacroNoBuildParam()
+	{
+		$p = (object) $this->y('@property $bla {abc cba, abc}', NULL, 'AnnotationMetaData_MetaDataProperty');
+		$this->assertSame('??cba, abc??', $p->default);
 	}
 
 }
