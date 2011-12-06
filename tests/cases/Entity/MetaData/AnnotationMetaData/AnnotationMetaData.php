@@ -6,14 +6,15 @@ use Orm\Entity;
 use Orm\OldManyToMany;
 use Orm\OldOneToMany;
 use Orm\MetaData;
+use Orm\MetaDataProperty;
 
 class MockAnnotationMetaData extends AnnotationMetaData
 {
 	public static $mock;
 
-	public static function getMetaData($class, AnnotationsParser $parser = NULL)
+	public static function getMetaData($class, AnnotationsParser $parser = NULL, $propertyClass = NULL)
 	{
-		$m = new MetaData($class);
+		$m = new MetaData($class, $propertyClass);
 		new self($m, new AnnotationsParser(function (ReflectionClass $class) {
 			if ($class->getName() === 'AnnotationMetaData_MockEntity') return MockAnnotationMetaData::$mock;
 			$p = new AnnotationsParser;
@@ -35,6 +36,14 @@ class AnnotationMetaData_MockEntity extends Entity
 
 class AnnotationMetaData_ManyToMany extends OldManyToMany {};
 class AnnotationMetaData_OneToMany extends OldOneToMany {};
+
+class AnnotationMetaData_MetaDataProperty extends MetaDataProperty
+{
+	public function setAbc($cba)
+	{
+		$this->setDefault("??$cba??");
+	}
+}
 
 if (PHP_VERSION_ID < 50300)
 {
