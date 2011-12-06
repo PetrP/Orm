@@ -114,6 +114,20 @@ class ArrayCollection_findBy_Test extends ArrayCollection_Base_Test
 		$this->assertSame(array($this->e[0], $this->e[1]), $c->fetchAll());
 	}
 
+	public function testEntityInForId()
+	{
+		$model = new RepositoryContainer;
+		$this->e = array(
+			$model->tests->getById(1),
+			$model->tests->getById(2),
+		);
+		$this->c = new ArrayCollection($this->e);
+		$c = $this->c->findBy(array('id' => array($this->e[1], $this->e[0])));
+		$this->assertSame(array($this->e[0], $this->e[1]), $c->fetchAll());
+		$c = $this->c->findBy(array('id' => array($this->e[1])));
+		$this->assertSame(array($this->e[1]), $c->fetchAll());
+	}
+
 	public function testEntityInId()
 	{
 		$model = new RepositoryContainer;
