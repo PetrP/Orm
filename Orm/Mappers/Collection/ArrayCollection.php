@@ -239,7 +239,7 @@ class ArrayCollection extends Object implements IEntityCollection
 				{
 					continue 2;
 				}
-				else if ($eValue == $value OR (is_array($value) AND in_array($eValue, $value)))
+				else if ($eValue == $value OR (is_array($value) AND in_array(is_scalar($eValue) ? (string) $eValue : $eValue, $value)))
 				{
 					continue;
 				}
