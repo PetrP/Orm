@@ -48,7 +48,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	{
 		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_THERE)
 		{
-			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is realtionship mapped.');
+			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		}
 		if ($manyToMany->getWhereIsMapped() === RelationshipLoader::MAPPED_BOTH)
 		{
