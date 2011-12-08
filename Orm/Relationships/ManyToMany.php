@@ -78,7 +78,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 
 	/**
 	 * @see self::getMapper()
-	 * @see ArrayManyToManyMapper::setInjectedValue()
+	 * @see ArrayManyToManyMapper::getInjectedValue()
 	 * @var mixed
 	 */
 	private $initialValue;

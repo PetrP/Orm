@@ -23,7 +23,7 @@ class ArrayManyToManyMapper_attach_Test extends TestCase
 
 	public function testNotMapped()
 	{
-		$this->setExpectedException('Nette\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is realtionship mapped.');
+		$this->setExpectedException('Nette\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->mm->attach(new ManyToMany(new TestEntity, 'foo', 'foo', 'foo', false));
 	}
 
