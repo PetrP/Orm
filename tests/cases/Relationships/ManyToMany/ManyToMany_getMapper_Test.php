@@ -6,6 +6,7 @@ use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @covers Orm\ManyToMany::getMapper
+ * @covers Orm\RelationshipMetaDataManyToMany::getMapper
  * @covers Orm\ArrayManyToManyMapper::setInjectedValue
  * @covers Orm\ArrayManyToManyMapper::attach
  */
@@ -35,28 +36,28 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testValue()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, NULL);
-		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(), $this->m2m->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, array());
-		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(), $this->m2m->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, 'a:0:{}');
-		$this->assertSame(array(), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(), $this->m2m->getInjectedValue());
 	}
 
 	public function testValue2()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, array(10,11));
-		$this->assertSame(array(10=>10,11=>11), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(10=>10,11=>11), $this->m2m->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, array(11,11));
-		$this->assertSame(array(11=>11), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(11=>11), $this->m2m->getInjectedValue());
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, $this->meta2, serialize(array(10)));
-		$this->assertSame(array(10=>10), $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(array(10=>10), $this->m2m->getInjectedValue());
 	}
 
 	public function testNotHandled()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany(new TestEntity, $this->meta2, array(10,11));
-		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
-		$this->assertSame(NULL, $this->m2m->gm()->getInjectedValue());
+		$this->assertSame(NULL, $this->m2m->gm());
+		$this->assertSame(NULL, $this->m2m->getInjectedValue());
 	}
 
 	public function testNotMappedByParent()

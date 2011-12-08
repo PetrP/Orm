@@ -42,8 +42,8 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		$this->connection = $connection;
 	}
 
-	/** @param ManyToMany */
-	public function attach(ManyToMany $manyToMany)
+	/** @param RelationshipMetaDataManyToMany */
+	public function attach(RelationshipMetaDataManyToMany $meta)
 	{
 		if (!$this->parentParam)
 		{
@@ -57,13 +57,14 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		{
 			throw new RequiredArgumentException(get_class($this) . '::$table is required');
 		}
-		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_THERE)
+		$mapped = $meta->getWhereIsMapped();
+		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
 		{
 			$tmp = $this->childParam;
 			$this->childParam = $this->parentParam;
 			$this->parentParam = $tmp;
 		}
-		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_BOTH)
+		if ($mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			$this->both = true;
 		}
@@ -72,8 +73,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param NULL
+	 * @return NULL
 	 */
-	public function add(IEntity $parent, array $ids)
+	public function add(IEntity $parent, array $ids, $injectedValue)
 	{
 		if ($ids)
 		{
@@ -92,8 +95,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param NULL
+	 * @return NULL
 	 */
-	public function remove(IEntity $parent, array $ids)
+	public function remove(IEntity $parent, array $ids, $injectedValue)
 	{
 		$sql = array('%n = %s AND %n IN %in',
 			$this->parentParam, $parent->id,
@@ -112,9 +117,10 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	/**
 	 * @param IEntity
+	 * @param NULL
 	 * @return array id => id
 	 */
-	public function load(IEntity $parent)
+	public function load(IEntity $parent, $injectedValue)
 	{
 		if (!isset($parent->id)) return array();
 		$result = $this->connection->select($this->childParam)
@@ -131,6 +137,15 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 			));
 		}
 		return $result;
+	}
+
+	/**
+	 * @param mixed {@see ManyToMany::$injectedValue}
+	 * @return NULL will be set as {@see ManyToMany::$injectedValue}
+	 */
+	public function validateInjectedValue($injectedValue)
+	{
+		return NULL;
 	}
 
 	/** @return DibiConnection */

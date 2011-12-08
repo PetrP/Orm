@@ -13,37 +13,36 @@ class DibiManyToManyMapper_remove_Test extends DibiManyToManyMapper_Connected_Te
 	{
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE `x` = \'1\' AND `y` IN (1, 2, 3)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->remove($this->e, array(1, 2, 3));
+		$this->assertNull($this->mm->remove($this->e, array(1, 2, 3), NULL));
 	}
 
 	public function test2()
 	{
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE `x` = \'1\' AND `y` IN (3)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->remove($this->e, array(3));
+		$this->assertNull($this->mm->remove($this->e, array(3), NULL));
 	}
 
 	public function testEmpty()
 	{
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE `x` = \'1\' AND `y` IN (NULL)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->remove($this->e, array());
-		$this->assertTrue(true);
+		$this->assertNull($this->mm->remove($this->e, array(), NULL));
 	}
 
 	public function testReturns()
 	{
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE `x` = \'1\' AND `y` IN (NULL)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->assertSame(NULL, $this->mm->remove($this->e, array()));
+		$this->assertSame(NULL, $this->mm->remove($this->e, array(), NULL));
 	}
 
 	public function testBoth()
 	{
-		$this->mm->attach(new ManyToMany(new TestEntity, new MockRelationshipMetaDataManyToManyBoth('TestEntity', 'foo', 'foo', 'foo')));
+		$this->mm->attach(new MockRelationshipMetaDataManyToManyBoth('TestEntity', 'foo', 'foo', 'foo'));
 		$this->d->addExpected('query', true, 'DELETE FROM `t` WHERE ( `x` = \'1\' AND `y` IN (1, 2, 3) ) OR (`y` = \'1\' AND `x` IN (1, 2, 3))');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->remove($this->e, array(1, 2, 3));
+		$this->assertNull($this->mm->remove($this->e, array(1, 2, 3), NULL));
 	}
 
 	public function testReflection()

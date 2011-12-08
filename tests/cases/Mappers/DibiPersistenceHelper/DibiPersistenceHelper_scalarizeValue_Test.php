@@ -96,10 +96,10 @@ class DibiPersistenceHelper_scalarizeValue_Test extends DibiPersistenceHelper_Te
 
 	public function testEntityInjection()
 	{
-		$m = new ArrayManyToManyMapper;
+		$m = new DibiPersistenceHelper_scalarizeValue_Injection;
 		$m->setInjectedValue(array(1,2,3));
 		$r = $this->h->call('scalarizeValue', array($m, 'miXed', $this->e));
-		$this->assertSame('a:3:{i:1;i:1;i:2;i:2;i:3;i:3;}', $r);
+		$this->assertSame('a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}', $r);
 	}
 
 	public function testDateTime()

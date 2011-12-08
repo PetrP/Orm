@@ -79,16 +79,16 @@ class Repository_persist_cascade_ArrayManyToManyMapper extends ArrayManyToManyMa
 {
 	public $dump;
 
-	public function add(IEntity $parent, array $ids)
+	public function add(IEntity $parent, array $ids, $injectedValue)
 	{
 		$this->dump[] = array('add', $parent->id, $ids);
-		parent::add($parent, $ids);
+		return parent::add($parent, $ids, $injectedValue);
 	}
 
-	public function remove(IEntity $parent, array $ids)
+	public function remove(IEntity $parent, array $ids, $injectedValue)
 	{
 		$this->dump[] = array('remove', $parent->id, $ids);
-		parent::remove($parent, $ids);
+		return parent::remove($parent, $ids, $injectedValue);
 	}
 }
 

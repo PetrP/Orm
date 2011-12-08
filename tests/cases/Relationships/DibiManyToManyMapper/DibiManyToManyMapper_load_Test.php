@@ -16,7 +16,7 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->d->addExpected('fetch', array('y' => 9), true);
 		$this->d->addExpected('fetch', array('y' => 8), true);
 		$this->d->addExpected('fetch', NULL, true);
-		$r = $this->mm->load($this->e);
+		$r = $this->mm->load($this->e, NULL);
 		$this->assertSame(array(9, 8), $r);
 	}
 
@@ -27,7 +27,7 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->d->addExpected('fetch', array('y' => 4), true);
 		$this->d->addExpected('fetch', array('y' => 5), true);
 		$this->d->addExpected('fetch', NULL, true);
-		$r = $this->mm->load($this->e, array(3));
+		$r = $this->mm->load($this->e, array(3), NULL);
 		$this->assertSame(array(4, 5), $r);
 	}
 
@@ -36,12 +36,12 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', NULL, true);
-		$this->assertSame(array(), $this->mm->load($this->e));
+		$this->assertSame(array(), $this->mm->load($this->e, NULL));
 	}
 
 	public function testBoth()
 	{
-		$this->mm->attach(new ManyToMany(new TestEntity, new MockRelationshipMetaDataManyToManyBoth('TestEntity', 'foo', 'foo', 'foo')));
+		$this->mm->attach(new MockRelationshipMetaDataManyToManyBoth('TestEntity', 'foo', 'foo', 'foo'));
 		$this->d->addExpected('query', true, 'SELECT `y` FROM `t` WHERE `x` = \'1\'');
 		$this->d->addExpected('createResultDriver', NULL, true);
 		$this->d->addExpected('fetch', array('y' => 9), true);
@@ -53,7 +53,7 @@ class DibiManyToManyMapper_load_Test extends DibiManyToManyMapper_Connected_Test
 		$this->d->addExpected('fetch', array('x' => 11), true);
 		$this->d->addExpected('fetch', array('x' => 9), true);
 		$this->d->addExpected('fetch', NULL, true);
-		$r = $this->mm->load($this->e);
+		$r = $this->mm->load($this->e, NULL);
 		$this->assertSame(array(9, 8, 10, 11), $r);
 	}
 

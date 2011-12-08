@@ -19,6 +19,9 @@ class RelationshipMetaDataManyToMany extends RelationshipMetaDataToMany
 	/** @var RelationshipMetaDataToMany::MAPPED_* */
 	private $mapped;
 
+	/** @var array (spl_object_hash($model) => array($repositoryClass => IManyToManyMapper)) */
+	private $mappers = array();
+
 	/**
 	 * @param string
 	 * @param string
@@ -52,6 +55,40 @@ class RelationshipMetaDataManyToMany extends RelationshipMetaDataToMany
 	final public function getWhereIsMapped()
 	{
 		return $this->mapped;
+	}
+
+	/**
+	 * @param IRepository
+	 * @return IManyToManyMapper
+	 */
+	final public function getMapper(IRepository $parentRepository)
+	{
+		$model = $parentRepository->getModel();
+
+		$hash = spl_object_hash($model);
+		$repoClass = get_class($parentRepository);
+		if (!isset($this->mappers[$hash][$repoClass]))
+		{
+			$childRepository = $model->getRepository($this->getChildRepository());
+			$mapped = $this->getWhereIsMapped();
+			if ($mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
+			{
+				$repoMapper = $parentRepository->getMapper();
+				$mapper = $repoMapper->createManyToManyMapper($this->getParentParam(), $childRepository, $this->getChildParam());
+			}
+			else if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
+			{
+				$repoMapper = $childRepository->getMapper();
+				$mapper = $repoMapper->createManyToManyMapper($this->getChildParam(), $parentRepository, $this->getParentParam());
+			}
+			if (!($mapper instanceof IManyToManyMapper))
+			{
+				throw new BadReturnException(array($repoMapper, 'createManyToManyMapper', 'Orm\IManyToManyMapper', $mapper));
+			}
+			$mapper->attach($this);
+			$this->mappers[$hash][$repoClass] = $mapper;
+		}
+		return $this->mappers[$hash][$repoClass];
 	}
 
 	/**

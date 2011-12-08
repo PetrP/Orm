@@ -49,25 +49,13 @@ class DibiJoinHelper extends Object
 				else if ($rule['relationship'] === MetaData::ManyToMany)
 				{
 					$loader = $rule['relationshipParam'];
-					if ($r = $loader->getRepository() AND $childParam = $loader->getParam())
+					if ($r = $loader->getRepository() AND $loader->getParam()) // todo proc potrebuje param?
 					{
-						$parentRepository = $repository;
-						$childRepository = $model->getRepository($r);
-						$parentParam = $loader->getParentParam();
-						$mapped = $loader->getWhereIsMapped();
-						if ($mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
+						$manyToManyMapper = $loader->getMapper($repository);
+						if ($manyToManyMapper instanceof DibiManyToManyMapper)
 						{
-							$manyToManyMapper = $this->mapper->createManyToManyMapper($parentParam, $childRepository, $childParam);
-							$parentParam = $manyToManyMapper->parentParam;
-							$childParam = $manyToManyMapper->childParam;
+							$this->relationships[$name] = array($r, array($manyToManyMapper->childParam, true), array('id', false), array($manyToManyMapper->table, array('id', false), array($manyToManyMapper->parentParam, true)));
 						}
-						else
-						{
-							$manyToManyMapper = $childRepository->getMapper()->createManyToManyMapper($childParam, $parentRepository, $parentParam);
-							$parentParam = $manyToManyMapper->childParam;
-							$childParam = $manyToManyMapper->parentParam;
-						}
-						$this->relationships[$name] = array($r, array($childParam, true), array('id', false), array($manyToManyMapper->table, array('id', false), array($parentParam, true)));
 					}
 				}
 				else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)

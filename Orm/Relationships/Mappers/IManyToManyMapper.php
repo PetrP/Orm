@@ -17,25 +17,36 @@ namespace Orm;
 interface IManyToManyMapper
 {
 
-	/** @param ManyToMany */
-	function attach(ManyToMany $manyToMany);
+	/** @param RelationshipMetaDataManyToMany */
+	function attach(RelationshipMetaDataManyToMany $manyToMany);
+
+	/**
+	 * @param mixed {@see ManyToMany::$injectedValue}
+	 * @return mixed will be set as {@see ManyToMany::$injectedValue}
+	 */
+	function validateInjectedValue($injectedValue);
 
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param mixed {@see ManyToMany::$injectedValue}
+	 * @return mixed will be set as {@see ManyToMany::$injectedValue}
 	 */
-	function add(IEntity $parent, array $ids);
+	function add(IEntity $parent, array $ids, $injectedValue);
 
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param mixed {@see ManyToMany::$injectedValue}
+	 * @return mixed will be set as {@see ManyToMany::$injectedValue}
 	 */
-	function remove(IEntity $parent, array $ids);
+	function remove(IEntity $parent, array $ids, $injectedValue);
 
 	/**
 	 * @param IEntity
+	 * @param mixed {@see ManyToMany::$injectedValue}
 	 * @return array id => id
 	 */
-	function load(IEntity $parent);
+	function load(IEntity $parent, $injectedValue);
 
 }

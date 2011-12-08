@@ -12,25 +12,24 @@ class DibiManyToManyMapper_add_Test extends DibiManyToManyMapper_Connected_Test
 	{
 		$this->d->addExpected('query', true, 'INSERT INTO `t` (`x`, `y`) VALUES (1, 1) , (1, 2) , (1, 3)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->add($this->e, array(1, 2, 3));
+		$this->assertNull($this->mm->add($this->e, array(1, 2, 3), NULL));
 	}
 
 	public function test2()
 	{
 		$this->d->addExpected('query', true, 'INSERT INTO `t` (`x`, `y`) VALUES (1, 3)');
 		$this->d->addExpected('createResultDriver', NULL, true);
-		$this->mm->add($this->e, array(3));
+		$this->assertNull($this->mm->add($this->e, array(3), NULL));
 	}
 
 	public function testEmpty()
 	{
-		$this->mm->add($this->e, array());
-		$this->assertTrue(true);
+		$this->assertNull($this->mm->add($this->e, array(), NULL));
 	}
 
 	public function testReturns()
 	{
-		$this->assertSame(NULL, $this->mm->add($this->e, array()));
+		$this->assertSame(NULL, $this->mm->add($this->e, array(), NULL));
 	}
 
 

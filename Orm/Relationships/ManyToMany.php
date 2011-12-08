@@ -64,11 +64,10 @@ class ManyToMany extends BaseToMany implements IRelationship
 	private $mapper;
 
 	/**
-	 * @see self::getMapper()
 	 * @see ArrayManyToManyMapper::getInjectedValue()
-	 * @var mixed
+	 * @var array
 	 */
-	private $initialValue;
+	private $injectedValue;
 
 	/**
 	 * @param IEntity
@@ -77,7 +76,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 */
 	public function __construct(IEntity $parent, RelationshipMetaDataManyToMany $metaData, $value = NULL)
 	{
-		$this->initialValue = $value;
+		$this->injectedValue = $value;
 		parent::__construct($parent, $metaData);
 	}
 
@@ -148,7 +147,11 @@ class ManyToMany extends BaseToMany implements IRelationship
 	{
 		if ($this->get === NULL)
 		{
-			$ids = $this->getMapper()->load($this->getParent());
+			$ids = NULL;
+			if ($mapper = $this->getMapper())
+			{
+				$ids = $mapper->load($this->getParent(), $this->injectedValue);
+			}
 			$all = $ids ? $this->getChildRepository()->mapper->findById($ids) : new ArrayCollection(array());
 			if ($this->add OR $this->del)
 			{
@@ -202,8 +205,8 @@ class ManyToMany extends BaseToMany implements IRelationship
 			$add[$entity->id] = $entity->id;
 		}
 
-		if ($del) $this->getMapper()->remove($this->getParent(), $del);
-		if ($add) $this->getMapper()->add($this->getParent(), $add);
+		if ($del) $this->injectedValue = $this->getMapper()->remove($this->getParent(), $del, $this->injectedValue);
+		if ($add) $this->injectedValue = $this->getMapper()->add($this->getParent(), $add, $this->injectedValue);
 
 		$this->del = $this->add = array();
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
@@ -212,52 +215,22 @@ class ManyToMany extends BaseToMany implements IRelationship
 	/** @return mixed */
 	public function getInjectedValue()
 	{
-		$mapper = $this->getMapper();
-		if ($mapper instanceof IEntityInjection)
+		if ($this->getMapper())
 		{
-			return $mapper->getInjectedValue();
+			return $this->injectedValue;
 		}
 	}
 
 	/**
-	 * @return IManyToManyMapper
+	 * @return IManyToManyMapper|NULL
 	 */
 	protected function getMapper()
 	{
-		if ($this->mapper === NULL)
+		if ($this->mapper === NULL AND $parentRepository = $this->getParent()->getRepository(false))
 		{
-			$parentRepository = $this->getParent()->getRepository(false);
-			$childRepository = $this->getChildRepository(false);
-			if ($parentRepository AND $childRepository)
-			{
-				$metaData = $this->getMetaData();
-				$mapped = $metaData->getWhereIsMapped();
-				if ($mapped === RelationshipMetaDataToMany::MAPPED_HERE OR $mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
-				{
-					$repoMapper = $parentRepository->getMapper();
-					$mapper = $repoMapper->createManyToManyMapper($metaData->getParentParam(), $childRepository, $metaData->getChildParam());
-				}
-				else if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
-				{
-					$repoMapper = $childRepository->getMapper();
-					$mapper = $repoMapper->createManyToManyMapper($metaData->getChildParam(), $parentRepository, $metaData->getParentParam());
-				}
-				if (!($mapper instanceof IManyToManyMapper))
-				{
-					throw new BadReturnException(array($repoMapper, 'createManyToManyMapper', 'Orm\IManyToManyMapper', $mapper));
-				}
-				$mapper->attach($this);
-
-				if ($mapper instanceof IEntityInjection)
-				{
-					$mapper->setInjectedValue($this->initialValue);
-				}
-				$this->mapper = $mapper;
-			}
-			else
-			{
-				return new ArrayManyToManyMapper;
-			}
+			$mapper = $this->getMetaData()->getMapper($parentRepository);
+			$this->injectedValue = $mapper->validateInjectedValue($this->injectedValue);
+			$this->mapper = $mapper;
 		}
 		return $this->mapper;
 	}

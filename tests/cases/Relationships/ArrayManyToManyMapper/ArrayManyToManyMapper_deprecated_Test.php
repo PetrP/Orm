@@ -6,6 +6,8 @@ use Orm\ArrayManyToManyMapper;
  * @covers Orm\ArrayManyToManyMapper::setParams
  * @covers Orm\ArrayManyToManyMapper::setValue
  * @covers Orm\ArrayManyToManyMapper::getValue
+ * @covers Orm\ArrayManyToManyMapper::getInjectedValue
+ * @covers Orm\ArrayManyToManyMapper::setInjectedValue
  */
 class ArrayManyToManyMapper_deprecated_Test extends TestCase
 {
@@ -34,4 +36,15 @@ class ArrayManyToManyMapper_deprecated_Test extends TestCase
 		$this->mm->getValue();
 	}
 
+	public function testGetInjectedValue()
+	{
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\ArrayManyToManyMapper::getInjectedValue() is deprecated; use Orm\ArrayManyToManyMapper::validateInjectedValue() instead');
+		$this->mm->getInjectedValue();
+	}
+
+	public function testSetInjectedValue()
+	{
+		$this->setExpectedException('Orm\DeprecatedException', 'Orm\ArrayManyToManyMapper::setInjectedValue() is deprecated; use Orm\ArrayManyToManyMapper::validateInjectedValue() instead');
+		$this->mm->setInjectedValue(NULL);
+	}
 }

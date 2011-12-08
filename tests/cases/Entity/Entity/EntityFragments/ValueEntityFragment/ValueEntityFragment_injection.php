@@ -73,10 +73,10 @@ class ValueEntityFragment_injectionEntity_ManyToMany extends ManyToMany
 class ValueEntityFragment_injection_ManyToManyMapper extends ArrayManyToManyMapper
 {
 	public $setValue = 0;
-	public function setInjectedValue($value)
+	public function validateInjectedValue($value)
 	{
 		$this->setValue++;
-		return parent::setInjectedValue($value);
+		return parent::validateInjectedValue($value);
 	}
 }
 

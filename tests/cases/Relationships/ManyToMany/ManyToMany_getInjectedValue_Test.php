@@ -24,6 +24,12 @@ class ManyToMany_getInjectedValue_Test extends ManyToMany_Test
 		$this->assertNull($this->m2m->getInjectedValue());
 	}
 
+	public function testNotAttached()
+	{
+		$this->m2m = new ManyToMany_ManyToMany(new ManyToMany_Entity, $this->meta1, array(10,11,12,13));
+		$this->assertSame(NULL, $this->m2m->getInjectedValue());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ManyToMany', 'getInjectedValue');

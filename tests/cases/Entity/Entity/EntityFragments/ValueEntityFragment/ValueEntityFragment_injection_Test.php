@@ -24,8 +24,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 	{
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
-		$this->assertSame('Orm\ArrayManyToManyMapper', get_class($this->e->many->mapper));
-		$this->assertNotInstanceOf('ValueEntityFragment_injection_ManyToManyMapper', $this->e->many->mapper);
+		$this->assertSame(NULL, $this->e->many->mapper);
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);
 		$this->assertSame(NULL, $this->e->many->getInjectedValue());
@@ -43,8 +42,7 @@ class ValueEntityFragment_injection_Test extends TestCase
 	{
 		$this->e->many;
 		$this->assertSame(1, $this->e->many->create);
-		$this->assertSame('Orm\ArrayManyToManyMapper', get_class($this->e->many->mapper));
-		$this->assertNotInstanceOf('ValueEntityFragment_injection_ManyToManyMapper', $this->e->many->mapper);
+		$this->assertSame(NULL, $this->e->many->mapper);
 		$this->assertSame(0, $this->e->many->setInjectedValue);
 		$this->assertSame(0, $this->e->many->getInjectedValue);
 		$this->assertSame(NULL, $this->e->many->getInjectedValue());

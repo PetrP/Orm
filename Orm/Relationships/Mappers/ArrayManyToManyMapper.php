@@ -17,38 +17,35 @@ namespace Orm;
  * @package Orm
  * @subpackage Relationships\Mappers
  */
-class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntityInjection
+class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 {
-	/** @var array id => id */
-	private $value;
 
-	/** @param array of id */
-	public function setInjectedValue($value)
+	/**
+	 * @param array id => id {@see ManyToMany::$injectedValue}
+	 * @return array id => id will be set as {@see ManyToMany::$injectedValue}
+	 */
+	public function validateInjectedValue($injectedValue)
 	{
-		if (ValidationHelper::isValid(array('array'), $value) AND $value)
+		if (ValidationHelper::isValid(array('array'), $injectedValue) AND $injectedValue)
 		{
-			$this->value = array_combine($value, $value);
+			$injectedValue = array_combine($injectedValue, $injectedValue);
 		}
 		else
 		{
-			$this->value = array();
+			$injectedValue = array();
 		}
+		return $injectedValue;
 	}
 
-	/** @return array id => id */
-	public function getInjectedValue()
+	/** @param RelationshipMetaDataManyToMany */
+	public function attach(RelationshipMetaDataManyToMany $meta)
 	{
-		return $this->value;
-	}
-
-	/** @param ManyToMany */
-	public function attach(ManyToMany $manyToMany)
-	{
-		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_THERE)
+		$mapped = $meta->getWhereIsMapped();
+		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
 		{
 			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		}
-		if ($manyToMany->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_BOTH)
+		if ($mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			throw new NotSupportedException('Orm\ArrayManyToManyMapper not support relationship to self.');
 		}
@@ -57,30 +54,50 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper, IEntity
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param array id => id {@see ManyToMany::$injectedValue}
+	 * @return array id => id will be set as {@see ManyToMany::$injectedValue}
 	 */
-	public function add(IEntity $parent, array $ids)
+	public function add(IEntity $parent, array $ids, $injectedValue)
 	{
 		$parent->markAsChanged();
-		$this->value = $this->value + $ids;
+		$injectedValue = $injectedValue + $ids;
+		return $injectedValue;
 	}
 
 	/**
 	 * @param IEntity
 	 * @param array id => id
+	 * @param array id => id {@see ManyToMany::$injectedValue}
+	 * @return array id => id will be set as {@see ManyToMany::$injectedValue}
 	 */
-	public function remove(IEntity $parent, array $ids)
+	public function remove(IEntity $parent, array $ids, $injectedValue)
 	{
 		$parent->markAsChanged();
-		$this->value = array_diff_key($this->value, $ids);
+		$injectedValue = array_diff_key($injectedValue, $ids);
+		return $injectedValue;
 	}
 
 	/**
 	 * @param IEntity
+	 * @param array id => id
+	 * @param array id => id {@see ManyToMany::$injectedValue}
 	 * @return array id => id
 	 */
-	public function load(IEntity $parent)
+	public function load(IEntity $parent, $injectedValue)
 	{
-		return $this->value;
+		return $injectedValue;
+	}
+
+	/** @deprecated */
+	final public function setInjectedValue($value)
+	{
+		throw new DeprecatedException(array($this, 'setInjectedValue()', $this, 'validateInjectedValue()'));
+	}
+
+	/** @deprecated */
+	final public function getInjectedValue()
+	{
+		throw new DeprecatedException(array($this, 'getInjectedValue()', $this, 'validateInjectedValue()'));
 	}
 
 	/** @deprecated */
