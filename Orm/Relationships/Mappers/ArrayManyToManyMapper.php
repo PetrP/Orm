@@ -20,6 +20,9 @@ namespace Orm;
 class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 {
 
+	/** @var RelationshipMetaDataManyToMany */
+	private $meta;
+
 	/**
 	 * @param array id => id {@see ManyToMany::$injectedValue}
 	 * @return array id => id will be set as {@see ManyToMany::$injectedValue}
@@ -40,6 +43,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	/** @param RelationshipMetaDataManyToMany */
 	public function attach(RelationshipMetaDataManyToMany $meta)
 	{
+		$this->meta = $meta;
 		$mapped = $meta->getWhereIsMapped();
 		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
 		{
@@ -59,7 +63,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function add(IEntity $parent, array $ids, $injectedValue)
 	{
-		$parent->markAsChanged();
+		$parent->markAsChanged($this->meta->getParentParam());
 		$injectedValue = $injectedValue + $ids;
 		return $injectedValue;
 	}
@@ -72,7 +76,7 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function remove(IEntity $parent, array $ids, $injectedValue)
 	{
-		$parent->markAsChanged();
+		$parent->markAsChanged($this->meta->getParentParam());
 		$injectedValue = array_diff_key($injectedValue, $ids);
 		return $injectedValue;
 	}

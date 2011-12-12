@@ -18,14 +18,15 @@ class ArrayManyToManyMapper_attach_Test extends TestCase
 
 	public function testMapped()
 	{
-		$this->mm->attach(new RelationshipMetaDataManyToMany('TestEntity', 'foo', 'foo', 'foo', 'Orm\ManyToMany', true));
-		$this->assertTrue(true);
+		$this->mm->attach($m = new RelationshipMetaDataManyToMany('TestEntity', 'foo', 'foo', 'foo', 'Orm\ManyToMany', true));
+		$this->assertAttributeSame($m, 'meta', $this->mm);
 	}
 
 	public function testNotMapped()
 	{
 		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
-		$this->mm->attach(new RelationshipMetaDataManyToMany('TestEntity', 'foo', 'foo', 'foo', 'Orm\ManyToMany', false));
+		$this->mm->attach($m = new RelationshipMetaDataManyToMany('TestEntity', 'foo', 'foo', 'foo', 'Orm\ManyToMany', false));
+		$this->assertAttributeSame($m, 'meta', $this->mm);
 	}
 
 }
