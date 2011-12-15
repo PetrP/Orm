@@ -35,7 +35,7 @@ class RelationshipMetaDataOneToMany_check_Test extends TestCase
 
 	public function testOk()
 	{
-		$rl = new RelationshipMetaDataOneToMany('TestEntity', 'foo', 'OneToMany_Repository', 'param', 'Orm\OneToMany');
+		$rl = new RelationshipMetaDataOneToMany('OneToManyX_Entity', 'many', 'OneToMany_Repository', 'param', 'Orm\OneToMany');
 		$rl->check(new RepositoryContainer);
 		$this->assertTrue(true);
 	}

@@ -564,9 +564,55 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 			throw new NotValidException(array($this, $name, "'" . implode('|', $rule['types']) . "'", $value));
 		}
 
+		$oldValue = isset($this->values[$name]) ? $this->values[$name] : NULL;
 		$this->values[$name] = $value;
 		$this->valid[$name] = true;
 		$this->changed[$name] = true;
+
+		if ($rule['relationship'] === MetaData::ManyToOne)
+		{
+			$meta = $rule['relationshipParam'];
+			if ($childParam = $meta->getChildParam())
+			{
+				$oldEntity = $oldValue;
+				$newEntity = $value;
+				$changed = false;
+				if ($oldEntity instanceof IEntity AND $newEntity instanceof IEntity)
+				{
+					$changed = $oldEntity !== $newEntity;
+				}
+				else if ($newEntity instanceof IEntity AND isset($newEntity->id))
+				{
+					$changed = (string) $newEntity->id !== (string) $oldEntity;
+				}
+				else if ($newEntity === NULL)
+				{
+					if ($oldEntity !== NULL)
+					{
+						$repo = $this->getModel()->getRepository($meta->getRepository());
+						$oldEntity = $repo->getById($oldEntity);
+					}
+					$changed = $oldEntity !== NULL;
+				}
+
+				if ($changed)
+				{
+					if (!($oldEntity instanceof IEntity) AND $oldEntity !== NULL)
+					{
+						$repo = $this->getModel()->getRepository($meta->getRepository());
+						$oldEntity = $repo->getById($oldEntity);
+					}
+					if ($oldEntity)
+					{
+						$oldEntity->{$childParam}->remove($this, 'handled by ManyToOne');
+					}
+					if ($newEntity)
+					{
+						$newEntity->{$childParam}->add($this);
+					}
+				}
+			}
+		}
 	}
 
 	/**

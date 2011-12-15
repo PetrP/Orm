@@ -9,7 +9,25 @@ use Orm\IEntity;
 use Orm\RelationshipMetaDataOneToMany;
 
 /**
- * @property TestEntity $param {m:1 tests}
+ * @property OneToMany_OneToMany $many {1:m OneToMany_Repository param}
+ */
+class OneToManyX_Entity extends TestEntity
+{
+
+}
+
+class OneToManyX_Repository extends Repository
+{
+	protected $entityClassName = 'OneToManyX_Entity';
+}
+
+class OneToManyX_Mapper extends TestsMapper
+{
+
+}
+
+/**
+ * @property OneToManyX_Entity $param {m:1 OneToManyX_Repository}
  * @property string $string {default ''}
  */
 class OneToMany_Entity extends Entity
@@ -17,7 +35,7 @@ class OneToMany_Entity extends Entity
 
 }
 /**
- * @property TestEntity|NULL $param {m:1 tests}
+ * @property OneToManyX_Entity|NULL $param {m:1 OneToManyX_Repository}
  */
 class OneToMany_Entity2 extends OneToMany_Entity
 {
@@ -107,10 +125,10 @@ abstract class OneToMany_Test extends TestCase
 	protected function setUp()
 	{
 		$m = new RepositoryContainer;
-		$r = $m->tests;
+		$r = $m->OneToManyX_Repository;
 		$this->e = $e = $r->getById(1);
-		$this->o2m = new OneToMany_OneToMany($e, new RelationshipMetaDataOneToMany(get_class($e), 'id', 'OneToMany_', 'param'));
-		$this->meta1 = new RelationshipMetaDataOneToMany(get_class($e), 'id', 'OneToMany_', 'param');
+		$this->o2m = $e->many;
+		$this->meta1 = new RelationshipMetaDataOneToMany(get_class($e), 'many', 'OneToMany_', 'param');
 		$this->r = $m->OneToMany_;
 	}
 

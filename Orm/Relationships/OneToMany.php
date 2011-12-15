@@ -84,15 +84,25 @@ class OneToMany extends BaseToMany implements IRelationship
 	{
 		$entity = $this->createEntity($entity);
 		if ($this->handleCheckAndIgnore($entity)) return NULL;
-		$param = $this->getMetaData()->getChildParam();
+		$meta = $this->getMetaData();
+		$param = $meta->getChildParam();
 		$parent = $this->getParent();
+		$parentParam = $meta->getParentParam();
+		$hash = spl_object_hash($entity);
 		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $parent)
 		{
-			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
+			$oldParentOneToMany = isset($entity->{$param}->{$parentParam}) ? $entity->{$param}->{$parentParam} : NULL;
+			if (!($oldParentOneToMany instanceof self))
+			{
+				throw new NotValidException(array($entity, $param . '::$' . $parentParam, 'instanceof ' . __CLASS__, $oldParentOneToMany));
+			}
+			if (!isset($oldParentOneToMany->del[$hash])) // znamena ze byla odstranena, ale $entity->$param nedokaze byt null
+			{
+				throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is already asociated with another entity.');
+			}
 		}
-		$parent->markAsChanged($this->getMetaData()->getParentParam());
-		$entity->$param = $parent;
-		$hash = spl_object_hash($entity);
+		$parent->markAsChanged($parentParam);
+		$entity->__set($param, $parent);
 		unset($this->edit[$hash], $this->del[$hash]);
 		$this->add[$hash] = $entity;
 		$this->get = NULL;
@@ -108,15 +118,22 @@ class OneToMany extends BaseToMany implements IRelationship
 		$entity = $this->createEntity($entity);
 		$param = $this->getMetaData()->getChildParam();
 		$parent = $this->getParent();
+		$hash = spl_object_hash($entity);
 		if (!isset($entity->$param) OR $entity->$param !== $parent)
 		{
+			if (func_num_args() >= 2 AND func_get_arg(1) === 'handled by ManyToOne') // :-)
+			{
+				unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
+				$this->edit[$hash] = $entity;
+				$this->get = NULL;
+				return $entity;
+			}
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
 		$parent->markAsChanged($this->getMetaData()->getParentParam());
-		$hash = spl_object_hash($entity);
 		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
 		try {
-			$entity->$param = NULL;
+			$entity->__set($param, NULL);
 			$this->edit[$hash] = $entity;
 		} catch (Exception $e) {
 			$this->del[$hash] = $entity;

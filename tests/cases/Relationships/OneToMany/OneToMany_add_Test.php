@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RelationshipMetaDataOneToMany;
+
 /**
  * @covers Orm\OneToMany::add
  */
@@ -47,7 +49,7 @@ class OneToMany_add_Test extends OneToMany_Test
 	public function testBad2()
 	{
 		$e = new OneToMany_Entity;
-		$e->param = new TestEntity;
+		$e->param = new OneToManyX_Entity;
 		$this->setExpectedException('Orm\InvalidEntityException', 'Entity OneToMany_Entity is already asociated with another entity.');
 		$this->o2m->add($e);
 	}
@@ -56,10 +58,12 @@ class OneToMany_add_Test extends OneToMany_Test
 	{
 		$this->assertFalse($this->e->isChanged());
 		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('many'));
 		$this->assertFalse($this->e->isChanged('string'));
 		$this->o2m->add(11);
 		$this->assertTrue($this->e->isChanged());
-		$this->assertTrue($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertTrue($this->e->isChanged('many'));
 		$this->assertFalse($this->e->isChanged('string'));
 	}
 
@@ -69,6 +73,14 @@ class OneToMany_add_Test extends OneToMany_Test
 		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->o2m);
 		$this->o2m->add(11);
 		$this->assertAttributeSame(NULL, 'get', $this->o2m);
+	}
+
+	public function testInvalidChildParam()
+	{
+		$this->meta1 = new RelationshipMetaDataOneToMany(get_class($this->e), 'many', 'OneToMany_', 'id');
+		$this->o2m = new OneToMany_OneToMany($this->e, $this->meta1);
+		$this->setExpectedException('Orm\NotValidException', 'OneToMany_Entity::$id::$many must be instanceof Orm\OneToMany; \'NULL\' given.');
+		$this->o2m->add(12);
 	}
 
 	public function testReflection()

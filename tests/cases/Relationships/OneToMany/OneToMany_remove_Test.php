@@ -64,7 +64,7 @@ class OneToMany_remove_Test extends OneToMany_Test
 	public function testBad2()
 	{
 		$e = $this->o2m->_getCollection()->getById(11);
-		$e->param = new TestEntity;
+		$e->param = new OneToManyX_Entity;
 		$this->setExpectedException('Orm\InvalidEntityException', 'Entity OneToMany_Entity#11 is not asociated with this entity.');
 		$this->o2m->remove($e);
 	}
@@ -73,10 +73,12 @@ class OneToMany_remove_Test extends OneToMany_Test
 	{
 		$this->assertFalse($this->e->isChanged());
 		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('many'));
 		$this->assertFalse($this->e->isChanged('string'));
 		$this->o2m->remove(11);
 		$this->assertTrue($this->e->isChanged());
-		$this->assertTrue($this->e->isChanged('id'));
+		$this->assertFalse($this->e->isChanged('id'));
+		$this->assertTrue($this->e->isChanged('many'));
 		$this->assertFalse($this->e->isChanged('string'));
 	}
 

@@ -71,7 +71,7 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 	public function testChange()
 	{
 		$e = $this->r->getById(11);
-		$e->param = new TestEntity;
+		$e->param = new OneToManyX_Entity;
 		$this->t(10,12,13);
 	}
 
