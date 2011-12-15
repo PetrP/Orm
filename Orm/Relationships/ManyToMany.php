@@ -245,8 +245,11 @@ class ManyToMany extends BaseToMany implements IRelationship
 			$add[$entity->id] = $entity->id;
 		}
 
-		if ($del) $this->injectedValue = $this->getMapper()->remove($this->getParent(), $del, $this->injectedValue);
-		if ($add) $this->injectedValue = $this->getMapper()->add($this->getParent(), $add, $this->injectedValue);
+		if ($this->getMetaData()->getWhereIsMapped() !== RelationshipMetaDataToMany::MAPPED_THERE)
+		{
+			if ($del) $this->injectedValue = $this->getMapper()->remove($this->getParent(), $del, $this->injectedValue);
+			if ($add) $this->injectedValue = $this->getMapper()->add($this->getParent(), $add, $this->injectedValue);
+		}
 
 		$this->del = $this->add = array();
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory

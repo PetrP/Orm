@@ -1,6 +1,7 @@
 <?php
 
 use Orm\DibiManyToManyMapper;
+use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @covers Orm\DibiManyToManyMapper::add
@@ -32,6 +33,12 @@ class DibiManyToManyMapper_add_Test extends DibiManyToManyMapper_Connected_Test
 		$this->assertSame(NULL, $this->mm->add($this->e, array(), NULL));
 	}
 
+	public function testInverseSide()
+	{
+		$this->mm->attach(new RelationshipMetaDataManyToMany('foo', 'foo', 'foo', 'foo', NULL, RelationshipMetaDataManyToMany::MAPPED_THERE));
+		$this->setExpectedException('Orm\NotSupportedException', 'Orm\IManyToManyMapper::add() has not supported on inverse side.');
+		$this->mm->add($this->e, array(), NULL);
+	}
 
 	public function testReflection()
 	{

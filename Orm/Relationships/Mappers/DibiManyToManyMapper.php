@@ -74,6 +74,11 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function add(IEntity $parent, array $ids, $injectedValue)
 	{
+		if ($this->mapped === RelationshipMetaDataToMany::MAPPED_THERE)
+		{
+			throw new NotSupportedException('Orm\IManyToManyMapper::add() has not supported on inverse side.');
+		}
+
 		if ($ids)
 		{
 			$f = $this->connection->command()->insert()
@@ -96,6 +101,11 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function remove(IEntity $parent, array $ids, $injectedValue)
 	{
+		if ($this->mapped === RelationshipMetaDataToMany::MAPPED_THERE)
+		{
+			throw new NotSupportedException('Orm\IManyToManyMapper::remove() has not supported on inverse side.');
+		}
+
 		$sql = array('%n = %s AND %n IN %in',
 			$this->parentParam, $parent->id,
 			$this->childParam, $ids
