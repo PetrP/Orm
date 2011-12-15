@@ -569,7 +569,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		$this->valid[$name] = true;
 		$this->changed[$name] = true;
 
-		if ($rule['relationship'] === MetaData::ManyToOne)
+		if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
 		{
 			$meta = $rule['relationshipParam'];
 			if ($childParam = $meta->getChildParam())
@@ -602,13 +602,27 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 						$repo = $this->getModel()->getRepository($meta->getRepository());
 						$oldEntity = $repo->getById($oldEntity);
 					}
-					if ($oldEntity)
+					if ($rule['relationship'] === MetaData::ManyToOne)
 					{
-						$oldEntity->{$childParam}->remove($this, 'handled by ManyToOne');
+						if ($oldEntity)
+						{
+							$oldEntity->{$childParam}->remove($this, 'handled by ManyToOne');
+						}
+						if ($newEntity)
+						{
+							$newEntity->{$childParam}->add($this);
+						}
 					}
-					if ($newEntity)
+					else if ($rule['relationship'] === MetaData::OneToOne)
 					{
-						$newEntity->{$childParam}->add($this);
+						if ($oldEntity)
+						{
+							$oldEntity->__set($childParam, NULL);
+						}
+						if ($newEntity)
+						{
+							$newEntity->__set($childParam, $this);
+						}
 					}
 				}
 			}
