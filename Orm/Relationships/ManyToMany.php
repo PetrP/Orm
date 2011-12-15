@@ -93,6 +93,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		$this->getParent()->markAsChanged($this->getMetaData()->getParentParam());
 		$hash = spl_object_hash($entity);
 		$this->add[$hash] = $entity;
+		$this->get = NULL;
 		return $entity;
 	}
 
@@ -114,6 +115,7 @@ class ManyToMany extends BaseToMany implements IRelationship
 		{
 			$this->del[$hash] = $entity;
 		}
+		$this->get = NULL;
 		return $entity;
 	}
 
@@ -233,23 +235,6 @@ class ManyToMany extends BaseToMany implements IRelationship
 			$this->mapper = $mapper;
 		}
 		return $this->mapper;
-	}
-
-	/**
-	 * Vytvori / nacte / vrati entitu.
-	 * if invasive: Vyprazdni get.
-	 * @param IEntity|scalar|array
-	 * @param bool
-	 * @return IEntity|NULL null only if not invasive
-	 */
-	final protected function createEntity($entity, $invasive = true)
-	{
-		$entity = parent::createEntity($entity, $invasive);
-		if ($invasive)
-		{
-			$this->get = NULL;
-		}
-		return $entity;
 	}
 
 	/**

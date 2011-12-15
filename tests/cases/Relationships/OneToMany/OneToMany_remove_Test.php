@@ -80,6 +80,14 @@ class OneToMany_remove_Test extends OneToMany_Test
 		$this->assertFalse($this->e->isChanged('string'));
 	}
 
+	public function testWipeGet()
+	{
+		$this->o2m->_getCollection();
+		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->o2m);
+		$this->o2m->remove(11);
+		$this->assertAttributeSame(NULL, 'get', $this->o2m);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\OneToMany', 'remove');

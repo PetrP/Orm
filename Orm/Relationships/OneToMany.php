@@ -92,7 +92,10 @@ class OneToMany extends BaseToMany implements IRelationship
 		}
 		$parent->markAsChanged($this->getMetaData()->getParentParam());
 		$entity->$param = $parent;
-		$this->add[spl_object_hash($entity)] = $entity;
+		$hash = spl_object_hash($entity);
+		unset($this->edit[$hash], $this->del[$hash]);
+		$this->add[$hash] = $entity;
+		$this->get = NULL;
 		return $entity;
 	}
 
@@ -110,13 +113,16 @@ class OneToMany extends BaseToMany implements IRelationship
 			throw new InvalidEntityException('Entity '. EntityHelper::toString($entity) . ' is not asociated with this entity.');
 		}
 		$parent->markAsChanged($this->getMetaData()->getParentParam());
+		$hash = spl_object_hash($entity);
+		unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
 		try {
 			$entity->$param = NULL;
-			$this->edit[spl_object_hash($entity)] = $entity;
+			$this->edit[$hash] = $entity;
 		} catch (Exception $e) {
-			$this->del[spl_object_hash($entity)] = $entity;
+			$this->del[$hash] = $entity;
 			// todo wtf chovani, kdyz nemuze existovat bez param tak se vymaze
 		}
+		$this->get = NULL;
 		return $entity;
 	}
 
@@ -219,25 +225,6 @@ class OneToMany extends BaseToMany implements IRelationship
 
 		$this->del = $this->edit = $this->add = array();
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
-	}
-
-	/**
-	 * Vytvori / nacte / vrati entitu.
-	 * if invasive: Smaze ji z poli edit, del a add. Vyprazdni get.
-	 * @param IEntity|scalar|array
-	 * @param bool
-	 * @return IEntity|NULL null only if not invasive
-	 */
-	final protected function createEntity($entity, $invasive = true)
-	{
-		$entity = parent::createEntity($entity, $invasive);
-		if ($invasive)
-		{
-			$hash = spl_object_hash($entity);
-			unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
-			$this->get = NULL;
-		}
-		return $entity;
 	}
 
 }

@@ -135,7 +135,7 @@ abstract class BaseToMany extends Object
 	 * @return IEntity|NULL null only if not invasive
 	 * @throws EntityNotFoundException
 	 */
-	protected function createEntity($entity, $invasive = true)
+	final protected function createEntity($entity, $invasive = true)
 	{
 		$repository = $this->getChildRepository($invasive); // todo neni mozne kdyz parent neni pripojen na repo
 		if (!$repository)

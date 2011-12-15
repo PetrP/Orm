@@ -73,14 +73,6 @@ class ManyToMany_createEntity_Test extends ManyToMany_Test
 		$this->assertSame($this->r, $e->getRepository());
 	}
 
-	public function testWipeGet()
-	{
-		$this->m2m->_getCollection();
-		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->m2m);
-		$this->tt(11);
-		$this->assertAttributeSame(NULL, 'get', $this->m2m);
-	}
-
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ManyToMany', 'createEntity');

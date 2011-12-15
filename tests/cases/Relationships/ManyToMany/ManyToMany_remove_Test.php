@@ -57,6 +57,14 @@ class ManyToMany_remove_Test extends ManyToMany_Test
 		$this->assertFalse($this->e->isChanged('foo'));
 	}
 
+	public function testWipeGet()
+	{
+		$this->m2m->_getCollection();
+		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->m2m);
+		$this->m2m->remove(11);
+		$this->assertAttributeSame(NULL, 'get', $this->m2m);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ManyToMany', 'remove');
