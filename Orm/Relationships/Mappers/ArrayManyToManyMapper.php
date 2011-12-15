@@ -29,27 +29,25 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function validateInjectedValue($injectedValue)
 	{
-		if (ValidationHelper::isValid(array('array'), $injectedValue) AND $injectedValue)
+		if ($this->meta->getWhereIsMapped() !== RelationshipMetaDataToMany::MAPPED_THERE)
 		{
-			$injectedValue = array_combine($injectedValue, $injectedValue);
+			if (ValidationHelper::isValid(array('array'), $injectedValue) AND $injectedValue)
+			{
+				$injectedValue = array_combine($injectedValue, $injectedValue);
+			}
+			else
+			{
+				$injectedValue = array();
+			}
+			return $injectedValue;
 		}
-		else
-		{
-			$injectedValue = array();
-		}
-		return $injectedValue;
 	}
 
 	/** @param RelationshipMetaDataManyToMany */
 	public function attach(RelationshipMetaDataManyToMany $meta)
 	{
 		$this->meta = $meta;
-		$mapped = $meta->getWhereIsMapped();
-		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
-		{
-			throw new NotSupportedException('Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
-		}
-		if ($mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
+		if ($this->meta->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			throw new NotSupportedException('Orm\ArrayManyToManyMapper not support relationship to self.');
 		}
@@ -99,7 +97,26 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function load(IEntity $parent, $injectedValue)
 	{
-		return $injectedValue;
+		if ($this->meta->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_THERE)
+		{
+			$childRepo = $parent->getModel()->{$this->meta->getChildRepository()};
+			$childParam = $this->meta->getChildParam();
+			$pid = $parent->id;
+			$value = array();
+			foreach ($childRepo->mapper->findAll() as $child)
+			{
+				$childInjectedValue = $child->{$childParam}->getInjectedValue();
+				if ($childInjectedValue AND isset($childInjectedValue[$pid]))
+				{
+					$value[$child->id] = $child->id;
+				}
+			}
+			return $value;
+		}
+		else
+		{
+			return $injectedValue;
+		}
 	}
 
 	/** @deprecated */

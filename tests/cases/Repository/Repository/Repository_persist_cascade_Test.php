@@ -46,13 +46,11 @@ class Repository_persist_cascade_Test extends TestCase
 		$this->r3->attach($e);
 		$e->mm->add(new Repository_persist_cascade4_Entity);
 		$e->mm->add(new Repository_persist_cascade4_Entity);
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->r3->persist($e);
 		$this->assertSame(array(array(), array(3 => 3, 4 => 4)), $this->r3->mapper->dump);
-		$this->assertSame(array(array(), array()), $this->r4->mapper->dump);
+		$this->assertSame(array(NULL, NULL), $this->r4->mapper->dump);
 		$this->assertSame(array(
 			array(array('add', 3, array(3 => 3, 4 => 4))),
-			NULL,
 			NULL,
 		), $this->r3->mapper->dumpMany);
 	}
@@ -63,14 +61,15 @@ class Repository_persist_cascade_Test extends TestCase
 		$this->r4->attach($e);
 		$e->mm->add(new Repository_persist_cascade3_Entity);
 		$e->mm->add(new Repository_persist_cascade3_Entity);
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->r4->persist($e);
-		$this->assertSame(array(array(), array()), $this->r3->mapper->dump);
-		$this->assertSame(array(array(), array(3 => 3, 4 => 4)), $this->r4->mapper->dump);
+		$this->assertSame(array(array(),  array(3 => 3), array(), array(3 => 3), ), $this->r3->mapper->dump);
+		$this->assertSame(array(NULL), $this->r4->mapper->dump);
 		$this->assertSame(array(
-			array(array('add', 3, array(3 => 3, 4 => 4))),
 			NULL,
-			NULL,
+			array(
+				array('add', 3, array(3 => 3)),
+				array('add', 4, array(3 => 3)),
+			),
 		), $this->r3->mapper->dumpMany);
 	}
 
@@ -92,28 +91,24 @@ class Repository_persist_cascade_Test extends TestCase
 	public function testMMBoth1()
 	{
 		list($e, $e1, $e2) = $this->mmBoth();
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->r3->persist($e);
 		$this->assertSame(array(array(), array(3 => 3, 4 => 4)), $this->r3->mapper->dump);
-		$this->assertSame(array(array(), array(3 => 3), array(), array(3 => 3)), $this->r4->mapper->dump);
+		$this->assertSame(array(NULL, NULL), $this->r4->mapper->dump);
 		$this->assertSame(array(
 			array(array('add', 3, array(3 => 3, 4 => 4))),
-			array(array('add', 3, array(3 => 3))),
-			array(array('add', 4, array(3 => 3))),
+			NULL,
 		), $this->r3->mapper->dumpMany);
 	}
 
 	public function testMMBoth2()
 	{
 		list($e, $e1, $e2) = $this->mmBoth();
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->r4->persist($e1);
 		$this->assertSame(array(array(), array(3 => 3, 4 => 4)), $this->r3->mapper->dump);
-		$this->assertSame(array(array(), array(), array(3 => 3), array(3 => 3)), $this->r4->mapper->dump);
+		$this->assertSame(array(NULL, NULL), $this->r4->mapper->dump);
 		$this->assertSame(array(
-			array(array('add', 3, array(3 => 3))),
+			NULL,
 			array(array('add', 3, array(3 => 3, 4 => 4))),
-			array(array('add', 4, array(3 => 3))),
 		), $this->r3->mapper->dumpMany);
 	}
 

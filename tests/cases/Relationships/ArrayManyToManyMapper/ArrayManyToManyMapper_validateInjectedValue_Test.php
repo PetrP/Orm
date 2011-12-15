@@ -50,4 +50,11 @@ class ArrayManyToManyMapper_validateInjectedValue_Test extends TestCase
 	{
 		$this->assertSame(array(), $this->mm->validateInjectedValue(serialize(array())));
 	}
+
+	public function testMappedThere()
+	{
+		$this->mm = new ArrayManyToManyMapper;
+		$this->mm->attach(new RelationshipMetaDataManyToMany('TestEntity', 'id', 'tests', 'foo', NULL, RelationshipMetaDataManyToMany::MAPPED_THERE));
+		$this->assertSame(NULL, $this->mm->validateInjectedValue(array(1, 2)));
+	}
 }

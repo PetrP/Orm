@@ -63,7 +63,6 @@ class ManyToMany_getMapper_Test extends ManyToMany_Test
 	public function testNotMappedByParent()
 	{
 		$this->m2m = new ManyToMany_getMapper_ManyToMany($this->e, new RelationshipMetaDataManyToMany(get_class($this->e), 'param', 'OneToMany_', 'param', NULL, false));
-		$this->setExpectedException('Orm\NotSupportedException', 'Orm\ArrayManyToManyMapper has support only on side where is relationship mapped.');
 		$this->assertInstanceOf('Orm\ArrayManyToManyMapper', $this->m2m->gm());
 	}
 
