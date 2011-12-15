@@ -89,11 +89,26 @@ class ManyToMany extends BaseToMany implements IRelationship
 	{
 		$entity = $this->createEntity($entity);
 		if ($this->handleCheckAndIgnore($entity)) return NULL;
-		// $entity->manytomany->add($parent); // todo kdyz existuje?
-		$this->getParent()->markAsChanged($this->getMetaData()->getParentParam());
-		$hash = spl_object_hash($entity);
-		$this->add[$hash] = $entity;
+		$meta = $this->getMetaData();
+		$parent = $this->getParent();
+		if ($childParam = $meta->getChildParam())
+		{
+			$childManyToMany = $entity->{$childParam};
+			if (!($childManyToMany instanceof self))
+			{
+				throw new NotValidException(array($entity, $childParam, 'instanceof ' . __CLASS__, $childManyToMany));
+			}
+			if ($childManyToMany->handleCheckAndIgnore($parent)) return NULL;
+		}
+		$parent->markAsChanged($meta->getParentParam());
+		$this->add[spl_object_hash($entity)] = $entity;
 		$this->get = NULL;
+		if ($childParam)
+		{
+			$entity->markAsChanged($childParam);
+			$childManyToMany->add[spl_object_hash($parent)] = $parent;
+			$childManyToMany->get = NULL;
+		}
 		return $entity;
 	}
 
@@ -104,8 +119,17 @@ class ManyToMany extends BaseToMany implements IRelationship
 	final public function remove($entity)
 	{
 		$entity = $this->createEntity($entity);
-		// $entity->manytomany->remove($parent); // todo kdyz existuje?
-		$this->getParent()->markAsChanged($this->getMetaData()->getParentParam());
+		$meta = $this->getMetaData();
+		$parent = $this->getParent();
+		if ($childParam = $meta->getChildParam())
+		{
+			$childManyToMany = $entity->{$childParam};
+			if (!($childManyToMany instanceof self))
+			{
+				throw new NotValidException(array($entity, $childParam, 'instanceof ' . __CLASS__, $childManyToMany));
+			}
+		}
+		$parent->markAsChanged($meta->getParentParam());
 		$hash = spl_object_hash($entity);
 		if (isset($this->add[$hash]))
 		{
@@ -116,6 +140,20 @@ class ManyToMany extends BaseToMany implements IRelationship
 			$this->del[$hash] = $entity;
 		}
 		$this->get = NULL;
+		if ($childParam)
+		{
+			$entity->markAsChanged($childParam);
+			$hash = spl_object_hash($parent);
+			if (isset($childManyToMany->add[$hash]))
+			{
+				unset($childManyToMany->add[$hash]);
+			}
+			else
+			{
+				$childManyToMany->del[$hash] = $parent;
+			}
+			$childManyToMany->get = NULL;
+		}
 		return $entity;
 	}
 

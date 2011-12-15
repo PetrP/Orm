@@ -8,6 +8,10 @@ use Orm\Repository;
  * @property Orm\OneToMany $oneToMany {1:m Association_Repository $manyToOne}
  * @property Association_Entity $manyToOneNotNull {m:1 Association_Repository $oneToManyNotNull}
  * @property Orm\OneToMany $oneToManyNotNull {1:m Association_Repository $manyToOneNotNull}
+ *
+ * @property Orm\ManyToMany $manyToMany1 {m:m Association_Repository $manyToMany2 mapped}
+ * @property Orm\ManyToMany $manyToMany2 {m:m Association_Repository $manyToMany1}
+ * @property Orm\ManyToMany $manyToManySame {m:m Association_Repository $manyToManySame}
  */
 class Association_Entity extends Entity
 {

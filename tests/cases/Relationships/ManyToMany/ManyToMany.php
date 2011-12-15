@@ -68,9 +68,9 @@ abstract class ManyToMany_Test extends TestCase
 		$m = new RepositoryContainer;
 		$r = $m->ManyToMany_;
 		$this->e = $e = $r->getById(1);
-		$this->m2m = new ManyToMany_ManyToMany($e, new RelationshipMetaDataManyToMany(get_class($e), 'id', 'OneToMany_', 'param', NULL, true), array(10,11,12,13));
-		$this->meta1 = new RelationshipMetaDataManyToMany(get_class($e), 'id', 'OneToMany_', 'param', NULL, true);
-		$this->meta2 = new RelationshipMetaDataManyToMany(get_class($this->e), 'param', 'OneToMany_', 'param', NULL, true);
+		$this->meta1 = new RelationshipMetaDataManyToMany(get_class($e), 'id', 'OneToMany_', '', NULL, true);
+		$this->m2m = new ManyToMany_ManyToMany($e, $this->meta1, array(10,11,12,13));
+		$this->meta2 = new RelationshipMetaDataManyToMany(get_class($this->e), 'param', 'OneToMany_', '', NULL, true);
 		$this->r = $m->OneToMany_;
 	}
 

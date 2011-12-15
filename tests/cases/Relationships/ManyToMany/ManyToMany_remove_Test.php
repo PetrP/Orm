@@ -1,5 +1,7 @@
 <?php
 
+use Orm\RelationshipMetaDataManyToMany;
+
 /**
  * @covers Orm\ManyToMany::remove
  */
@@ -63,6 +65,14 @@ class ManyToMany_remove_Test extends ManyToMany_Test
 		$this->assertAttributeInstanceOf('Orm\IEntityCollection', 'get', $this->m2m);
 		$this->m2m->remove(11);
 		$this->assertAttributeSame(NULL, 'get', $this->m2m);
+	}
+
+	public function testInvalidChildParam()
+	{
+		$this->meta1 = new RelationshipMetaDataManyToMany(get_class($this->e), 'id', 'OneToMany_', 'id', NULL, true);
+		$this->m2m = new ManyToMany_ManyToMany($this->e, $this->meta1, array(10,11,12,13));
+		$this->setExpectedException('Orm\NotValidException', 'Param OneToMany_Entity::$id must be instanceof Orm\ManyToMany; \'12\' given.');
+		$this->m2m->remove(12);
 	}
 
 	public function testReflection()
