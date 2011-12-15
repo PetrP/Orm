@@ -33,8 +33,8 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	/** @var DibiConnection */
 	private $connection;
 
-	/** @var bool */
-	private $both = false;
+	/** @var mixed RelationshipMetaDataToMany::MAPPED_* */
+	private $mapped;
 
 	/** @param DibiConnection */
 	public function __construct(DibiConnection $connection)
@@ -57,16 +57,12 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 		{
 			throw new RequiredArgumentException(get_class($this) . '::$table is required');
 		}
-		$mapped = $meta->getWhereIsMapped();
-		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE)
+		$this->mapped = $meta->getWhereIsMapped();
+		if ($this->mapped === RelationshipMetaDataToMany::MAPPED_THERE)
 		{
 			$tmp = $this->childParam;
 			$this->childParam = $this->parentParam;
 			$this->parentParam = $tmp;
-		}
-		if ($mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
-		{
-			$this->both = true;
 		}
 	}
 
@@ -104,7 +100,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 			$this->parentParam, $parent->id,
 			$this->childParam, $ids
 		);
-		if ($this->both)
+		if ($this->mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			$sql = array_merge(
 				array('('), $sql, array(') OR (%n = %s AND %n IN %in)',
@@ -128,7 +124,7 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 			->where('%n = %s', $this->parentParam, $parent->id)
 			->fetchPairs()
 		;
-		if ($this->both)
+		if ($this->mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			$result = array_unique(array_merge($result, $this->connection->select($this->parentParam)
 				->from($this->table)
@@ -152,6 +148,12 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	final protected function getConnection()
 	{
 		return $this->connection;
+	}
+
+	/** @return mixed RelationshipMetaDataToMany::MAPPED_* */
+	final protected function getWhereIsMapped()
+	{
+		return $this->mapped;
 	}
 
 	/** @deprecated */

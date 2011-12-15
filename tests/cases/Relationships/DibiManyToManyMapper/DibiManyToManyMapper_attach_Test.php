@@ -34,7 +34,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->assertSame('x', $this->mm->parentParam);
 		$this->assertSame('y', $this->mm->childParam);
 		$this->assertSame('t', $this->mm->table);
-		$this->assertAttributeSame(false, 'both', $this->mm);
+		$this->assertAttributeSame(RelationshipMetaDataToMany::MAPPED_HERE, 'mapped', $this->mm);
 	}
 
 	public function testNoChildParam()
@@ -70,7 +70,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->assertSame('y', $this->mm->parentParam);
 		$this->assertSame('x', $this->mm->childParam);
 		$this->assertSame('t', $this->mm->table);
-		$this->assertAttributeSame(false, 'both', $this->mm);
+		$this->assertAttributeSame(RelationshipMetaDataToMany::MAPPED_THERE, 'mapped', $this->mm);
 	}
 
 	public function testNoChildParamNotMappetByParent()
@@ -106,7 +106,7 @@ class DibiManyToManyMapper_attach_Test extends TestCase
 		$this->assertSame('x', $this->mm->parentParam);
 		$this->assertSame('y', $this->mm->childParam);
 		$this->assertSame('t', $this->mm->table);
-		$this->assertAttributeSame(true, 'both', $this->mm);
+		$this->assertAttributeSame(RelationshipMetaDataToMany::MAPPED_BOTH, 'mapped', $this->mm);
 	}
 
 	public function testReflection()
