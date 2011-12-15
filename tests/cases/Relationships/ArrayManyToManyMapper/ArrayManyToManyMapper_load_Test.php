@@ -55,4 +55,27 @@ class ArrayManyToManyMapper_load_Test extends TestCase
 		$this->assertSame(array(1 => 1), $e12->many->get()->fetchPairs('id', 'id'));
 	}
 
+	public function testMappedBoth()
+	{
+		$orm = new RepositoryContainer;
+		$many = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany6_Entity', $orm);
+
+		$r = $orm->{'RelationshipMetaDataManyToMany_ManyToMany6_Repository'};
+		$m = $many['many']['relationshipParam']->getMapper($r);
+
+		$e1 = $r->getById(1);
+		$e2 = $r->getById(2);
+		$e3 = new RelationshipMetaDataManyToMany_ManyToMany6_Entity;
+		$e1->many->add($e2);
+		$e1->many->add($e3);
+		$r->persist($e1);
+		$r->persist($e2);
+		$r->persist($e3);
+
+		$this->assertSame(array(44 => 44, 2 => 2, 3 => 3), $m->load($e1, array(44 => 44)));
+		$this->assertSame(array(2 => 2, 3 => 3), $e1->many->get()->fetchPairs('id', 'id'));
+		$this->assertSame(array(1 => 1), $e2->many->get()->fetchPairs('id', 'id'));
+		$this->assertSame(array(1 => 1), $e3->many->get()->fetchPairs('id', 'id'));
+	}
+
 }

@@ -47,10 +47,6 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	public function attach(RelationshipMetaDataManyToMany $meta)
 	{
 		$this->meta = $meta;
-		if ($this->meta->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_BOTH)
-		{
-			throw new NotSupportedException('Orm\ArrayManyToManyMapper not support relationship to self.');
-		}
 	}
 
 	/**
@@ -97,12 +93,17 @@ class ArrayManyToManyMapper extends Object implements IManyToManyMapper
 	 */
 	public function load(IEntity $parent, $injectedValue)
 	{
-		if ($this->meta->getWhereIsMapped() === RelationshipMetaDataToMany::MAPPED_THERE)
+		$mapped = $this->meta->getWhereIsMapped();
+		if ($mapped === RelationshipMetaDataToMany::MAPPED_THERE OR $mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
 		{
 			$childRepo = $parent->getModel()->{$this->meta->getChildRepository()};
 			$childParam = $this->meta->getChildParam();
 			$pid = $parent->id;
 			$value = array();
+			if ($mapped === RelationshipMetaDataToMany::MAPPED_BOTH)
+			{
+				$value = $injectedValue;
+			}
 			foreach ($childRepo->mapper->findAll() as $child)
 			{
 				$childInjectedValue = $child->{$childParam}->getInjectedValue();

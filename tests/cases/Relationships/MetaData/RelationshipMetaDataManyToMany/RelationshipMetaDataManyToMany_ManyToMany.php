@@ -133,3 +133,18 @@ class RelationshipMetaDataManyToMany_ManyToMany5_Repository extends Repository
 class RelationshipMetaDataManyToMany_ManyToMany5_Mapper extends TestsMapper
 {
 }
+
+/**
+ * @property $many {m:m RelationshipMetaDataManyToMany_ManyToMany6_Repository many}
+ */
+class RelationshipMetaDataManyToMany_ManyToMany6_Entity extends Entity
+{
+
+}
+class RelationshipMetaDataManyToMany_ManyToMany6_Repository extends Repository
+{
+	protected $entityClassName = 'RelationshipMetaDataManyToMany_ManyToMany6_Entity';
+}
+class RelationshipMetaDataManyToMany_ManyToMany6_Mapper extends TestsMapper
+{
+}
