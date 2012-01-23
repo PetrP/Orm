@@ -17,7 +17,7 @@ class Repository_remove_Test extends TestCase
 
 	public function testNotPersist()
 	{
-		$e = new TestEntity;
+		$e = new Repository_remove_Entity;
 		$this->assertTrue($this->r->remove($e));
 		$this->assertFalse(isset($e->id));
 		$this->assertSame(0, $this->r->mapper->count);
@@ -41,7 +41,7 @@ class Repository_remove_Test extends TestCase
 
 	public function testBadEntity()
 	{
-		$this->setExpectedException('Orm\InvalidEntityException', "Repository_remove_Repository can't work with entity 'Repository_persist_Entity', only with 'TestEntity'");
+		$this->setExpectedException('Orm\InvalidEntityException', "Repository_remove_Repository can't work with entity 'Repository_persist_Entity', only with 'Repository_remove_Entity'");
 		$this->r->remove(new Repository_persist_Entity);
 	}
 
@@ -54,8 +54,9 @@ class Repository_remove_Test extends TestCase
 
 	public function testRightEntityFromAnotherRepository()
 	{
-		$e = $this->r->model->tests->getById(1);
-		$this->setExpectedException('Orm\InvalidEntityException', "TestEntity#1 is attached to another repository.");
+		$m = new RepositoryContainer;
+		$e = $m->Repository_remove_->getById(1);
+		$this->setExpectedException('Orm\InvalidEntityException', "Repository_remove_Entity#1 is attached to another repository.");
 		$this->r->remove($e);
 	}
 

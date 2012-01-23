@@ -11,7 +11,7 @@ class Repository_remove_Entity extends Entity
 
 class Repository_remove_Repository extends Repository
 {
-	protected $entityClassName = 'TestEntity';
+	protected $entityClassName = 'Repository_remove_Entity';
 }
 
 class Repository_remove_Mapper extends TestsMapper
