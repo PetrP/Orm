@@ -355,19 +355,31 @@ class ArrayCollection extends Object implements IEntityCollection
 				$b = $bRow;
 				foreach (explode('->', $key) as $k)
 				{
-					if (!($a instanceof IEntity)) $a = NULL;
+					if (!($a instanceof IEntity))
+					{
+						$a = NULL;
+					}
 					else if (!$a->hasParam($k))
 					{
 						throw new InvalidArgumentException("'$k' is not key in '{$key}'");
 					}
-					else $a = $a->{$k};
+					else
+					{
+						$a = $a->{$k};
+					}
 
-					if (!($b instanceof IEntity)) $b = NULL;
+					if (!($b instanceof IEntity))
+					{
+						$b = NULL;
+					}
 					else if (!$b->hasParam($k))
 					{
 						throw new InvalidArgumentException("'$k' is not key in '{$key}'");
 					}
-					else $b = $b->{$k};
+					else
+					{
+						$b = $b->{$k};
+					}
 				}
 			}
 			else
