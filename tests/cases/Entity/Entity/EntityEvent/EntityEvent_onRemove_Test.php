@@ -11,6 +11,16 @@ class EntityEvent_onRemove_Test extends EntityEvent_event_Base
 	{
 		$this->assertSame(false, isset($this->e->id));
 		$this->r->remove($this->e);
+		$this->assertSame(array(), $this->e->all);
+		$this->assertSame(false, isset($this->e->id));
+	}
+
+	public function testNewAttached()
+	{
+		$this->r->attach($this->e);
+		$this->e->all = array();
+		$this->assertSame(false, isset($this->e->id));
+		$this->r->remove($this->e);
 		$this->assertSame(array(
 			array('onBeforeRemove', array($this->r)),
 			array('onAfterRemove', array($this->r)),
