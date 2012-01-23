@@ -211,7 +211,29 @@ class ArrayCollection extends Object implements IEntityCollection
 		{
 			foreach ($where as $key => $value)
 			{
-				$eValue = $entity[$key];
+				if (strpos($key, '->') !== false)
+				{
+					$eValue = $entity;
+					foreach (explode('->', $key) as $i => $k)
+					{
+						if (!($eValue instanceof IEntity))
+						{
+							$eValue = NULL;
+						}
+						else if (!$eValue->hasParam($k))
+						{
+							throw new InvalidArgumentException("'$k' is not key in '{$key}'");
+						}
+						else
+						{
+							$eValue = $eValue->{$k};
+						}
+					}
+				}
+				else
+				{
+					$eValue = $entity[$key];
+				}
 				if ($eValue instanceof IEntity)
 				{
 					if ($value instanceof IEntity AND $eValue === $value)
