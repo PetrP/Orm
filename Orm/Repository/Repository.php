@@ -325,17 +325,20 @@ abstract class Repository extends Object implements IRepository
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->identityMap->check($entity);
 
-		$this->events->fireEvent(Events::REMOVE_BEFORE, $entity);
-		if (isset($entity->id))
+		if (isset($entity->id) OR $entity->getRepository(false))
 		{
-			if (!$this->getMapper()->remove($entity))
+			$this->events->fireEvent(Events::REMOVE_BEFORE, $entity);
+			if (isset($entity->id))
 			{
-				throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
+				if (!$this->getMapper()->remove($entity))
+				{
+					throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
+				}
+				$this->identityMap->remove($entity->id);
 			}
-			$this->identityMap->remove($entity->id);
+			$this->identityMap->detach($entity);
+			$this->events->fireEvent(Events::REMOVE_AFTER, $entity);
 		}
-		$this->identityMap->detach($entity);
-		$this->events->fireEvent(Events::REMOVE_AFTER, $entity);
 		return true;
 	}
 
