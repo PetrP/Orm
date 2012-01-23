@@ -227,6 +227,14 @@ class ArrayCollection extends Object implements IEntityCollection
 						else
 						{
 							$eValue = $eValue->{$k};
+							if ($eValue instanceof IRelationship)
+							{
+								if ($eValue->get()->findBy(array(implode('->', array_slice(explode('->', $key), $i + 1)) => $value))->count())
+								{
+									continue 2; // true
+								}
+								continue 3; // false
+							}
 						}
 					}
 				}
@@ -387,6 +395,10 @@ class ArrayCollection extends Object implements IEntityCollection
 					else
 					{
 						$a = $a->{$k};
+						if ($a instanceof IRelationship)
+						{
+							$a = $a->get()->fetch();
+						}
 					}
 
 					if (!($b instanceof IEntity))
@@ -400,6 +412,10 @@ class ArrayCollection extends Object implements IEntityCollection
 					else
 					{
 						$b = $b->{$k};
+						if ($b instanceof IRelationship)
+						{
+							$b = $b->get()->fetch();
+						}
 					}
 				}
 			}
