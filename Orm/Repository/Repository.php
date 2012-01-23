@@ -276,19 +276,22 @@ abstract class Repository extends Object implements IRepository
 		$entity = $entity instanceof IEntity ? $entity : $this->getById($entity);
 		$this->checkAttachableEntity(get_class($entity), $entity);
 
-		$entity->___event($entity, 'beforeRemove', $this);
-		if (isset($entity->id))
+		if (isset($entity->id) OR $entity->getRepository(false))
 		{
-			if ($this->getMapper()->remove($entity))
+			$entity->___event($entity, 'beforeRemove', $this);
+			if (isset($entity->id))
 			{
-				$this->entities[$entity->id] = false;
+				if ($this->getMapper()->remove($entity))
+				{
+					$this->entities[$entity->id] = false;
+				}
+				else
+				{
+					throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
+				}
 			}
-			else
-			{
-				throw new BadReturnException(array($this->getMapper(), 'remove', 'TRUE', NULL, '; something wrong with mapper'));
-			}
+			$entity->___event($entity, 'afterRemove', $this);
 		}
-		$entity->___event($entity, 'afterRemove', $this);
 		return true;
 	}
 

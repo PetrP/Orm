@@ -2,10 +2,34 @@
 
 use Orm\Entity;
 use Orm\Repository;
+use Orm\IRepository;
 use Orm\IEntity;
 
 class Repository_remove_Entity extends Entity
 {
+
+	static $beforeRemove;
+	static $afterRemove;
+
+	protected function onBeforeRemove(IRepository $repository)
+	{
+		call_user_func(self::$beforeRemove, (object) array(
+			'entity' => $this,
+			'repository' => $repository,
+			'type' => 'beforeRemove',
+		));
+		parent::onBeforeRemove($repository);
+	}
+
+	protected function onAfterRemove(IRepository $repository)
+	{
+		call_user_func(self::$afterRemove, (object) array(
+			'entity' => $this,
+			'repository' => $repository,
+			'type' => 'afterRemove',
+		));
+		parent::onAfterRemove($repository);
+	}
 
 }
 
