@@ -7,6 +7,8 @@
 
 namespace Orm;
 
+require_once __DIR__ . '/../Orm.php';
+
 /**
  * It defines some handful methods and enhances object core of PHP:
  *   - access to undeclared members throws exceptions
