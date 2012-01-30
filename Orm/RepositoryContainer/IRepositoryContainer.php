@@ -7,8 +7,6 @@
 
 namespace Orm;
 
-require_once __DIR__ . '/../Orm.php';
-
 /**
  * Collection of IRepository.
  *
@@ -71,3 +69,5 @@ interface IRepositoryContainer
 	public function getContext();
 
 }
+
+require_once __DIR__ . '/../Orm.php';
