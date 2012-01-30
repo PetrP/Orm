@@ -10,8 +10,6 @@ namespace Orm;
 use ArrayAccess;
 use IteratorAggregate;
 
-require_once __DIR__ . '/../Orm.php';
-
 /**
  * Entity
  * @author Petr Procházka
@@ -197,3 +195,5 @@ interface IEntity extends ArrayAccess, IteratorAggregate
 	 */
 	//protected function setReadOnlyValue($name, $value)
 }
+
+require_once __DIR__ . '/../Orm.php';
