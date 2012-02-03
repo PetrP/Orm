@@ -188,6 +188,7 @@ final class Callback extends Object
 	 * @access private
 	 * @see Orm\Builder\PhpParser::replaceClosures()
 	 * @param array
+	 * @return int
 	 * /
 	static function uses($args)
 	{
