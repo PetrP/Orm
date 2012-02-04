@@ -3,14 +3,13 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
+require_once dirname(__FILE__) . '/mssql.reflector.php';
 
 /**
  * The dibi driver for MS SQL database.
@@ -35,15 +34,18 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 	/** @var resource  Resultset resource */
 	private $resultSet;
 
+	/** @var bool */
+	private $autoFree = TRUE;
+
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('mssql')) {
-			throw new NotSupportedException("PHP extension 'mssql' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'mssql' is not loaded.");
 		}
 	}
 
@@ -178,7 +180,7 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return is_resource($this->connection) ? $this->connection : NULL;
 	}
 
 
@@ -189,7 +191,7 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 	 */
 	public function getReflector()
 	{
-		throw new NotSupportedException;
+		return new DibiMsSqlReflector($this);
 	}
 
 
@@ -292,7 +294,7 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 		}
 
 		if ($offset) {
-			throw new NotImplementedException('Offset is not implemented.');
+			throw new DibiNotImplementedException('Offset is not implemented.');
 		}
 	}
 
@@ -308,7 +310,7 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 	 */
 	public function __destruct()
 	{
-		$this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && $this->free();
 	}
 
 
@@ -388,7 +390,8 @@ class DibiMsSqlDriver extends DibiObject implements IDibiDriver, IDibiResultDriv
 	 */
 	public function getResultResource()
 	{
-		return $this->resultSet;
+		$this->autoFree = FALSE;
+		return is_resource($this->resultSet) ? $this->resultSet : NULL;
 	}
 
 

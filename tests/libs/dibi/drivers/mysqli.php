@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -49,18 +47,21 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	/** @var mysqli_result  Resultset resource */
 	private $resultSet;
 
+	/** @var bool */
+	private $autoFree = TRUE;
+
 	/** @var bool  Is buffered (seekable and countable)? */
 	private $buffered;
 
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('mysqli')) {
-			throw new NotSupportedException("PHP extension 'mysqli' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'mysqli' is not loaded.");
 		}
 	}
 
@@ -254,7 +255,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return @$this->connection->thread_id ? $this->connection : NULL;
 	}
 
 
@@ -382,7 +383,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function __destruct()
 	{
-		$this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && @$this->free();
 	}
 
 
@@ -394,7 +395,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	public function getRowCount()
 	{
 		if (!$this->buffered) {
-			throw new NotSupportedException('Row count is not available for unbuffered queries.');
+			throw new DibiNotSupportedException('Row count is not available for unbuffered queries.');
 		}
 		return mysqli_num_rows($this->resultSet);
 	}
@@ -422,7 +423,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	public function seek($row)
 	{
 		if (!$this->buffered) {
-			throw new NotSupportedException('Cannot seek an unbuffered result set.');
+			throw new DibiNotSupportedException('Cannot seek an unbuffered result set.');
 		}
 		return mysqli_data_seek($this->resultSet, $row);
 	}
@@ -481,7 +482,8 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getResultResource()
 	{
-		return $this->resultSet;
+		$this->autoFree = FALSE;
+		return @$this->resultSet->type === NULL ? NULL : $this->resultSet;
 	}
 
 }

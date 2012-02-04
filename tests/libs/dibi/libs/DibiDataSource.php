@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi
  */
 
 
@@ -17,6 +15,7 @@
  * Default implementation of IDataSource for dibi.
  *
  * @author     David Grudl
+ * @package    dibi
  *
  * @property-read DibiConnection $connection
  * @property-read DibiResult $result
@@ -286,13 +285,17 @@ class DibiDataSource extends DibiObject implements IDataSource
 	 */
 	public function __toString()
 	{
-		return $this->connection->translate('
-			SELECT %n', (empty($this->cols) ? '*' : $this->cols), '
-			FROM %SQL', $this->sql, '
-			%ex', $this->conds ? array('WHERE %and', $this->conds) : NULL, '
-			%ex', $this->sorting ? array('ORDER BY %by', $this->sorting) : NULL, '
-			%ofs %lmt', $this->offset, $this->limit
-		);
+		try {
+			return $this->connection->translate('
+SELECT %n', (empty($this->cols) ? '*' : $this->cols), '
+FROM %SQL', $this->sql, '
+%ex', $this->conds ? array('WHERE %and', $this->conds) : NULL, '
+%ex', $this->sorting ? array('ORDER BY %by', $this->sorting) : NULL, '
+%ofs %lmt', $this->offset, $this->limit
+			);
+		} catch (Exception $e) {
+			trigger_error($e->getMessage(), E_USER_ERROR);
+		}
 	}
 
 

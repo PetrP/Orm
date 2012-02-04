@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi
  */
 
 
@@ -17,6 +15,7 @@
  * DateTime with serialization and timestamp support for PHP 5.2.
  *
  * @author     David Grudl
+ * @package    dibi
  */
 class DibiDateTime extends DateTime
 {
@@ -31,6 +30,22 @@ class DibiDateTime extends DateTime
 		} else {
 			parent::__construct($time, $timezone);
 		}
+	}
+
+
+
+	public function modifyClone($modify = '')
+	{
+		$dolly = clone($this);
+		return $modify ? $dolly->modify($modify) : $dolly;
+	}
+
+
+
+	public function modify($modify)
+	{
+		parent::modify($modify);
+		return $this;
 	}
 
 
@@ -61,6 +76,13 @@ class DibiDateTime extends DateTime
 	public function setTimestamp($timestamp)
 	{
 		return $this->__construct(date('Y-m-d H:i:s', $timestamp), new DateTimeZone($this->getTimezone()->getName())); // getTimeZone() crashes in PHP 5.2.6
+	}
+
+
+
+	public function __toString()
+	{
+		return $this->format('Y-m-d H:i:s');
 	}
 
 }

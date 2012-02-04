@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -37,6 +35,9 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	/** @var resource  Resultset resource */
 	private $resultSet;
 
+	/** @var bool */
+	private $autoFree = TRUE;
+
 	/** @var resource  Resultset resource */
 	private $transaction;
 
@@ -45,12 +46,12 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('interbase')) {
-			throw new NotSupportedException("PHP extension 'interbase' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'interbase' is not loaded.");
 		}
 	}
 
@@ -170,7 +171,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	public function begin($savepoint = NULL)
 	{
 		if ($savepoint !== NULL) {
-			throw new NotSupportedException('Savepoints are not supported in Firebird/Interbase.');
+			throw new DibiNotSupportedException('Savepoints are not supported in Firebird/Interbase.');
 		}
 		$this->transaction = ibase_trans($this->resource);
 		$this->inTransaction = TRUE;
@@ -187,7 +188,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	public function commit($savepoint = NULL)
 	{
 		if ($savepoint !== NULL) {
-			throw new NotSupportedException('Savepoints are not supported in Firebird/Interbase.');
+			throw new DibiNotSupportedException('Savepoints are not supported in Firebird/Interbase.');
 		}
 
 		if (!ibase_commit($this->transaction)) {
@@ -208,7 +209,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	public function rollback($savepoint = NULL)
 	{
 		if ($savepoint !== NULL) {
-			throw new NotSupportedException('Savepoints are not supported in Firebird/Interbase.');
+			throw new DibiNotSupportedException('Savepoints are not supported in Firebird/Interbase.');
 		}
 
 		if (!ibase_rollback($this->transaction)) {
@@ -237,7 +238,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return is_resource($this->connection) ? $this->connection : NULL;
 	}
 
 
@@ -312,7 +313,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function escapeLike($value, $pos)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -361,7 +362,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function __destruct()
 	{
-		$this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && $this->free();
 	}
 
 
@@ -410,7 +411,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function seek($row)
 	{
-		throw new NotSupportedException("Firebird/Interbase do not support seek in result set.");
+		throw new DibiNotSupportedException("Firebird/Interbase do not support seek in result set.");
 	}
 
 
@@ -433,7 +434,8 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function getResultResource()
 	{
-		return $this->resultSet;
+		$this->autoFree = FALSE;
+		return is_resource($this->resultSet) ? $this->resultSet : NULL;
 	}
 
 
@@ -444,7 +446,18 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function getResultColumns()
 	{
-		throw new NotImplementedException;
+		$count = ibase_num_fields($this->resultSet);
+		$columns = array();
+		for ($i = 0; $i < $count; $i++) {
+			$row = (array) ibase_field_info($this->resultSet, $i);
+			$columns[] = array(
+				'name' => $row['name'],
+				'fullname' => $row['name'],
+				'table' => $row['relation'],
+				'nativetype' => $row['type'],
+			);
+		}
+		return $columns;
 	}
 
 
