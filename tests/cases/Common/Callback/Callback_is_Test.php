@@ -13,9 +13,39 @@ class Callback_is_Test extends TestCase
 		$this->assertTrue(Callback::is(Callback::create('foo')));
 	}
 
+	public function testNetteCurrentCallback()
+	{
+		if (class_exists('Nette' . '\\' . 'Callback'))
+		{
+			$class = 'Nette' . '\\' . 'Callback';
+		}
+		else if (class_exists('Callback') AND class_exists('Orm' . '\\' . 'Callback'))
+		{
+			$class = '\Callback';
+		}
+		else
+		{
+			$class = 'Callback';
+		}
+		$this->assertTrue(Callback::is(new $class('foo')));
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 */
 	public function testNetteNamespaceCallback()
 	{
-		$this->assertTrue(Callback::is(new Nette\Callback('foo')));
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
+		if (class_exists('Nette' . '\\' . 'Callback'))
+		{
+			$this->markTestIncomplete('nette php 5.3');
+		}
+		eval('name' . 'space Nette; class Call' . 'back {}');
+		$c = 'Nette' . '\\' . 'Callback';
+		$this->assertTrue(Callback::is(new $c));
 	}
 
 	/**
@@ -27,7 +57,7 @@ class Callback_is_Test extends TestCase
 		{
 			$this->markTestIncomplete('nette php 5.2');
 		}
-		eval('class Callback {}');
+		eval('class Call' . 'back {}');
 		$c = '\Callback';
 		$this->assertTrue(Callback::is(new $c));
 	}
@@ -38,8 +68,7 @@ class Callback_is_Test extends TestCase
 	public function testNettePrefixedCallback()
 	{
 		eval('class NCallback {}');
-		$c = '\NCallback';
-		$this->assertTrue(Callback::is(new $c));
+		$this->assertTrue(Callback::is(new NCallback));
 	}
 
 	public function testNot()
@@ -50,7 +79,10 @@ class Callback_is_Test extends TestCase
 
 	public function testSeparate()
 	{
-		$this->assertFalse(class_exists('Callback'));
+		if (NETTE_PACKAGE !== '5.2' AND NETTE_PACKAGE !== 'PHP 5.2')
+		{
+			$this->assertFalse(class_exists('Callback'));
+		}
 		$this->assertFalse(class_exists('NCallback'));
 	}
 
