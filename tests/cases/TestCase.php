@@ -37,11 +37,14 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
 	protected function prepareTemplate(Text_Template $template)
 	{
+		global $ormDir;
 		$template->setVar(array('constants' => ''));
 		$template->setVar(array('included_files' => '
 			$_DIR_ = ' . var_export(__DIR__ . '/..', true) . ';
+			$ormDir = ' . var_export(isset($ormDir) ? $ormDir : NULL, true) . ';
 			require_once $_DIR_ . "/loader.php";
-			$robotLoader->addDirectory($_DIR_ . "/../Orm");
+			if (!isset($ormDir)) $ormDir = $_DIR_ . "/../Orm";
+			$robotLoader->addDirectory($ormDir);
 			$robotLoader->register();
 		'));
 	}
