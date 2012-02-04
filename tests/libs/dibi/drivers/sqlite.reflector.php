@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -150,7 +148,7 @@ class DibiSqliteReflector extends DibiObject implements IDibiReflector
 	public function getForeignKeys($table)
 	{
 		if (!($this->driver instanceof DibiSqlite3Driver)) {
-			// throw new NotSupportedException; // @see http://www.sqlite.org/foreignkeys.html
+			// throw new DibiNotSupportedException; // @see http://www.sqlite.org/foreignkeys.html
 		}
 		$res = $this->driver->query("PRAGMA foreign_key_list([$table])");
 		$keys = array();

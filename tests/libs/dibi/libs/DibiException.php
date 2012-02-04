@@ -3,24 +3,11 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\exceptions
  */
-
-
-
-if (!defined('NETTE')) {
-	class NotImplementedException extends LogicException {}
-	class NotSupportedException extends LogicException {}
-	class MemberAccessException extends LogicException {}
-	class InvalidStateException extends RuntimeException {}
-	class IOException extends RuntimeException {}
-	class FileNotFoundException extends IOException {}
-}
 
 
 
@@ -28,8 +15,9 @@ if (!defined('NETTE')) {
  * dibi common exception.
  *
  * @author     David Grudl
+ * @package    dibi
  */
-class DibiException extends Exception implements IDebugPanel
+class DibiException extends Exception
 {
 	/** @var string */
 	private $sql;
@@ -45,7 +33,6 @@ class DibiException extends Exception implements IDebugPanel
 	{
 		parent::__construct($message, (int) $code);
 		$this->sql = $sql;
-		// TODO: add $profiler->exception($this);
 	}
 
 
@@ -68,43 +55,6 @@ class DibiException extends Exception implements IDebugPanel
 		return parent::__toString() . ($this->sql ? "\nSQL: " . $this->sql : '');
 	}
 
-
-
-	/********************* interface Nette\IDebugPanel ****************d*g**/
-
-
-
-	/**
-	 * Returns HTML code for custom tab.
-	 * @return mixed
-	 */
-	public function getTab()
-	{
-		return 'SQL';
-	}
-
-
-
-	/**
-	 * Returns HTML code for custom panel.
-	 * @return mixed
-	 */
-	public function getPanel()
-	{
-		return $this->sql ? dibi::dump($this->sql, TRUE) : NULL;
-	}
-
-
-
-	/**
-	 * Returns panel ID.
-	 * @return string
-	 */
-	public function getId()
-	{
-		return __CLASS__;
-	}
-
 }
 
 
@@ -114,6 +64,7 @@ class DibiException extends Exception implements IDebugPanel
  * database server exception.
  *
  * @author     David Grudl
+ * @package    dibi
  */
 class DibiDriverException extends DibiException
 {
@@ -179,6 +130,7 @@ class DibiDriverException extends DibiException
  * PCRE exception.
  *
  * @author     David Grudl
+ * @package    dibi
  */
 class DibiPcreException extends Exception {
 
@@ -195,3 +147,19 @@ class DibiPcreException extends Exception {
 		parent::__construct(str_replace('%msg', isset($messages[$code]) ? $messages[$code] : 'Unknown error', $message), $code);
 	}
 }
+
+
+
+/**
+ * @package    dibi
+ */
+class DibiNotImplementedException extends DibiException
+{}
+
+
+
+/**
+ * @package    dibi
+ */
+class DibiNotSupportedException extends DibiException
+{}

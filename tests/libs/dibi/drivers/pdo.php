@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -47,12 +45,12 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('pdo')) {
-			throw new NotSupportedException("PHP extension 'pdo' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'pdo' is not loaded.");
 		}
 	}
 
@@ -230,7 +228,7 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 			return new DibiSqliteReflector($this);
 
 		default:
-			throw new NotSupportedException;
+			throw new DibiNotSupportedException;
 		}
 	}
 
@@ -315,7 +313,7 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 	 */
 	public function escapeLike($value, $pos)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -381,7 +379,7 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 			// intentionally break omitted
 
 		default:
-			throw new NotSupportedException('PDO or driver does not support applying limit or offset.');
+			throw new DibiNotSupportedException('PDO or driver does not support applying limit or offset.');
 		}
 	}
 
@@ -421,7 +419,7 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 	 */
 	public function seek($row)
 	{
-		throw new NotSupportedException('Cannot seek an unbuffered result set.');
+		throw new DibiNotSupportedException('Cannot seek an unbuffered result set.');
 	}
 
 
@@ -449,7 +447,7 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 		for ($i = 0; $i < $count; $i++) {
 			$row = @$this->resultSet->getColumnMeta($i); // intentionally @
 			if ($row === FALSE) {
-				throw new NotSupportedException('Driver does not support meta data.');
+				throw new DibiNotSupportedException('Driver does not support meta data.');
 			}
 			// PHP < 5.2.3 compatibility
 			// @see: http://php.net/manual/en/pdostatement.getcolumnmeta.php#pdostatement.getcolumnmeta.changelog
