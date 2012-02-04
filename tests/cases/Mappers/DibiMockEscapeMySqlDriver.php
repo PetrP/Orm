@@ -105,7 +105,7 @@ class DibiMockEscapeMySqlDriver extends DibiMySqlDriver
 
 	public function getResource()
 	{
-		throw new NotSupportedException;
+		return $this;
 	}
 
 	public function getReflector()
