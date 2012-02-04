@@ -56,15 +56,4 @@ class Orm_loader_Test extends TestCase
 		$this->assertFalse(class_exists('Orm\Orm', false));
 	}
 
-	protected function prepareTemplate(Text_Template $template)
-	{
-		parent::prepareTemplate($template);
-		$template->setVar(array('included_files' => '
-			$_DIR_ = ' . var_export(__DIR__ . '/../..', true) . ';
-			require_once $_DIR_ . "/loader.php";
-			$robotLoader->addDirectory($_DIR_ . "/../Orm");
-			$robotLoader->register();
-		'));
-	}
-
 }
