@@ -6,6 +6,11 @@ if (!class_exists('Orm\Orm')) require_once __DIR__ . '/../Orm/Orm.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockEscapeMySqlDriver.php';
 require_once __DIR__ . '/cases/Mappers/DibiMockExpectedMySqlDriver.php';
 
+if (isset($_SERVER['ORIG_SCRIPT_FILENAME']) AND PHPUnit_Util_PHP::getPhpBinary() === 'php')
+{
+	PHPUnit_Util_PHP::setPhpBinary($_SERVER['ORIG_SCRIPT_FILENAME']);
+}
+
 use Orm\PerformanceHelper;
 
 PerformanceHelper::$keyCallback = create_function('', 'return md5(lcg_value()) . md5(lcg_value()) . md5(lcg_value());');

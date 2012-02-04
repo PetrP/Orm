@@ -63,10 +63,10 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
     protected $tempFile;
 
     /**
-     * @param resource $pipe
-     * @since Method available since Release 3.5.12
+     * @param string $job
+     * @return array ($process, $pipes)
      */
-    protected function process($pipe, $job)
+    protected function createProcess($job)
     {
         if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
             file_put_contents($this->tempFile, $job) === FALSE) {
@@ -74,11 +74,27 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
               'Unable to write temporary files for process isolation.'
             );
         }
-
-        fwrite(
-          $pipe,
-          "<?php require_once '" . addcslashes($this->tempFile, "'") .  "'; ?>"
+        $process = proc_open(
+            '%php% -f ' . escapeshellarg($this->tempFile),
+            array(
+                0 => array('pipe', 'r'),
+                1 => array('pipe', 'w'),
+                2 => array('pipe', 'w')
+            ),
+            $pipes,
+            NULL, array(
+                'php' => self::getPhpBinary(),
+            )
         );
+        return array($process, $pipes);
+    }
+
+    /**
+     * @param resource $pipe
+     * @since Method available since Release 3.5.12
+     */
+    protected function process($pipe, $job)
+    {
     }
 
     /**
