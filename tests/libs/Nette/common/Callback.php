@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -19,6 +19,9 @@ use Nette;
  * PHP callback encapsulation.
  *
  * @author     David Grudl
+ * @property-read bool $callable
+ * @property-read string|array|\Closure $native
+ * @property-read bool $static
  */
 final class Callback extends Object
 {
@@ -96,23 +99,6 @@ final class Callback extends Object
 			throw new InvalidStateException("Callback '$this' is not callable.");
 		}
 		return call_user_func_array($this->cb, $args);
-	}
-
-
-
-	/**
-	 * Invokes callback using named parameters.
-	 * @param  array
-	 * @return mixed
-	 */
-	public function invokeNamedArgs(array $args)
-	{
-		$ref = $this->toReflection();
-		if (is_array($this->cb)) {
-			return $ref->invokeNamedArgs(is_object($this->cb[0]) ? $this->cb[0] : NULL, $args);
-		} else {
-			return $ref->invokeNamedArgs($args);
-		}
 	}
 
 

@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -110,8 +110,8 @@ class Finder extends Nette\Object implements \IteratorAggregate
 		$pattern = self::buildPattern($masks);
 		if ($type || $pattern) {
 			$this->filter(function($file) use ($type, $pattern) {
-				return (!$type || $file->$type())
-					&& !$file->isDot()
+				return !$file->isDot()
+					&& (!$type || $file->$type())
 					&& (!$pattern || preg_match($pattern, '/' . strtr($file->getSubPathName(), '\\', '/')));
 			});
 		}
@@ -241,7 +241,7 @@ class Finder extends Nette\Object implements \IteratorAggregate
 		if ($this->exclude) {
 			$filters = $this->exclude;
 			$iterator = new Nette\Iterators\RecursiveFilter($iterator, function($file) use ($filters) {
-				if (!$file->isFile()) {
+				if (!$file->isDot() && !$file->isFile()) {
 					foreach ($filters as $filter) {
 						if (!call_user_func($filter, $file)) {
 							return FALSE;
