@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -36,18 +34,21 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	/** @var resource  Resultset resource */
 	private $resultSet;
 
+	/** @var bool */
+	private $autoFree = TRUE;
+
 	/** @var int|FALSE  Affected rows */
 	private $affectedRows = FALSE;
 
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('sqlsrv')) {
-			throw new NotSupportedException("PHP extension 'sqlsrv' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'sqlsrv' is not loaded.");
 		}
 	}
 
@@ -149,7 +150,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function begin($savepoint = NULL)
 	{
-		$this->query('BEGIN TRANSACTION');
+		sqlsrv_begin_transaction($this->connection);
 	}
 
 
@@ -162,7 +163,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function commit($savepoint = NULL)
 	{
-		$this->query('COMMIT');
+		sqlsrv_commit($this->connection);
 	}
 
 
@@ -175,7 +176,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function rollback($savepoint = NULL)
 	{
-		$this->query('ROLLBACK');
+		sqlsrv_rollback($this->connection);
 	}
 
 
@@ -186,7 +187,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return is_resource($this->connection) ? $this->connection : NULL;
 	}
 
 
@@ -197,7 +198,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getReflector()
 	{
-		throw new NotSupportedException;
+		throw new DibiNotSupportedException;
 	}
 
 
@@ -300,7 +301,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 		}
 
 		if ($offset) {
-			throw new NotImplementedException('Offset is not implemented.');
+			throw new DibiNotImplementedException('Offset is not implemented.');
 		}
 	}
 
@@ -316,7 +317,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function __destruct()
 	{
-		$this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && $this->free();
 	}
 
 
@@ -327,7 +328,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getRowCount()
 	{
-		throw new NotSupportedException('Row count is not available for unbuffered queries.');
+		throw new DibiNotSupportedException('Row count is not available for unbuffered queries.');
 	}
 
 
@@ -351,7 +352,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function seek($row)
 	{
-		throw new NotSupportedException('Cannot seek an unbuffered result set.');
+		throw new DibiNotSupportedException('Cannot seek an unbuffered result set.');
 	}
 
 
@@ -395,7 +396,8 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getResultResource()
 	{
-		return $this->resultSet;
+		$this->autoFree = FALSE;
+		return is_resource($this->resultSet) ? $this->resultSet : NULL;
 	}
 
 }
