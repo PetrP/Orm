@@ -115,20 +115,33 @@ class PhpParser extends Tokenizer
 			}
 		}
 
+		$replace2 = $tmp2;
+		$replace1 = $tmp1;
+
+		$inNamespaceHttpPHPUnit = (bool) preg_match('#namespace\s+HttpPHPUnit([a-z0-9_\\\\\s]*);#si', $data);
+		if ($inNamespaceHttpPHPUnit)
+		{
+			unset($replace2['Object']);
+			unset($replace1[' Object ']);
+			unset($replace1[" Object\n"]);
+			unset($replace1[' Object::']);
+			unset($replace1['Orm\Object']);
+		}
+
 		$parser = new PhpParser($data);
 		$s = '';
 		$last = false;
-		while (($token = $parser->fetch()) !== FALSE) {
-
+		while (($token = $parser->fetch()) !== FALSE)
+		{
 			if ($parser->isCurrent(T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE))
 			{
-				$token = strtr($token, $tmp1);
+				$token = strtr($token, $replace1);
 			}
 			if (!$parser->isCurrent(T_COMMENT, T_DOC_COMMENT, T_WHITESPACE))
 			{
-				if ($parser->isCurrent(T_STRING) AND isset($tmp2[$token]) AND ($last OR $parser->isNext(T_DOUBLE_COLON)))
+				if ($parser->isCurrent(T_STRING) AND isset($replace2[$token]) AND ($last OR $parser->isNext(T_DOUBLE_COLON)))
 				{
-					$token = $tmp2[$token];
+					$token = $replace2[$token];
 				}
 				$last = $parser->isCurrent(T_NEW, T_CLASS, T_EXTENDS, T_INSTANCEOF, '(', ',');
 			}
