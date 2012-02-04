@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -19,6 +19,10 @@ use Nette;
  * File download response.
  *
  * @author     David Grudl
+ *
+ * @property-read string $file
+ * @property-read string $name
+ * @property-read string $contentType
  */
 class FileResponse extends Nette\Object implements Nette\Application\IResponse
 {
@@ -37,7 +41,7 @@ class FileResponse extends Nette\Object implements Nette\Application\IResponse
 
 	/**
 	 * @param  string  file path
-	 * @param  string  user name name
+	 * @param  string  imposed file name
 	 * @param  string  MIME content type
 	 */
 	public function __construct($file, $name = NULL, $contentType = NULL)

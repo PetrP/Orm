@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -21,8 +21,8 @@ use Nette;
  * @author     David Grudl
  *
  * @property   int $code
+ * @property-read bool $sent
  * @property-read array $headers
- * @property-read mixed $sent
  */
 final class Response extends Nette\Object implements IResponse
 {
@@ -60,7 +60,7 @@ final class Response extends Nette\Object implements IResponse
 		static $allowed = array(
 			200=>1, 201=>1, 202=>1, 203=>1, 204=>1, 205=>1, 206=>1,
 			300=>1, 301=>1, 302=>1, 303=>1, 304=>1, 307=>1,
-			400=>1, 401=>1, 403=>1, 404=>1, 406=>1, 408=>1, 410=>1, 412=>1, 415=>1, 416=>1,
+			400=>1, 401=>1, 403=>1, 404=>1, 405=>1, 406=>1, 408=>1, 410=>1, 412=>1, 415=>1, 416=>1,
 			500=>1, 501=>1, 503=>1, 505=>1
 		);
 
@@ -118,7 +118,7 @@ final class Response extends Nette\Object implements IResponse
 	 * Adds HTTP header.
 	 * @param  string  header name
 	 * @param  string  header value
-	 * @return void
+	 * @return Response  provides a fluent interface
 	 * @throws Nette\InvalidStateException  if HTTP headers have been sent
 	 */
 	public function addHeader($name, $value)
@@ -128,6 +128,7 @@ final class Response extends Nette\Object implements IResponse
 		}
 
 		header($name . ': ' . $value, FALSE, $this->code);
+		return $this;
 	}
 
 
