@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -20,23 +20,17 @@ use Nette;
  *
  * @author     David Grudl
  *
- * @example    forms/basic-example.php  Form definition using fluent interfaces
- * @example    forms/manual-rendering.php  Manual form rendering and separated form and rules definition
- * @example    forms/localization.php  Localization (with Zend_Translate)
- * @example    forms/custom-rendering.php  Custom form rendering
- * @example    forms/custom-validator.php  How to use custom validator
- * @example    forms/naming-containers.php  How to use naming containers
- * @example    forms/CSRF-protection.php  How to use Cross-Site Request Forgery (CSRF) form protection
- *
- * @property   string $action
+ * @property   mixed $action
  * @property   string $method
  * @property-read array $groups
+ * @property   Nette\Localization\ITranslator|NULL $translator
+ * @property-read bool $anchored
+ * @property-read ISubmitterControl|FALSE $submitted
+ * @property-read bool $success
  * @property-read array $httpData
- * @property   Nette\Localization\ITranslator $translator
  * @property-read array $errors
  * @property-read Nette\Utils\Html $elementPrototype
  * @property   IFormRenderer $renderer
- * @property-read bool $submitted
  */
 class Form extends Container
 {
@@ -65,6 +59,9 @@ class Form extends Container
 		FLOAT = ':float',
 		RANGE = ':range';
 
+	// multiselect
+	const COUNT = ':length';
+
 	// file upload
 	const MAX_FILE_SIZE = ':fileSize',
 		MIME_TYPE = ':mimeType',
@@ -81,9 +78,15 @@ class Form extends Container
 	const PROTECTOR_ID = '_token_';
 
 	/** @var array of function(Form $sender); Occurs when the form is submitted and successfully validated */
+	public $onSuccess;
+
+	/** @var array of function(Form $sender); Occurs when the form is submitted and is not valid */
+	public $onError;
+
+	/** @var array of function(Form $sender); Occurs when the form is submitted */
 	public $onSubmit;
 
-	/** @var array of function(Form $sender); Occurs when the form is submitted and not validated */
+	/** @deprecated */
 	public $onInvalidSubmit;
 
 	/** @var mixed or NULL meaning: not detected yet */
@@ -216,7 +219,7 @@ class Form extends Container
 	 */
 	public function addProtection($message = NULL, $timeout = NULL)
 	{
-		$session = $this->getSession()->getNamespace('Nette.Forms.Form/CSRF');
+		$session = $this->getSession()->getSection('Nette.Forms.Form/CSRF');
 		$key = "key$timeout";
 		if (isset($session->$key)) {
 			$token = $session->$key;
@@ -354,11 +357,22 @@ class Form extends Container
 	 */
 	final public function isSubmitted()
 	{
-		if ($this->submittedBy === NULL) {
+		if ($this->submittedBy === NULL && count($this->getControls())) {
 			$this->getHttpData();
-			$this->submittedBy = !empty($this->httpData);
+			$this->submittedBy = $this->httpData !== NULL;
 		}
 		return $this->submittedBy;
+	}
+
+
+
+	/**
+	 * Tells if the form was submitted and successfully validated.
+	 * @return bool
+	 */
+	final public function isSuccess()
+	{
+		return $this->isSubmitted() && $this->isValid();
 	}
 
 
@@ -386,7 +400,7 @@ class Form extends Container
 			if (!$this->isAnchored()) {
 				throw new Nette\InvalidStateException('Form is not anchored and therefore can not determine whether it was submitted.');
 			}
-			$this->httpData = (array) $this->receiveHttpData();
+			$this->httpData = $this->receiveHttpData();
 		}
 		return $this->httpData;
 	}
@@ -405,17 +419,29 @@ class Form extends Container
 		} elseif ($this->submittedBy instanceof ISubmitterControl) {
 			if (!$this->submittedBy->getValidationScope() || $this->isValid()) {
 				$this->submittedBy->click();
-				$this->onSubmit($this);
+				$valid = TRUE;
 			} else {
 				$this->submittedBy->onInvalidClick($this->submittedBy);
+			}
+		}
+
+		if (isset($valid) || $this->isValid()) {
+			$this->onSuccess($this);
+		} else {
+			$this->onError($this);
+			if ($this->onInvalidSubmit) {
+				trigger_error(__CLASS__ . '->onInvalidSubmit is deprecated; use onError instead.', E_USER_WARNING);
 				$this->onInvalidSubmit($this);
 			}
+		}
 
-		} elseif ($this->isValid()) {
+		if ($this->onSuccess) { // back compatibility
 			$this->onSubmit($this);
-
-		} else {
-			$this->onInvalidSubmit($this);
+		} elseif ($this->onSubmit) {
+			trigger_error(__CLASS__ . '->onSubmit changed its behavior; use onSuccess instead.', E_USER_WARNING);
+			if (isset($valid) || $this->isValid()) {
+				$this->onSubmit($this);
+			}
 		}
 	}
 
@@ -457,9 +483,9 @@ class Form extends Container
 	 * Returns the values submitted by the form.
 	 * @return array
 	 */
-	public function getValues()
+	public function getValues($asArray = FALSE)
 	{
-		$values = parent::getValues();
+		$values = parent::getValues($asArray);
 		unset($values[self::TRACKER_ID], $values[self::PROTECTOR_ID]);
 		return $values;
 	}

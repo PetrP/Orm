@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -21,9 +21,9 @@ use Nette;
  * @author     David Grudl
  *
  * @property-read mixed $rawValue
+ * @property   bool $prompt
  * @property   array $items
- * @property-read mixed $selectedItem
- * @property-read bool $firstSkipped
+ * @property-read string $selectedItem
  */
 class SelectBox extends BaseControl
 {
@@ -34,7 +34,7 @@ class SelectBox extends BaseControl
 	protected $allowed = array();
 
 	/** @var bool */
-	private $skipFirst = FALSE;
+	private $prompt = FALSE;
 
 	/** @var bool */
 	private $useKeys = TRUE;
@@ -65,7 +65,7 @@ class SelectBox extends BaseControl
 	public function getValue()
 	{
 		$allowed = $this->allowed;
-		if ($this->skipFirst) {
+		if ($this->prompt) {
 			$allowed = array_slice($allowed, 1, count($allowed), TRUE);
 		}
 
@@ -102,14 +102,14 @@ class SelectBox extends BaseControl
 	 * @param  string
 	 * @return SelectBox  provides a fluent interface
 	 */
-	public function skipFirst($item = NULL)
+	public function setPrompt($prompt)
 	{
-		if (is_bool($item)) {
-			$this->skipFirst = $item;
+		if (is_bool($prompt)) {
+			$this->prompt = $prompt;
 		} else {
-			$this->skipFirst = TRUE;
-			if ($item !== NULL) {
-				$this->items = array('' => $item) + $this->items;
+			$this->prompt = TRUE;
+			if ($prompt !== NULL) {
+				$this->items = array('' => $prompt) + $this->items;
 				$this->allowed = array('' => '') + $this->allowed;
 			}
 		}
@@ -118,13 +118,22 @@ class SelectBox extends BaseControl
 
 
 
+	/** @deprecated */
+	function skipFirst($v = NULL)
+	{
+		trigger_error(__METHOD__ . '() is deprecated; use setPrompt() instead.', E_USER_WARNING);
+		return $this->setPrompt($v);
+	}
+
+
+
 	/**
 	 * Is first item in select box ignored?
 	 * @return bool
 	 */
-	final public function isFirstSkipped()
+	final public function getPrompt()
 	{
-		return $this->skipFirst;
+		return $this->prompt;
 	}
 
 
@@ -211,7 +220,7 @@ class SelectBox extends BaseControl
 	public function getControl()
 	{
 		$control = parent::getControl();
-		if ($this->skipFirst) {
+		if ($this->prompt) {
 			reset($this->items);
 			$control->data('nette-empty-value', $this->useKeys ? key($this->items) : current($this->items));
 		}
@@ -225,7 +234,7 @@ class SelectBox extends BaseControl
 				$dest = $control;
 
 			} else {
-				$dest = $control->create('optgroup')->label($key);
+				$dest = $control->create('optgroup')->label($this->translate($key));
 			}
 
 			foreach ($value as $key2 => $value2) {
@@ -235,7 +244,7 @@ class SelectBox extends BaseControl
 				} else {
 					$key2 = $this->useKeys ? $key2 : $value2;
 					$value2 = $this->translate((string) $value2);
-					$dest->add((string) $option->value($key2 === $value2 ? NULL : $key2)
+					$dest->add((string) $option->value($key2)
 						->selected(isset($selected[$key2]))
 						->setText($value2));
 				}
