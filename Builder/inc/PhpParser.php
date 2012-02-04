@@ -168,6 +168,10 @@ class PhpParser extends Tokenizer
 			}
 			if ($nette AND $inNamespace AND strpos($m[2], 'Nette') === 0)
 			{
+				if (preg_match('#\sas\s+(.+)$#si', $m[2], $mm))
+				{
+					return $m[1] . $mm[1] . $m[3];
+				}
 				return $m[1] . substr($m[2], strrpos($m[2], '\\')+1) . $m[3];
 			}
 			if ($orm AND $inNamespace AND (strpos($m[2], 'Orm') === 0 OR strpos($m[2], 'HttpPHPUnit') === 0))
