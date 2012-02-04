@@ -117,6 +117,14 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
+     * @param string
+     */
+    public static function setPhpBinary($phpBinary)
+    {
+        self::$phpBinary = escapeshellarg($phpBinary);
+    }
+
+    /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
@@ -140,15 +148,7 @@ abstract class PHPUnit_Util_PHP
      */
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        $process = proc_open(
-          self::getPhpBinary(),
-          array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w')
-          ),
-          $pipes
-        );
+        list($process, $pipes) = $this->createProcess($job);
 
         if (!is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
@@ -177,6 +177,24 @@ abstract class PHPUnit_Util_PHP
         } else {
             return array('stdout' => $stdout, 'stderr' => $stderr);
         }
+    }
+
+    /**
+     * @param string $job
+     * @return array ($process, $pipes)
+     */
+    protected function createProcess($job)
+    {
+        $process = proc_open(
+            self::getPhpBinary(),
+            array(
+                0 => array('pipe', 'r'),
+                1 => array('pipe', 'w'),
+                2 => array('pipe', 'w')
+            ),
+            $pipes
+        );
+        return array($process, $pipes);
     }
 
     /**
