@@ -67,6 +67,7 @@ foreach (array(
 	foreach (array(
 		'tests/cases',
 		'tests/boot.php',
+		'tests/loader.php',
 		'tests/libs/HttpPHPUnit',
 		'tests/libs/dump.php',
 	) as $p)
