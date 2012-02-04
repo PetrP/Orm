@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\drivers
  */
 
 
@@ -37,6 +35,9 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	private $resultSet;
 
 	/** @var bool */
+	private $autoFree = TRUE;
+
+	/** @var bool */
 	private $autocommit = TRUE;
 
 	/** @var string  Date and datetime format */
@@ -45,12 +46,12 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 
 
 	/**
-	 * @throws NotSupportedException
+	 * @throws DibiNotSupportedException
 	 */
 	public function __construct()
 	{
 		if (!extension_loaded('oci8')) {
-			throw new NotSupportedException("PHP extension 'oci8' is not loaded.");
+			throw new DibiNotSupportedException("PHP extension 'oci8' is not loaded.");
 		}
 	}
 
@@ -124,7 +125,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getAffectedRows()
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -193,7 +194,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return is_resource($this->connection) ? $this->connection : NULL;
 	}
 
 
@@ -269,7 +270,9 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function escapeLike($value, $pos)
 	{
-		throw new NotImplementedException;
+		$value = addcslashes(str_replace('\\', '\\\\', $value), "\x00\\%_");
+		$value = str_replace("'", "''", $value);
+		return ($pos <= 0 ? "'%" : "'") . $value . ($pos >= 0 ? "%'" : "'");
 	}
 
 
@@ -321,7 +324,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function __destruct()
 	{
-		$this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && $this->free();
 	}
 
 
@@ -332,7 +335,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getRowCount()
 	{
-		throw new NotSupportedException('Row count is not available for unbuffered queries.');
+		throw new DibiNotSupportedException('Row count is not available for unbuffered queries.');
 	}
 
 
@@ -356,7 +359,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function seek($row)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -400,7 +403,8 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getResultResource()
 	{
-		return $this->resultSet;
+		$this->autoFree = FALSE;
+		return is_resource($this->resultSet) ? $this->resultSet : NULL;
 	}
 
 
@@ -437,7 +441,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getColumns($table)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -449,7 +453,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getIndexes($table)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -461,7 +465,7 @@ class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getForeignKeys($table)
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 }

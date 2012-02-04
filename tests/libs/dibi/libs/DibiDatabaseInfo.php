@@ -3,12 +3,10 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi\reflection
  */
 
 
@@ -17,6 +15,7 @@
  * Reflection metadata class for a database.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  *
  * @property-read string $name
  * @property-read array $tables
@@ -131,6 +130,7 @@ class DibiDatabaseInfo extends DibiObject
  * Reflection metadata class for a database table.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  *
  * @property-read string $name
  * @property-read bool $view
@@ -325,7 +325,7 @@ class DibiTableInfo extends DibiObject
 	 */
 	protected function initForeignKeys()
 	{
-		throw new NotImplementedException;
+		throw new DibiNotImplementedException;
 	}
 
 }
@@ -337,6 +337,7 @@ class DibiTableInfo extends DibiObject
  * Reflection metadata class for a result set.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  *
  * @property-read array $columns
  * @property-read array $columnNames
@@ -441,6 +442,7 @@ class DibiResultInfo extends DibiObject
  * Reflection metadata class for a table or result set column.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  *
  * @property-read string $name
  * @property-read string $fullName
@@ -532,10 +534,7 @@ class DibiColumnInfo extends DibiObject
 	 */
 	public function getType()
 	{
-		if (self::$types === NULL) {
-			self::$types = new DibiHashMap(array(__CLASS__, 'detectType'));
-		}
-		return self::$types->{$this->info['nativetype']};
+		return self::getTypeCache()->{$this->info['nativetype']};
 	}
 
 
@@ -620,13 +619,14 @@ class DibiColumnInfo extends DibiObject
 	public static function detectType($type)
 	{
 		static $patterns = array(
+			'^_' => dibi::TEXT, // PostgreSQL arrays
 			'BYTEA|BLOB|BIN' => dibi::BINARY,
-			'TEXT|CHAR|BIGINT|LONGLONG' => dibi::TEXT,
-			'BYTE|COUNTER|SERIAL|INT|LONG' => dibi::INTEGER,
+			'TEXT|CHAR' => dibi::TEXT,
+			'YEAR|BYTE|COUNTER|SERIAL|INT|LONG' => dibi::INTEGER,
 			'CURRENCY|REAL|MONEY|FLOAT|DOUBLE|DECIMAL|NUMERIC|NUMBER' => dibi::FLOAT,
 			'^TIME$' => dibi::TIME,
 			'TIME' => dibi::DATETIME, // DATETIME, TIMESTAMP
-			'YEAR|DATE' => dibi::DATE,
+			'DATE' => dibi::DATE,
 			'BOOL|BIT' => dibi::BOOL,
 		);
 
@@ -638,6 +638,19 @@ class DibiColumnInfo extends DibiObject
 		return dibi::TEXT;
 	}
 
+
+
+	/**
+	 * @internal
+	 */
+	public static function getTypeCache()
+	{
+		if (self::$types === NULL) {
+			self::$types = new DibiHashMap(array(__CLASS__, 'detectType'));
+		}
+		return self::$types;
+	}
+
 }
 
 
@@ -647,6 +660,7 @@ class DibiColumnInfo extends DibiObject
  * Reflection metadata class for a foreign key.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  * @todo
  *
  * @property-read string $name
@@ -697,6 +711,7 @@ class DibiForeignKeyInfo extends DibiObject
  * Reflection metadata class for a index or primary key.
  *
  * @author     David Grudl
+ * @package    dibi\reflection
  *
  * @property-read string $name
  * @property-read array $columns

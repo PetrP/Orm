@@ -3,18 +3,17 @@
 /**
  * This file is part of the "dibi" - smart database abstraction layer.
  *
- * Copyright (c) 2005, 2010 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2005 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
- *
- * @package    dibi
  */
 
 
 
 /**
  * Provides an interface between a dataset and data-aware components.
+ * @package    dibi
  */
 interface IDataSource extends Countable, IteratorAggregate
 {
@@ -25,68 +24,8 @@ interface IDataSource extends Countable, IteratorAggregate
 
 
 /**
- * Object that is able to generate SQL.
- */
-interface IDibiVariable
-{
-
-	function toSql();
-
-}
-
-
-
-/**
- * Defines method that must profiler implement.
- */
-interface IDibiProfiler
-{
-	/** event type */
-	const CONNECT = 1,
-		SELECT = 4,
-		INSERT = 8,
-		DELETE = 16,
-		UPDATE = 32,
-		QUERY = 60, // SELECT | INSERT | DELETE | UPDATE
-		BEGIN = 64,
-		COMMIT = 128,
-		ROLLBACK = 256,
-		TRANSACTION = 448, // BEGIN | COMMIT | ROLLBACK
-		EXCEPTION = 512,
-		ALL = 1023;
-
-	/**
-	 * Before event notification.
-	 * @param  DibiConnection
-	 * @param  int     event name
-	 * @param  string  sql
-	 * @return int
-	 */
-	function before(DibiConnection $connection, $event, $sql = NULL);
-
-	/**
-	 * After event notification.
-	 * @param  int
-	 * @param  DibiResult
-	 * @return void
-	 */
-	function after($ticket, $result = NULL);
-
-	/**
-	 * After exception notification.
-	 * @param  DibiDriverException
-	 * @return void
-	 */
-	function exception(DibiDriverException $exception);
-
-}
-
-
-
-
-
-/**
  * dibi driver interface.
+ * @package    dibi
  */
 interface IDibiDriver
 {
@@ -196,6 +135,7 @@ interface IDibiDriver
 
 /**
  * dibi result set driver interface.
+ * @package    dibi
  */
 interface IDibiResultDriver
 {
@@ -260,6 +200,7 @@ interface IDibiResultDriver
  * dibi driver reflection.
  *
  * @author     David Grudl
+ * @package    dibi
  */
 interface IDibiReflector
 {
