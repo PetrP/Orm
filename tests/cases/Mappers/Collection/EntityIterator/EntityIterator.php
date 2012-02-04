@@ -49,7 +49,7 @@ class EntityIterator_Driver extends Object implements IDibiResultDriver
 
 	public function getResultColumns()
 	{
-		throw new Exception();
+		throw new DibiNotSupportedException;
 	}
 
 	public function getResultResource()
