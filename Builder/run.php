@@ -76,4 +76,7 @@ foreach (array(
 	}
 }
 
+$partialSupport = new PartialSupportTestsConverter(__DIR__ . '/php52/Nette_without_namespaces/tests', __DIR__ . '/php52/Nette_without_namespaces_partial/tests');
+$partialSupport->convert();
+
 echo '<h1>OK<h1>';
