@@ -25,10 +25,14 @@ class AnnotationsParser_getByReflection_Test extends TestCase
 	{
 		$p = new AnnotationsParser;
 		$a = $p->getByReflection(new ReflectionClass('Nette\Reflection\AnnotationsParser'));
-		$this->assertSame(isset($a['description']) ? 3 : 2, count($a));
+		$this->assertSame(isset($a['description']) ? (isset($a['package']) ? 4 : 3) : 2, count($a));
 		if (isset($a['description'])) // jen v novejsich nette
 		{
 			$this->assertSame(array('Annotations support for PHP.'), $a['description']);
+		}
+		if (isset($a['package'])) // jen v php52 nette
+		{
+			$this->assertSame(array('Nette' . '\\' . 'Reflection'), $a['package']);
 		}
 		$this->assertSame(array('David Grudl'), $a['author']);
 		$this->assertSame(array(true), $a['Annotation']);
