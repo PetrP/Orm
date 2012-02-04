@@ -74,7 +74,7 @@ class DibiMockExpectedMySqlDriver extends DibiMockEscapeMySqlDriver
 
 	public function getResource()
 	{
-		throw new NotSupportedException;
+		return $this;
 	}
 
 	public function getReflector()
@@ -110,7 +110,7 @@ class DibiMockExpectedMySqlDriver extends DibiMockEscapeMySqlDriver
 
 	public function getResultColumns()
 	{
-		throw new NotSupportedException;
+		throw new DibiNotSupportedException;
 	}
 
 	public function getResultResource()
