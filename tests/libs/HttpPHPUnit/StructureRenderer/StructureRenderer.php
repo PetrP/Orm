@@ -3,6 +3,7 @@
 namespace HttpPHPUnit;
 
 use Nette\Application\UI\Control;
+use Nette\Latte\Engine as LatteFilter;
 use Nette\DirectoryNotFoundException;
 use Nette\Utils\Finder;
 
@@ -110,4 +111,8 @@ class StructureRenderer extends Control
 		return $result;
 	}
 
+	public function templatePrepareFilters($template)
+	{
+		$template->registerFilter(new LatteFilter);
+	}
 }

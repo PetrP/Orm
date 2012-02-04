@@ -3,6 +3,7 @@
 namespace HttpPHPUnit;
 
 use Nette\Application\UI\Control;
+use Nette\Latte\Engine as LatteFilter;
 use Exception;
 
 /**
@@ -28,6 +29,11 @@ class TemplateFactory extends Control
 		$tmp = $documentRoot . DIRECTORY_SEPARATOR;
 		if ($documentRoot != $dir AND strncmp($dir, $tmp, strlen($tmp)) !== 0) throw new Exception;
 		return str_replace('\\', '/', substr($dir, strlen($documentRoot)));
+	}
+
+	public function templatePrepareFilters($template)
+	{
+		$template->registerFilter(new LatteFilter);
 	}
 
 }
