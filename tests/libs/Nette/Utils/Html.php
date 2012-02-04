@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -95,7 +95,7 @@ class Html extends Nette\Object implements \ArrayAccess, \Countable, \IteratorAg
 		}
 
 		$this->name = $name;
-		$this->isEmpty = $isEmpty === NULL ? isset(self::$emptyElements[$name]) : (bool) $isEmpty;
+		$this->isEmpty = $isEmpty === NULL ? isset(static::$emptyElements[$name]) : (bool) $isEmpty;
 		return $this;
 	}
 
@@ -508,7 +508,7 @@ class Html extends Nette\Object implements \ArrayAccess, \Countable, \IteratorAg
 	final public function startTag()
 	{
 		if ($this->name) {
-			return '<' . $this->name . $this->attributes() . (self::$xhtml && $this->isEmpty ? ' />' : '>');
+			return '<' . $this->name . $this->attributes() . (static::$xhtml && $this->isEmpty ? ' />' : '>');
 
 		} else {
 			return '';
@@ -544,7 +544,7 @@ class Html extends Nette\Object implements \ArrayAccess, \Countable, \IteratorAg
 				continue;
 
 			} elseif ($value === TRUE) {
-				if (self::$xhtml) {
+				if (static::$xhtml) {
 					$s .= ' ' . $key . '="' . $key . '"';
 				} else {
 					$s .= ' ' . $key;

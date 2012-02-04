@@ -3,7 +3,7 @@
 /**
  * This file is part of the Nette Framework (http://nette.org)
  *
- * Copyright (c) 2004, 2011 David Grudl (http://davidgrudl.com)
+ * Copyright (c) 2004 David Grudl (http://davidgrudl.com)
  *
  * For the full copyright and license information, please view
  * the file license.txt that was distributed with this source code.
@@ -20,6 +20,17 @@ use Nette,
  * Reports information about a method's parameter.
  *
  * @author     David Grudl
+ * @property-read ClassType $class
+ * @property-read string $className
+ * @property-read ClassType $declaringClass
+ * @property-read Method $declaringFunction
+ * @property-read string $name
+ * @property-read bool $passedByReference
+ * @property-read bool $array
+ * @property-read int $position
+ * @property-read bool $optional
+ * @property-read bool $defaultValueAvailable
+ * @property-read mixed $defaultValue
  */
 class Parameter extends \ReflectionParameter
 {
@@ -72,6 +83,13 @@ class Parameter extends \ReflectionParameter
 		return is_array($this->function)
 			? new Method($this->function[0], $this->function[1])
 			: new GlobalFunction($this->function);
+	}
+
+
+
+	public function __toString()
+	{
+		return 'Parameter $' . parent::getName() . ' in ' . $this->getDeclaringFunction();
 	}
 
 
