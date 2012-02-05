@@ -22,7 +22,7 @@ Requirements
 ORM requires PHP 5.2.6 or later. It comes in two version for PHP 5.2 and PHP 5.3.
 5.3 package works fine for PHP 5.4
 
-PHP 5.3.3 is bogus. 5.2.2 - 5.2.5 is supported partialy.
+PHP 5.3.3 is bogus. 5.2.0 - 5.2.5 is supported partialy.
 [See info.](http://orm.petrprochazka.com/forum/topic/96/entity-magicke-pretezovani-settru-a-gettru/)
 
 -----
