@@ -61,7 +61,21 @@ foreach (array(
 	{
 		$b->build(__DIR__ . "/../$p", __DIR__ . "/$dir/$p");
 	}
+
+	foreach (array(
+		'DataSourceX',
+		'dibi',
+		'Nette',
+		'PHPUnit',
+	) as $lib)
+	{
+		if ($lib === 'Nette' AND !($version & Builder::NS_NETTE)) continue;
+		Helpers::wipeStructure(__DIR__ . "/$dir/tests/libs/$lib");
+		Helpers::copyStructure(__DIR__ . "/../tests/libs/$lib", __DIR__ . "/$dir/tests/libs/$lib");
+	}
+	Helpers::copyStructure(__DIR__ . '/data/tests-run.php', __DIR__ . "/$dir/tests/run.php");
 }
+Helpers::copyStructure(__DIR__ . '/data/tests-run-php52.php', __DIR__ . "/php52/Nette_without_namespaces/tests/run.php");
 
 $partialSupport = new PartialSupportTestsConverter(__DIR__ . '/php52/Nette_without_namespaces/tests', __DIR__ . '/php52/Nette_without_namespaces_partial/tests');
 $partialSupport->convert();
