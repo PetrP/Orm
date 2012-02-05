@@ -149,6 +149,9 @@ class PhpParser extends Tokenizer
 			$data = preg_replace('#\\\\?Nette\\\\\\\\?([a-z0-9_]+[^\\\\a-z0-9_])#si', '$1', $data);
 			$data = preg_replace('#\\\\?Nette\\\\\\\\?[a-z0-9_]+\\\\\\\\?([a-z0-9_]+)#si', '$1', $data);
 		}
+
+		$data = preg_replace('#(use [a-z0-9_\\\\\s]+;)(\n)(require_once|/\*\*|class)#si', '$1$2$2$3', $data);
+
 		return $data;
 	}
 
