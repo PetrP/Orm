@@ -35,8 +35,8 @@ final class Orm
 	const PACKAGE = '<build::orm> for Nette <build::nette>';
 
 }
-
 /*§php52
+
 /**
  * Simulate closure scope in php 5.2
  * <code>
