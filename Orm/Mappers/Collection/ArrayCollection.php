@@ -439,7 +439,19 @@ class ArrayCollection extends Object implements IEntityCollection
 			}
 			else if ($a instanceof DateTime AND $b instanceof DateTime)
 			{
+/*§php52
+				// As of PHP 5.2.2, DateTime objects can be compared using comparison operators.
+				if (PHP_VERSION_ID < 50202)
+				{
+					$r = $a->format('U') < $b->format('U') ? -1 : 1;
+				}
+				else
+				{
+	php52§*/
 				$r = $a < $b ? -1 : 1;
+/*§php52
+				}
+php52§*/
 			}
 			else if ($b === NULL)
 			{
