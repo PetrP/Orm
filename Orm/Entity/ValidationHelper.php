@@ -12,6 +12,7 @@ use Nette\NotImplementedException;
 use Nette\Tools;
 use Nette\DateTime;
 use Exception;
+use DateTime53;
 
 /**
  * Helper, which uses entity to validation.
