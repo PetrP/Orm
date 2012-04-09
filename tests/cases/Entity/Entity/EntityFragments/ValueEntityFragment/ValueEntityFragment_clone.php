@@ -22,3 +22,8 @@ class ValueEntityFragment_clone_Mapper extends ArrayMapper
 {
 
 }
+
+class ValueEntityFragment_clone_Injection extends Injection
+{
+
+}

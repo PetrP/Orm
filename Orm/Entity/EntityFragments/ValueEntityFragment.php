@@ -303,7 +303,16 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 		$this->changed[NULL] = true;
 		foreach ($this->values as $property => $value)
 		{
-			if (!($value instanceof IEntity) AND is_object($value))
+			if ($value instanceof IRelationship)
+			{
+				unset($this->values[$property]);
+				$this->{$property} = iterator_to_array($value);
+			}
+			else if ($value instanceof IEntityInjection)
+			{
+				$this->values[$property] = $value->getInjectedValue();
+			}
+			else if (!($value instanceof IEntity) AND is_object($value))
 			{
 				$this->values[$property] = clone $value;
 			}

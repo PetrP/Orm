@@ -97,6 +97,39 @@ class ValueEntityFragment_clone_Test extends TestCase
 		$this->assertEquals($object, $ee->mixed);
 	}
 
+	public function testRelationship()
+	{
+		$e = new ValueEntityFragment_clone_Entity;
+		$object = new OneToMany($e, new RelationshipMetaDataOneToMany('ValueEntityFragment_clone_Entity', 'mixed', 'TestEntityRepository', ''));
+
+		$e->mixed = $object;
+
+		$this->assertSame($object, $e->mixed);
+
+		$ee = clone $e;
+
+		$this->assertSame($object, $e->mixed);
+		$this->assertNotSame($object, $ee->mixed);
+		$this->assertSame(array(), $ee->mixed); // entita v pripade ze je nastavena klasicka asociace vytvori novou
+	}
+
+	public function testInjection()
+	{
+		$e = new ValueEntityFragment_clone_Entity;
+		$object = new ValueEntityFragment_clone_Injection;
+		$object->setInjectedValue('abc');
+
+		$e->mixed = $object;
+
+		$this->assertSame($object, $e->mixed);
+
+		$ee = clone $e;
+
+		$this->assertSame($object, $e->mixed);
+		$this->assertNotSame($object, $ee->mixed);
+		$this->assertSame('abc', $ee->mixed); // entita v pripade ze je nastavena injekce vytvori novou
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ValueEntityFragment', '__clone');
