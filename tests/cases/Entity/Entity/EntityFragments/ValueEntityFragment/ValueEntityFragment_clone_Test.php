@@ -1,6 +1,8 @@
 <?php
 
 use Orm\RepositoryContainer;
+use Orm\OneToMany;
+use Orm\RelationshipMetaDataOneToMany;
 
 /**
  * @covers Orm\ValueEntityFragment::__clone
@@ -61,11 +63,38 @@ class ValueEntityFragment_clone_Test extends TestCase
 
 		$ee->date->modify('-50 years');
 		$this->assertSame('1961-11-11', $ee->date->format('Y-m-d'));
-		try {
-			$this->assertSame('2011-11-11', $e->date->format('Y-m-d'));
-		} catch (PHPUnit_Framework_ExpectationFailedException $e) {
-			$this->markTestSkipped('bug, udrzuje se reference');
-		}
+		$this->assertSame('2011-11-11', $e->date->format('Y-m-d'));
+	}
+
+	public function testEntity()
+	{
+		$e = new ValueEntityFragment_clone_Entity;
+		$object = new TestEntity;
+
+		$e->mixed = $object;
+
+		$this->assertSame($object, $e->mixed);
+
+		$ee = clone $e;
+
+		$this->assertSame($object, $e->mixed);
+		$this->assertSame($object, $ee->mixed);
+	}
+
+	public function testObject()
+	{
+		$e = new ValueEntityFragment_clone_Entity;
+		$object = (object) array('aa' => 'bb');
+
+		$e->mixed = $object;
+
+		$this->assertSame($object, $e->mixed);
+
+		$ee = clone $e;
+
+		$this->assertSame($object, $e->mixed);
+		$this->assertNotSame($object, $ee->mixed);
+		$this->assertEquals($object, $ee->mixed);
 	}
 
 	public function testReflection()

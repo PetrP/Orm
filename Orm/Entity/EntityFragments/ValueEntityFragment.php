@@ -299,8 +299,15 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	public function __clone()
 	{
 		$this->values['id'] = NULL;
-		$this->valid['id'] = false;
+		$this->valid = array();
 		$this->changed[NULL] = true;
+		foreach ($this->values as $property => $value)
+		{
+			if (!($value instanceof IEntity) AND is_object($value))
+			{
+				$this->values[$property] = clone $value;
+			}
+		}
 	}
 
 	/**
