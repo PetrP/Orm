@@ -33,6 +33,30 @@ class RelationshipMetaDataOneToOne_check_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testOk()
+	{
+		$rl = new RelationshipMetaDataOneToOne('RelationshipMetaDataOneToOne_OneToOne_Entity', 'one', 'RelationshipMetaDataOneToOne_OneToOne_Repository', 'one');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataOneToOne_OneToOne_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClass()
+	{
+		$rl = new RelationshipMetaDataOneToOne('RelationshipMetaDataOneToOne_OneToOne_Entity', 'oneParent', 'RelationshipMetaDataOneToOne_OneToOne_Repository', 'oneParent');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataOneToOne_OneToOne_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClassAbstract()
+	{
+		$rl = new RelationshipMetaDataOneToOne('RelationshipMetaDataOneToOne_OneToOneParent_Entity', 'oneParent', 'RelationshipMetaDataOneToOne_OneToOne_Repository', 'oneParent');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataOneToOne_OneToOneParent_Entity', new RepositoryContainer);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataOneToOne', 'check');

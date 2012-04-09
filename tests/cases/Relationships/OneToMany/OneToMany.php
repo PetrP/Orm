@@ -9,9 +9,17 @@ use Orm\IEntity;
 use Orm\RelationshipMetaDataOneToMany;
 
 /**
+ * @property OneToMany_OneToMany $manyParent {1:m OneToMany_Repository paramParent}
+ */
+abstract class OneToManyXParent_Entity extends TestEntity
+{
+
+}
+
+/**
  * @property OneToMany_OneToMany $many {1:m OneToMany_Repository param}
  */
-class OneToManyX_Entity extends TestEntity
+class OneToManyX_Entity extends OneToManyXParent_Entity
 {
 
 }
@@ -26,11 +34,21 @@ class OneToManyX_Mapper extends TestsMapper
 
 }
 
+
+/**
+ * @property OneToManyXParent_Entity|NULL $paramParent {m:1 OneToManyX_Repository manyParent}
+ */
+abstract class OneToManyParent_Entity extends Entity
+{
+
+}
+
+
 /**
  * @property OneToManyX_Entity $param {m:1 OneToManyX_Repository}
  * @property string $string {default ''}
  */
-class OneToMany_Entity extends Entity
+class OneToMany_Entity extends OneToManyParent_Entity
 {
 
 }

@@ -62,6 +62,30 @@ class RelationshipMetaDataManyToMany_check_Test extends TestCase
 		$this->assertInstanceOf('Orm\RelationshipMetaDataManyToMany', $loader);
 	}
 
+	public function testOk2()
+	{
+		$rl = new RelationshipMetaDataManyToMany('RelationshipMetaDataManyToMany_ManyToMany1_Entity', 'many', 'RelationshipMetaDataManyToMany_ManyToMany2_', 'many', NULL, true);
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClass()
+	{
+		$rl = new RelationshipMetaDataManyToMany('RelationshipMetaDataManyToMany_ManyToMany1_Entity', 'manyParent', 'RelationshipMetaDataManyToMany_ManyToMany1_Repository', 'manyParent', NULL, true);
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClassAbstract()
+	{
+		$rl = new RelationshipMetaDataManyToMany('RelationshipMetaDataManyToMany_ManyToMany1Parent_Entity', 'manyParent', 'RelationshipMetaDataManyToMany_ManyToMany1_Repository', 'manyParent', NULL, true);
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1Parent_Entity', new RepositoryContainer);
+	}
+
 	public function testSameMapped()
 	{
 		$many = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', new RepositoryContainer);

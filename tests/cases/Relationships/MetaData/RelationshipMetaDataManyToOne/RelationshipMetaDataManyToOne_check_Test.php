@@ -33,6 +33,30 @@ class RelationshipMetaDataManyToOne_check_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testOk()
+	{
+		$rl = new RelationshipMetaDataManyToOne('OneToMany_Entity', 'param', 'OneToManyX_Repository', '');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('OneToMany_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClass()
+	{
+		$rl = new RelationshipMetaDataManyToOne('OneToMany_Entity', 'paramParent', 'OneToManyX_Repository', 'manyParent');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('OneToMany_Entity', new RepositoryContainer);
+	}
+
+	public function testSubClassAbstract()
+	{
+		$rl = new RelationshipMetaDataManyToOne('OneToManyParent_Entity', 'paramParent', 'OneToManyX_Repository', 'manyParent');
+		$rl->check(new RepositoryContainer);
+		$this->assertTrue(true);
+		MetaData::getEntityRules('OneToManyParent_Entity', new RepositoryContainer);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RelationshipMetaDataManyToOne', 'check');

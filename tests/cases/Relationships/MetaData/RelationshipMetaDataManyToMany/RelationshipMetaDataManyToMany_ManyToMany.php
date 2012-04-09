@@ -4,12 +4,20 @@ use Orm\Entity;
 use Orm\Repository;
 
 /**
+ * @property $manyParent {m:m RelationshipMetaDataManyToMany_ManyToMany1_Repository $manyParent mapped}
+ */
+abstract class RelationshipMetaDataManyToMany_ManyToMany1Parent_Entity extends Entity
+{
+
+}
+
+/**
  * @property $manyAnotherParam {m:m RelationshipMetaDataManyToMany_ManyToMany2_ manyAnotherParam}
  * @property $many {m:m RelationshipMetaDataManyToMany_ManyToMany2_ many mapped}
  * @property $same1 {m:m RelationshipMetaDataManyToMany_ManyToMany1_ same1 mapped}
  * @property $same2 {m:m RelationshipMetaDataManyToMany_ManyToMany1_ same2}
  */
-class RelationshipMetaDataManyToMany_ManyToMany1_Entity extends Entity
+class RelationshipMetaDataManyToMany_ManyToMany1_Entity extends RelationshipMetaDataManyToMany_ManyToMany1Parent_Entity
 {
 	static $param;
 	public static function createMetaData($entityClass)
