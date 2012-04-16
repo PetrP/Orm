@@ -161,7 +161,7 @@ class DibiPersistenceHelper extends Object
 				// pokusi se precist, muze existovat getter, jinak vyhodi exception
 				$value = $entity->{$key};
 			}
-			if ($do === false)
+			if ($do === false OR ($operation === 'update' AND $entity->hasParam($key) AND !$entity->isChanged($key)))
 			{
 				continue;
 			}
