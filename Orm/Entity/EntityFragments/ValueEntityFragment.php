@@ -623,9 +623,18 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 				{
 					$changed = (string) $newEntity->id !== (string) $oldEntity;
 				}
-				else if ($newEntity === NULL)
+				else if ($newEntity instanceof IEntity)
 				{
 					if ($oldEntity !== NULL)
+					{
+						$repo = $this->getModel()->getRepository($meta->getRepository());
+						$oldEntity = $repo->getById($oldEntity);
+					}
+					$changed = $oldEntity !== $newEntity;
+				}
+				else if ($newEntity === NULL)
+				{
+					if (!($oldEntity instanceof IEntity) AND $oldEntity !== NULL)
 					{
 						$repo = $this->getModel()->getRepository($meta->getRepository());
 						$oldEntity = $repo->getById($oldEntity);

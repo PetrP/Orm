@@ -190,4 +190,16 @@ class Association_OneToOne_Test extends TestCase
 		$this->assertFalse(property_exists($this->e5, 'oneToOne2'));
 	}
 
+	public function testBug45()
+	{
+		$e = new Association_Entity;
+		$e2 = new Association_Entity;
+		$this->r->attach($e);
+		$e->oneToOne1 = $e2;
+		$e->oneToOne1 = NULL;
+
+		$this->assertSame(NULL, $e->oneToOne1);
+		$this->assertSame(NULL, $e2->oneToOne2);
+	}
+
 }
