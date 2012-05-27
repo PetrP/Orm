@@ -202,4 +202,16 @@ class Association_OneToOne_Test extends TestCase
 		$this->assertSame(NULL, $e2->oneToOne2);
 	}
 
+	public function test6()
+	{
+		$e = new Association_Entity;
+		$e->fireEvent('onLoad', $this->r, array('id' => 6, 'oneToOne1' => 1));
+		$e2 = new Association_Entity;
+		$e->oneToOne1 = $e2;
+		$this->assertFalse(property_exists($e, 'oneToOne1'));
+		$this->assertFalse(property_exists($e2, 'oneToOne2'));
+		$this->assertSame($e2, $e->oneToOne1);
+		$this->assertSame($e, $e2->oneToOne2);
+	}
+
 }
