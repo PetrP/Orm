@@ -8,6 +8,8 @@
 namespace Orm;
 
 use DibiConnection;
+use DibiPdoDriver;
+use PDO;
 
 /**
  * Mapper for ManyToMany relationship.
@@ -35,6 +37,9 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 	/** @var mixed RelationshipMetaDataToMany::MAPPED_* */
 	private $mapped;
+
+	/** @var string @see self::detectDatabaseDriverName() */
+	private $driverName;
 
 	/** @param DibiConnection */
 	public function __construct(DibiConnection $connection)
@@ -81,15 +86,11 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 
 		if ($ids)
 		{
-			$f = $this->connection->command()->insert()
-				->into('%n', $this->table, '(%n)', array($this->parentParam, $this->childParam))
-			;
-			$parentId = $parent->id;
-			foreach ($ids as $childId)
+			if ($this->driverName === NULL)
 			{
-				$f->values(array($parentId, $childId));
+				$this->driverName = $this->detectDatabaseDriverName();
 			}
-			$f->execute();
+			$this->addDriverSpecific($this->driverName, $parent, $ids);
 		}
 	}
 
@@ -164,6 +165,101 @@ class DibiManyToManyMapper extends Object implements IManyToManyMapper
 	final protected function getWhereIsMapped()
 	{
 		return $this->mapped;
+	}
+
+	/**
+	 * @param string
+	 * @param IEntity
+	 * @param array of scalar
+	 * @return void
+	 */
+	protected function addDriverSpecific($driverName, IEntity $parent, array $ids)
+	{
+		$parentId = $parent->id;
+		$insert = $this->connection->command()->insert();
+
+		switch ($driverName)
+		{
+			case 'mysql':
+				$insert->ignore()
+					->into('%n', $this->table, '(%n)', array($this->parentParam, $this->childParam))
+				;
+				foreach ($ids as $childId)
+				{
+					$insert->values(array($parentId, $childId));
+				}
+				$insert->execute();
+				break;
+
+			case 'sqlite2':
+			case 'sqlite3':
+				$insert->orIgnore()
+					->into('%n', $this->table, '(%n)', array($this->parentParam, $this->childParam))
+				;
+				foreach ($ids as $childId)
+				{
+					$f = clone $insert;
+					$f->values(array($parentId, $childId));
+					$f->execute();
+				}
+				break;
+
+			default:
+				$insert->into('%n', $this->table, '(%n)', array($this->parentParam, $this->childParam));
+				foreach ($ids as $childId)
+				{
+					$f = clone $insert;
+					$f->values(array($parentId, $childId));
+					$f->execute();
+				}
+		}
+	}
+
+	/** @return string */
+	protected function detectDatabaseDriverName()
+	{
+		$driver = $this->connection->getDriver();
+
+		if ($driver instanceof DibiPdoDriver)
+		{
+			$drivers = array(
+				'mysql' => 'mysql',
+				'sqlite' => 'sqlite3',
+				'sqlite2' => 'sqlite2',
+				'pgsql' => 'postgre',
+				'oci' => 'oracle',
+				'firebird' => 'firebird',
+				'odbc' => 'odbc',
+				'dblib' => 'mssql',
+				'sqlsrv' => 'mssql',
+			);
+
+			$driverName = $driver->getResource()->getAttribute(PDO::ATTR_DRIVER_NAME);
+			return isset($drivers[$driverName]) ? $drivers[$driverName] : $driverName;
+		}
+		else
+		{
+			$drivers = array(
+				'DibiMySqlDriver' => 'mysql',
+				'DibiMySqliDriver' => 'mysql',
+				'DibiSqliteDriver' => 'sqlite2',
+				'DibiSqlite3Driver' => 'sqlite3',
+				'DibiPostgreDriver' => 'postgre',
+				'DibiOracleDriver' => 'oracle',
+				'DibiFirebirdDriver' => 'firebird',
+				'DibiOdbcDriver' => 'odbc',
+				'DibiMsSqlDriver' => 'mssql',
+				'DibiMsSql2005Driver' => 'mssql',
+			);
+
+			foreach ($drivers as $class => $driverName)
+			{
+				if ($driver instanceof $class)
+				{
+					return $driverName;
+				}
+			}
+		}
 	}
 
 	/** @deprecated */
