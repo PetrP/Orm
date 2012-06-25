@@ -252,7 +252,15 @@ abstract class Repository extends Object implements IRepository
 							try {
 								$entity->{$key} = NULL;
 							} catch (Exception $ree) {
-								throw $re;
+								try {
+									if ($entity->{$key} !== NULL)
+									{
+										throw $re;
+									}
+									// zmanena ze vyvolalo pravdepodobne chybu v provazni 1:1 ale prenastavolo se na null takze lze pokracovat
+								} catch (Exception $ree) {
+									throw $re;
+								}
 							}
 							$recursionRelationship[] = array($repository, $key, $value);
 						}

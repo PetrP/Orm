@@ -47,6 +47,15 @@ class Repository_persist_recursion_Test extends TestCase
 		$this->m->Repository_persist_recursion3_->persist($e1);
 	}
 
+	public function test11Linked()
+	{
+		$e1 = new Repository_persist_recursion_linked3_Entity;
+		$e2 = new Repository_persist_recursion_linked3_Entity;
+		$e1->{'11'} = $e2;
+		$this->setExpectedException('Orm\RecursiveException', 'There is an infinite recursion during persist in Repository_persist_recursion_linked3_Entity', 2);
+		$this->m->Repository_persist_recursion_linked3_->persist($e1);
+	}
+
 	private $c = array();
 	public function persistCount(EventArguments $args)
 	{
@@ -71,6 +80,24 @@ class Repository_persist_recursion_Test extends TestCase
 		$this->assertFalse($e2->isChanged());
 	}
 
+	public function test11LinkedWithNull1()
+	{
+		$this->m->Repository_persist_recursion_linked4_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$this->m->Repository_persist_recursion_linked5_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$e1 = new Repository_persist_recursion_linked4_Entity;
+		$e2 = new Repository_persist_recursion_linked5_Entity;
+		$e1->{'11'} = $e2;
+		$this->m->Repository_persist_recursion_linked4_->persist($e1);
+		$this->assertSame(array(
+			'Repository_persist_recursion_linked4_Repository',
+			'Repository_persist_recursion_linked5_Repository',
+			'Repository_persist_recursion_linked4_Repository',
+			'Repository_persist_recursion_linked5_Repository',
+		), $this->c);
+		$this->assertFalse($e1->isChanged());
+		$this->assertFalse($e2->isChanged());
+	}
+
 	public function test11WithNull2()
 	{
 		$this->m->Repository_persist_recursion4_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
@@ -84,6 +111,24 @@ class Repository_persist_recursion_Test extends TestCase
 			'Repository_persist_recursion4_Repository',
 			'Repository_persist_recursion5_Repository',
 			'Repository_persist_recursion4_Repository',
+		), $this->c);
+		$this->assertFalse($e1->isChanged());
+		$this->assertFalse($e2->isChanged());
+	}
+
+	public function test11LinkedWithNull2()
+	{
+		$this->m->Repository_persist_recursion_linked4_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$this->m->Repository_persist_recursion_linked5_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$e1 = new Repository_persist_recursion_linked4_Entity;
+		$e2 = new Repository_persist_recursion_linked5_Entity;
+		$e1->{'11'} = $e2;
+		$this->m->Repository_persist_recursion_linked5_->persist($e2);
+		$this->assertSame(array(
+			'Repository_persist_recursion_linked4_Repository',
+			'Repository_persist_recursion_linked5_Repository',
+			'Repository_persist_recursion_linked4_Repository',
+			'Repository_persist_recursion_linked5_Repository',
 		), $this->c);
 		$this->assertFalse($e1->isChanged());
 		$this->assertFalse($e2->isChanged());
@@ -103,6 +148,24 @@ class Repository_persist_recursion_Test extends TestCase
 			'Repository_persist_recursion4_Repository',
 			'Repository_persist_recursion5_Repository',
 			'Repository_persist_recursion4_Repository',
+		), $this->c);
+		$this->assertFalse($e1->isChanged());
+		$this->assertFalse($e2->isChanged());
+	}
+
+	public function test11LinkedWithNullHasId()
+	{
+		$this->m->Repository_persist_recursion_linked4_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$this->m->Repository_persist_recursion_linked5_->events->addCallbackListener(Events::PERSIST, array($this, 'persistCount'));
+		$e1 = new Repository_persist_recursion_linked4_Entity;
+		$e2 = new Repository_persist_recursion_linked5_Entity;
+		$this->m->Repository_persist_recursion_linked4_->persist($e1);
+		$e1->{'11'} = $e2;
+		$this->m->Repository_persist_recursion_linked4_->persist($e1);
+		$this->assertSame(array(
+			'Repository_persist_recursion_linked4_Repository',
+			'Repository_persist_recursion_linked5_Repository',
+			'Repository_persist_recursion_linked4_Repository',
 		), $this->c);
 		$this->assertFalse($e1->isChanged());
 		$this->assertFalse($e2->isChanged());
