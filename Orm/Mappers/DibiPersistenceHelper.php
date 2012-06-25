@@ -222,7 +222,10 @@ class DibiPersistenceHelper extends Object
 	 */
 	protected function update(array $values, $id)
 	{
-		$this->connection->update($this->table, $values)->where('%n = %s', $this->primaryKey, $id)->execute();
+		if ($values)
+		{
+			$this->connection->update($this->table, $values)->where('%n = %s', $this->primaryKey, $id)->execute();
+		}
 	}
 
 	/**
