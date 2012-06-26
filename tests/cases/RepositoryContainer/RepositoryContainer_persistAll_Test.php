@@ -15,6 +15,9 @@ class RepositoryContainer_persistAll_Test extends TestCase
 	protected function setUp()
 	{
 		$this->m = new RepositoryContainer;
+		$r2 = $this->m->Repository_persist2_;
+		$e = $r2->mapper->findAll()->fetchAll();
+		$e[0]->markAsChanged();
 		$this->r = $this->m->Repository_persist_;
 	}
 

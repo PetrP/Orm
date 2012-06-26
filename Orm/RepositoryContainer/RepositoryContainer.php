@@ -336,7 +336,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		$seconds = array();
 		do {
 			$count = 0;
-			foreach ($this->repositories as $repo)
+			foreach ($this->repositories as $repoClass => $repo)
 			{
 				$im = $repo->getIdentityMap();
 
@@ -344,16 +344,16 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 				foreach ($im->getAllNew() as $e)
 				{
 					$repo->persist($e, false);
-					$seconds[$e->id] = array($e, $repo);
+					$seconds[$repoClass][$e->id] = array($e, $repo);
 					$count++;
 				}
 
 				// vsechny zmenene ze persistujou, ale jen jednou
 				foreach ($im->getAll() as $id => $e)
 				{
-					if ($e AND !isset($seconds[$id]) AND $e->isChanged())
+					if ($e AND !isset($seconds[$repoClass][$id]) AND $e->isChanged())
 					{
-						$seconds[$id] = array($e, $repo);
+						$seconds[$repoClass][$id] = array($e, $repo);
 						$repo->persist($e, false);
 						$count++;
 					}
@@ -364,12 +364,15 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		// zmeny ktere se updavili v ramci udalosti se dopersistujou primo pres mapper
 		foreach ($seconds as $tmp)
 		{
-			if ($tmp[0]->isChanged())
+			foreach ($tmp as $tmp)
 			{
-				list($e, $repo) = $tmp;
-				$args = array('id' => $e->id);
-				$repo->getMapper()->persist($e);
-				$repo->getEvents()->fireEvent(Events::PERSIST, $e, $args);
+				if ($tmp[0]->isChanged())
+				{
+					list($e, $repo) = $tmp;
+					$args = array('id' => $e->id);
+					$repo->getMapper()->persist($e);
+					$repo->getEvents()->fireEvent(Events::PERSIST, $e, $args);
+				}
 			}
 		}
 	}
