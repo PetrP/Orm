@@ -361,7 +361,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 			}
 		} while ($count !== 0);
 
-		// zmeny ktere se updavili v ramci udalosti se dopersistujou primo pres mapper
+		// zmeny ktere se upravili v ramci udalosti se dopersistujou primo pres mapper
 		foreach ($seconds as $tmp)
 		{
 			foreach ($tmp as $tmp)
