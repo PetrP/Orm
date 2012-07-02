@@ -74,7 +74,7 @@ class Git extends Object
 
 	public function getSha($input)
 	{
-		return $this->command("log ".$this->escape($input)." -1 --pretty=format:" . $this->escape('%H', true));
+		return trim($this->command('rev-parse --short ' . $this->escape($input)));
 	}
 
 	/**
