@@ -36,6 +36,13 @@ class ManyToMany_getCollection_Test extends ManyToMany_Test
 		$this->t(10,12,13);
 	}
 
+	public function testBadLoadCollectionReturn()
+	{
+		$this->m2m->loadCollection = $this;
+		$this->setExpectedException('Orm\BadReturnException', "ManyToMany_ManyToMany::loadCollection() must return Orm\\IEntityCollection, 'ManyToMany_getCollection_Test' given.");
+		$this->m2m->get();
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ManyToMany', 'getCollection');

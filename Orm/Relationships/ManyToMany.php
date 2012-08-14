@@ -182,7 +182,21 @@ class ManyToMany extends BaseToMany implements IRelationship
 		return false;
 	}
 
-	/** @return IEntityCollection */
+	/**
+	 * Loads collection of entities for this association.
+	 * @param IRepository
+	 * @param array of scalar
+	 * @return IEntityCollection
+	 */
+	protected function loadCollection(IRepository $repository, array $ids)
+	{
+		return $repository->getMapper()->findById($ids);
+	}
+
+	/**
+	 * @return IEntityCollection
+	 * @see self::loadCollection()
+	 */
 	final protected function getCollection()
 	{
 		if ($this->get === NULL)
@@ -192,7 +206,18 @@ class ManyToMany extends BaseToMany implements IRelationship
 			{
 				$ids = $mapper->load($this->getParent(), $this->injectedValue);
 			}
-			$all = $ids ? $this->getChildRepository()->mapper->findById($ids) : new ArrayCollection(array());
+			if ($ids)
+			{
+				$all = $this->loadCollection($this->getChildRepository(), $ids);
+				if (!($all instanceof IEntityCollection))
+				{
+					throw new BadReturnException(array($this, 'loadCollection', 'Orm\IEntityCollection', $all));
+				}
+			}
+			else
+			{
+				$all = new ArrayCollection(array());
+			}
 			if ($this->add OR $this->del)
 			{
 				$array = array();

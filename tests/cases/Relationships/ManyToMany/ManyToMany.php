@@ -53,6 +53,17 @@ class ManyToMany_ManyToMany extends ManyToMany
 	{
 		return $this->getMetaData();
 	}
+
+	public $loadCollection;
+
+	protected function loadCollection(IRepository $repository, array $ids)
+	{
+		if ($this->loadCollection === NULL)
+		{
+			return parent::loadCollection($repository, $ids);
+		}
+		return $this->loadCollection;
+	}
 }
 
 abstract class ManyToMany_Test extends TestCase

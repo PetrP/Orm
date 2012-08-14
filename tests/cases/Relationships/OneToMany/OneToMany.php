@@ -66,6 +66,15 @@ class OneToMany_Mapper extends TestsMapper
 		}
 	}
 
+	public $findByIdCounter = array();
+
+	public function findById($ids)
+	{
+		$result = parent::findAll()->findById($ids);
+		$this->findByIdCounter[] = array($ids, $result);
+		return $result;
+	}
+
 }
 
 class OneToMany_2Repository extends OneToMany_Repository
@@ -112,6 +121,17 @@ class OneToMany_OneToMany extends OneToMany
 	public function _getMetaData()
 	{
 		return $this->getMetaData();
+	}
+
+	public $loadCollection;
+
+	protected function loadCollection(IRepository $repository, IEntity $parent, $param)
+	{
+		if ($this->loadCollection === NULL)
+		{
+			return parent::loadCollection($repository, $parent, $param);
+		}
+		return $this->loadCollection;
 	}
 }
 

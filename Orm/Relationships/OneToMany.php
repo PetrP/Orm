@@ -161,7 +161,22 @@ class OneToMany extends BaseToMany implements IRelationship
 		return false;
 	}
 
-	/** @return IEntityCollection */
+	/**
+	 * Loads collection of entities for this association.
+	 * @param IRepository
+	 * @param IEntity
+	 * @return string
+	 */
+	protected function loadCollection(IRepository $repository, IEntity $parent, $param)
+	{
+		$method = 'findBy' . $param;
+		return method_exists($repository, $method) ? $repository->$method($parent) : $repository->getMapper()->$method($parent);
+	}
+
+	/**
+	 * @return IEntityCollection
+	 * @see self::loadCollection()
+	 */
 	final protected function getCollection()
 	{
 		if ($this->get === NULL)
@@ -170,8 +185,11 @@ class OneToMany extends BaseToMany implements IRelationship
 			$parent = $this->getParent();
 			if ($repository = $this->getChildRepository(false))
 			{
-				$method = 'findBy' . $param;
-				$all = method_exists($repository, $method) ? $repository->$method($parent) : $repository->mapper->$method($parent);
+				$all = $this->loadCollection($repository, $parent, $param);
+				if (!($all instanceof IEntityCollection))
+				{
+					throw new BadReturnException(array($this, 'loadCollection', 'Orm\IEntityCollection', $all));
+				}
 			}
 			else
 			{

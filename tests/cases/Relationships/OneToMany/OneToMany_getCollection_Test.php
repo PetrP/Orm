@@ -1,7 +1,5 @@
 <?php
 
-use Orm\RelationshipMetaDataOneToMany;
-
 /**
  * @covers Orm\OneToMany::getCollection
  */
@@ -16,21 +14,6 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 	public function testCache()
 	{
 		$this->assertSame($this->o2m->_getCollection(), $this->o2m->_getCollection());
-	}
-
-	public function testFindByRepo()
-	{
-		$o2m = new OneToMany_OneToMany($this->e, new RelationshipMetaDataOneToMany(get_class($this->e), 'id', 'OneToMany_2', 'param'));
-		$o2m->_getCollection();
-		$this->assertSame(1, $this->e->model->OneToMany_2->count);
-		$this->assertSame(0, $this->e->model->OneToMany_2->mapper->count);
-	}
-
-	public function testFindByMapper()
-	{
-		$o2m = new OneToMany_OneToMany($this->e, new RelationshipMetaDataOneToMany(get_class($this->e), 'id', 'OneToMany_3', 'param'));
-		$o2m->_getCollection();
-		$this->assertSame(1, $this->e->model->OneToMany_3->mapper->count);
 	}
 
 	public function testNotHandledParent()
@@ -73,6 +56,13 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 		$e = $this->r->getById(11);
 		$e->param = new OneToManyX_Entity;
 		$this->t(10,12,13);
+	}
+
+	public function testBadLoadCollectionReturn()
+	{
+		$this->o2m->loadCollection = $this;
+		$this->setExpectedException('Orm\BadReturnException', "OneToMany_OneToMany::loadCollection() must return Orm\\IEntityCollection, 'OneToMany_getCollection_Test' given.");
+		$this->o2m->get();
 	}
 
 	public function testReflection()
