@@ -83,6 +83,10 @@ class MetaDataProperty_setTypes_Test extends TestCase
 		$this->assertSame($this->mixed, $this->setTypes('    '));
 		$this->assertSame($this->mixed, $this->setTypes(array('    ', '  ')));
 		$this->assertSame(array('int' => 'int'), $this->setTypes('    |int|  '));
+		$this->assertSame(array('int' => 'int'), $this->setTypes('int|'));
+		$this->assertSame(array('int' => 'int'), $this->setTypes('|int'));
+		$this->assertSame(array('string' => 'string', 'int' => 'int'), $this->setTypes('string||int'));
+		$this->assertSame(array('string' => 'string', 'int' => 'int'), $this->setTypes('string| | |int'));
 		$this->assertSame(array('int' => 'int', 'bool' => 'bool'), $this->setTypes('int | bool |'));
 	}
 
