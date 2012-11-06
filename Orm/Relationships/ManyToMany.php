@@ -190,6 +190,10 @@ class ManyToMany extends BaseToMany implements IRelationship
 	 */
 	protected function loadCollection(IRepository $repository, array $ids)
 	{
+		if (!$ids)
+		{
+			return new ArrayCollection(array());
+		}
 		return $repository->getMapper()->findById($ids);
 	}
 
@@ -206,9 +210,9 @@ class ManyToMany extends BaseToMany implements IRelationship
 			{
 				$ids = $mapper->load($this->getParent(), $this->injectedValue);
 			}
-			if ($ids)
+			if ($repository = $this->getChildRepository(false))
 			{
-				$all = $this->loadCollection($this->getChildRepository(), $ids);
+				$all = $this->loadCollection($repository, $ids);
 				if (!($all instanceof IEntityCollection))
 				{
 					throw new BadReturnException(array($this, 'loadCollection', 'Orm\IEntityCollection', $all));
