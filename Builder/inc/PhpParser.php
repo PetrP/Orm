@@ -51,8 +51,8 @@ class PhpParser extends Tokenizer
 					$body .= $parser->fetchUntil('}') . '}';
 				} while ($parser->fetch() && !$parser->isNext(',', ';', ')'));
 
-				if (strpos($body, 'function(')) {
-					throw new Exception("Nested closure in $file");
+				if (strpos($body, 'function (') OR strpos($body, 'function(')) {
+					throw new \Exception("Nested closure.");
 				}
 
 				$token .= substr(var_export(substr(trim($body), 1, -1), TRUE), 1, -1) . "')";
