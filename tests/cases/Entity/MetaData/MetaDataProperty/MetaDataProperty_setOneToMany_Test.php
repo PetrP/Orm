@@ -85,6 +85,22 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 		;
 	}
 
+	public function testTypeWithNamespaceSeparator1()
+	{
+		$p = $this->m->addProperty('id', '\Orm\OneToMany')
+			->setOneToMany('tests')
+		;
+		$this->t($p, 'Orm\OneToMany', 'Orm\OneToMany');
+	}
+
+	public function testTypeWithNamespaceSeparator2()
+	{
+		$p = $this->m->addProperty('id', '\OneToMany_OneToMany')
+			->setOneToMany('tests')
+		;
+		$this->t($p, 'OneToMany_OneToMany', 'OneToMany_OneToMany');
+	}
+
 	public function testFunctionalWithoutClass()
 	{
 		$p = $this->m->addProperty('id', 'Orm\OneToMany')
