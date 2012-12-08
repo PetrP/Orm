@@ -75,12 +75,11 @@ class RelationshipLoader extends Object implements IEntityInjectionLoader
 		{
 			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} excepts $mainClass class as type, class '$class' doesn't exists");
 		}
-		$parents = class_parents($class);
-		if (strtolower($class) !== strtolower($mainClass) AND !isset($parents[$mainClass]))
+		if (!is_subclass_of($class, $mainClass) AND strcasecmp($class, $mainClass) !== 0)
 		{
 			throw new InvalidStateException("{$entityName}::\${$parentParam} {{$relationship}} Class '$class' isn't instanceof $mainClass");
 		}
-		if (isset($parents[$oldMainClass]))
+		if (is_subclass_of($class, $oldMainClass))
 		{
 			if ($repositoryName)
 			{
