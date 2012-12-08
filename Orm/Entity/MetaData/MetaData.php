@@ -78,6 +78,7 @@ class MetaData extends Object
 		$this->entityClass = $entityClass;
 		if ($propertyClass !== NULL)
 		{
+			$propertyClass = ltrim($propertyClass, '\\');
 			if (!is_subclass_of($propertyClass, 'Orm\MetaDataProperty') AND strcasecmp($propertyClass, 'Orm\MetaDataProperty') !== 0)
 			{
 				throw new InvalidArgumentException(array($this, '$propertyClass', 'subclass of Orm\MetaDataProperty', $propertyClass));
