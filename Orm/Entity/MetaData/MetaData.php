@@ -182,9 +182,10 @@ class MetaData extends Object
 	 * Vysledek se cachuje.
 	 * @param string class name
 	 * @param IRepositoryContainer
+	 * @param string|NULL nesting level optimalization
 	 * @return array internal format
 	 */
-	public static function getEntityRules($entityClass, IRepositoryContainer $model = NULL)
+	public static function getEntityRules($entityClass, IRepositoryContainer $model = NULL, $onlyThisProperty = NULL)
 	{
 		$lec = strtolower($entityClass);
 		if (!isset(self::$cache[NULL][$lec]))
@@ -201,21 +202,23 @@ class MetaData extends Object
 				try {
 					$e = NULL;
 					$tmp = array();
-					foreach (self::$cache[$hash][$lec][1] as $rule)
+					foreach (self::$cache[$hash][$lec][1] as $property => $rule)
 					{
 						if ($rule['relationshipParam'] instanceof RelationshipMetaData)
 						{
-							$tmp[] = $rule['relationshipParam'];
+							$tmp[$property] = $rule['relationshipParam'];
 						}
 					}
 					self::$cache[$hash][$lec][0] = $tmp;
-					while (self::$cache[$hash][$lec][0])
+
+					if ($onlyThisProperty === NULL)
 					{
-						$t = current(self::$cache[$hash][$lec][0]);
-						unset(self::$cache[$hash][$lec][0][key(self::$cache[$hash][$lec][0])]);
-						$t->check($model);
+						while ($t = array_shift(self::$cache[$hash][$lec][0]))
+						{
+							$t->check($model);
+						}
+						self::$cache[$hash][$lec][0] = NULL;
 					}
-					self::$cache[$hash][$lec][0] = NULL;
 				} catch (Exception $e) {
 					unset(self::$cache[$hash][$lec]);
 					if (!self::$cache[$hash]) unset(self::$cache[$hash]);
@@ -224,6 +227,27 @@ class MetaData extends Object
 			}
 			if (self::$cache[$hash][$lec][0] !== NULL)
 			{
+				if ($onlyThisProperty !== NULL)
+				{
+					$onePropertyMeta = array();
+					if (isset(self::$cache[$hash][$lec][1][$onlyThisProperty]))
+					{
+						if (isset(self::$cache[$hash][$lec][0][$onlyThisProperty]))
+						{
+							$t = self::$cache[$hash][$lec][0][$onlyThisProperty];
+							unset(self::$cache[$hash][$lec][0][$onlyThisProperty]);
+							try {
+								$t->check($model);
+							} catch (Exception $e) {
+								self::$cache[$hash][$lec][0][$onlyThisProperty] = $t;
+								throw $e;
+							}
+						}
+						$onePropertyMeta[$onlyThisProperty] = self::$cache[$hash][$lec][1][$onlyThisProperty];
+					}
+					return $onePropertyMeta;
+				}
+
 				while (self::$cache[$hash][$lec][0])
 				{
 					$t = current(self::$cache[$hash][$lec][0]);

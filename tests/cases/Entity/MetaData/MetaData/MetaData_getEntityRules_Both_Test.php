@@ -100,6 +100,24 @@ class MetaData_getEntityRules_Both_Test extends TestCase
 		$this->assertSame($c, $b);
 	}
 
+	public function testOnlyThisProperty()
+	{
+		$m = new RepositoryContainer;
+
+		$origin = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $this->m);
+
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'id');
+		$this->assertSame(array('id'), array_keys($a));
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'same1');
+		$this->assertSame(array('same1'), array_keys($a));
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'unexists');
+		$this->assertSame(array(), array_keys($a));
+
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m);
+
+		$this->assertSame($origin, $a);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\MetaData', 'getEntityRules');

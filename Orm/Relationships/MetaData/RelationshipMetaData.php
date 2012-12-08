@@ -111,7 +111,7 @@ abstract class RelationshipMetaData extends Object
 		if (!$this->childParam) return;
 		foreach ($this->canConnectWith as $lowerEn => $en)
 		{
-			$meta = MetaData::getEntityRules($en, $model);
+			$meta = MetaData::getEntityRules($en, $model, $this->childParam);
 			$e = NULL;
 			if (isset($meta[$this->childParam]))
 			{
