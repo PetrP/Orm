@@ -170,6 +170,7 @@ abstract class Mapper extends Object implements IMapper
 			{
 				throw new InvalidStateException("Collection '{$class}' isn't instantiable");
 			}
+			$class = $reflection->getName();
 			$this->collectionClass = array($class, NULL);
 
 			if ($class === 'Orm\DibiCollection' OR is_subclass_of($class, 'Orm\DibiCollection'))

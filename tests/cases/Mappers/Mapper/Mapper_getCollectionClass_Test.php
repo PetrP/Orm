@@ -55,6 +55,34 @@ class Mapper_getCollectionClass_Test extends TestCase
 		$this->assertSame(array('Mapper_getCollectionClass_DataSourceCollection', 'datasource'), $this->m->mockGetCollectionClass(true));
 	}
 
+	public function testAbsoluteNamespace()
+	{
+		$this->m->cc = '\Orm\ArrayCollection';
+		$this->assertSame(array('Orm\ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));
+		$this->assertSame('Orm\ArrayCollection', $this->m->mockGetCollectionClass());
+	}
+
+	public function testSubAbsoluteNamespace()
+	{
+		$this->m->cc = '\Mapper_getCollectionClass_ArrayCollection';
+		$this->assertSame(array('Mapper_getCollectionClass_ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));
+		$this->assertSame('Mapper_getCollectionClass_ArrayCollection', $this->m->mockGetCollectionClass());
+	}
+
+	public function testCaseInsensitive()
+	{
+		$this->m->cc = 'Orm\ARRAYcollection';
+		$this->assertSame(array('Orm\ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));
+		$this->assertSame('Orm\ArrayCollection', $this->m->mockGetCollectionClass());
+	}
+
+	public function testSubCaseInsensitive()
+	{
+		$this->m->cc = 'MAPPER_getCollectionClass_arrayCollection';
+		$this->assertSame(array('Mapper_getCollectionClass_ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));
+		$this->assertSame('Mapper_getCollectionClass_ArrayCollection', $this->m->mockGetCollectionClass());
+	}
+
 	public function testOther()
 	{
 		$this->m->cc = 'Mapper_getCollectionClass_OtherCollection';
