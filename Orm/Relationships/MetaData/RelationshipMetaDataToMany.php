@@ -77,8 +77,7 @@ abstract class RelationshipMetaDataToMany extends RelationshipMetaData implement
 			{
 				throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} excepts $mainClass class as type, class '$relationshipClass' doesn't exists");
 			}
-			$parents = class_parents($relationshipClass);
-			if (strtolower($relationshipClass) !== strtolower($mainClass) AND !isset($parents[$mainClass]))
+			if (!is_subclass_of($relationshipClass, $mainClass) AND strcasecmp($relationshipClass, $mainClass) !== 0)
 			{
 				throw new RelationshipLoaderException("{$this->parentEntityName}::\${$this->parentParam} {{$type}} Class '$relationshipClass' isn't instanceof $mainClass");
 			}
