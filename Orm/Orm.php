@@ -119,6 +119,7 @@ require_once __DIR__ . '/Entity/MetaData/MetaDataProperty.php';
 require_once __DIR__ . '/Entity/MetaData/AnnotationMetaData.php';
 require_once __DIR__ . '/Entity/MetaData/MetaDataException.php';
 require_once __DIR__ . '/Entity/MetaData/AnnotationMetaDataException.php';
+require_once __DIR__ . '/Entity/MetaData/MetaDataNestingLevelException.php';
 
 require_once __DIR__ . '/Mappers/IMapper.php';
 require_once __DIR__ . '/Mappers/Mapper.php';

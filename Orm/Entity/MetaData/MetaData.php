@@ -229,19 +229,27 @@ class MetaData extends Object
 			{
 				if ($onlyThisProperty !== NULL)
 				{
+					MetaDataNestingLevelException::check();
 					$onePropertyMeta = array();
 					if (isset(self::$cache[$hash][$lec][1][$onlyThisProperty]))
 					{
-						if (isset(self::$cache[$hash][$lec][0][$onlyThisProperty]))
+						if (isset(self::$cache[$hash][$lec][0][$onlyThisProperty]) AND !(MetaDataNestingLevelException::isMaxDeep() AND isset(self::$cache[$hash][$lec][2][$onlyThisProperty])))
 						{
 							$t = self::$cache[$hash][$lec][0][$onlyThisProperty];
 							unset(self::$cache[$hash][$lec][0][$onlyThisProperty]);
+							unset(self::$cache[$hash][$lec][2][$onlyThisProperty]);
+							MetaDataNestingLevelException::start();
 							try {
 								$t->check($model);
+							} catch (MetaDataNestingLevelException $e) {
+								self::$cache[$hash][$lec][0][$onlyThisProperty] = $t;
+								self::$cache[$hash][$lec][2][$onlyThisProperty] = $onlyThisProperty;
 							} catch (Exception $e) {
 								self::$cache[$hash][$lec][0][$onlyThisProperty] = $t;
+								MetaDataNestingLevelException::stop();
 								throw $e;
 							}
+							MetaDataNestingLevelException::stop();
 						}
 						$onePropertyMeta[$onlyThisProperty] = self::$cache[$hash][$lec][1][$onlyThisProperty];
 					}
