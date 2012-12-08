@@ -84,6 +84,22 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 		;
 	}
 
+	public function testTypeWithNamespaceSeparator1()
+	{
+		$p = $this->m->addProperty('id', '\Orm\ManyToMany')
+			->setManyToMany('tests')
+		;
+		$this->t($p, 'Orm\ManyToMany', 'Orm\ManyToMany');
+	}
+
+	public function testTypeWithNamespaceSeparator2()
+	{
+		$p = $this->m->addProperty('id', '\ManyToMany_ManyToMany')
+			->setManyToMany('tests')
+		;
+		$this->t($p, 'ManyToMany_ManyToMany', 'ManyToMany_ManyToMany');
+	}
+
 	public function testFunctionalWithoutClass()
 	{
 		$p = $this->m->addProperty('id', 'Orm\ManyToMany')
