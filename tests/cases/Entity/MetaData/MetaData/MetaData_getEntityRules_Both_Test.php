@@ -118,6 +118,42 @@ class MetaData_getEntityRules_Both_Test extends TestCase
 		$this->assertSame($origin, $a);
 	}
 
+	public function testOnlyThisPropertyWithFail()
+	{
+		$m = new RepositoryContainer;
+		$m->register('RelationshipMetaDataManyToMany_ManyToMany2_', 'TestsRepository'); // zpusobi ze metadata entity faulujou
+
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'id');
+		$this->assertSame(array('id'), array_keys($a));
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'same1');
+		$this->assertSame(array('same1'), array_keys($a));
+		$a = MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m, 'unexists');
+		$this->assertSame(array(), array_keys($a));
+
+		try {
+			MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m);
+			$this->fail();
+		} catch (Exception $e1) {}
+
+		try {
+			MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m);
+			$this->fail();
+		} catch (Exception $e2) {}
+
+		try {
+			MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m);
+			$this->fail();
+		} catch (Exception $e3) {}
+
+		try {
+			MetaData::getEntityRules('RelationshipMetaDataManyToMany_ManyToMany1_Entity', $m);
+			$this->fail();
+		} catch (Exception $e4) {}
+
+		$this->assertSame($e1->getMessage(), $e3->getMessage());
+		$this->assertSame($e2->getMessage(), $e4->getMessage());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\MetaData', 'getEntityRules');

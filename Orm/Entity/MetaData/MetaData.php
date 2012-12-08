@@ -250,9 +250,14 @@ class MetaData extends Object
 
 				while (self::$cache[$hash][$lec][0])
 				{
-					$t = current(self::$cache[$hash][$lec][0]);
-					unset(self::$cache[$hash][$lec][0][key(self::$cache[$hash][$lec][0])]);
-					$t->check($model);
+					list($property, $t) = each(self::$cache[$hash][$lec][0]);
+					unset(self::$cache[$hash][$lec][0][$property]);
+					try {
+						$t->check($model);
+					} catch (Exception $e) {
+						self::$cache[$hash][$lec][0][$property] = $t;
+						throw $e;
+					}
 				}
 			}
 			return self::$cache[$hash][$lec][1];
