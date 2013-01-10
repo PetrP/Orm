@@ -194,6 +194,21 @@ class ArrayCollection_getResult_orderBy_Test extends ArrayCollection_Base_Test
 		$c->getResult();
 	}
 
+	public function testPhpBug50688()
+	{
+		$this->e[2]->phpBug50688 = '1';
+		$this->e[1]->phpBug50688 = '2';
+		$this->e[3]->phpBug50688 = '3';
+		$this->e[0]->phpBug50688 = '4';
+		$this->c->orderBy('phpBug50688');
+		$this->assertSame(array(
+			$this->e[2],
+			$this->e[1],
+			$this->e[3],
+			$this->e[0],
+		), $this->c->fetchAll());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\ArrayCollection', 'getResult');

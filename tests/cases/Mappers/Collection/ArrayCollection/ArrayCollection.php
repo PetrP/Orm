@@ -42,6 +42,7 @@ abstract class ArrayCollection_Base_Test extends TestCase
  * @property DateTime|NULL $date
  * @property TestEntity|NULL $e
  * @property mixed $mixed
+ * @property mixed $phpBug50688
  */
 class ArrayCollection_Entity extends TestEntity
 {
@@ -55,5 +56,11 @@ class ArrayCollection_Entity extends TestEntity
 	public function getGetter()
 	{
 		return $this->int;
+	}
+
+	public function getPhpBug50688()
+	{
+		try { throw new Exception; } catch (Exception $e) {}
+		return parent::getPhpBug50688();
 	}
 }
