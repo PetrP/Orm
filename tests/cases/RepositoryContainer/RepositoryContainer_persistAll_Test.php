@@ -172,6 +172,51 @@ class RepositoryContainer_persistAll_Test extends TestCase
 		$this->assertSame('ccc', $e3->string);
 	}
 
+	public function testRemoveDuringPersist1()
+	{
+		$r = $this->r;
+		$r2 = $this->m->Repository_persist2_;
+		$e = $r->attach(new TestEntity);
+		$e2 = $r2->attach(new Repository_persist_Entity);
+		$order = array();
+		$test = $this;
+		$r->events->addCallbackListener(Events::PERSIST, function ($args) use (& $order, $test) {
+			$order[] = 'persist';
+			$test->assertSame(3, $args->id);
+		});
+		$r->events->addCallbackListener(Events::REMOVE_BEFORE, function ($args) use (& $order, $test) {
+			$order[] = 'remove';
+		});
+		$r2->events->addCallbackListener(Events::PERSIST, function ($args) use (& $order, $test) {
+			$order[] = 'persist2_' . $args->id;
+		});
+		$r2->events->addCallbackListener(Events::REMOVE_BEFORE, function ($args) use (& $order, $test) {
+			$order[] = 'remove2';
+		});
+		$r->events->addCallbackListener(Events::PERSIST_AFTER, function ($args) use ($r2, $e2) {
+			$r2->remove($e2);
+		});
+
+		$this->assertSame(0, $r->mapper->count);
+		$this->assertSame(0, $r2->mapper->count);
+		$this->assertSame(array(), $order);
+		$this->m->persistAll();
+		$this->assertSame(1, $this->r->mapper->count);
+		$this->assertSame(4, $r2->mapper->count);
+		$this->assertSame(array(
+			'persist2_3',
+			'persist2_3',
+			'persist2_1',
+			'persist2_1',
+			'persist',
+			'remove2',
+		), $order);
+		$this->assertSame(3, $e->id);
+		$this->assertSame(false, $e->isChanged());
+		$this->assertSame(false, isset($e2->id));
+		$this->assertSame(true, $e2->isChanged());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'persistAll');

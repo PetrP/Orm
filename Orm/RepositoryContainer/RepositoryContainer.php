@@ -344,7 +344,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 				foreach ($im->getAllNew() as $e)
 				{
 					$repo->persist($e, false);
-					$seconds[$repoClass][$e->id] = array($e, $repo);
+					$seconds[$repoClass][$e->id] = $e;
 					$count++;
 				}
 
@@ -353,7 +353,7 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 				{
 					if ($e AND !isset($seconds[$repoClass][$id]) AND $e->isChanged())
 					{
-						$seconds[$repoClass][$id] = array($e, $repo);
+						$seconds[$repoClass][$id] = $e;
 						$repo->persist($e, false);
 						$count++;
 					}
@@ -364,14 +364,16 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 		// zmeny ktere se upravili v ramci udalosti se dopersistujou primo pres mapper
 		foreach ($seconds as $tmp)
 		{
-			foreach ($tmp as $tmp)
+			foreach ($tmp as $e)
 			{
-				if ($tmp[0]->isChanged())
+				if ($e->isChanged())
 				{
-					list($e, $repo) = $tmp;
-					$args = array('id' => $e->id);
-					$repo->getMapper()->persist($e);
-					$repo->getEvents()->fireEvent(Events::PERSIST, $e, $args);
+					if ($repo = $e->getRepository(false))
+					{
+						$args = array('id' => $e->id);
+						$repo->getMapper()->persist($e);
+						$repo->getEvents()->fireEvent(Events::PERSIST, $e, $args);
+					}
 				}
 			}
 		}
