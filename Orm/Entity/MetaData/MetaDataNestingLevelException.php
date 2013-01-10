@@ -19,7 +19,7 @@ class MetaDataNestingLevelException extends RuntimeException
 {
 
 	/** @var int */
-	const MAX_DEEP = 15;
+	const MAX_DEEP = 11;
 
 	/** @var int */
 	private static $deep = 0;
