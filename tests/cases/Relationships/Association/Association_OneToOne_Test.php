@@ -214,4 +214,53 @@ class Association_OneToOne_Test extends TestCase
 		$this->assertSame($e, $e2->oneToOne2);
 	}
 
+	public function testBugReassign1()
+	{
+		$this->e2->oneToOne1NotNull = $this->e1;
+
+		$this->assertSame($this->e2, $this->e1->oneToOne2NotNull);
+		$this->assertSame($this->e1, $this->e2->oneToOne1NotNull);
+
+		$this->setExpectedException('Orm\NotValidException', "Param Association_Entity::\$oneToOne2NotNull must be 'association_entity'; 'NULL' given.");
+		$this->e2->oneToOne1NotNull = $this->e3;
+	}
+
+	public function testBugReassign11()
+	{
+		$this->e2->oneToOne1NotNull = $this->e1;
+
+		$this->assertSame($this->e2, $this->e1->oneToOne2NotNull);
+		$this->assertSame($this->e1, $this->e2->oneToOne1NotNull);
+
+		$this->e1->oneToOne2NotNull = $this->e3;
+
+		$this->assertSame($this->e3, $this->e1->oneToOne2NotNull);
+		$this->assertSame(NULL, $this->e2->oneToOne1NotNull);
+		$this->assertSame($this->e1, $this->e3->oneToOne1NotNull);
+	}
+
+	public function testBugReassign2()
+	{
+		$this->e2->oneToOne2NotNull = $this->e1;
+
+		$this->assertSame($this->e2, $this->e1->oneToOne1NotNull);
+		$this->assertSame($this->e1, $this->e2->oneToOne2NotNull);
+
+		$this->e2->oneToOne2NotNull = $this->e3;
+
+		$this->assertSame(NULL, $this->e1->oneToOne1NotNull);
+		$this->assertSame($this->e3, $this->e2->oneToOne2NotNull);
+		$this->assertSame($this->e2, $this->e3->oneToOne1NotNull);
+	}
+
+	public function testBugReassig22()
+	{
+		$this->e2->oneToOne2NotNull = $this->e1;
+
+		$this->assertSame($this->e2, $this->e1->oneToOne1NotNull);
+		$this->assertSame($this->e1, $this->e2->oneToOne2NotNull);
+
+		$this->setExpectedException('Orm\NotValidException', "Param Association_Entity::\$oneToOne2NotNull must be 'association_entity'; 'NULL' given.");
+		$this->e1->oneToOne1NotNull = $this->e3;
+	}
 }

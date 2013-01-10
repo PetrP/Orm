@@ -92,7 +92,6 @@ class Repository_persist_recursion_Test extends TestCase
 			'Repository_persist_recursion_linked4_Repository',
 			'Repository_persist_recursion_linked5_Repository',
 			'Repository_persist_recursion_linked4_Repository',
-			'Repository_persist_recursion_linked5_Repository',
 		), $this->c);
 		$this->assertFalse($e1->isChanged());
 		$this->assertFalse($e2->isChanged());
@@ -128,7 +127,6 @@ class Repository_persist_recursion_Test extends TestCase
 			'Repository_persist_recursion_linked4_Repository',
 			'Repository_persist_recursion_linked5_Repository',
 			'Repository_persist_recursion_linked4_Repository',
-			'Repository_persist_recursion_linked5_Repository',
 		), $this->c);
 		$this->assertFalse($e1->isChanged());
 		$this->assertFalse($e2->isChanged());

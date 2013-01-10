@@ -662,11 +662,11 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 					}
 					else if ($rule['relationship'] === MetaData::OneToOne)
 					{
-						if ($oldEntity)
+						if ($oldEntity AND $oldEntity->__isset($childParam) AND $oldEntity->__get($childParam) === $this)
 						{
 							$oldEntity->__set($childParam, NULL);
 						}
-						if ($newEntity)
+						if ($newEntity AND (!$newEntity->__isset($childParam) OR $newEntity->__get($childParam) !== $this))
 						{
 							$newEntity->__set($childParam, $this);
 						}

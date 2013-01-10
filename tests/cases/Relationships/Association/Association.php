@@ -16,6 +16,9 @@ use Orm\Repository;
  * @property Association_Entity|NULL $oneToOne1 {1:1 Association_Repository $oneToOne2}
  * @property Association_Entity|NULL $oneToOne2 {1:1 Association_Repository $oneToOne1}
  * @property Association_Entity|NULL $oneToOneSame {1:1 Association_Repository $oneToOneSame}
+ *
+ * @property Association_Entity|NULL $oneToOne1NotNull {1:1 Association_Repository $oneToOne2NotNull}
+ * @property Association_Entity $oneToOne2NotNull {1:1 Association_Repository $oneToOne1NotNull}
  */
 class Association_Entity extends Entity
 {
