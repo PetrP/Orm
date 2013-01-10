@@ -312,7 +312,7 @@ class ArrayCollection extends Object implements IEntityCollection
 			{
 				$this->_sort = $this->sorting;
 				$this->_sort[] = array('id', self::ASC);
-				usort($source, array($this, '_sort'));
+				@usort($source, array($this, '_sort')); // @ php bug #50688
 				$this->_sort = NULL;
 			}
 
