@@ -217,6 +217,32 @@ class RepositoryContainer_persistAll_Test extends TestCase
 		$this->assertSame(true, $e2->isChanged());
 	}
 
+	public function testRemoveDuringPersist2()
+	{
+		$r = $this->r;
+		$e = $this->r->attach(new TestEntity);
+		$order = array();
+		$test = $this;
+		$this->r->events->addCallbackListener(Events::PERSIST, function ($args) use (& $order, $test) {
+			$order[] = 'persist';
+			$test->assertSame(3, $args->id);
+		});
+		$this->r->events->addCallbackListener(Events::REMOVE_BEFORE, function ($args) use (& $order, $test) {
+			$order[] = 'remove';
+		});
+		$this->r->events->addCallbackListener(Events::PERSIST_AFTER, function ($args) use ($r) {
+			$r->remove($args->entity);
+		});
+
+		$this->assertSame(0, $this->r->mapper->count);
+		$this->assertSame(array(), $order);
+		$this->m->persistAll();
+		$this->assertSame(1, $this->r->mapper->count);
+		$this->assertSame(array('persist', 'remove'), $order);
+		$this->assertSame(false, isset($e->id));
+		$this->assertSame(true, $e->isChanged());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\RepositoryContainer', 'persistAll');

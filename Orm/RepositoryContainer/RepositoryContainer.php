@@ -344,7 +344,10 @@ class RepositoryContainer extends Object implements IRepositoryContainer
 				foreach ($im->getAllNew() as $e)
 				{
 					$repo->persist($e, false);
-					$seconds[$repoClass][$e->id] = $e;
+					if (isset($e->id))
+					{
+						$seconds[$repoClass][$e->id] = $e;
+					}
 					$count++;
 				}
 

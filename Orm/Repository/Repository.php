@@ -298,7 +298,7 @@ abstract class Repository extends Object implements IRepository
 
 				$this->events->fireEvent($hasId ? Events::PERSIST_AFTER_UPDATE : Events::PERSIST_AFTER_INSERT, $entity);
 				$this->events->fireEvent(Events::PERSIST_AFTER, $entity);
-				if ($entity->isChanged())
+				if ($entity->isChanged() AND $entity->getRepository(false) === $this)
 				{
 					$this->getMapper()->persist($entity);
 					$this->events->fireEvent(Events::PERSIST, $entity, $args);
