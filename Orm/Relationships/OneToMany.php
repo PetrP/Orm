@@ -128,10 +128,14 @@ class OneToMany extends BaseToMany implements IRelationship
 		$hash = spl_object_hash($entity);
 		if (!isset($entity->$param) OR $entity->$param !== $parent)
 		{
-			if (func_num_args() >= 2 AND func_get_arg(1) === 'handled by ManyToOne') // :-)
+			if (func_num_args() >= 2 AND (($internalParameter = func_get_arg(1)) === 'handled by ManyToOne' OR $internalParameter === 'handled by ManyToOne remove')) // :-) internal
 			{
+				$parent->markAsChanged($this->getMetaData()->getParentParam());
 				unset($this->add[$hash], $this->edit[$hash], $this->del[$hash]);
-				$this->edit[$hash] = $entity;
+				if ($internalParameter !== 'handled by ManyToOne remove')
+				{
+					$this->edit[$hash] = $entity;
+				}
 				$this->get = NULL;
 				return $entity;
 			}

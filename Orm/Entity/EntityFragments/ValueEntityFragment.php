@@ -289,10 +289,53 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	 */
 	protected function onAfterRemove(IRepository $repository)
 	{
+		foreach ($this->rules as $property => $rule)
+		{
+			if ($rule['relationship'] === MetaData::ManyToMany OR $rule['relationship'] === MetaData::OneToMany)
+			{
+				$many = $this->{$property};
+				foreach ($many as $entity)
+				{
+					$many->remove($entity);
+				}
+			}
+			else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
+			{
+				$meta = $rule['relationshipParam'];
+				if ($childParam = $meta->getChildParam())
+				{
+					if (isset($this->{$property}))
+					{
+						$entity = $this->{$property};
+						if ($rule['relationship'] === MetaData::ManyToOne)
+						{
+							unset($this->values[$property]);
+							unset($this->valid[$property]);
+							$entity->{$childParam}->remove($this, 'handled by ManyToOne remove');
+						}
+						else if ($rule['relationship'] === MetaData::OneToOne)
+						{
+							unset($this->values[$property]);
+							unset($this->valid[$property]);
+							if ($entity instanceof self)
+							{
+								unset($entity->values[$childParam]);
+								unset($entity->valid[$childParam]);
+							}
+							else
+							{
+								$entity->{$childParam} = NULL;
+							}
+							$entity->markAsChanged($childParam);
+						}
+					}
+				}
+			}
+		}
+		$this->changed[NULL] = true;
 		parent::onAfterRemove($repository);
 		$this->values['id'] = NULL;
 		$this->valid['id'] = false;
-		$this->changed[NULL] = true;
 	}
 
 	/** Pri klonovani vznika nova entita se stejnejma datama */

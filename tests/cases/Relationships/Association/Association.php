@@ -29,7 +29,7 @@ class Association_Repository extends Repository
 }
 class Association_Mapper extends TestsMapper
 {
-	protected $array = array(
+	public $array = array(
 		1 => array('id' => 1),
 		2 => array('id' => 2),
 		3 => array('id' => 3),
