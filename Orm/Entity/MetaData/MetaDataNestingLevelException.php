@@ -35,7 +35,7 @@ class MetaDataNestingLevelException extends RuntimeException
 	{
 		if (self::$traceLessInstance === NULL)
 		{
-			self::$traceLessInstance = unserialize('O' . substr(serialize(__CLASS__), 1, -1) . ":3:{s:16:\"\x00Exception\x00trace\";a:0:{}s:7:\"\x00*\x00file\";N;s:7:\"\x00*\x00line\";N;}");
+			self::$traceLessInstance = unserialize('O' . substr(serialize(__CLASS__), 1, -1) . ":3:{s:16:\"\x00Exception\x00trace\";a:0:{}s:7:\"\x00*\x00file\";s:0:\"\";s:7:\"\x00*\x00line\";i:0;}");
 		}
 		return self::$traceLessInstance;
 	}
