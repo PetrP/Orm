@@ -96,9 +96,9 @@ class OneToMany extends BaseToMany implements IRelationship
 		$parent = $this->getParent();
 		$parentParam = $meta->getParentParam();
 		$hash = spl_object_hash($entity);
-		if (isset($entity->$param) AND $entity->$param !== NULL AND $entity->$param !== $parent)
+		if (isset($entity->$param) AND ($paramValue = $entity->__get($param)) !== NULL AND $paramValue !== $parent)
 		{
-			$oldParentOneToMany = isset($entity->{$param}->{$parentParam}) ? $entity->{$param}->{$parentParam} : NULL;
+			$oldParentOneToMany = isset($paramValue->{$parentParam}) ? $paramValue->__get($parentParam) : NULL;
 			if (!($oldParentOneToMany instanceof self))
 			{
 				throw new NotValidException(array($entity, $param . '::$' . $parentParam, 'instanceof ' . __CLASS__, $oldParentOneToMany));
