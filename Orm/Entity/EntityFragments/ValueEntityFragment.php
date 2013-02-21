@@ -317,6 +317,7 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 				$this->values[$property] = clone $value;
 			}
 		}
+		parent::__clone();
 	}
 
 	/**

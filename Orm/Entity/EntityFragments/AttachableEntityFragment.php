@@ -82,6 +82,16 @@ class AttachableEntityFragment extends EventEntityFragment
 		$this->model = NULL;
 	}
 
+	/** Pri klonovani vznika nova entita se stejnejma datama */
+	public function __clone()
+	{
+		if ($repository = $this->repository)
+		{
+			$this->repository = NULL;
+			$repository->attach($this);
+		}
+	}
+
 	/**
 	 * Repository ktery se o tuto entitu stara.
 	 * Existuje jen kdyz entita byla persistovana.
