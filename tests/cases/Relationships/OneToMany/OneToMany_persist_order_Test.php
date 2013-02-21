@@ -82,6 +82,34 @@ class OneToMany_persist_order_Test extends TestCase
 		$this->t();
 	}
 
+	public function testDiferentProperty()
+	{
+		$this->e->many->orderProperty = 'order2';
+		$this->e->many->add($this->c(1));
+		$this->e->many->add($this->c(2));
+		$this->e->many->add($this->c(3));
+		$this->r->flush();
+		foreach ($this->e->many->get() as $e)
+		{
+			$this->assertSame(NULL, $e->order);
+			$this->assertSame((int) $e->string, $e->order2);
+		}
+	}
+
+	public function testDisabled()
+	{
+		$this->e->many->orderProperty = NULL;
+		$this->e->many->add($this->c(1));
+		$this->e->many->add($this->c(2));
+		$this->e->many->add($this->c(3));
+		$this->r->flush();
+		foreach ($this->e->many->get() as $e)
+		{
+			$this->assertSame(NULL, $e->order);
+			$this->assertSame(NULL, $e->order2);
+		}
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\OneToMany', 'applyOrderValue');

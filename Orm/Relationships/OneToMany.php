@@ -67,6 +67,13 @@ class OneToMany extends BaseToMany implements IRelationship
 	private $del = array();
 
 	/**
+	 * @deprecated Default ordering by property order is deprecated and in future version will be removed.
+	 * @var string|NULL|false
+	 * @see self::getOrderProperty()
+	 */
+	private $defaltOrderPropertyBCValue = false;
+
+	/**
 	 * @param IEntity
 	 * @param RelationshipMetaDataOneToMany
 	 */
@@ -282,8 +289,8 @@ class OneToMany extends BaseToMany implements IRelationship
 	 */
 	protected function applyOrderValue(& $order, IEntity $entity)
 	{
-		$orderProperty = 'order';
-		if ($entity->hasParam($orderProperty))
+		$orderProperty = $this->getOrderProperty();
+		if ($orderProperty !== NULL)
 		{
 			if ($order === NULL)
 			{
@@ -295,6 +302,29 @@ class OneToMany extends BaseToMany implements IRelationship
 				$entity->{$orderProperty} = $order;
 			}
 		}
+	}
+
+	/**
+	 * @return string|NULL null mean disable
+	 */
+	protected function getOrderProperty()
+	{
+		// Default ordering by property order is deprecated and in future version will be removed.
+		if ($this->defaltOrderPropertyBCValue === false)
+		{
+			foreach ($this->getMetaData()->getCanConnectWithEntities($this->getModel()) as $entityClass)
+			{
+				$meta = MetaData::getEntityRules($entityClass, $this->getModel());
+				if (!isset($meta['order']))
+				{
+					$this->defaltOrderPropertyBCValue = NULL;
+					break;
+				}
+				$this->defaltOrderPropertyBCValue = 'order';
+			}
+		}
+
+		return $this->defaltOrderPropertyBCValue;
 	}
 
 }
