@@ -44,6 +44,16 @@ class AttachableEntityFragment_getModel_Test extends TestCase
 		$this->assertSame($this->m, $e->getModel(NULL));
 	}
 
+	public function testAfterRemove()
+	{
+		$e = $this->r->getById(1);
+		$this->r->remove($e);
+		$this->assertSame(NULL, $e->getModel(false));
+
+		$this->setExpectedException('Orm\EntityNotAttachedException', 'TestEntity is not attached to repository.');
+		$e->getModel();
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'getModel');

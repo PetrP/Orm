@@ -107,6 +107,7 @@ require_once __DIR__ . '/Entity/Exceptions/EntityNotAttachedException.php';
 require_once __DIR__ . '/Entity/Exceptions/EntityNotPersistedException.php';
 require_once __DIR__ . '/Entity/Exceptions/NotValidException.php';
 require_once __DIR__ . '/Entity/Exceptions/PropertyAccessException.php';
+require_once __DIR__ . '/Entity/Exceptions/EntityWasRemovedException.php';
 
 require_once __DIR__ . '/Entity/Injection/IEntityInjection.php';
 require_once __DIR__ . '/Entity/Injection/IEntityInjectionLoader.php';

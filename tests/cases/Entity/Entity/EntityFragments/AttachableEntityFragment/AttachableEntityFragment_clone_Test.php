@@ -31,6 +31,21 @@ class AttachableEntityFragment_clone_Test extends TestCase
 		$this->assertSame(NULL, $eClone->getRepository(false));
 	}
 
+	public function testErrorAfterRemoveOkIfClone()
+	{
+		$m = new RepositoryContainer;
+		$r = $m->getRepository('TestEntityRepository');
+		$e = new TestEntity;
+		$r->attach($e);
+		$r->remove($e);
+
+		$eClone = clone $e;
+		$r->attach($eClone);
+
+		$this->assertSame($r, $eClone->getRepository());
+		$this->assertSame($m, $eClone->getModel());
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AttachableEntityFragment', '__clone');

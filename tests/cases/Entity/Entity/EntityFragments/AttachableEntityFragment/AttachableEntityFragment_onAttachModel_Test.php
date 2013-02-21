@@ -64,6 +64,17 @@ class AttachableEntityFragment_onAttachModel_Test extends TestCase
 		$this->assertTrue(true);
 	}
 
+	public function testErrorAfterRemove()
+	{
+		$m = new RepositoryContainer;
+		$r = $m->getRepository('TestEntityRepository');
+		$e = new TestEntity;
+		$r->attach($e);
+		$r->remove($e);
+		$this->setExpectedException('Orm\EntityWasRemovedException', 'TestEntity was removed. Clone entity before reattach to repository.');
+		$e->fireEvent('onAttachModel', NULL, $m);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onAttachModel');

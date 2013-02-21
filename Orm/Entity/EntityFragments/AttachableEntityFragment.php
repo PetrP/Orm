@@ -21,7 +21,7 @@ class AttachableEntityFragment extends EventEntityFragment
 	/** @var IRepository|NULL null kdyz jeste nebylo ulozeno */
 	private $repository;
 
-	/** @var IRepositoryContainer|NULL */
+	/** @var IRepositoryContainer|NULL|false */
 	private $model;
 
 	/**
@@ -42,6 +42,10 @@ class AttachableEntityFragment extends EventEntityFragment
 	protected function onAttachModel(IRepositoryContainer $model)
 	{
 		parent::onAttachModel($model);
+		if ($this->model === false)
+		{
+			throw new EntityWasRemovedException(array($this));
+		}
 		if ($this->model AND $model !== $this->model)
 		{
 			throw new EntityAlreadyAttachedException(array($this));
@@ -60,6 +64,10 @@ class AttachableEntityFragment extends EventEntityFragment
 	protected function onAttach(IRepository $repository)
 	{
 		parent::onAttach($repository);
+		if ($this->model === false)
+		{
+			throw new EntityWasRemovedException(array($this));
+		}
 		if ($this->repository AND $repository !== $this->repository)
 		{
 			throw new EntityAlreadyAttachedException(array($this));
@@ -79,12 +87,16 @@ class AttachableEntityFragment extends EventEntityFragment
 	{
 		parent::onAfterRemove($repository);
 		$this->repository = NULL;
-		$this->model = NULL;
+		$this->model = false;
 	}
 
 	/** Pri klonovani vznika nova entita se stejnejma datama */
 	public function __clone()
 	{
+		if ($this->model === false)
+		{
+			$this->model = NULL;
+		}
 		if ($repository = $this->repository)
 		{
 			$this->repository = NULL;
@@ -115,12 +127,17 @@ class AttachableEntityFragment extends EventEntityFragment
 	 */
 	final public function getModel($need = true)
 	{
-		if ($this->model === NULL)
+		if (!$this->model)
 		{
 			if ($need === NULL AND !$this->getRepository(false)) // bc
 			{
 				// trigger_error('Entity::getModel(NULL) is deprecated do not use it.', E_USER_DEPRECATED);
 				return RepositoryContainer::get(NULL); // todo di
+			}
+			if ($this->model === false)
+			{
+				$this->getRepository($need);
+				return NULL;
 			}
 			if ($r = $this->getRepository($need))
 			{

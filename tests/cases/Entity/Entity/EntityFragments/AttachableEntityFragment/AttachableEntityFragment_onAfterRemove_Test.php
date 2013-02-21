@@ -23,6 +23,14 @@ class AttachableEntityFragment_onAfterRemove_Test extends TestCase
 		$this->assertSame(NULL, $e->getRepository(false));
 	}
 
+	public function testErrorAfterRemove()
+	{
+		$e = $this->r->getById(1);;
+		$this->r->remove($e);
+		$this->setExpectedException('Orm\EntityWasRemovedException', 'TestEntity was removed. Clone entity before reattach to repository.');
+		$this->r->attach($e);
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\AttachableEntityFragment', 'onAfterRemove');
