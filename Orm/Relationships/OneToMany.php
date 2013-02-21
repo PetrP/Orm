@@ -242,8 +242,10 @@ class OneToMany extends BaseToMany implements IRelationship
 
 		if ($this->get)
 		{
+			$order = 0;
 			foreach ($this->get as $entity)
 			{
+				$this->applyOrderValue($order, $entity);
 				if ($all OR !isset($entity->id))
 				{
 					$repository->persist($entity, $all);
@@ -259,10 +261,10 @@ class OneToMany extends BaseToMany implements IRelationship
 					$repository->persist($entity, $all);
 				}
 			}
-			$order = 0; // todo
+			$order = NULL;
 			foreach ($this->add as $entity)
 			{
-				if ($entity->hasParam('order')) $entity->order = ++$order; // todo
+				$this->applyOrderValue($order, $entity);
 				if ($all OR !isset($entity->id))
 				{
 					$repository->persist($entity, $all);
@@ -272,6 +274,27 @@ class OneToMany extends BaseToMany implements IRelationship
 
 		$this->del = $this->edit = $this->add = array();
 		if ($this->get instanceof ArrayCollection) $this->get = NULL; // free memory
+	}
+
+	/**
+	 * @param int|NULL with reference
+	 * @param IEntity
+	 */
+	protected function applyOrderValue(& $order, IEntity $entity)
+	{
+		$orderProperty = 'order';
+		if ($entity->hasParam($orderProperty))
+		{
+			if ($order === NULL)
+			{
+				$order = $this->loadCollection($this->getChildRepository(), $this->getParent(), $this->getMetaData()->getChildParam())->count();
+			}
+			$order++;
+			if (!isset($entity->{$orderProperty}) OR $entity->{$orderProperty} !== $order)
+			{
+				$entity->{$orderProperty} = $order;
+			}
+		}
 	}
 
 }
