@@ -16,9 +16,17 @@ class OneToMany_persist_Test extends OneToMany_Test
 
 	public function testNotPersistedParent()
 	{
-		$this->e->getRepository()->remove($this->e);
+		$e = new OneToManyX_Entity;
 		$this->setExpectedException('Orm\EntityNotAttachedException', 'OneToManyX_Entity is not attached to repository.');
+		$e->many->persist();
+	}
+
+	public function testNotPersistedParentButWas()
+	{
+		$this->e->getRepository()->remove($this->e);
+		// nevyhodi chybu protoze child repository je nacachovane na objektu, myslim ze tohle chovani by nemelo nicemu vadit
 		$this->o2m->persist();
+		$this->assertTrue(true);
 	}
 
 	public function testRemove()

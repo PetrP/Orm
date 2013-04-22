@@ -284,6 +284,36 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 	}
 
 	/**
+	 * Před vymazanim
+	 * @param IRepository
+	 */
+	protected function onBeforeRemove(IRepository $repository)
+	{
+		foreach ($this->rules as $property => $rule)
+		{
+			if ($rule['relationship'] === MetaData::ManyToMany OR $rule['relationship'] === MetaData::OneToMany)
+			{
+				$param = $rule['relationshipParam']->getChildParam();
+				foreach ($this->{$property} as $entity)
+				{
+					if (isset($entity->{$param}))
+					{
+						$entity->{$param};
+					}
+				}
+			}
+			else if ($rule['relationship'] === MetaData::ManyToOne OR $rule['relationship'] === MetaData::OneToOne)
+			{
+				if (isset($this->{$property}))
+				{
+					$this->{$property};
+				}
+			}
+		}
+		parent::onBeforeRemove($repository);
+	}
+
+	/**
 	 * Po vymazani
 	 * @param IRepository
 	 */
