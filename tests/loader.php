@@ -4,6 +4,7 @@ require_once __DIR__ . '/libs/Nette/loader.php';
 require_once __DIR__ . '/libs/dump.php';
 require_once __DIR__ . '/libs/dibi/dibi.php';
 require_once __DIR__ . '/libs/HttpPHPUnit/ResultPrinter/NetteDebug.php';
+require_once __DIR__ . '/libs/Access/Init.php';
 
 use Nette\Environment;
 use Nette\Loaders\RobotLoader;
