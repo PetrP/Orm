@@ -1,5 +1,8 @@
 <?php
 
+use Orm\RepositoryContainer;
+
+
 /**
  * @covers Orm\OneToMany::getCollection
  */
@@ -63,6 +66,34 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 		$this->o2m->loadCollection = $this;
 		$this->setExpectedException('Orm\BadReturnException', "OneToMany_OneToMany::loadCollection() must return Orm\\IEntityCollection, 'OneToMany_getCollection_Test' given.");
 		$this->o2m->get();
+	}
+
+	public function testOrder()
+	{
+		$m = new RepositoryContainer;
+		$r = $m->getRepository('OneToMany_persist_order_1_Repository');
+		$e = $r->attach(new OneToMany_persist_order_1_Entity);
+		$create = function ($string) {
+			$e = new OneToMany_persist_order_2_Entity;
+			$e->string = $string;
+			return $e;
+		};
+
+		$e->many->orderProperty = 'order';
+		$e->many->add($a = $create(1));
+		$e->many->add($b = $create(2));
+		$e->many->add($c = $create(3));
+		$r->flush();
+
+		$this->assertSame(1, $a->order);
+		$this->assertSame(2, $b->order);
+		$this->assertSame(3, $c->order);
+
+		$a->order = 3;
+		$b->order = 2;
+		$c->order = 1;
+
+		$this->assertSame(array($c, $b, $a), $e->many->get()->fetchAll());
 	}
 
 	public function testReflection()

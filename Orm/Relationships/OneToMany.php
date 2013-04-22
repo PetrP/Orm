@@ -197,6 +197,11 @@ class OneToMany extends BaseToMany implements IRelationship
 				{
 					throw new BadReturnException(array($this, 'loadCollection', 'Orm\IEntityCollection', $all));
 				}
+				$orderProperty = $this->getOrderProperty();
+				if ($orderProperty !== NULL)
+				{
+					$all = $all->toCollection()->orderBy($orderProperty);
+				}
 			}
 			else
 			{
