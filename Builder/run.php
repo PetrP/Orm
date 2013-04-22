@@ -67,6 +67,7 @@ foreach (array(
 		'dibi',
 		'Nette',
 		'PHPUnit',
+		'Access',
 	) as $lib)
 	{
 		if ($lib === 'Nette' AND !($version & Builder::NS_NETTE)) continue;
