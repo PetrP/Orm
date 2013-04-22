@@ -162,7 +162,7 @@ class AccessAccessorPhp52 extends AccessBase
 				throw new Exception('Access needs PHP 5.3 to work with final classes.');
 			}
 
-			$helperClassName = $className . '__AccessAccessor_php52__' . md5(lcg_value());
+			$helperClassName = str_replace('\\', '__', $className) . '__AccessAccessor_php52__' . md5(lcg_value());
 			eval("
 				abstract class {$helperClassName} extends {$className}
 				{
