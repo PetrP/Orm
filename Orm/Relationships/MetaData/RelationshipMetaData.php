@@ -99,6 +99,25 @@ abstract class RelationshipMetaData extends Object
 
 	/**
 	 * @param IRepositoryContainer
+	 * @return string[]
+	 */
+	final public function getCanConnectWithEntities(IRepositoryContainer $model)
+	{
+		if (!$this->canConnectWith)
+		{
+			MetaData::getEntityRules($this->getParentEntityName(), $model); // zkontroluje integritu a naplni canConnectWith
+			if (!$this->canConnectWith)
+			{
+				// znamena ze tento objekt neni v metadatech napr. ze se vytvoril rucne v testech
+				// v beznem provozu by nemelo dochazat
+				$this->check($model);
+			}
+		}
+		return $this->canConnectWith;
+	}
+
+	/**
+	 * @param IRepositoryContainer
 	 * @param string MetaData::ManyToOne|MetaData::OneToOne|MetaData::ManyToMany|MetaData::OneToMany
 	 * @param bool
 	 * @param callback (RelationshipMetaData $parent, RelationshipMetaData $child)
