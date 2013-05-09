@@ -55,7 +55,8 @@ class Zipper extends Object
 				throw new Exception($file);
 			}
 			if (!is_file($file)) throw new Exception($file);
-			if (!$this->zip->addFile($file, substr($file, strlen($this->rootDir)+1)))
+			$localName = strtr(substr($file, strlen($this->rootDir)+1), '\\', '/');
+			if (!$this->zip->addFile($file, $localName))
 			{
 				throw new Exception;
 			}
