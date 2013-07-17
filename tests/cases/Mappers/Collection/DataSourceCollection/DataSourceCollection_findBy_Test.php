@@ -1,6 +1,7 @@
 <?php
 
 use Orm\DataSourceCollection;
+use Orm\ArrayCollection;
 
 /**
  * @covers Orm\DataSourceCollection::findBy
@@ -28,6 +29,13 @@ class DataSourceCollection_findBy_Test extends DataSourceCollection_Base_Test
 	{
 		$c = $this->c->findBy(array('x' => $this->model->tests->getById(2)));
 		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` = '2')", $c);
+	}
+
+	public function testEntityNotPersisted()
+	{
+		$e = new TestEntity;
+		$c = $this->c->findBy(array('x' => $e));
+		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` = NULL)", $c);
 	}
 
 	public function testDate()
@@ -66,10 +74,34 @@ class DataSourceCollection_findBy_Test extends DataSourceCollection_Base_Test
 		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (1, 2))", $c);
 	}
 
+	public function testCollectionNotPersisted1()
+	{
+		$c = $this->c->findBy(array('x' => new ArrayCollection(array(new TestEntity, new TestEntity))));
+		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (NULL))", $c);
+	}
+
+	public function testCollectionNotPersisted2()
+	{
+		$c = $this->c->findBy(array('x' => new ArrayCollection(array($this->model->tests->getById(2), new TestEntity))));
+		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (2))", $c);
+	}
+
 	public function testArrayEntity()
 	{
 		$c = $this->c->findBy(array('x' => array($this->model->tests->getById(2), $this->model->tests->getById(1))));
 		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (2, 1))", $c);
+	}
+
+	public function testArrayEntityNotPersisted1()
+	{
+		$c = $this->c->findBy(array('x' => array(new TestEntity, new TestEntity)));
+		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (NULL))", $c);
+	}
+
+	public function testArrayEntityNotPersisted2()
+	{
+		$c = $this->c->findBy(array('x' => array($this->model->tests->getById(2), new TestEntity)));
+		$this->a("SELECT * FROM `datasourcecollection` WHERE (`x` IN (2))", $c);
 	}
 
 	/**

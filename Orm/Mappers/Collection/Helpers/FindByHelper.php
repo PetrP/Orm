@@ -94,24 +94,29 @@ class FindByHelper
 			}
 			if ($value instanceof IEntityCollection)
 			{
-				$value = $value->fetchPairs(NULL, 'id');
+				try {
+					$value = $value->fetchPairs(NULL, 'id');
+				} catch (EntityNotPersistedException $e) {
+					$value = $value->fetchAll();
+				}
 			}
 			if ($value instanceof IEntity)
 			{
-				$value = isset($value->id) ? $value->id : NULL;
+				$where[] = array('%n = %s', $key, isset($value->id) ? $value->id : NULL); // `= NULL` never be true 
 			}
-			if (is_array($value))
+			else if (is_array($value))
 			{
-				$value = array_unique(
-					array_map(function ($v) {
-						if ($v instanceof \Orm\IEntity)
-						{
-							return isset($v->id) ? $v->id : NULL;
-						}
-						return $v;
-					}, $value)
-				);
-				$where[] = array('%n IN %in', $key, $value);
+				$tmp = array();
+				foreach ($value as $v)
+				{
+					if ($v instanceof IEntity)
+					{
+						if (!isset($v->id)) continue;
+						$v = $v->id;
+					}
+					$tmp[] = $v;
+				}
+				$where[] = array('%n IN %in', $key, array_unique($tmp));
 			}
 			else if ($value === NULL)
 			{
