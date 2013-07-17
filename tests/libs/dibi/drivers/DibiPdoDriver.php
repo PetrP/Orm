@@ -10,8 +10,8 @@
  */
 
 
-require_once dirname(__FILE__) . '/mysql.reflector.php';
-require_once dirname(__FILE__) . '/sqlite.reflector.php';
+require_once dirname(__FILE__) . '/DibiMySqlReflector.php';
+require_once dirname(__FILE__) . '/DibiSqliteReflector.php';
 
 
 /**
@@ -285,6 +285,9 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 			case 'mssql':
 				return '[' . str_replace(array('[', ']'), array('[[', ']]'), $value) . ']';
 
+			case 'sqlsrv':
+				return '[' . str_replace(']', ']]', $value) . ']';
+
 			default:
 				return $value;
 			}
@@ -372,8 +375,9 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 
 		case 'odbc':
 		case 'mssql':
+		case 'sqlsrv':
 			if ($offset < 1) {
-				$sql = 'SELECT TOP ' . (int) $limit . ' * FROM (' . $sql . ')';
+				$sql = 'SELECT TOP ' . (int) $limit . ' * FROM (' . $sql . ') t';
 				break;
 			}
 			// intentionally break omitted
@@ -451,7 +455,10 @@ class DibiPdoDriver extends DibiObject implements IDibiDriver, IDibiResultDriver
 			}
 			// PHP < 5.2.3 compatibility
 			// @see: http://php.net/manual/en/pdostatement.getcolumnmeta.php#pdostatement.getcolumnmeta.changelog
-			$row['table'] = isset($row['table']) ? $row['table'] : NULL;
+			$row = $row + array(
+				'table' => NULL,
+				'native_type' => 'VAR_STRING',
+			);
 
 			$columns[] = array(
 				'name' => $row['name'],

@@ -10,6 +10,9 @@
  */
 
 
+require_once dirname(__FILE__) . '/DibiMsSql2005Reflector.php';
+
+
 /**
  * The dibi driver for MS SQL Driver 2005 database.
  *
@@ -70,6 +73,9 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 			$this->connection = $config['resource'];
 
 		} else {
+			// Default values
+			if (!isset($config['options']['CharacterSet'])) $config['options']['CharacterSet'] = 'UTF-8';
+
 			$this->connection = sqlsrv_connect($config['host'], (array) $config['options']);
 		}
 
@@ -198,7 +204,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getReflector()
 	{
-		throw new DibiNotSupportedException;
+		return new DibiMssql2005Reflector($this);
 	}
 
 
@@ -237,7 +243,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 
 		case dibi::IDENTIFIER:
 			// @see http://msdn.microsoft.com/en-us/library/ms176027.aspx
-			return '[' . str_replace(array('[', ']'), array('[[', ']]'), $value) . ']';
+			return '[' . str_replace(']', ']]', $value) . ']';
 
 		case dibi::BOOL:
 			return $value ? 1 : 0;
@@ -297,7 +303,7 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	{
 		// offset support is missing
 		if ($limit >= 0) {
-			$sql = 'SELECT TOP ' . (int) $limit . ' * FROM (' . $sql . ')';
+			$sql = 'SELECT TOP ' . (int) $limit . ' * FROM (' . $sql . ') AS T ';
 		}
 
 		if ($offset) {
@@ -375,14 +381,12 @@ class DibiMsSql2005Driver extends DibiObject implements IDibiDriver, IDibiResult
 	 */
 	public function getResultColumns()
 	{
-		$count = sqlsrv_num_fields($this->resultSet);
 		$columns = array();
-		for ($i = 0; $i < $count; $i++) {
-			$row = (array) sqlsrv_field_metadata($this->resultSet, $i);
+		foreach ((array) sqlsrv_field_metadata($this->resultSet) as $fieldMetadata) {
 			$columns[] = array(
-				'name' => $row['Name'],
-				'fullname' => $row['Name'],
-				'nativetype' => $row['Type'],
+				'name' => $fieldMetadata['Name'],
+				'fullname' => $fieldMetadata['Name'],
+				'nativetype' => $fieldMetadata['Type'],
 			);
 		}
 		return $columns;

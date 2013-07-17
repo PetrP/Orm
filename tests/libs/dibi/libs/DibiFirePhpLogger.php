@@ -28,6 +28,12 @@ class DibiFirePhpLogger extends DibiObject
 	/** @var int */
 	public $filter;
 
+	/** @var int  Elapsed time for all queries */
+	public $totalTime = 0;
+
+	/** @var int  Number of all queries */
+	public $numOfQueries = 0;
+
 	/** @var array */
 	private static $fireTable = array(array('Time', 'SQL Statement', 'Rows', 'Connection'));
 
@@ -60,10 +66,12 @@ class DibiFirePhpLogger extends DibiObject
 			return;
 		}
 
+		$this->totalTime += $event->time;
+		$this->numOfQueries++;
 		self::$fireTable[] = array(
 			sprintf('%0.3f', $event->time * 1000),
 			strlen($event->sql) > self::$maxLength ? substr($event->sql, 0, self::$maxLength) . '...' : $event->sql,
-			$event->result instanceof Exception ? 'ERROR' : $event->count,
+			$event->result instanceof Exception ? 'ERROR' : (string) $event->count,
 			$event->connection->getConfig('driver') . '/' . $event->connection->getConfig('name')
 		);
 
@@ -74,7 +82,7 @@ class DibiFirePhpLogger extends DibiObject
 		$payload = json_encode(array(
 			array(
 				'Type' => 'TABLE',
-				'Label' => 'dibi profiler (' . dibi::$numOfQueries . ' SQL queries took ' . sprintf('%0.3f', dibi::$totalTime * 1000) . ' ms)',
+				'Label' => 'dibi profiler (' . $this->numOfQueries . ' SQL queries took ' . sprintf('%0.3f', $this->totalTime * 1000) . ' ms)',
 			),
 			self::$fireTable,
 		));
