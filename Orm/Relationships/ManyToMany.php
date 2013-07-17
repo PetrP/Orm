@@ -205,10 +205,11 @@ class ManyToMany extends BaseToMany implements IRelationship
 	{
 		if ($this->get === NULL)
 		{
-			if ($this->getModel(false))
+			$parent = $this->getParent();
+			if ($this->getModel(false) AND isset($parent->id))
 			{
 				$repository = $this->getChildRepository(false);
-				$ids = $this->getMapper()->load($this->getParent(), $this->injectedValue);
+				$ids = $this->getMapper()->load($parent, $this->injectedValue);
 				$all = $this->loadCollection($repository, $ids);
 				if (!($all instanceof IEntityCollection))
 				{

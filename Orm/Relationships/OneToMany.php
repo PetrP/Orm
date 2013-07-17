@@ -194,7 +194,7 @@ class OneToMany extends BaseToMany implements IRelationship
 		{
 			$param = $this->getMetaData()->getChildParam();
 			$parent = $this->getParent();
-			if ($repository = $this->getChildRepository(false))
+			if ($repository = $this->getChildRepository(false) AND isset($parent->id))
 			{
 				$all = $this->loadCollection($repository, $parent, $param);
 				if (!($all instanceof IEntityCollection))

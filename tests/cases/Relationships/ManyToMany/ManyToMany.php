@@ -11,6 +11,7 @@ use Orm\RelationshipMetaDataManyToMany;
 
 /**
  * @property $foo
+ * @property ManyToMany_ManyToMany $many {m:m OneToMany_}
  */
 class ManyToMany_Entity extends Entity
 {
