@@ -13,11 +13,6 @@ class DataSourceCollection_toArrayCollection_Test extends DataSourceCollection_B
 		$this->assertInstanceOf('Orm\ArrayCollection', $a);
 		$this->assertSame(3, count($a));
 
-		$this->d->addExpected('seek', true, 0);
-		$this->d->addExpected('fetch', array('id' => 1), true);
-		$this->d->addExpected('fetch', array('id' => 2), true);
-		$this->d->addExpected('fetch', array('id' => 3), true);
-		$this->d->addExpected('fetch', false, true);
 		$this->assertSame($a->fetchAll(), $this->c->fetchAll());
 	}
 

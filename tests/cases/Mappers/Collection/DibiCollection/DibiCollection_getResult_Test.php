@@ -11,13 +11,17 @@ class DibiCollection_getResult_Test extends DibiCollection_BaseConnected_Test
 		$this->e(0, false);
 		$r = $this->c->getResult();
 		$this->assertInstanceOf('DibiResult', $r);
-		$this->assertSame($r, $this->c->getResult());
+		$this->d->addExpected('query', true, 'SELECT `e`.* FROM `dibicollectionconnected` as e');
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->assertNotSame($r, $this->c->getResult());
 	}
 
 	public function testCache()
 	{
 		$this->e(0, false);
-		$this->assertSame($this->c->getResult(), $this->c->getResult());
+		$this->d->addExpected('query', true, 'SELECT `e`.* FROM `dibicollectionconnected` as e');
+		$this->d->addExpected('createResultDriver', NULL, true);
+		$this->assertNotSame($this->c->getResult(), $this->c->getResult());
 	}
 
 	public function testReflection()

@@ -27,12 +27,8 @@ class DataSourceCollection_fetch_Test extends DataSourceCollection_BaseConnected
 		$this->e(1, false);
 		$e1 = $this->c->fetch();
 
-		$this->d->addExpected('seek', true, 0);
-		$this->d->addExpected('fetch', array('id' => 1, 'string' => 'boo'), true);
 		$e2 = $this->c->fetch();
 
-		$this->d->addExpected('seek', true, 0);
-		$this->d->addExpected('fetch', array('id' => 1, 'string' => 'boo'), true);
 		$e3 = $this->c->fetch();
 
 		$this->assertInstanceOf('TestEntity', $e1);

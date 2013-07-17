@@ -33,7 +33,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	/** @var IMapper @see self::getMapper() */
 	private $mapper;
 
-	/** @var array cache */
+	/** @var DibiResultWrapper */
 	private $result;
 
 	/** @var array @todo private */
@@ -135,11 +135,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 */
 	final public function fetch()
 	{
-		$result = $this->getResult();
-		$result->seek(0);
-		$row = $result->fetch();
-		if ($row === false) return NULL;
-		return $this->repository->hydrateEntity($row);
+		return $this->getResultWrapper()->get(0);
 	}
 
 	/**
@@ -148,7 +144,7 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 */
 	final public function fetchAll()
 	{
-		return array_map(array($this->repository, 'hydrateEntity'), $this->getResult()->fetchAll());
+		return $this->getResultWrapper()->toArray();
 	}
 
 	/**
@@ -169,16 +165,16 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 */
 	final public function fetchPairs($key = NULL, $value = NULL)
 	{
-		return $this->getResult()->fetchPairs(
+		return $this->getResultWrapper()->fetchPairs(
 			$key !== NULL ? $this->getConnventionalKey($key) : NULL,
 			$value !== NULL ? $this->getConnventionalKey($value) : NULL
 		);
 	}
 
-	/** @return HydrateEntityIterator */
+	/** @return DibiResultWrapperIterator */
 	final public function getIterator()
 	{
-		return new HydrateEntityIterator($this->repository, $this->getResult()->getIterator());
+		return $this->getResultWrapper()->getIterator();
 	}
 
 	/**
@@ -278,9 +274,18 @@ abstract class BaseDibiCollection extends Object implements IEntityCollection
 	 */
 	final public function getResult()
 	{
+		return $this->connection->nativeQuery($this->__toString());
+	}
+
+	/**
+	 * Returns DibiResult wrapper.
+	 * @return DibiResultWrapper
+	 */
+	final public function getResultWrapper()
+	{
 		if ($this->result === NULL)
 		{
-			$this->result = $this->connection->nativeQuery($this->__toString());
+			$this->result = new DibiResultWrapper($this->repository, $this->getResult());
 		}
 		return $this->result;
 	}

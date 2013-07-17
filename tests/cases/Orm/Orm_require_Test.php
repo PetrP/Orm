@@ -29,6 +29,7 @@ class Orm_require_Test extends TestCase
 				'Orm\HydrateEntityIterator' => true,
 				'Orm\FetchAssoc' => true,
 				'Orm\FindByHelper' => true,
+				'Orm\DibiResultWrapperIterator' => true,
 			);
 			if (!isset($ignore[$class]))
 			{

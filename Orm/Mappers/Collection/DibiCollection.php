@@ -54,7 +54,7 @@ class DibiCollection extends BaseDibiCollection
 	{
 		if ($this->count === NULL)
 		{
-			$this->count = $this->getResult()->count();
+			$this->count = $this->getResultWrapper()->count();
 		}
 		return $this->count;
 	}
