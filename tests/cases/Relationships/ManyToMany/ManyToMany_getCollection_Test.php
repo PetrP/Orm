@@ -20,8 +20,20 @@ class ManyToMany_getCollection_Test extends ManyToMany_Test
 	public function testNotHandledParent()
 	{
 		$this->e->repository->remove($this->e);
+		$this->e->many->_getMapper()->setInjectedValue(array(10,11,12,13,20));
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->m2m->_getCollection());
+		$this->assertSame(0, $this->m2m->_getCollection()->count());
 		$this->assertSame(array(), $this->m2m->_getCollection()->fetchAll());
+	}
+
+	public function testAttachedButNotPersist()
+	{
+		$e = new ManyToMany_Entity;
+		$this->e->repository->attach($e);
+		$e->many->_getMapper()->setInjectedValue(array(10,11,12,13,20));
+		$this->assertInstanceOf('Orm\ArrayCollection', $e->many->_getCollection());
+		$this->assertSame(0, $e->many->_getCollection()->count());
+		$this->assertSame(array(), $e->many->_getCollection()->fetchAll());
 	}
 
 	public function testAdd()

@@ -10,6 +10,7 @@ use Orm\IEntity;
 
 /**
  * @property $foo
+ * @property ManyToMany_ManyToMany $many {m:m OneToMany_}
  */
 class ManyToMany_Entity extends Entity
 {
@@ -35,6 +36,10 @@ class ManyToMany_ManyToMany extends ManyToMany
 	public function _getCollection()
 	{
 		return $this->getCollection();
+	}
+	public function _getMapper()
+	{
+		return $this->getMapper();
 	}
 
 	public function __createEntity($entity, $invasive = true)

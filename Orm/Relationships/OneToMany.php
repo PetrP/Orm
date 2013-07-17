@@ -154,7 +154,7 @@ class OneToMany extends BaseToMany implements IRelationship
 	{
 		if ($this->get === NULL)
 		{
-			if ($repository = $this->getChildRepository(false))
+			if ($repository = $this->getChildRepository(false) AND isset($this->parent->id))
 			{
 				$method = 'findBy' . $this->param;
 				$all = method_exists($repository, $method) ? $repository->$method($this->parent) : $repository->mapper->$method($this->parent);

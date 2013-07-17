@@ -47,6 +47,13 @@ class OneToMany_Mapper extends TestsMapper
 		}
 	}
 
+	public $findByParam;
+	public function findByParam($p)
+	{
+		if ($this->findByParam !== NULL) return $this->findByParam;
+		return parent::findBy(array('param' => $p));
+	}
+
 }
 
 class OneToMany_2Repository extends OneToMany_Repository
