@@ -10,7 +10,7 @@
  */
 
 
-require_once dirname(__FILE__) . '/mysql.reflector.php';
+require_once dirname(__FILE__) . '/DibiMySqlReflector.php';
 
 
 /**
@@ -81,6 +81,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 		} else {
 			// default values
 			if (!isset($config['charset'])) $config['charset'] = 'utf8';
+			if (!isset($config['timezone'])) $config['timezone'] = date('P');
 			if (!isset($config['username'])) $config['username'] = ini_get('mysqli.default_user');
 			if (!isset($config['password'])) $config['password'] = ini_get('mysqli.default_pw');
 			if (!isset($config['socket'])) $config['socket'] = ini_get('mysqli.default_socket');
@@ -132,7 +133,9 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 			$this->query("SET sql_mode='$config[sqlmode]'");
 		}
 
-		$this->query("SET time_zone='" . date('P') . "'");
+		if (isset($config['timezone'])) {
+			$this->query("SET time_zone='$config[timezone]'");
+		}
 
 		$this->buffered = empty($config['unbuffered']);
 	}
@@ -194,7 +197,7 @@ class DibiMySqliDriver extends DibiObject implements IDibiDriver, IDibiResultDri
 	 */
 	public function getAffectedRows()
 	{
-		return mysqli_affected_rows($this->connection);
+		return mysqli_affected_rows($this->connection) === -1 ? FALSE : mysqli_affected_rows($this->connection);
 	}
 
 

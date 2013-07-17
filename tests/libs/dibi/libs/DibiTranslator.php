@@ -121,7 +121,7 @@ final class DibiTranslator extends DibiObject
 						%([a-zA-Z~][a-zA-Z0-9~]{0,5})|## 10) modifier
 						(\?)                         ## 11) placeholder
 					)/xs',
- */                  // note: this can change $this->args & $this->cursor & ...
+*/                  // note: this can change $this->args & $this->cursor & ...
 					. preg_replace_callback('/(?=[`[\'":%?])(?:`(.+?)`|\[(.+?)\]|(\')((?:\'\'|[^\'])*)\'|(")((?:""|[^"])*)"|(\'|")|:(\S*?:)([a-zA-Z0-9._]?)|%([a-zA-Z~][a-zA-Z0-9~]{0,5})|(\?))/s',
 							array($this, 'cb'),
 							substr($arg, $toSkip)
@@ -218,7 +218,7 @@ final class DibiTranslator extends DibiObject
 
 						} else {
 							$v = $this->formatValue($v, $pair[1]);
-							if ($pair[1] === 'l' || $pair[1] === 'in')	{
+							if ($pair[1] === 'l' || $pair[1] === 'in') {
 								$op = 'IN ';
 							} elseif (strpos($pair[1], 'like') !== FALSE) {
 								$op = 'LIKE ';
@@ -353,7 +353,7 @@ final class DibiTranslator extends DibiObject
 			case 'i':  // signed int
 			case 'u':  // unsigned int, ignored
 				// support for long numbers - keep them unchanged
-				if (is_string($value) && preg_match('#[+-]?\d++(e\d+)?$#A', $value)) {
+				if (is_string($value) && preg_match('#[+-]?\d++(e\d+)?\z#A', $value)) {
 					return $value;
 				} else {
 					return $value === NULL ? 'NULL' : (string) (int) ($value + 0);
@@ -364,7 +364,7 @@ final class DibiTranslator extends DibiObject
 				if (is_string($value) && is_numeric($value) && strpos($value, 'x') === FALSE) {
 					return $value; // something like -9E-005 is accepted by SQL, HEX values are not
 				} else {
-					return $value === NULL ? 'NULL' : rtrim(rtrim(number_format($value + 0, 5, '.', ''), '0'), '.');
+					return $value === NULL ? 'NULL' : rtrim(rtrim(number_format($value + 0, 10, '.', ''), '0'), '.');
 				}
 
 			case 'd':  // date
@@ -436,7 +436,7 @@ final class DibiTranslator extends DibiObject
 			return (string) $value;
 
 		} elseif (is_float($value)) {
-			return rtrim(rtrim(number_format($value, 5, '.', ''), '0'), '.');
+			return rtrim(rtrim(number_format($value, 10, '.', ''), '0'), '.');
 
 		} elseif (is_bool($value)) {
 			return $this->driver->escape($value, dibi::BOOL);
