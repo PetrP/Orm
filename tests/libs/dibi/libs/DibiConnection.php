@@ -89,10 +89,10 @@ class DibiConnection extends DibiObject
 			$config['driver'] = dibi::$defaultDriver;
 		}
 
-		$driver = preg_replace('#[^a-z0-9_]#', '_', strtolower($config['driver']));
-		$class = "Dibi" . $driver . "Driver";
+		$class = preg_replace(array('#\W#', '#sql#'), array('_', 'Sql'), ucfirst(strtolower($config['driver'])));
+		$class = "Dibi{$class}Driver";
 		if (!class_exists($class, FALSE)) {
-			include_once dirname(__FILE__) . "/../drivers/$driver.php";
+			include_once dirname(__FILE__) . "/../drivers/$class.php";
 
 			if (!class_exists($class, FALSE)) {
 				throw new DibiException("Unable to create instance of dibi driver '$class'.");
@@ -338,9 +338,8 @@ class DibiConnection extends DibiObject
 	{
 		$this->connected || $this->connect();
 
-		$event = $this->onEvent ? new DibiEvent($this, DibiEvent::QUERY, $sql) : NULL;
-		dibi::$numOfQueries++;
 		dibi::$sql = $sql;
+		$event = $this->onEvent ? new DibiEvent($this, DibiEvent::QUERY, $sql) : NULL;
 		try {
 			$res = $this->driver->query($sql);
 
@@ -689,6 +688,10 @@ class DibiConnection extends DibiObject
 				$sql = '';
 				$count++;
 			}
+		}
+		if (trim($sql) !== '') {
+			$this->driver->query($sql);
+			$count++;
 		}
 		fclose($handle);
 		return $count;

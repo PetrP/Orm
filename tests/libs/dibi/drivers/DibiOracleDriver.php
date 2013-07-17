@@ -10,40 +10,39 @@
  */
 
 
-require_once dirname(__FILE__) . '/sqlite.reflector.php';
-
-
 /**
- * The dibi driver for SQLite3 database.
+ * The dibi driver for Oracle database.
  *
  * Driver options:
- *   - database (or file) => the filename of the SQLite3 database
+ *   - database => the name of the local Oracle instance or the name of the entry in tnsnames.ora
+ *   - username (or user)
+ *   - password (or pass)
+ *   - charset => character encoding to set
  *   - formatDate => how to format date in SQL (@see date)
  *   - formatDateTime => how to format datetime in SQL (@see date)
- *   - dbcharset => database character encoding (will be converted to 'charset')
- *   - charset => character encoding to set (default is UTF-8)
- *   - resource (SQLite3) => existing connection resource
+ *   - resource (resource) => existing connection resource
+ *   - persistent => Creates persistent connections with oci_pconnect instead of oci_new_connect
  *   - lazy, profiler, result, substitutes, ... => see DibiConnection options
  *
  * @author     David Grudl
  * @package    dibi\drivers
  */
-class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDriver
+class DibiOracleDriver extends DibiObject implements IDibiDriver, IDibiResultDriver, IDibiReflector
 {
-	/** @var SQLite3  Connection resource */
+	/** @var resource  Connection resource */
 	private $connection;
 
-	/** @var SQLite3Result  Resultset resource */
+	/** @var resource  Resultset resource */
 	private $resultSet;
 
 	/** @var bool */
 	private $autoFree = TRUE;
 
+	/** @var bool */
+	private $autocommit = TRUE;
+
 	/** @var string  Date and datetime format */
 	private $fmtDate, $fmtDateTime;
-
-	/** @var string  character encoding */
-	private $dbcharset, $charset;
 
 
 
@@ -52,8 +51,8 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function __construct()
 	{
-		if (!extension_loaded('sqlite3')) {
-			throw new DibiNotSupportedException("PHP extension 'sqlite3' is not loaded.");
+		if (!extension_loaded('oci8')) {
+			throw new DibiNotSupportedException("PHP extension 'oci8' is not loaded.");
 		}
 	}
 
@@ -66,29 +65,21 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function connect(array &$config)
 	{
-		DibiConnection::alias($config, 'database', 'file');
+		$foo = & $config['charset'];
 		$this->fmtDate = isset($config['formatDate']) ? $config['formatDate'] : 'U';
 		$this->fmtDateTime = isset($config['formatDateTime']) ? $config['formatDateTime'] : 'U';
 
-		if (isset($config['resource']) && $config['resource'] instanceof SQLite3) {
+		if (isset($config['resource'])) {
 			$this->connection = $config['resource'];
-		} else try {
-			$this->connection = new SQLite3($config['database']);
-
-		} catch (Exception $e) {
-			throw new DibiDriverException($e->getMessage(), $e->getCode());
+		} elseif (empty($config['persistent'])) {
+			$this->connection = @oci_new_connect($config['username'], $config['password'], $config['database'], $config['charset']); // intentionally @
+		} else {
+			$this->connection = @oci_pconnect($config['username'], $config['password'], $config['database'], $config['charset']); // intentionally @
 		}
 
-		$this->dbcharset = empty($config['dbcharset']) ? 'UTF-8' : $config['dbcharset'];
-		$this->charset = empty($config['charset']) ? 'UTF-8' : $config['charset'];
-		if (strcasecmp($this->dbcharset, $this->charset) === 0) {
-			$this->dbcharset = $this->charset = NULL;
-		}
-
-		// enable foreign keys support (defaultly disabled; if disabled then foreign key constraints are not enforced)
-		$version = SQLite3::version();
-		if ($version['versionNumber'] >= '3006019') {
-			$this->query("PRAGMA foreign_keys = ON");
+		if (!$this->connection) {
+			$err = oci_error();
+			throw new DibiDriverException($err['message'], $err['code']);
 		}
 	}
 
@@ -100,7 +91,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function disconnect()
 	{
-		$this->connection->close();
+		oci_close($this->connection);
 	}
 
 
@@ -113,16 +104,19 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function query($sql)
 	{
-		if ($this->dbcharset !== NULL) {
-			$sql = iconv($this->charset, $this->dbcharset . '//IGNORE', $sql);
-		}
+		$res = oci_parse($this->connection, $sql);
+		if ($res) {
+			oci_execute($res, $this->autocommit ? OCI_COMMIT_ON_SUCCESS : OCI_DEFAULT);
+			$err = oci_error($res);
+			if ($err) {
+				throw new DibiDriverException($err['message'], $err['code'], $sql);
 
-		$res = @$this->connection->query($sql); // intentionally @
-		if ($this->connection->lastErrorCode()) {
-			throw new DibiDriverException($this->connection->lastErrorMsg(), $this->connection->lastErrorCode(), $sql);
-
-		} elseif ($res instanceof SQLite3Result) {
-			return $this->createResultDriver($res);
+			} elseif (is_resource($res)) {
+				return $this->createResultDriver($res);
+			}
+		} else {
+			$err = oci_error($this->connection);
+			throw new DibiDriverException($err['message'], $err['code'], $sql);
 		}
 	}
 
@@ -134,7 +128,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function getAffectedRows()
 	{
-		return $this->connection->changes();
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -145,7 +139,8 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function getInsertId($sequence)
 	{
-		return $this->connection->lastInsertRowID();
+		$row = $this->query("SELECT $sequence.CURRVAL AS ID FROM DUAL")->fetch(TRUE);
+		return isset($row['ID']) ? (int) $row['ID'] : FALSE;
 	}
 
 
@@ -154,11 +149,10 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 * Begins a transaction (if supported).
 	 * @param  string  optional savepoint name
 	 * @return void
-	 * @throws DibiDriverException
 	 */
 	public function begin($savepoint = NULL)
 	{
-		$this->query($savepoint ? "SAVEPOINT $savepoint" : 'BEGIN');
+		$this->autocommit = FALSE;
 	}
 
 
@@ -171,7 +165,11 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function commit($savepoint = NULL)
 	{
-		$this->query($savepoint ? "RELEASE SAVEPOINT $savepoint" : 'COMMIT');
+		if (!oci_commit($this->connection)) {
+			$err = oci_error($this->connection);
+			throw new DibiDriverException($err['message'], $err['code']);
+		}
+		$this->autocommit = TRUE;
 	}
 
 
@@ -184,7 +182,11 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function rollback($savepoint = NULL)
 	{
-		$this->query($savepoint ? "ROLLBACK TO SAVEPOINT $savepoint" : 'ROLLBACK');
+		if (!oci_rollback($this->connection)) {
+			$err = oci_error($this->connection);
+			throw new DibiDriverException($err['message'], $err['code']);
+		}
+		$this->autocommit = TRUE;
 	}
 
 
@@ -195,7 +197,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function getResource()
 	{
-		return $this->connection;
+		return is_resource($this->connection) ? $this->connection : NULL;
 	}
 
 
@@ -206,17 +208,17 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function getReflector()
 	{
-		return new DibiSqliteReflector($this);
+		return $this;
 	}
 
 
 
 	/**
 	 * Result set driver factory.
-	 * @param  SQLite3Result
+	 * @param  resource
 	 * @return IDibiResultDriver
 	 */
-	public function createResultDriver(SQLite3Result $resource)
+	public function createResultDriver($resource)
 	{
 		$res = clone $this;
 		$res->resultSet = $resource;
@@ -240,13 +242,12 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	{
 		switch ($type) {
 		case dibi::TEXT:
-			return "'" . $this->connection->escapeString($value) . "'";
-
 		case dibi::BINARY:
-			return "X'" . bin2hex((string) $value) . "'";
+			return "'" . str_replace("'", "''", $value) . "'"; // TODO: not tested
 
 		case dibi::IDENTIFIER:
-			return '[' . strtr($value, '[]', '  ') . ']';
+			// @see http://download.oracle.com/docs/cd/B10500_01/server.920/a96540/sql_elements9a.htm
+			return '"' . str_replace('"', '""', $value) . '"';
 
 		case dibi::BOOL:
 			return $value ? 1 : 0;
@@ -272,8 +273,9 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function escapeLike($value, $pos)
 	{
-		$value = addcslashes($this->connection->escapeString($value), '%_\\');
-		return ($pos <= 0 ? "'%" : "'") . $value . ($pos >= 0 ? "%'" : "'") . " ESCAPE '\\'";
+		$value = addcslashes(str_replace('\\', '\\\\', $value), "\x00\\%_");
+		$value = str_replace("'", "''", $value);
+		return ($pos <= 0 ? "'%" : "'") . $value . ($pos >= 0 ? "%'" : "'");
 	}
 
 
@@ -304,8 +306,13 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function applyLimit(&$sql, $limit, $offset)
 	{
-		if ($limit < 0 && $offset < 1) return;
-		$sql .= ' LIMIT ' . $limit . ($offset > 0 ? ' OFFSET ' . (int) $offset : '');
+		if ($offset > 0) {
+			// see http://www.oracle.com/technology/oramag/oracle/06-sep/o56asktom.html
+			$sql = 'SELECT * FROM (SELECT t.*, ROWNUM AS "__rnum" FROM (' . $sql . ') t ' . ($limit >= 0 ? 'WHERE ROWNUM <= ' . ((int) $offset + (int) $limit) : '') . ') WHERE "__rnum" > '. (int) $offset;
+
+		} elseif ($limit >= 0) {
+			$sql = 'SELECT * FROM (' . $sql . ') WHERE ROWNUM <= ' . (int) $limit;
+		}
 	}
 
 
@@ -320,7 +327,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function __destruct()
 	{
-		$this->autoFree && $this->resultSet && @$this->free();
+		$this->autoFree && $this->getResultResource() && $this->free();
 	}
 
 
@@ -328,7 +335,6 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	/**
 	 * Returns the number of rows in a result set.
 	 * @return int
-	 * @throws DibiNotSupportedException
 	 */
 	public function getRowCount()
 	{
@@ -344,19 +350,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function fetch($assoc)
 	{
-		$row = $this->resultSet->fetchArray($assoc ? SQLITE3_ASSOC : SQLITE3_NUM);
-		$charset = $this->charset === NULL ? NULL : $this->charset . '//TRANSLIT';
-		if ($row && ($assoc || $charset)) {
-			$tmp = array();
-			foreach ($row as $k => $v) {
-				if ($charset !== NULL && is_string($v)) {
-					$v = iconv($this->dbcharset, $charset, $v);
-				}
-				$tmp[str_replace(array('[', ']'), '', $k)] = $v;
-			}
-			return $tmp;
-		}
-		return $row;
+		return oci_fetch_array($this->resultSet, ($assoc ? OCI_ASSOC : OCI_NUM) | OCI_RETURN_NULLS);
 	}
 
 
@@ -365,11 +359,10 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 * Moves cursor position without fetching row.
 	 * @param  int      the 0-based cursor pos to seek to
 	 * @return boolean  TRUE on success, FALSE if unable to seek to specified record
-	 * @throws DibiNotSupportedException
 	 */
 	public function seek($row)
 	{
-		throw new DibiNotSupportedException('Cannot seek an unbuffered result set.');
+		throw new DibiNotImplementedException;
 	}
 
 
@@ -380,7 +373,7 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function free()
 	{
-		$this->resultSet->finalize();
+		oci_free_statement($this->resultSet);
 		$this->resultSet = NULL;
 	}
 
@@ -392,15 +385,14 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	 */
 	public function getResultColumns()
 	{
-		$count = $this->resultSet->numColumns();
+		$count = oci_num_fields($this->resultSet);
 		$columns = array();
-		static $types = array(SQLITE3_INTEGER => 'int', SQLITE3_FLOAT => 'float', SQLITE3_TEXT => 'text', SQLITE3_BLOB => 'blob', SQLITE3_NULL => 'null');
-		for ($i = 0; $i < $count; $i++) {
+		for ($i = 1; $i <= $count; $i++) {
 			$columns[] = array(
-				'name'  => $this->resultSet->columnName($i),
+				'name' => oci_field_name($this->resultSet, $i),
 				'table' => NULL,
-				'fullname' => $this->resultSet->columnName($i),
-				'nativetype' => $types[$this->resultSet->columnType($i)],
+				'fullname' => oci_field_name($this->resultSet, $i),
+				'nativetype'=> oci_field_type($this->resultSet, $i),
 			);
 		}
 		return $columns;
@@ -415,40 +407,68 @@ class DibiSqlite3Driver extends DibiObject implements IDibiDriver, IDibiResultDr
 	public function getResultResource()
 	{
 		$this->autoFree = FALSE;
-		return $this->resultSet;
+		return is_resource($this->resultSet) ? $this->resultSet : NULL;
 	}
 
 
 
-	/********************* user defined functions ****************d*g**/
+	/********************* IDibiReflector ****************d*g**/
 
 
 
 	/**
-	 * Registers an user defined function for use in SQL statements.
-	 * @param  string  function name
-	 * @param  mixed   callback
-	 * @param  int     num of arguments
-	 * @return void
+	 * Returns list of tables.
+	 * @return array
 	 */
-	public function registerFunction($name, $callback, $numArgs = -1)
+	public function getTables()
 	{
-		$this->connection->createFunction($name, $callback, $numArgs);
+		$res = $this->query('SELECT * FROM cat');
+		$tables = array();
+		while ($row = $res->fetch(FALSE)) {
+			if ($row[1] === 'TABLE' || $row[1] === 'VIEW') {
+				$tables[] = array(
+					'name' => $row[0],
+					'view' => $row[1] === 'VIEW',
+				);
+			}
+		}
+		return $tables;
 	}
 
 
 
 	/**
-	 * Registers an aggregating user defined function for use in SQL statements.
-	 * @param  string  function name
-	 * @param  mixed   callback called for each row of the result set
-	 * @param  mixed   callback called to aggregate the "stepped" data from each row
-	 * @param  int     num of arguments
-	 * @return void
+	 * Returns metadata for all columns in a table.
+	 * @param  string
+	 * @return array
 	 */
-	public function registerAggregateFunction($name, $rowCallback, $agrCallback, $numArgs = -1)
+	public function getColumns($table)
 	{
-		$this->connection->createAggregate($name, $rowCallback, $agrCallback, $numArgs);
+		throw new DibiNotImplementedException;
+	}
+
+
+
+	/**
+	 * Returns metadata for all indexes in a table.
+	 * @param  string
+	 * @return array
+	 */
+	public function getIndexes($table)
+	{
+		throw new DibiNotImplementedException;
+	}
+
+
+
+	/**
+	 * Returns metadata for all foreign keys in a table.
+	 * @param  string
+	 * @return array
+	 */
+	public function getForeignKeys($table)
+	{
+		throw new DibiNotImplementedException;
 	}
 
 }

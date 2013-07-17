@@ -80,6 +80,8 @@ class DibiEvent
 		}
 
 		dibi::$elapsedTime = FALSE;
+		dibi::$numOfQueries++;
+		dibi::$sql = $sql;
 	}
 
 

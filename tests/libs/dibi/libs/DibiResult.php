@@ -54,6 +54,9 @@ class DibiResult extends DibiObject implements IDataSource
 	/** @var string  returned object class */
 	private $rowClass = 'DibiRow';
 
+	/** @var Callback  returned object factory*/
+	private $rowFactory;
+
 	/** @var array  format */
 	private $formats = array();
 
@@ -204,6 +207,19 @@ class DibiResult extends DibiObject implements IDataSource
 
 
 	/**
+	 * Set a factory to create fetched object instances. These should extend the DibiRow class.
+	 * @param  callback
+	 * @return DibiResult  provides a fluent interface
+	 */
+	public function setRowFactory($callback)
+	{
+		$this->rowFactory = $callback;
+		return $this;
+	}
+
+
+
+	/**
 	 * Fetches the row at current position, process optional type conversion.
 	 * and moves the internal cursor to the next position
 	 * @return DibiRow|FALSE  array on success, FALSE if no next record
@@ -216,7 +232,9 @@ class DibiResult extends DibiObject implements IDataSource
 		}
 		$this->fetched = TRUE;
 		$this->normalize($row);
-		if ($this->rowClass) {
+		if ($this->rowFactory) {
+			return call_user_func($this->rowFactory, $row);
+		} elseif ($this->rowClass) {
 			$row = new $this->rowClass($row);
 		}
 		return $row;
@@ -514,7 +532,7 @@ class DibiResult extends DibiObject implements IDataSource
 				$row[$key] = is_float($tmp = $value * 1) ? $value : $tmp;
 
 			} elseif ($type === dibi::FLOAT) {
-				$row[$key] = (string) ($tmp = (float) $value) === $value ? $tmp : $value;
+				$row[$key] = (string) ($tmp = (float) $value) === rtrim(rtrim($value, '0'), '.') ? $tmp : $value;
 
 			} elseif ($type === dibi::BOOL) {
 				$row[$key] = ((bool) $value) && $value !== 'f' && $value !== 'F';
@@ -636,37 +654,68 @@ class DibiResult extends DibiObject implements IDataSource
 
 
 	/**
-	 * Displays complete result set as HTML table for debug purposes.
+	 * Displays complete result set as HTML or text table for debug purposes.
 	 * @return void
 	 */
 	final public function dump()
 	{
 		$i = 0;
 		$this->seek(0);
-		while ($row = $this->fetch()) {
-			if ($i === 0) {
-				echo "\n<table class=\"dump\">\n<thead>\n\t<tr>\n\t\t<th>#row</th>\n";
-
-				foreach ($row as $col => $foo) {
-					echo "\t\t<th>" . htmlSpecialChars($col) . "</th>\n";
+		if (PHP_SAPI === 'cli') {
+			$hasColors = (substr(getenv('TERM'), 0, 5) === 'xterm');
+			$maxLen = 0;
+			while ($row = $this->fetch()) {
+				if ($i === 0) {
+					foreach ($row as $col => $foo) {
+						$len = mb_strlen($col);
+						if ($len > $maxLen) $maxLen = $len;
+					}
 				}
 
-				echo "\t</tr>\n</thead>\n<tbody>\n";
+				if ($hasColors) {
+					echo "\033[1;37m#row: $i\033[0m\n";
+				} else {
+					echo "#row: $i\n";
+				}
+
+				foreach ($row as $col => $val) {
+					$spaces = $maxLen - mb_strlen($col) + 2;
+					echo "$col" . str_repeat(" ", $spaces) .  "$val\n";
+				}
+
+				echo "\n";
+				$i++;
 			}
 
-			echo "\t<tr>\n\t\t<th>", $i, "</th>\n";
-			foreach ($row as $col) {
-				//if (is_object($col)) $col = $col->__toString();
-				echo "\t\t<td>", htmlSpecialChars($col), "</td>\n";
-			}
-			echo "\t</tr>\n";
-			$i++;
-		}
+			if ($i === 0) echo "empty result set\n";
+			echo "\n";
 
-		if ($i === 0) {
-			echo '<p><em>empty result set</em></p>';
 		} else {
-			echo "</tbody>\n</table>\n";
+			while ($row = $this->fetch()) {
+				if ($i === 0) {
+					echo "\n<table class=\"dump\">\n<thead>\n\t<tr>\n\t\t<th>#row</th>\n";
+
+					foreach ($row as $col => $foo) {
+						echo "\t\t<th>" . htmlSpecialChars($col) . "</th>\n";
+					}
+
+					echo "\t</tr>\n</thead>\n<tbody>\n";
+				}
+
+				echo "\t<tr>\n\t\t<th>", $i, "</th>\n";
+				foreach ($row as $col) {
+					//if (is_object($col)) $col = $col->__toString();
+					echo "\t\t<td>", htmlSpecialChars($col), "</td>\n";
+				}
+				echo "\t</tr>\n";
+				$i++;
+			}
+
+			if ($i === 0) {
+				echo '<p><em>empty result set</em></p>';
+			} else {
+				echo "</tbody>\n</table>\n";
+			}
 		}
 	}
 
