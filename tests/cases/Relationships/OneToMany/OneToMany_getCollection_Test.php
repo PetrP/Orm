@@ -34,7 +34,21 @@ class OneToMany_getCollection_Test extends OneToMany_Test
 	public function testNotHandledParent()
 	{
 		$this->e->repository->remove($this->e);
+		$this->r->mapper->findByParam = $this->r->mapper->findById(array(10,11,12,13,20));
 		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
+		$this->assertSame(0, $this->o2m->_getCollection()->count());
+		$this->assertSame(array(), $this->o2m->_getCollection()->fetchAll());
+	}
+
+	public function testAttachedButNotPersist()
+	{
+		$r = $this->e->repository;
+		$e = $this->e;
+		$r->remove($e);
+		$r->attach($e);
+		$this->r->mapper->findByParam = $this->r->mapper->findById(array(10,11,12,13,20));
+		$this->assertInstanceOf('Orm\ArrayCollection', $this->o2m->_getCollection());
+		$this->assertSame(0, $this->o2m->_getCollection()->count());
 		$this->assertSame(array(), $this->o2m->_getCollection()->fetchAll());
 	}
 
