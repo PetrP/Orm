@@ -44,6 +44,17 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 		', $this->c->orderBy('joins->name'));
 	}
 
+	public function testOneTableNoParam()
+	{
+		$this->a('
+			SELECT `e`.* FROM `dibicollection_join_manytomany1_` as e
+			LEFT JOIN `mm2` as `m2m__joinsNoParam` ON `m2m__joinsNoParam`.`parent_id` = `e`.`id`
+			LEFT JOIN `dibicollection_join_manytomany2_` as `joinsNoParam` ON `joinsNoParam`.`id` = `m2m__joinsNoParam`.`child_id`
+			GROUP BY `e`.`id`
+			ORDER BY `joinsNoParam`.`name` ASC
+		', $this->c->orderBy('joinsNoParam->name'));
+	}
+
 	public function testOverTwoTable()
 	{
 		$this->a('

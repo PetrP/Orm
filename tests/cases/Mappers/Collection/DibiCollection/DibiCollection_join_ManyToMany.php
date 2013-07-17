@@ -7,6 +7,7 @@ use Orm\IRepository;
 /**
  * @property string $name
  * @property $joins {m:m DibiCollection_join_ManyToMany2_ joins map}
+ * @property $joinsNoParam {m:m DibiCollection_join_ManyToMany2_}
  */
 class DibiCollection_join_ManyToMany1_Entity extends Entity
 {
@@ -45,6 +46,12 @@ class DibiCollection_join_ManyToMany_Mapper extends DibiCollection_join_Mapper
 		if ($param === 'joins')
 		{
 			$m->table = 'mm';
+			$m->parentParam = 'parent_id';
+			$m->childParam = 'child_id';
+		}
+		if ($param === 'joinsNoParam')
+		{
+			$m->table = 'mm2';
 			$m->parentParam = 'parent_id';
 			$m->childParam = 'child_id';
 		}

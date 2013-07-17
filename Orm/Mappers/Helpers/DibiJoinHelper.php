@@ -49,7 +49,7 @@ class DibiJoinHelper extends Object
 				else if ($rule['relationship'] === MetaData::ManyToMany)
 				{
 					$loader = $rule['relationshipParam'];
-					if ($r = $loader->getRepository() AND $loader->getParam()) // todo proc potrebuje param?
+					if ($r = $loader->getRepository())
 					{
 						$manyToManyMapper = $loader->getMapper($repository);
 						if ($manyToManyMapper instanceof DibiManyToManyMapper)
