@@ -373,7 +373,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 	 */
 	public function getRowCount()
 	{
-		return ibase_num_fields($this->resultSet);
+		throw new DibiNotSupportedException("Firebird/Interbase do not support returning number of rows in result set.");
 	}
 
 
@@ -390,7 +390,7 @@ class DibiFirebirdDriver extends DibiObject implements IDibiDriver, IDibiResultD
 
 		if (DibiDriverException::catchError($msg)) {
 			if (ibase_errcode() == self::ERROR_EXCEPTION_THROWN) {
-				preg_match('/exception (\d+) (\w+) (.*)/i', ibase_errmsg(), $match);
+				preg_match('/exception (\d+) (\w+) (.*)/is', ibase_errmsg(), $match);
 				throw new DibiProcedureException($match[3], $match[1], $match[2], dibi::$sql);
 
 			} else {
