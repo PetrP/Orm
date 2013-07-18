@@ -25,7 +25,7 @@ class DibiMapper_getJoinInfo_Test extends TestCase
 
 	public function testNoFk()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'TestsRepository: neni zadna vazba na `string`');
+		$this->setExpectedException('Orm\MapperJoinException', 'TestsRepository: has no joinable relationship on `string`. It is not possible to execute join.');
 		$this->m->getJoinInfo('string->id');
 	}
 

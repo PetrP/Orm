@@ -100,25 +100,25 @@ class DibiCollection_join_Test extends TestCase
 
 	public function testUnexistFK()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_join1_Repository: neni zadna vazba na `neexistuje`');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_join1_Repository: has no joinable relationship on `neexistuje`. It is not possible to execute join.');
 		$this->c->orderBy('neexistuje->name');
 	}
 
 	public function testUnexistFK2()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_join2_Repository: neni zadna vazba na `neexistuje`');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_join2_Repository: has no joinable relationship on `neexistuje`. It is not possible to execute join.');
 		$this->c->orderBy('join2->neexistuje->name');
 	}
 
 	public function testBadMapper()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinBadMapper_Repository (joinBadMapper) nepouziva Orm\DibiMapper, data nelze propojit.');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinBadMapper_Repository (joinBadMapper) not using Orm\DibiMapper. It is not possible to execute join.');
 		$this->c->orderBy('join2->joinBadMapper->name');
 	}
 
 	public function testDifferentConnection()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinDifferentConnection_Repository (joinDifferentConnection) pouziva jiny Orm\DibiConnection nez DibiCollection_join2_Repository, data nelze propojit.');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinDifferentConnection_Repository (joinDifferentConnection) has used different instance of Orm\DibiConnection than DibiCollection_join2_Repository. It is not possible to execute join.');
 		$this->c->orderBy('join2->joinDifferentConnection->name');
 	}
 
@@ -159,13 +159,13 @@ class DibiCollection_join_Test extends TestCase
 
 	public function testFindAllBadCollection()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinBadCollection_Repository (joinBadCollection) nepouziva Orm\DibiCollection, data nelze propojit.');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinBadCollection_Repository (joinBadCollection) not using Orm\DibiCollection. It is not possible to execute join.');
 		$this->c->orderBy('join2->joinBadCollection->name');
 	}
 
 	public function testFindAllHasWhere()
 	{
-		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinHasWhere_Repository (joinHasWhere) Orm\DibiCollection pouziva where(), data nelze propojit.');
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_joinHasWhere_Repository (joinHasWhere) Orm\DibiCollection has used where() at findAll. It is not possible to execute join.');
 		$this->c->orderBy('join2->joinHasWhere->name');
 	}
 

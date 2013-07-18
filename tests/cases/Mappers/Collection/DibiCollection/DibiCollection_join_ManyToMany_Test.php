@@ -70,6 +70,12 @@ class DibiCollection_join_ManyToMany_Test extends TestCase
 		', $this->c->orderBy('joins->joins->name')->orderBy('joins->name'));
 	}
 
+	public function testNotExixtsParam()
+	{
+		$this->setExpectedException('Orm\MapperJoinException', 'DibiCollection_join_ManyToMany1_Repository: has no joinable relationship on `notExistsJoin`. It is not possible to execute join.');
+		$this->c->orderBy('notExistsJoin->name');
+	}
+
 	public function testReflection()
 	{
 		$r = new ReflectionMethod('Orm\DibiCollection', 'join');

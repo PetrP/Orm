@@ -133,14 +133,14 @@ class DibiJoinHelper extends Object
 			$model = $this->mapper->getModel();
 			if (!isset($this->relationships[$sourceKey]))
 			{
-				throw new MapperJoinException(get_class($this->mapper->getRepository()) . ": neni zadna vazba na `$sourceKey`");
+				throw new MapperJoinException(get_class($this->mapper->getRepository()) . ": has no joinable relationship on `$sourceKey`. It is not possible to execute join.");
 			}
 
 			$joinRepository = $model->getRepository($this->relationships[$sourceKey][0]);
 			$tmp['mapper'] = $joinRepository->getMapper();
 			if (!($tmp['mapper'] instanceof DibiMapper))
 			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiMapper, data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) not using Orm\\DibiMapper. It is not possible to execute join.");
 			}
 			$tmp['conventional'] = $tmp['mapper']->getConventional();
 
@@ -162,7 +162,7 @@ class DibiJoinHelper extends Object
 			if ($tmp['mapper']->getConnection() !== $this->mapper->getConnection())
 			{
 				// todo porovnavat connection na collection?
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) pouziva jiny Orm\\DibiConnection nez " . get_class($this->mapper->getRepository()) . ", data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) has used different instance of Orm\\DibiConnection than " . get_class($this->mapper->getRepository()) . ". It is not possible to execute join.");
 			}
 			$tmp['sourceKey'] = $sourceKey;
 			$tmp['xConventionalKey'] = $this->format($this->relationships[$sourceKey][1], $conventional, $sourceKey);
@@ -172,12 +172,12 @@ class DibiJoinHelper extends Object
 			$collection = $tmp['mapper']->findAll();
 			if (!($collection instanceof DibiCollection))
 			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) nepouziva Orm\\DibiCollection, data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) not using Orm\\DibiCollection. It is not possible to execute join.");
 			}
 			$collectionArray = (array) $collection; // hack
 			if ($collectionArray["\0*\0where"])
 			{
-				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection pouziva where(), data nelze propojit.");
+				throw new MapperJoinException(get_class($joinRepository) . " ($sourceKey) Orm\\DibiCollection has used where() at findAll. It is not possible to execute join.");
 			}
 			$tmp['findBy'] = $collectionArray["\0*\0findBy"];
 
