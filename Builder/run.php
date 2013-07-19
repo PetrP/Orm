@@ -26,6 +26,10 @@ if ($info->versionId !== -1)
 	$zip->add($api);
 
 	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/README', $info));
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Orm/README', $info, 'PHP 5.2'));
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Api/README', $info, 'PHP 5.2'));
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Orm/README', $info, 'PHP 5.3'));
+	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Api/README', $info, 'PHP 5.3'));
 }
 
 $zip->save();
