@@ -250,9 +250,24 @@ class OneToMany extends BaseToMany implements IRelationship
 	{
 		$repository = $this->getChildRepository();
 
-		foreach ($this->del as $entity)
+		if ($this->del)
 		{
-			$repository->remove($entity);
+			$param = $this->getMetaData()->getChildParam();
+			$parent = $this->getParent();
+			foreach ($this->del as $entity)
+			{
+				if (!isset($entity->{$param}) OR $entity->{$param} === $parent)
+				{
+					$repository->remove($entity);
+				}
+				else
+				{
+					if ($all OR !isset($entity->id))
+					{
+						$repository->persist($entity, $all);
+					}
+				}
+			}
 		}
 
 

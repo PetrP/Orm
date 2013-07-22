@@ -32,9 +32,29 @@ class OneToMany_persist_Test extends OneToMany_Test
 	public function testRemove()
 	{
 		$e = $this->o2m->remove(11);
+		$this->assertSame($this->e, $e->param);
 		$this->assertTrue(isset($e->id));
 		$this->o2m->persist();
 		$this->assertFalse(isset($e->id));
+		$this->tt();
+		$this->t(10,12,13);
+	}
+
+	public function testRemoveNoIfHasReplacement()
+	{
+		$e = $this->o2m->remove(11);
+		$this->assertSame($this->e, $e->param);
+		$this->assertTrue(isset($e->id));
+
+		$parent2 = $this->e->getRepository()->getById(2);
+		$parent2->many->add($e);
+
+		$this->assertSame($parent2, $e->param);
+
+		$this->o2m->persist();
+		$this->assertTrue(isset($e->id));
+		$this->assertSame($parent2, $e->param);
+		$this->assertNotSame($this->e, $e->param);
 		$this->tt();
 		$this->t(10,12,13);
 	}
