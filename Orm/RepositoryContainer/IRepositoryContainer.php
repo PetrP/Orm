@@ -69,5 +69,3 @@ interface IRepositoryContainer
 	public function getContext();
 
 }
-
-require_once __DIR__ . '/../Orm.php';

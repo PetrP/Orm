@@ -101,3 +101,7 @@ php52§*/
 		return $plural;
 	}
 }
+
+${'Orm\Orm::$require'} = true;
+require_once __DIR__ . '/../Orm.php';
+unset(${'Orm\Orm::$require'});

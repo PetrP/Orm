@@ -38,6 +38,8 @@ if (!defined('PHP_VERSION_ID'))
 }
 
 php52§*/
+if (isset(${'Orm\Orm::$require'})) return;
+
 require_once __DIR__ . '/Common/Object.php';
 require_once __DIR__ . '/Common/ObjectMixin.php';
 require_once __DIR__ . '/Common/Callback.php';
