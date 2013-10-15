@@ -50,7 +50,7 @@ class Zipper extends Object
 		if (!$this->enable) return;
 		foreach ($files->getFiles() as $file)
 		{
-			if (!Strings::startsWith($file, $this->rootDir))
+			if (!Strings::startsWith(realpath($file), realpath($this->rootDir)))
 			{
 				throw new Exception($file);
 			}
