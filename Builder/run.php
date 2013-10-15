@@ -7,15 +7,17 @@ require_once __DIR__ . '/inc/boot.php';
 $isDev = isset($_GET['dev']);
 $info = new VersionInfo(new Git(__DIR__ . '/..'), $isDev, $isDev ? $_GET['dev'] : NULL);
 
-$zip = new Zipper(__DIR__ . "/Orm-{$info->tag}.zip", __DIR__, $info->versionId !== -1);
+$zipDownload = new Zipper(__DIR__ . "/Orm-{$info->tag}.zip", __DIR__, $info->versionId !== -1);
+$zipComposer = new Zipper(__DIR__ . "/Orm-{$info->tag}-composer.zip", __DIR__ . '/php53/Orm', $info->versionId !== -1);
 
 $b = new Builder(Builder::NS | Builder::NS_NETTE, $info);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php53/Orm");
-$zip->add($b);
+$zipDownload->add($b);
+$zipComposer->add($b);
 
 $b = new Builder(Builder::NONNS | Builder::NONNS_NETTE, $info);
 $b->build(__DIR__ . "/../Orm", __DIR__ . "/php52/Orm");
-$zip->add($b);
+$zipDownload->add($b);
 
 if ($info->versionId !== -1)
 {
@@ -23,24 +25,34 @@ if ($info->versionId !== -1)
 	$api->generate(__DIR__ . "/php52/Orm", __DIR__ . "/php52/Api");
 	$api->generate(__DIR__ . "/php53/Orm", __DIR__ . "/php53/Api");
 
-	$zip->add($api);
+	$zipDownload->add($api);
 
-	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/README', $info));
-	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Orm/README', $info, 'PHP 5.2'));
-	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Api/README', $info, 'PHP 5.2'));
-	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Orm/README', $info, 'PHP 5.3'));
-	$zip->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Api/README', $info, 'PHP 5.3'));
+	$zipDownload->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/README', $info));
+	$zipDownload->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Orm/README', $info, 'PHP 5.2'));
+	$zipDownload->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php52/Api/README', $info, 'PHP 5.2'));
+	$zipDownload->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Orm/README', $info, 'PHP 5.3'));
+	$zipDownload->add(new Readme(__DIR__ . "/../README.md", __DIR__ . '/php53/Api/README', $info, 'PHP 5.3'));
 }
-
-$zip->save();
 
 if ($info->versionId !== -1)
 {
-	@mkdir(__DIR__ . '/ftp'); @mkdir(__DIR__ . '/ftp/api'); @mkdir(__DIR__ . '/ftp/download');
+	$zipComposer->add(new ComposerJson(__DIR__ . '/php53/Orm/composer.json', $info));
+}
+
+$zipDownload->save();
+$zipComposer->save();
+
+if ($info->versionId !== -1)
+{
+	@mkdir(__DIR__ . '/ftp'); @mkdir(__DIR__ . '/ftp/api'); @mkdir(__DIR__ . '/ftp/download');  @mkdir(__DIR__ . '/ftp/composer');
 	mkdir(__DIR__ . "/ftp/api/{$info->tag}");
 	rename(__DIR__ . "/Orm-{$info->tag}.zip", __DIR__ . "/ftp/download/Orm-{$info->tag}.zip");
+	rename(__DIR__ . "/Orm-{$info->tag}-composer.zip", __DIR__ . "/ftp/composer/Orm-{$info->tag}.zip");
 	rename(__DIR__ . '/php52/Api', __DIR__ . "/ftp/api/{$info->tag}/php52");
 	rename(__DIR__ . '/php53/Api', __DIR__ . "/ftp/api/{$info->tag}/php53");
+
+	$packagesJson = new PackagesJson();
+	$packagesJson->generate(__DIR__ . '/ftp/composer', __DIR__ . '/ftp/composer/packages.json', 'http://orm.petrprochazka.com/composer/');
 }
 
 echo "<h1>{$info->tag}<h1>{$info->shortSha}<br>{$info->versionId}";
