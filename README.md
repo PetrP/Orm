@@ -10,9 +10,9 @@ Links
 * [Changelog](http://orm.petrprochazka.com/forum/forum/1/changelog)
 * [Download](http://orm.petrprochazka.com/download)
 * [API Documentation](http://orm.petrprochazka.com/api)
-* [Git](https://github.com/Clevisaci/Orm)
+* [Git](https://github.com/PetrP/Orm)
 * [Forum](http://orm.petrprochazka.com/forum)
-* [Issue Tracker](https://github.com/Clevisaci/Orm/issues)
+* [Issue Tracker](https://github.com/PetrP/Orm/issues)
 
 
 
