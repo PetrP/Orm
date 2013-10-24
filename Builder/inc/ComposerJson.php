@@ -25,8 +25,14 @@ class ComposerJson extends Object implements IZipperFiles
 			'authors' => array(
 				array(
 					'name' => 'Petr Procházka',
-					'homepage' => 'http://petrprochazka.com',
+					'email' => 'petr@petrp.cz',
+					'homepage' => 'http://petrp.cz',
 				)
+			),
+			'support' => array(
+				'forum' => 'http://orm.petrprochazka.com/forum',
+				'issues' => 'https://github.com/PetrP/Orm/issues',
+				'source' => 'https://github.com/PetrP/Orm',
 			),
 			'autoload' => array(
 				'files' => array('Orm.php'),
