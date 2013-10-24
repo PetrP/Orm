@@ -50,12 +50,12 @@ class Zipper extends Object
 		if (!$this->enable) return;
 		foreach ($files->getFiles() as $file)
 		{
-			if (!Strings::startsWith(realpath($file), realpath($this->rootDir)))
+			if (!Strings::startsWith(realpath($file), realpath($this->rootDir) . DIRECTORY_SEPARATOR))
 			{
 				throw new Exception($file);
 			}
 			if (!is_file($file)) throw new Exception($file);
-			$localName = strtr(substr($file, strlen($this->rootDir)+1), '\\', '/');
+			$localName = strtr(substr(realpath($file), strlen($this->rootDir)+1), '\\', '/');
 			if (!$this->zip->addFile($file, $localName))
 			{
 				throw new Exception;
