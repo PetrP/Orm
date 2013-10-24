@@ -31,9 +31,6 @@ class Readme extends Object implements IZipperFiles
 		$content = Strings::replace($content, '#(?<=\n|^)```[^\n]*(\n|$)#s', '');
 		$content = Strings::replace($content, '#\[([^\]]+)\]\(([^\)]+)\)#s', '$1 ($2)');
 		file_put_contents($this->file = $to, $content);
-		register_shutdown_function(function () use ($to) {
-			@unlink($to);
-		});
 	}
 
 	/** @return array of filenames */
