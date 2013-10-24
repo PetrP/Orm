@@ -13,16 +13,17 @@ use Exception;
 class Readme extends Object implements IZipperFiles
 {
 
-	/** @var string */
-	private $file;
+	private $content;
+
+	/** @var string[] */
+	private $files = array();
 
 	/**
-	 * @param string filename
 	 * @param string filename
 	 * @param VersionInfo
 	 * @param string|NULL
 	 */
-	public function __construct($from, $to, VersionInfo $info, $extraVersionText = NULL)
+	public function __construct($from, VersionInfo $info, $extraVersionText = NULL)
 	{
 		$content = file_get_contents($from);
 		$tmp = "Orm {$info->tag}" . ($extraVersionText ? " ({$extraVersionText})" : '') . " released on {$info->date}";
@@ -30,12 +31,24 @@ class Readme extends Object implements IZipperFiles
 		$content = Strings::replace($content, '#^\n?Orm\n===#si', $tmp);
 		$content = Strings::replace($content, '#(?<=\n|^)```[^\n]*(\n|$)#s', '');
 		$content = Strings::replace($content, '#\[([^\]]+)\]\(([^\)]+)\)#s', '$1 ($2)');
-		file_put_contents($this->file = $to, $content);
+		$this->content = $content;
+	}
+
+	/**
+	 * @param string filename
+	 * @return Readme $this
+	 */
+	public function addTo($to)
+	{
+		@mkdir(dirname($to), 0777, true);
+		file_put_contents($to, $this->content);
+		$this->files[$to] = $to;
+		return $this;
 	}
 
 	/** @return array of filenames */
 	public function getFiles()
 	{
-		return array($this->file);
+		return $this->files;
 	}
 }

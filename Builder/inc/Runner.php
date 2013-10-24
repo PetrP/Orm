@@ -107,11 +107,12 @@ class Runner extends Object
 
 		$zipDownload->add($api);
 
-		$zipDownload->add(new Readme($this->root . "/../README.md", $this->root . '/README', $this->info));
-		$zipDownload->add(new Readme($this->root . "/../README.md", $this->root . '/php52/Orm/README', $this->info, 'PHP 5.2'));
-		$zipDownload->add(new Readme($this->root . "/../README.md", $this->root . '/php52/Api/README', $this->info, 'PHP 5.2'));
-		$zipDownload->add(new Readme($this->root . "/../README.md", $this->root . '/php53/Orm/README', $this->info, 'PHP 5.3'));
-		$zipDownload->add(new Readme($this->root . "/../README.md", $this->root . '/php53/Api/README', $this->info, 'PHP 5.3'));
+		$r = new Readme($this->root . "/../README.md", $this->info);
+		$zipDownload->add($r->addTo($this->root . '/README'));
+		$r52 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.2');
+		$zipDownload->add($r52->addTo($this->root . '/php52/Orm/README')->addTo($this->root . '/php52/Api/README'));
+		$r53 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.3');
+		$zipDownload->add($r53->addTo($this->root . '/php53/Orm/README')->addTo($this->root . '/php53/Api/README'));
 
 		$zipComposer->add(new ComposerJson($this->root . '/php53/Orm/composer.json', $this->info));
 
