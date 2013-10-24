@@ -32,7 +32,7 @@ class ComposerJson extends Object implements IZipperFiles
 			),
 			'require' => array(
 				'php' => '>=5.3.0',
-				'nette/nette' => '*', // TODO
+				'nette/nette' => '*',
 			),
 			'conflict' => array(
 				'php' => '5.3.3',
