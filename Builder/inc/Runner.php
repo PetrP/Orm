@@ -118,6 +118,7 @@ class Runner extends Object
 
 		$r = new Readme($this->root . "/../README.md", $this->info);
 		$zipDownload->add($r->addTo($this->root . '/README'));
+		$zipComposer->add($b->r53);
 		$zipDownload->add($b->r53->addTo($this->root . '/php53/Api/README'));
 		$zipDownload->add($b->r52->addTo($this->root . '/php52/Api/README'));
 
