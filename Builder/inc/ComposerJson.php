@@ -42,9 +42,6 @@ class ComposerJson extends Object implements IZipperFiles
 		$flags = PHP_VERSION_ID > 50400 ? (JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : 0;
 		$content = json_encode($json, $flags);
 		file_put_contents($this->file = $to, $content);
-		register_shutdown_function(function () use ($to) {
-			@unlink($to);
-		});
 	}
 
 	/** @return array of filenames */
