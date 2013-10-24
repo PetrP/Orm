@@ -83,10 +83,19 @@ class Runner extends Object
 		$b53 = new Builder(Builder::NS | Builder::NS_NETTE, $this->info);
 		$b53->build($this->root . '/../Orm', $this->root . '/php53/Orm');
 
+		$r53 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.3');
+		$r53->addTo($this->root . '/php53/Orm/README');
+
 		$b52 = new Builder(Builder::NONNS | Builder::NONNS_NETTE, $this->info);
 		$b52->build($this->root . '/../Orm', $this->root . '/php52/Orm');
 
-		return (object) array('b53' => $b53, 'b52' => $b52);
+		$r52 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.2');
+		$r52->addTo($this->root . '/php52/Orm/README');
+
+		return (object) array(
+			'b53' => $b53, 'b52' => $b52,
+			'r53' => $r53, 'r52' => $r52,
+		);
 	}
 
 	protected function runDevelopment()
@@ -109,10 +118,8 @@ class Runner extends Object
 
 		$r = new Readme($this->root . "/../README.md", $this->info);
 		$zipDownload->add($r->addTo($this->root . '/README'));
-		$r52 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.2');
-		$zipDownload->add($r52->addTo($this->root . '/php52/Orm/README')->addTo($this->root . '/php52/Api/README'));
-		$r53 = new Readme($this->root . "/../README.md", $this->info, 'PHP 5.3');
-		$zipDownload->add($r53->addTo($this->root . '/php53/Orm/README')->addTo($this->root . '/php53/Api/README'));
+		$zipDownload->add($b->r53->addTo($this->root . '/php53/Api/README'));
+		$zipDownload->add($b->r52->addTo($this->root . '/php52/Api/README'));
 
 		$zipComposer->add(new ComposerJson($this->root . '/php53/Orm/composer.json', $this->info));
 
