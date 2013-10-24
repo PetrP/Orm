@@ -102,7 +102,7 @@ class FindByHelper
 			}
 			if ($value instanceof IEntity)
 			{
-				$where[] = array('%n = %s', $key, isset($value->id) ? $value->id : NULL); // `= NULL` never be true 
+				$where[] = array('%n = %s', $key, isset($value->id) ? $value->id : NULL); // `= NULL` never be true
 			}
 			else if (is_array($value))
 			{
