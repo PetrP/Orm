@@ -116,7 +116,7 @@ class Runner extends Object
 
 		$zipDownload->add($api);
 
-		$r = new Readme($this->root . "/../README.md", $this->info);
+		$r = new Readme($this->root . '/../README.md', $this->info);
 		$zipDownload->add($r->addTo($this->root . '/README'));
 		$zipComposer->add($b->r53);
 		$zipDownload->add($b->r53->addTo($this->root . '/php53/Api/README'));
@@ -135,7 +135,7 @@ class Runner extends Object
 		rename($this->root . '/php53/Api', $this->root . "/ftp/api/{$this->info->tag}/php53");
 		unlink($this->root . '/README');
 
-		$packagesJson = new PackagesJson();
+		$packagesJson = new PackagesJson;
 		$packagesJson->generate($this->root . '/ftp/composer', $this->root . '/ftp/composer/packages.json', 'http://orm.petrprochazka.com/composer/');
 	}
 

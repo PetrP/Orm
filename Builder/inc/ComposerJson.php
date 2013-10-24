@@ -6,6 +6,7 @@ use Nette\Object;
 
 class ComposerJson extends Object implements IZipperFiles
 {
+
 	/** @var string */
 	private $file;
 
@@ -57,6 +58,6 @@ class ComposerJson extends Object implements IZipperFiles
 	/** @return array of filenames */
 	public function getFiles()
 	{
-		return array(realpath($this->file));
+		return array($this->file);
 	}
 }
