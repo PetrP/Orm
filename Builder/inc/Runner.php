@@ -124,6 +124,7 @@ class Runner extends Object
 		rename($this->root . "/Orm-{$this->info->tag}-composer.zip", $this->root . "/ftp/composer/Orm-{$this->info->tag}.zip");
 		rename($this->root . '/php52/Api', $this->root . "/ftp/api/{$this->info->tag}/php52");
 		rename($this->root . '/php53/Api', $this->root . "/ftp/api/{$this->info->tag}/php53");
+		unlink($this->root . '/README');
 
 		$packagesJson = new PackagesJson();
 		$packagesJson->generate($this->root . '/ftp/composer', $this->root . '/ftp/composer/packages.json', 'http://orm.petrprochazka.com/composer/');
