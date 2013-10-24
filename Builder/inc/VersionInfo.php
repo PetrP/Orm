@@ -20,6 +20,9 @@ class VersionInfo extends Object
 	/** @var string 10203 */
 	protected $versionId;
 
+	/** @var bool */
+	protected $stable;
+
 	/** @var string 2011-11-11 */
 	protected $date;
 
@@ -32,30 +35,26 @@ class VersionInfo extends Object
 	/**
 	 * @param Git
 	 * @param bool
-	 * @param string|NULL
+	 * @param string
 	 */
-	public function __construct(Git $git, $isDev, $customTag = NULL)
+	public function __construct(Git $git, $isDev, $customTag)
 	{
 		list($head, $commitDate) = $this->getHead($git, $isDev);
-		$tags = $this->getCurrentTags($git, $head, $commitDate);
-		$tags = $this->handleCustomTag($tags, $isDev, $customTag, $commitDate);
-		if (!$tags)
+		if ($customTag === 'detect')
 		{
-			throw new Exception('There is no version tag; Add one or add dev parametr to url: run.php?dev');
+			if ($isDev) throw new Exception;
+			list($tag, $date) = $this->getCurrentTag($git, $head, $commitDate);
 		}
-		if (count($tags) > 1)
+		else
 		{
-			throw new Exception('There is more then one version tag.');
+			$tag = $customTag;
+			$date = $commitDate;
 		}
-
-		$tag = current($tags);
-		$this->tag = $tag[0];
-		$this->version = ltrim($this->tag, 'v');
-		if (!$this->versionId)
-		{
-			$this->versionId = $this->parseId($this->version);
-		}
-		$this->date = $tag[1];
+		$this->parseTag($tag);
+		$this->date = $date;
+		if ($this->isStable() AND $isDev) throw new Exception;
+		if ($this->isStable() AND $this->versionId === -1) throw new Exception;
+		if (!$isDev AND $this->versionId === -1) throw new Exception;
 	}
 
 	/**
@@ -63,7 +62,7 @@ class VersionInfo extends Object
 	 * @param bool
 	 * @return array (string 0000000000000000000000000000000000000000, string 2011-11-11)
 	 */
-	private function getHead(Git $git, $isDev)
+	protected function getHead(Git $git, $isDev)
 	{
 		$this->sha = $head = $git->getSha('HEAD');
 		$this->shortSha = substr($this->sha, 0, 7);
@@ -88,9 +87,9 @@ class VersionInfo extends Object
 	 * @param Git
 	 * @param string
 	 * @param string
-	 * @return array of array (string v1.2.3, string 2011-11-11)
+	 * @return array (string v1.2.3, string 2011-11-11)
 	 */
-	private function getCurrentTags(Git $git, $head, $commitDate)
+	protected function getCurrentTag(Git $git, $head, $commitDate)
 	{
 		$tags = array();
 		foreach (array_filter(explode("\n", $git->command('show-ref --tags'))) as $t)
@@ -120,70 +119,68 @@ class VersionInfo extends Object
 				$tags[] = array($tname, $commitDate);
 			}
 		}
-		return $tags;
-	}
-
-	/**
-	 * @param array of array
-	 * @param bool
-	 * @param string|NULL
-	 * @param string
-	 * @return array of array (string v1.2.3, string 2011-11-11)
-	 */
-	private function handleCustomTag($tags, $isDev, $customTag, $commitDate)
-	{
-		if ($isDev)
+		if (!$tags)
 		{
-			if (!$customTag AND $tags)
-			{
-				$tags[0][0] .= '-dev';
-				$this->versionId = -1;
-			}
-			else
-			{
-				list($t, $id) = $this->parseCustomTag($customTag);
-				$tags[] = array($t, $commitDate);
-				$this->versionId = $id === -1 ? -1 : $this->parseId(ltrim($t, 'v')) + $id;
-			}
+			throw new Exception('There is no version tag; Add one or add dev parametr to url: run.php?dev');
 		}
-		return $tags;
+		if (count($tags) > 1)
+		{
+			throw new Exception('There is more then one version tag.');
+		}
+		return current($tags);
 	}
 
 	/**
 	 * @param string|NULL
 	 * @return array (string v1.2.3-RC4, float)
 	 */
-	private function parseCustomTag($customTag)
+	protected function parseTag($customTag)
 	{
-		if (!$customTag)
-		{
-			return array('v0.0.0-dev0', -1);
-		}
-		if (!strpos($customTag, '-')) throw new Exception('Custom tag is in invalid format (v1.2.3-RC4)');
-		list($tag, $tmp) = explode('-', $customTag, 2);
-		list(, $type, $number) = \Nette\Utils\Strings::match(strtolower($tmp), '#^([a-z]+)([0-9]+)$#');
-		if ($type === NULL) throw new Exception('Custom tag is in invalid format (v1.2.3-RC4)');
-		$tag = 'v' . ltrim($tag, 'v');
-		$types = array(
-			'dev' => array('dev', 5),
-			'alfa' => array('alfa', 7),
-			'beta' => array('beta', 8),
-			'rc' => array('RC', 9),
+		if (!$customTag) return $this->parseTag('v0.0.0-dev0');
+		$stages = array(
+			'dev' => 5,
+			'alfa' => 7,
+			'beta' => 8,
+			'RC' => 9,
 		);
-		if (isset($types[$type]))
+		if (preg_match('(^v([0-9]+\.[0-9]+)\.([0-9]+)-(' . implode('|', array_map('preg_quote', array_keys($stages))) . ')([0-9]+)$)s', $customTag, $match))
 		{
-			list($type, $n) =  $types[$type];
-			return array("$tag-$type$number", ('0.' . str_repeat($n, $number)) - 1);
+			list(, $major, $minor, $stage, $stageNumber) = $match;
 		}
-		return array("$tag-$type$number", -1);
+		else if (preg_match('(^v([0-9]+\.[0-9]+)\.([0-9]+)$)s', $customTag, $match))
+		{
+			$stage = $stageNumber = NULL;
+			list(, $major, $minor) = $match;
+		}
+		else
+		{
+			throw new Exception('Custom tag is in invalid format (v1.2.3-dev4, v1.2.3-alfa4, , v1.2.3-beta4, v1.2.3-RC4, v1.2.3)');
+		}
+
+		$this->stable = $stage === NULL;
+		$this->tag = "v{$major}.{$minor}" . ($this->stable ? '' : "-{$stage}{$stageNumber}");
+		$this->version = ltrim($this->tag , 'v');
+		$this->versionId = $this->parseId("{$major}.{$minor}");
+		if (!$this->stable)
+		{
+			if ($stageNumber == 0)
+			{
+				$this->versionId = -1;
+			}
+			if ($this->versionId !== -1)
+			{
+				$this->versionId += ('0.' . str_repeat($stages[$stage], $stageNumber)) - 1;
+			}
+		}
 	}
 
 	/**
-	 * @param string
-	 * @param int
+	 * @param string 1.2.3
+	 * @param int 102030
 	 */
-	protected function parseId($version)
+	private function parseId($version)
 	{
+		if ($version === '0.0.0') return -1;
 		$tmp = explode('.', $version);
 		return $tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2];
 	}
@@ -223,4 +220,11 @@ class VersionInfo extends Object
 	{
 		return $this->shortSha;
 	}
+
+	/** @var bool false for RC|beta|alfa|dev */
+	public function isStable()
+	{
+		return $this->stable;
+	}
+
 }
