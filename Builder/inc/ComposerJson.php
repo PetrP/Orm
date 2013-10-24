@@ -18,8 +18,9 @@ class ComposerJson extends Object implements IZipperFiles
 		// TODO: description, check requirements
 		$json = array(
 			'name' => 'petrp/orm',
-			'version' => $info->getVersion(),
+			'version' => $info->tag,
 			'homepage' => 'http://orm.petrprochazka.com',
+			'time' => $info->date,
 			'license' => 'BSD-3-Clause',
 			'authors' => array(
 				array(
