@@ -1,4 +1,5 @@
 <?php
+
 namespace Orm\Builder;
 
 use Exception;
