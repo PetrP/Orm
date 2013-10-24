@@ -31,8 +31,11 @@ class ComposerJson extends Object implements IZipperFiles
 				'files' => array('Orm.php'),
 			),
 			'require' => array(
-				'php' => '~5.3',
+				'php' => '>=5.3.0',
 				'nette/nette' => '*', // TODO
+			),
+			'conflict' => array(
+				'php' => '5.3.3',
 			),
 			'suggest' => array(
 				'dibi/dibi' => 'Required for DibiMapper',
