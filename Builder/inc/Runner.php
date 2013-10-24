@@ -136,8 +136,51 @@ class Runner extends Object
 
 	protected function runNewStable()
 	{
+		// potrebuje HOME aby git mohl najit globalni nastaveni a tag obsahoval uzivatele
+		$env = array();
+		$getEnv = function ($name) {
+			if (($tmp = getenv($name)) !== false) return $tmp;
+			if (isset($_ENV[$name])) return $_ENV[$name];
+			if (isset($_SERVER[$name])) return $_SERVER[$name];
+			if (function_exists('apache_getenv') AND ($tmp = apache_getenv($name)) !== false) return $tmp;
+		};
+		foreach ([
+			function () use ($getEnv) {
+				return $getEnv('HOME');
+			},
+			function () use ($getEnv) {
+				return $getEnv('HOMEDRIVE') . $getEnv('HOMEPATH');
+			},
+			function () use ($getEnv) {
+				return $getEnv('USERPROFILE');
+			},
+			function () {
+				if (function_exists('posix_getpwuid') AND function_exists('posix_getuid'))
+				{
+					$tmp = posix_getpwuid(posix_geteuid());
+					return isset($tmp['dir']) ? $tmp['dir'] : NULL;
+				}
+			},
+			function () {
+				if (substr(PHP_OS, 0, 3) === 'WIN')
+				{
+					if ($user = get_current_user())
+					{
+						return (is_dir('C:/Users') ? 'C:/Users' : 'C:/Documents and Settings') . '/' . $user;
+					}
+				}
+			},
+		] as $f)
+		{
+			if ($dir = $f() AND is_dir($dir))
+			{
+				$env['HOME'] = $dir;
+				break;
+			}
+		}
+
 		$escapedTag = $this->git->escape($this->info->tag);
-		$this->git->command("tag -a -m {$escapedTag} {$escapedTag}");
+		$this->git->command("tag -a -m {$escapedTag} {$escapedTag}", $env);
 
 		$this->runStable();
 	}
