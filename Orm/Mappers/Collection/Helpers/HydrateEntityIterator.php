@@ -12,6 +12,7 @@ use Countable;
 use Traversable;
 
 /**
+ * @deprecated
  * Hydrate iterator for IEntityCollection.
  * @see IRepository::hydrateEntity()
  * @author Petr Procházka
