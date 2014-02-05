@@ -34,6 +34,36 @@ DibiMapper requires [Dibi](http://dibiphp.com/download).
 
 
 
+Installation
+------------
+
+You can download package or use Composer.
+
+#### Download
+
+http://orm.petrprochazka.com/download
+
+
+#### Composer
+
+composer.json:
+```
+{
+	"require": {
+		"petrp/orm": "0.3.*"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://orm.petrprochazka.com/composer"
+		}
+	]
+}
+```
+
+
+
+
 Author
 ------
 Petr Procházka
