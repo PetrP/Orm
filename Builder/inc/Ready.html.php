@@ -39,7 +39,6 @@
 	<h3>Composer</h3>
 	<ul>
 		<li><a href="ftp/composer/Orm-<?=e($info->tag)?>.zip">download archive</a></li>
-		<li><a target="_blank" href="ftp/composer/packages.json">packages.json</a></li>
 	</ul>
 <?php endif; ?>
 
