@@ -16,10 +16,11 @@ class ComposerJson extends Object implements IZipperFiles
 	 */
 	public function __construct($to, VersionInfo $info)
 	{
+		$version = preg_replace('(-dev[0-9]+$)', '-dev', $info->tag);
 		$json = array(
 			'name' => 'petrp/orm',
 			'description' => "Petr's ORM",
-			'version' => $info->tag,
+			'version' => $version,
 			'homepage' => 'http://orm.petrprochazka.com',
 			'time' => $info->date,
 			'license' => 'BSD-3-Clause',
