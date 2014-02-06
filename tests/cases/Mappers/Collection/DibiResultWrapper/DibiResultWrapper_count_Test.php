@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @covers Orm\DibiResultWrapper::__construct
+ * @covers Orm\DibiResultWrapper::count
  */
 class DibiResultWrapper_count_Test extends DibiResultWrapper_Base_Test
 {
