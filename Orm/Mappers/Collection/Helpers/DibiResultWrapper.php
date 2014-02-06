@@ -87,10 +87,6 @@ class DibiResultWrapper extends Object implements Countable, IteratorAggregate
 	 */
 	public function fetchPairs($key = NULL, $value = NULL)
 	{
-		if ($this->currentPosition !== 0)
-		{
-			$this->resultSeek(0);
-		}
 		$this->currentPosition = -1;
 		return $this->dibiResult->fetchPairs($key, $value);
 	}
