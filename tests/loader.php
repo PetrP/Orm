@@ -16,7 +16,9 @@ NetteDebug::get()->strictMode = true;
 date_default_timezone_set('Europe/Prague');
 
 $configurator = new Configurator;
-$configurator->setTempDirectory(__DIR__ . '/tmp');
+$tmpDir = __DIR__ . '/tmp';
+@mkdir($tmpDir, 0777);
+$configurator->setTempDirectory($tmpDir);
 
 $robotLoader = $configurator->createRobotLoader();
 $robotLoader->addDirectory(__DIR__ . '/libs');
