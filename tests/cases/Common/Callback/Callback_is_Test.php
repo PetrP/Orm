@@ -79,7 +79,7 @@ class Callback_is_Test extends TestCase
 
 	public function testSeparate()
 	{
-		if (NETTE_PACKAGE !== '5.2' AND NETTE_PACKAGE !== 'PHP 5.2')
+		if (!defined('NETTE_PACKAGE') OR (NETTE_PACKAGE !== '5.2' AND NETTE_PACKAGE !== 'PHP 5.2')) // nette >=2.1 nema konstantu
 		{
 			$this->assertFalse(class_exists('Callback'));
 		}
