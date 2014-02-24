@@ -187,9 +187,9 @@ class DibiManyToManyMapper_addDriverSpecific_Test extends DibiManyToManyMapper_C
 				'INSERT INTO t (x, y) VALUES (1, 3)',
 			)),
 			array('sqlsrv', array(
-				'INSERT INTO t (x, y) VALUES (1, 1)',
-				'INSERT INTO t (x, y) VALUES (1, 2)',
-				'INSERT INTO t (x, y) VALUES (1, 3)',
+				'INSERT INTO [t] ([x], [y]) VALUES (1, 1)',
+				'INSERT INTO [t] ([x], [y]) VALUES (1, 2)',
+				'INSERT INTO [t] ([x], [y]) VALUES (1, 3)',
 			)),
 		);
 	}
