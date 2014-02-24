@@ -64,6 +64,10 @@ class Mapper_getCollectionClass_Test extends TestCase
 
 	public function testSubAbsoluteNamespace()
 	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
 		$this->m->cc = '\Mapper_getCollectionClass_ArrayCollection';
 		$this->assertSame(array('Mapper_getCollectionClass_ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));
 		$this->assertSame('Mapper_getCollectionClass_ArrayCollection', $this->m->mockGetCollectionClass());
