@@ -40,6 +40,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 		global $ormDir;
 		$template->setVar(array('constants' => ''));
 		$template->setVar(array('included_files' => '
+			$isInSeparateProcess = true;
 			$_DIR_ = ' . var_export(__DIR__ . '/..', true) . ';
 			$ormDir = ' . var_export(isset($ormDir) ? $ormDir : NULL, true) . ';
 			require_once $_DIR_ . "/loader.php";
