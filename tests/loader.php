@@ -13,8 +13,11 @@ use Nette\Loaders\RobotLoader;
 use HttpPHPUnit\NetteDebug;
 use Nette\Config\Configurator;
 
-NetteDebug::get()->enable(false);
-NetteDebug::get()->strictMode = true;
+if (!isset($isInSeparateProcess))
+{
+	NetteDebug::get()->enable(false);
+	NetteDebug::get()->strictMode = true;
+}
 
 date_default_timezone_set('Europe/Prague');
 
