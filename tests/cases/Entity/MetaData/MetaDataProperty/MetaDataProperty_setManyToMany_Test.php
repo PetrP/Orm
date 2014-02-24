@@ -94,6 +94,10 @@ class MetaDataProperty_setManyToMany_Test extends TestCase
 
 	public function testTypeWithNamespaceSeparator2()
 	{
+		if (PHP_VERSION_ID < 50300)
+		{
+			$this->markTestIncomplete('php 5.2 (namespace)');
+		}
 		$p = $this->m->addProperty('id', '\ManyToMany_ManyToMany')
 			->setManyToMany('tests')
 		;
