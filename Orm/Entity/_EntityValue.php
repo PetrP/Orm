@@ -370,10 +370,10 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 
 		if ($m !== NULL)
 		{
+/*§php52
 			if (PHP_VERSION_ID < 50300 AND !preg_match('#[A-Z]#', $var))
 			{
 				// php 5.2 spatne predava name pri magickem pretezovani, name je cely lowercase
-				// @codeCoverageIgnoreStart
 				foreach ($this->rules as $key => $foo)
 				{
 					if (strcasecmp($key, $var) === 0)
@@ -382,7 +382,8 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 						break;
 					}
 				}
-			}	// @codeCoverageIgnoreEnd
+			}
+php52§*/
 			if ($var{0} != '_') $var{0} = $var{0} | "\x20"; // lcfirst
 			if (isset($this->rules[$var]))
 			{
