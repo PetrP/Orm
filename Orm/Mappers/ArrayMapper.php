@@ -266,8 +266,7 @@ abstract class ArrayMapper extends Mapper
 		$handle = @fopen($handleParam[0], $handleParam[1]); // @ - file may not already exist
 
 		if (!$handle)
-		{
-			// @codeCoverageIgnoreStart
+		{ // @codeCoverageIgnoreStart
 			throw new InvalidStateException("Unable initialize critical section.");
 		}	// @codeCoverageIgnoreEnd
 		flock(self::$lock = $handle, LOCK_EX);
