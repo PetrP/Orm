@@ -1,6 +1,6 @@
 <?php
 
-class PhpVersionIdTest extends TestCase
+class Orm_PhpVersionId_Test extends TestCase
 {
 	public function test()
 	{
