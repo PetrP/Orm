@@ -2,6 +2,7 @@
 
 class Orm_PhpVersionId_Test extends TestCase
 {
+
 	public function test()
 	{
 		$this->assertTrue(defined('PHP_VERSION_ID'));
@@ -29,4 +30,5 @@ class Orm_PhpVersionId_Test extends TestCase
 			$this->assertSame((PHP_MAJOR_VERSION * 10000 + PHP_MINOR_VERSION * 100 + PHP_RELEASE_VERSION), PHP_VERSION_ID);
 		}
 	}
+
 }
