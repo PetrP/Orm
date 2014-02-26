@@ -46,7 +46,7 @@ class DibiMapper_rollback_Test extends DibiMapper_Connected_Test
 		$m = $m->DibiMapper_Connected_Dibi->getMapper();
 		if (PHP_VERSION_ID < 50300)
 		{
-			throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
+			$this->markTestSkipped('php 5.2 (setAccessible)');
 		}
 		$p = new ReflectionProperty('Orm\DibiMapper', 'connection');
 		$p->setAccessible(true);
