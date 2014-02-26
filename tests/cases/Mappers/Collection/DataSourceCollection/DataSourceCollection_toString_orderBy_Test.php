@@ -25,7 +25,7 @@ class DataSourceCollection_toString_orderBy_Test extends DataSourceCollection_Ba
 		$this->c->orderBy('bbb', Dibi::DESC);
 		$this->a('SELECT * FROM `datasourcecollection` ORDER BY `aaa` ASC, `bbb` DESC');
 		$this->c->orderBy('bbb');
-		$this->markTestSkipped('datasource nepodporuje sort vicekrat podle stejneho klice');
+		$this->markTestIncomplete('datasource nepodporuje sort vicekrat podle stejneho klice');
 		$this->a('SELECT * FROM `datasourcecollection` ORDER BY `aaa` ASC, `bbb` DESC, `bbb` ASC');
 	}
 

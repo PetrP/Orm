@@ -66,7 +66,7 @@ class Mapper_getCollectionClass_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$this->m->cc = '\Mapper_getCollectionClass_ArrayCollection';
 		$this->assertSame(array('Mapper_getCollectionClass_ArrayCollection', 'array'), $this->m->mockGetCollectionClass(true));

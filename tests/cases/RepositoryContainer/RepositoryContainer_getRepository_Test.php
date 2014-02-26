@@ -35,7 +35,7 @@ class RepositoryContainer_getRepository_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$this->assertInstanceOf('RepositoryContainer_namespace\RepositoryContainer_namespaceRepository', $this->m->{'RepositoryContainer_namespace\RepositoryContainer_namespace'});
 		$this->assertSame($this->m->getRepository('RepositoryContainer_namespace\RepositoryContainer_namespace'), $this->m->{'RepositoryContainer_namespace\RepositoryContainer_namespace'});
@@ -45,7 +45,7 @@ class RepositoryContainer_getRepository_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$this->m->register('rcn', 'RepositoryContainer_namespace\RepositoryContainer_namespaceRepository');
 		$this->assertInstanceOf('RepositoryContainer_namespace\RepositoryContainer_namespaceRepository', $this->m->rcn);

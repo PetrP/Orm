@@ -23,7 +23,7 @@ class OneToMany_construct_Test extends OneToMany_Test
 	{
 		$this->o2m = new OneToMany_OneToMany($this->e, $this->r, 'unexists');
 		$this->setExpectedException('Nette\InvalidStateException', 'todo');
-		$this->markTestSkipped('Nema jednotnou chybu pro ruzne mappery, dibi haze DibiException error, array MemberAccessException. Je potreba sjednotit');
+		$this->markTestIncomplete('Nema jednotnou chybu pro ruzne mappery, dibi haze DibiException error, array MemberAccessException. Je potreba sjednotit');
 		$this->o2m->_getCollection();
 	}
 

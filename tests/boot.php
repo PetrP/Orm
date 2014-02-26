@@ -23,7 +23,7 @@ function setAccessible(ReflectionProperty $r)
 	}
 	if (PHP_VERSION_ID < 50300)
 	{
-		throw new PHPUnit_Framework_IncompleteTestError('php 5.2 (setAccessible)');
+		throw new PHPUnit_Framework_SkippedTestError('php 5.2 (setAccessible)');
 	}
 	$r->setAccessible(true);
 	return $r;
