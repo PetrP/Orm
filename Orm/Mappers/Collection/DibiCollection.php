@@ -164,8 +164,7 @@ class DibiCollection extends BaseDibiCollection
 	{
 		static $translate;
 		if ($translate === NULL)
-		{
-			// @codeCoverageIgnoreStart
+		{ // @codeCoverageIgnoreStart
 			$translate = method_exists($this->getConnection(), 'translate') ? 'translate' : 'sql';
 		}	// @codeCoverageIgnoreEnd
 		$args = func_get_args();

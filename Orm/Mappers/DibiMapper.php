@@ -266,8 +266,7 @@ class DibiMapper extends Mapper
 		$connection = $this->getConnection();
 		$connection->getDriver(); // v novem dibi se tady connectne
 		if (!$connection->isConnected())
-		{
-			// @codeCoverageIgnoreStart
+		{ // @codeCoverageIgnoreStart
 			$connection->sql(''); // protoze nema public metodu DibiConnection::connect()
 		}	// @codeCoverageIgnoreEnd
 		$translator = new DibiTranslator($dibiTranslatorVersion === 'connection' ? $connection : $connection->getDriver());
