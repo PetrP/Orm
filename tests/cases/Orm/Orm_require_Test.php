@@ -2,15 +2,26 @@
 
 use Orm\Orm;
 
-/**
- * @covers Orm\Orm
- */
 class Orm_require_Test extends TestCase
 {
 
 	/**
 	 * @runInSeparateProcess
+	 */
+	public function testMain()
+	{
+		global $ormDir;
+		$this->assertFalse(class_exists('Orm\Orm', false));
+		$this->assertFalse(class_exists('Orm\Entity', false));
+		require_once (isset($ormDir) ? $ormDir : __DIR__ . '/../../../Orm') . '/Orm.php';
+		$this->assertTrue(class_exists('Orm\Orm', false));
+		$this->assertTrue(class_exists('Orm\Entity', false));
+	}
+
+	/**
+	 * @runInSeparateProcess
 	 * @dataProvider dataProviderClasses
+	 * @covers Orm\Orm
 	 */
 	public function test($class, $path, $type)
 	{
