@@ -190,6 +190,64 @@ class Association_OneToOne_Test extends TestCase
 		$this->assertFalse(property_exists($this->e5, 'oneToOne2'));
 	}
 
+	public function test5b1()
+	{
+		$this->e2->fireEvent('onLoad', $this->r, array('id' => 2, 'oneToOne1' => 1));
+		$this->e1->fireEvent('onLoad', $this->r, array('id' => 1, 'oneToOne2' => 2));
+		$this->e1->oneToOne2 = NULL;
+
+		$this->assertSame(NULL, $this->e1->oneToOne1);
+		$this->assertSame(NULL, $this->e2->oneToOne1);
+		$this->assertSame(NULL, $this->e3->oneToOne1);
+		$this->assertSame(NULL, $this->e4->oneToOne1);
+		$this->assertSame(NULL, $this->e5->oneToOne1);
+		$this->assertSame(NULL, $this->e1->oneToOne2);
+		$this->assertSame(NULL, $this->e2->oneToOne2);
+		$this->assertSame(NULL, $this->e3->oneToOne2);
+		$this->assertSame(NULL, $this->e4->oneToOne2);
+		$this->assertSame(NULL, $this->e5->oneToOne2);
+
+		$this->assertFalse(property_exists($this->e1, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e2, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e3, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e4, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e5, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e1, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e2, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e3, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e4, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e5, 'oneToOne2'));
+	}
+
+	public function test5b2()
+	{
+		$this->e2->fireEvent('onLoad', $this->r, array('id' => 2, 'oneToOne1' => 1));
+		$this->e1->fireEvent('onLoad', $this->r, array('id' => 1, 'oneToOne2' => 2));
+		$this->e2->oneToOne1 = NULL;
+
+		$this->assertSame(NULL, $this->e1->oneToOne1);
+		$this->assertSame(NULL, $this->e2->oneToOne1);
+		$this->assertSame(NULL, $this->e3->oneToOne1);
+		$this->assertSame(NULL, $this->e4->oneToOne1);
+		$this->assertSame(NULL, $this->e5->oneToOne1);
+		$this->assertSame(NULL, $this->e1->oneToOne2);
+		$this->assertSame(NULL, $this->e2->oneToOne2);
+		$this->assertSame(NULL, $this->e3->oneToOne2);
+		$this->assertSame(NULL, $this->e4->oneToOne2);
+		$this->assertSame(NULL, $this->e5->oneToOne2);
+
+		$this->assertFalse(property_exists($this->e1, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e2, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e3, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e4, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e5, 'oneToOne1'));
+		$this->assertFalse(property_exists($this->e1, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e2, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e3, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e4, 'oneToOne2'));
+		$this->assertFalse(property_exists($this->e5, 'oneToOne2'));
+	}
+
 	public function testBug45()
 	{
 		$e = new Association_Entity;
