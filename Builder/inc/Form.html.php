@@ -1,5 +1,6 @@
 <!DOCTYPE HTML> <meta charset="utf-8">
 
+<title>Orm\Builder</title>
 <?php
 	function e($s)
 	{
