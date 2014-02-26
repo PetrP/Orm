@@ -787,7 +787,8 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 				}
 			}
 		}
+		// @codeCoverageIgnoreEnd
 		return parent::__callStatic($name, $args);
-	}	// @codeCoverageIgnoreEnd
+	}
 
 }
