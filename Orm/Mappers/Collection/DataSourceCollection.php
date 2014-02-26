@@ -98,8 +98,7 @@ class DataSourceCollection extends BaseDibiCollection
 
 			static $dsClass;
 			if ($dsClass === NULL)
-			{
-				// @codeCoverageIgnoreStart
+			{ // @codeCoverageIgnoreStart
 				$dsClass = 'DibiDataSource';
 				if (class_exists('DibiDataSourceX'))
 				{
