@@ -129,8 +129,7 @@ class MetaData extends Object
 		{
 			static $excludeMethods;
 			if ($excludeMethods === NULL)
-			{
-				// @codeCoverageIgnoreStart
+			{ // @codeCoverageIgnoreStart
 				$excludeMethods = get_class_methods('Orm\BaseEntityFragment');
 				// TODO neumoznuje pouzit vlastni IEntity
 			}	// @codeCoverageIgnoreEnd
