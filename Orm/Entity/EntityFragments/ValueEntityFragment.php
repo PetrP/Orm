@@ -353,9 +353,9 @@ abstract class ValueEntityFragment extends AttachableEntityFragment
 								unset($entity->valid[$childParam]);
 							}
 							else
-							{
+							{ // @codeCoverageIgnoreStart
 								$entity->{$childParam} = NULL;
-							}
+							} // @codeCoverageIgnoreEnd
 							$entity->markAsChanged($childParam);
 						}
 					}
