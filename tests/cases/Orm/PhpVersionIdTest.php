@@ -19,6 +19,13 @@ class PhpVersionIdTest extends TestCase
 		$this->assertSame(($tmp[0] * 10000 + $tmp[1] * 100 + $tmp[2]), PHP_VERSION_ID);
 		if (PHP_VERSION_ID >= 50207)
 		{
+			if (PHP_VERSION_ID === 50313)
+			{
+				// V 5.3.13 je spatne PHP_RELEASE_VERSION.
+				// https://github.com/php/php-src/commit/e9354b53665e2d313f07d48ce3d227cc61a068dc#diff-6b877bd60916a7ba8fd1c6028b1b28aaR5
+				$this->assertSame('5.3.12', implode('.', array(PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION)));
+				$this->markTestSkipped('php 5.3.13 bug');
+			}
 			$this->assertSame((PHP_MAJOR_VERSION * 10000 + PHP_MINOR_VERSION * 100 + PHP_RELEASE_VERSION), PHP_VERSION_ID);
 		}
 	}
