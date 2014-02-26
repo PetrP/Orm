@@ -138,7 +138,7 @@ class AnnotationClassParser_get_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$this->p->register('test', 'Traversable');
 		$this->p->a['AnnotationClassParser_get_ns\ArrayObject'] = array(
@@ -154,7 +154,7 @@ class AnnotationClassParser_get_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$this->p->register('test', 'Traversable');
 		$this->p->a['AnnotationClassParser_get_ns\ArrayObject'] = array(
