@@ -1,5 +1,7 @@
 <?php
 
+use Orm\Orm;
+
 /**
  * @covers Orm\Orm
  */
@@ -55,9 +57,23 @@ class Orm_require_Test extends TestCase
 				$path = realpath($path);
 				if (strncmp($path, $rpOrmDir, $rpOrmDirLen) === 0)
 				{
-					$result[] = array($class, $path, $r->isInterface() ? 'interface_exists' : 'class_exists');
+					$result[$class] = array($class, $path, $r->isInterface() ? 'interface_exists' : 'class_exists');
 				}
 			}
+		}
+
+		$isCodeCoverageEnabled = extension_loaded('xdebug') ? (function_exists('xdebug_code_coverage_started') ? xdebug_code_coverage_started() : true) : false;
+		if (!$isCodeCoverageEnabled OR Orm::VERSION_ID !== 0)
+		{
+			// @runInSeparateProcess trva prilis dlouho.
+			// Takze spustime jen dulezite tridy a jednu nahodne, aby se overilo ze je vse v poradku.
+			// Vsechny se spousti na vyvojove verzi kdyz je zapnuty code coverage.
+			// Vse s code coverage spoustim před vydadavanim verze.
+			// Tento test neni tak dulezity aby se casove vyplatilo ho pokazde spoustet.
+			$result = array(
+				$tmp = 'Orm\Entity' => $result[$tmp],
+				$tmp = array_rand($result) => $result[$tmp],
+			);
 		}
 		return $result;
 	}
