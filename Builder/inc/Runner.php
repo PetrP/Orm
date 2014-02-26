@@ -230,6 +230,7 @@ class Runner extends Object
 				Helpers::copyStructure($this->root . "/../tests/libs/$lib", $this->root . "/$dir/tests/libs/$lib");
 			}
 			Helpers::copyStructure($this->root . '/data/tests-run.php', $this->root . "/$dir/tests/run.php");
+			Helpers::wipeStructure($this->root . "/$dir/tests/tmp");
 		}
 		Helpers::copyStructure($this->root . '/data/tests-run-php52.php', $this->root . "/php52/Nette_without_namespaces/tests/run.php");
 
