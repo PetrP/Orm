@@ -95,7 +95,7 @@ class MetaDataProperty_setOneToMany_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$p = $this->m->addProperty('id', '\OneToMany_OneToMany')
 			->setOneToMany('tests')

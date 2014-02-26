@@ -25,7 +25,7 @@ class Callback_toString_Test extends TestCase
 	{
 		if (Orm::PACKAGE === '5.2')
 		{
-			$this->markTestIncomplete('php 5.2 (closure)');
+			$this->markTestSkipped('php 5.2 (closure)');
 		}
 		$c = Callback::create(function () {});
 		$this->assertSame('{closure}', $c->__toString());

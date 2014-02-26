@@ -20,7 +20,7 @@ class RepositoryHelper_normalizeRepository_Test extends TestCase
 	{
 		if (PHP_VERSION_ID < 50300)
 		{
-			$this->markTestIncomplete('php 5.2 (namespace)');
+			$this->markTestSkipped('php 5.2 (namespace)');
 		}
 		$c = 'Repository_createMapper\Repository_createMapperRepository'; // aby nebyl parse error v php52
 		$r = new $c(new RepositoryContainer);
