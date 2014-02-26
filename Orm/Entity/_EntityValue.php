@@ -564,7 +564,8 @@ abstract class _EntityValue extends _EntityGeneratingRepository
 				}
 			}
 		}
+		// @codeCoverageIgnoreEnd
 		return parent::__callStatic($name, $args);
-	}	// @codeCoverageIgnoreEnd
+	}
 
 }
