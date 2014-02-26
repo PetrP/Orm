@@ -154,4 +154,3 @@ class DibiResultWrapper extends Object implements Countable, IteratorAggregate
 	}
 
 }
-
