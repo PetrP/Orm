@@ -197,7 +197,13 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t('1', true, ValidationHelper::createDateTime('+1 second'), false);
 		$this->t(1, true, ValidationHelper::createDateTime('+1 second'), false);
 		$this->t(0, true, ValidationHelper::createDateTime('now'), false);
-		$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'), false);
+		$this->t(5, true, ValidationHelper::createDateTime('+5 second'), false);
+		$this->t(5.0, true, ValidationHelper::createDateTime('+5 second'), false);
+		try {
+			$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'), false);
+		} catch (Exception $e) {
+			$this->assertRegExp('(^DateTime::__construct\(\): Failed to parse time string \(@[0-9]+.69\) at position 12 \([0-9]\): Unexpected character$)', $e->getMessage());
+		}
 		try {
 			$this->t(array(), false);
 		} catch (Exception $e) {
