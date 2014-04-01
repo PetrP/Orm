@@ -9,6 +9,7 @@ namespace Orm;
 
 use ArrayObject;
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 /**
@@ -169,7 +170,9 @@ class ValidationHelper
 			{
 				$time += time();
 			}
-			return new DateTime(date('Y-m-d H:i:s', $time));
+			$dt = new DateTime('@' . floor($time));
+			$dt->setTimezone(new DateTimeZone(date_default_timezone_get())); // php bug #40743
+			return $dt;
 		}
 		// textual or NULL
 		return new DateTime($time);
