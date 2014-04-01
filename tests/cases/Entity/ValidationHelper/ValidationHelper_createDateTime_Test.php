@@ -29,6 +29,12 @@ class ValidationHelper_createDateTime_Test extends TestCase
 		$this->assertSame('2038-01-19T04:14:07+01:00', ValidationHelper::createDateTime(2147483647)->format('c'));
 		$this->assertSame('2106-02-07T07:28:14+01:00', ValidationHelper::createDateTime(2147483647*2)->format('c'));
 		$this->assertSame('2650-07-06T09:21:10+01:00', ValidationHelper::createDateTime(2147483647*10)->format('c'));
+		$this->assertSame('1938-04-24T23:13:20+01:00', ValidationHelper::createDateTime(-1000000000)->format('c'));
+		$this->assertSame('1938-04-24T23:13:20+01:00', ValidationHelper::createDateTime(-1000000000.0)->format('c'));
+		$this->assertSame('1938-04-24T23:13:20+01:00', ValidationHelper::createDateTime('-1000000000')->format('c'));
+		$this->assertSame('1901-12-13T21:45:53+01:00', ValidationHelper::createDateTime(-2147483647)->format('c'));
+		$this->assertSame('1833-11-24T18:31:46+01:00', ValidationHelper::createDateTime(-2147483647*2)->format('c'));
+		$this->assertSame('1289-06-27T16:38:50+01:00', ValidationHelper::createDateTime(-2147483647*10)->format('c'));
 	}
 
 	public function testIntYear()
@@ -43,6 +49,7 @@ class ValidationHelper_createDateTime_Test extends TestCase
 		$this->assertSame((string) (time() + 31557600), ValidationHelper::createDateTime(31557600)->format('U'));
 		$this->assertSame((string) (time() - 31557600), ValidationHelper::createDateTime(-31557600)->format('U'));
 		$this->assertSame('1971-01-01T07:00:01+01:00', ValidationHelper::createDateTime(31557601)->format('c'));
+		$this->assertSame('1968-12-31T18:59:59+01:00', ValidationHelper::createDateTime(-31557601)->format('c'));
 	}
 
 	public function testClone()

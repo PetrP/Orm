@@ -166,7 +166,7 @@ class ValidationHelper
 		}
 		else if (is_numeric($time))
 		{
-			if ($time <= 31557600) // year
+			if ($time <= 31557600 AND $time >= -31557600) // year
 			{
 				$time += time();
 			}
