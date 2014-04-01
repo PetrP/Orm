@@ -191,7 +191,25 @@ class ValidationHelper_isValid_One_Test extends ValidationHelper_isValid_Base
 		$this->t('1', true, ValidationHelper::createDateTime('+1 second'), false);
 		$this->t(1, true, ValidationHelper::createDateTime('+1 second'), false);
 		$this->t(0, true, ValidationHelper::createDateTime('now'), false);
+		$this->t(5, true, ValidationHelper::createDateTime('+5 second'), false);
+		$this->t(5.0, true, ValidationHelper::createDateTime('+5 second'), false);
 		$this->t(5.69, true, ValidationHelper::createDateTime('+5 second'), false);
+		$this->t(5.21, true, ValidationHelper::createDateTime('+5 second'), false);
+		$this->t(-5, true, ValidationHelper::createDateTime('-5 second'), false);
+		$this->t(3600, true, ValidationHelper::createDateTime('+1 hour'), false);
+		$this->t(3600.0, true, ValidationHelper::createDateTime('+1 hour'), false);
+		$this->t('3600', true, ValidationHelper::createDateTime('+1 hour'), false);
+		$this->t(31557600, true, ValidationHelper::createDateTime('+31557600 seconds'), false);
+		$this->t(-31557600, true, ValidationHelper::createDateTime('-31557600 seconds'), false);
+		$this->t(31557601, true, ValidationHelper::createDateTime('1971-01-01 07:00:01'), false);
+
+		$this->t(1000000000, true, ValidationHelper::createDateTime('2001-09-09 03:46:40'), false);
+		$this->t(1000000000.0, true, ValidationHelper::createDateTime('2001-09-09 03:46:40'), false);
+		$this->t('1000000000', true, ValidationHelper::createDateTime('2001-09-09 03:46:40'), false);
+		$this->t(2147483647, true, ValidationHelper::createDateTime('2038-01-19 04:14:07'), false);
+		$this->t(2147483647*2, true, ValidationHelper::createDateTime('2106-02-07 07:28:14'), false);
+		$this->t(2147483647*10, true, ValidationHelper::createDateTime('2650-07-06 09:21:10'), false);
+
 		$this->t(array(), false);
 		$this->t(array('xx' => 'aa'), false);
 		$this->t((object) array(), false);
