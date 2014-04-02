@@ -34,7 +34,10 @@ class ValidationHelper_createDateTime_Test extends TestCase
 		$this->assertSame('1938-04-24T23:13:20+01:00', ValidationHelper::createDateTime('-1000000000')->format('c'));
 		$this->assertSame('1901-12-13T21:45:53+01:00', ValidationHelper::createDateTime(-2147483647)->format('c'));
 		$this->assertSame('1833-11-24T18:31:46+01:00', ValidationHelper::createDateTime(-2147483647*2)->format('c'));
-		$this->assertSame('1289-06-27T16:38:50+01:00', ValidationHelper::createDateTime(-2147483647*10)->format('c'));
+		$this->assertSame(
+			PHP_VERSION_ID <= 50203 ? '1289-06-16T16:38:50+01:00' : '1289-06-27T16:38:50+01:00',
+			ValidationHelper::createDateTime(-2147483647*10)->format('c')
+		);
 	}
 
 	public function testIntYear()
