@@ -55,6 +55,10 @@ class InjectionFactory
 			{
 				$tmp = $this->callback;
 			}
+			else if (is_string($this->callback) AND strpos($this->callback, '::'))
+			{
+				$tmp = explode('::', $this->callback, 2);
+			}
 			throw new BadReturnException(array($tmp[0], $tmp[1], 'Orm\IEntityInjection', $result));
 		}
 		return $result;
