@@ -68,7 +68,8 @@ class Runner extends Object
 		}
 		else if ($mode === self::NEW_STABLE)
 		{
-			$info = new VersionInfo($this->git, false, $version);
+			$info = new VersionInfo($this->git, false, 'detect');
+			if ($info->tag !== $version) throw new \Exception;
 			if (!$info->isStable()) throw new \Exception;
 		}
 		else
